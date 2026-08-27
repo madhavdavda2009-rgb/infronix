@@ -1,0 +1,19 @@
+# Infronix Web Agency
+
+Infronix is a premier web agency specializing in designing digital brilliance and technical innovation for modern brands. We craft bespoke web experiences that drive brand growth, ensure engagement, and scale with modern business needs.
+
+## Services
+- Web Design: Stunning, user-centric interfaces.
+- Web Development: Robust, high-performance web applications built with React and Next.js.
+- UI/UX Strategy: Pixel-perfect designs backed by rigorous testing.
+- Digital Marketing: Data-driven strategies and SEO optimization.
+
+## Contact Information
+- Location: 123 Creative Studio, New York
+- Phone: +1 (555) 000-INFR
+- Email: hello@infronix.agency
+- Website: https://infronix.agency
+
+## Important Links
+- Privacy Policy: https://infronix.agency/privacy-policy
+- Terms & Conditions: https://infronix.agency/terms-and-conditions

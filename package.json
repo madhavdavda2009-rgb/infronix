@@ -1,0 +1,43 @@
+{
+  "name": "tmp_vite",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "server": "node server/server.js"
+  },
+  "dependencies": {
+    "@gsap/react": "^2.1.2",
+    "@lineiconshq/free-icons": "^1.0.6",
+    "@lineiconshq/react-lineicons": "^1.0.5",
+    "@phosphor-icons/react": "^2.1.10",
+    "@tailwindcss/postcss": "^4.3.3",
+    "bcryptjs": "^3.0.3",
+    "better-sqlite3": "^13.0.3",
+    "cookie-parser": "^1.4.7",
+    "cors": "^2.8.6",
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1",
+    "express-rate-limit": "^8.6.2",
+    "gsap": "^3.15.0",
+    "helmet": "^8.3.0",
+    "jsonwebtoken": "^9.0.3",
+    "mysql2": "^3.23.3",
+    "next": "^16.3.3",
+    "react": "^19.2.8",
+    "react-dom": "^19.2.8"
+  },
+  "devDependencies": {
+    "@types/react": "^19.2.17",
+    "@types/react-dom": "^19.2.3",
+    "autoprefixer": "^10.5.4",
+    "oxlint": "^1.75.0",
+    "postcss": "^8.5.26",
+    "sharp": "^0.35.4",
+    "tailwindcss": "^4.3.3"
+  }
+}
