@@ -25,6 +25,23 @@ export async function initDb() {
 
     // Test Postgres connection
     const client = await pool.connect();
+    
+    try {
+      // Seed initial admin if empty
+      const adminCheck = await client.query('SELECT COUNT(*) as count FROM admins');
+      if (parseInt(adminCheck.rows[0].count) === 0) {
+        const username = process.env.ADMIN_USERNAME || 'admin';
+        const password = process.env.ADMIN_PASSWORD || 'password123';
+        const bcrypt = (await import('bcryptjs')).default;
+        const salt = await bcrypt.genSalt(10);
+        const hash = await bcrypt.hash(password, salt);
+        await client.query('INSERT INTO admins (username, password_hash) VALUES ($1, $2)', [username, hash]);
+        console.log('✅ Seeded initial admin user.');
+      }
+    } catch (seedErr) {
+      console.warn('⚠️ Could not seed admin (tables might not exist yet):', seedErr.message);
+    }
+    
     console.log('✅ Connected to Supabase PostgreSQL Database');
     client.release();
 
