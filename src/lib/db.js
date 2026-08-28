@@ -13,11 +13,22 @@ export async function initDb() {
     return;
   }
 
+  if (
+    process.env.SUPABASE_DATABASE_URL.includes('db.vhmffcmpjwejhrmjehye') &&
+    !process.env.SUPABASE_DATABASE_URL.includes('.supabase.co') &&
+    !process.env.SUPABASE_DATABASE_URL.includes('pooler.supabase.com')
+  ) {
+    console.warn('⚠️ WARNING: SUPABASE_DATABASE_URL appears to have an incomplete hostname.');
+    console.warn('⚠️ Ensure it ends with .supabase.co or use the connection pooler URL.');
+  }
+
   try {
     pool = new Pool({
       connectionString: process.env.SUPABASE_DATABASE_URL,
-      // For Supabase, connection pooling via Supavisor might require setting max connections
+      // Optimized for Serverless environments (like Vercel)
       max: 10,
+      idleTimeoutMillis: 30000,
+      connectionTimeoutMillis: 5000,
       ssl: {
         rejectUnauthorized: false
       }
