@@ -1,5 +1,5 @@
 "use client";
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
 import { ArrowRight, ArrowLeft, CheckCircle, WarningCircle } from "@phosphor-icons/react";
@@ -20,6 +20,15 @@ export default function StartProjectPage() {
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
+  const [isChecking, setIsChecking] = useState(true);
+
+  useEffect(() => {
+    // Check if user has already submitted a project request
+    if (localStorage.getItem('infronix_project_submitted')) {
+      setSuccess(true);
+    }
+    setIsChecking(false);
+  }, []);
 
   // Form State
   const [formData, setFormData] = useState({
@@ -150,6 +159,7 @@ export default function StartProjectPage() {
       const data = await parseJsonResponse(response);
 
       if (response.ok && data.success) {
+        localStorage.setItem('infronix_project_submitted', 'true');
         setSuccess(true);
       } else {
         setErrorMsg(getFriendlyErrorMessage(data.error, 'Something went wrong while sending your request. Please try again.'));
@@ -164,6 +174,14 @@ export default function StartProjectPage() {
   const needsWebsite = formData.selectedServices.some(s => s.includes('website'));
   const needsSEO = formData.selectedServices.some(s => s.includes('seo'));
   const needsAutomation = formData.selectedServices.some(s => s.includes('automation'));
+
+  if (isChecking) {
+    return (
+      <section className="min-h-screen pt-32 pb-16 bg-surface flex items-center justify-center px-4">
+        <div className="w-8 h-8 border-2 border-secondary border-t-transparent rounded-full animate-spin"></div>
+      </section>
+    );
+  }
 
   if (success) {
     return (

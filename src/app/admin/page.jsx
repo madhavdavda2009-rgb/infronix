@@ -6,6 +6,7 @@ import SEO from '@/components/SEO';
 import { useToast } from '@/context/ToastContext';
 import { getFriendlyErrorMessage, parseJsonResponse } from '@/utils/errorHandler';
 import { SkeletonTable } from '@/components/Skeleton';
+import InvoiceModal from '@/components/admin/InvoiceModal';
 
 export default function AdminDashboard() {
   const [consultations, setConsultations] = useState([]);
@@ -16,6 +17,7 @@ export default function AdminDashboard() {
   
   // Modal states
   const [editingItem, setEditingItem] = useState(null);
+  const [invoicingItem, setInvoicingItem] = useState(null);
   const [deletingId, setDeletingId] = useState(null);
   const [showPasswordModal, setShowPasswordModal] = useState(false);
 
@@ -186,22 +188,29 @@ export default function AdminDashboard() {
       (item.company && item.company.toLowerCase().includes(searchTerm.toLowerCase())) ||
       (item.projectDetails || '').toLowerCase().includes(searchTerm.toLowerCase());
 
-    const matchesStatus = statusFilter === 'ALL' || item.status === statusFilter;
+    const matchesStatus = statusFilter === 'ALL' || (item.status && item.status.toLowerCase() === statusFilter.toLowerCase());
 
     return matchesSearch && matchesStatus;
   });
 
   const getStatusBadge = (status) => {
-    switch (status) {
-      case 'Pending':
+    const s = (status || '').toLowerCase();
+    switch (s) {
+      case 'new':
+      case 'pending':
         return 'bg-amber-500/30 text-amber-200 border-amber-400/80 font-bold';
-      case 'In Progress':
+      case 'reviewing':
+      case 'in progress':
         return 'bg-blue-500/30 text-blue-200 border-blue-400/80 font-bold';
-      case 'Contacted':
+      case 'contacted':
         return 'bg-purple-500/30 text-purple-200 border-purple-400/80 font-bold';
-      case 'Completed':
+      case 'proposal_sent':
+        return 'bg-pink-500/30 text-pink-200 border-pink-400/80 font-bold';
+      case 'won':
+      case 'completed':
         return 'bg-emerald-500/30 text-emerald-200 border-emerald-400/80 font-bold';
-      case 'Archived':
+      case 'lost':
+      case 'archived':
         return 'bg-slate-700/60 text-slate-200 border-slate-400/80 font-bold';
       default:
         return 'bg-secondary/30 text-champagne-light border-secondary/60 font-bold';
@@ -271,7 +280,7 @@ export default function AdminDashboard() {
 
             {/* Filter Tabs */}
             <div className="flex items-center gap-2 flex-wrap w-full md:w-auto">
-              {['ALL', 'Pending', 'In Progress', 'Contacted', 'Completed', 'Archived'].map((status) => (
+              {['ALL', 'new', 'reviewing', 'contacted', 'proposal_sent', 'won', 'lost'].map((status) => (
                 <button
                   key={status}
                   onClick={() => setStatusFilter(status)}
@@ -281,7 +290,7 @@ export default function AdminDashboard() {
                       : 'bg-slate-900 text-slate-200 border-slate-700 hover:border-champagne-light/50 font-bold'
                   }`}
                 >
-                  {status}
+                  {status.replace('_', ' ')}
                 </button>
               ))}
             </div>
@@ -466,12 +475,23 @@ export default function AdminDashboard() {
                   <span className="font-label-caps text-xs text-champagne-light uppercase tracking-widest font-bold">Consultation #{editingItem.id}</span>
                   <h2 className="font-headline-md text-xl text-primary font-bold">Edit Client Consultation</h2>
                 </div>
-                <button
-                  onClick={() => setEditingItem(null)}
-                  className="text-slate-500 hover:text-primary transition-colors cursor-pointer"
-                >
-                  <X className="text-2xl" weight="bold" />
-                </button>
+                <div className="flex items-center gap-4">
+                  <button
+                    onClick={() => {
+                      setInvoicingItem(editingItem);
+                      setEditingItem(null);
+                    }}
+                    className="px-4 py-2 border border-champagne-light/50 text-champagne-light text-xs font-label-caps uppercase tracking-widest hover:bg-champagne-light hover:text-navy-muted font-bold transition-colors cursor-pointer"
+                  >
+                    Generate Invoice
+                  </button>
+                  <button
+                    onClick={() => setEditingItem(null)}
+                    className="text-slate-500 hover:text-primary transition-colors cursor-pointer"
+                  >
+                    <X className="text-2xl" weight="bold" />
+                  </button>
+                </div>
               </div>
 
               <form onSubmit={handleSaveEdit} className="flex flex-col gap-5">
@@ -527,9 +547,15 @@ export default function AdminDashboard() {
                     onChange={(e) => setEditingItem({ ...editingItem, status: e.target.value })}
                     className="w-full bg-surface text-on-surface p-3 text-sm border border-outline focus:outline-none focus:border-champagne-light cursor-pointer font-bold"
                   >
+                    <option value="new">new</option>
+                    <option value="reviewing">reviewing</option>
+                    <option value="contacted">contacted</option>
+                    <option value="proposal_sent">proposal_sent</option>
+                    <option value="won">won</option>
+                    <option value="lost">lost</option>
+                    {/* Legacy support */}
                     <option value="Pending">Pending</option>
                     <option value="In Progress">In Progress</option>
-                    <option value="Contacted">Contacted</option>
                     <option value="Completed">Completed</option>
                     <option value="Archived">Archived</option>
                   </select>
@@ -596,6 +622,13 @@ export default function AdminDashboard() {
           </div>
         )}
 
+        {/* INVOICE MODAL */}
+        {invoicingItem && (
+          <InvoiceModal
+            client={invoicingItem}
+            onClose={() => setInvoicingItem(null)}
+          />
+        )}
       </div>
     </>
   );

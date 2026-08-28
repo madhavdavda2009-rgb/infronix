@@ -16,9 +16,11 @@ export default function Preloader() {
 
   useEffect(() => {
     // Only run on initial session load
-    const hasPlayed = sessionStorage.getItem('infronix_preloader_played');
+    const hasPlayed = localStorage.getItem('infronix_preloader_played');
     if (!hasPlayed) {
       setShouldRender(true);
+      // Set immediately so if they refresh mid-animation, it doesn't play again
+      localStorage.setItem('infronix_preloader_played', 'true');
     }
   }, []);
 
@@ -30,7 +32,6 @@ export default function Preloader() {
     mm.add("(prefers-reduced-motion: no-preference)", () => {
       const tl = gsap.timeline({
         onComplete: () => {
-          sessionStorage.setItem('infronix_preloader_played', 'true');
           setShouldRender(false);
         }
       });
@@ -111,7 +112,6 @@ export default function Preloader() {
       // Reduced motion: Just fade out quickly
       const tl = gsap.timeline({
         onComplete: () => {
-          sessionStorage.setItem('infronix_preloader_played', 'true');
           setShouldRender(false);
         }
       });

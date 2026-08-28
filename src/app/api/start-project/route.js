@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { execute } from '@/lib/db';
+import { encrypt } from '@/lib/crypto';
 
 export async function POST(request) {
   try {
@@ -46,42 +47,60 @@ export async function POST(request) {
       );
     }
 
-    // Insert into Supabase
+    // Split Full Name into First and Last for DB schema
+    const nameParts = fullName.trim().split(' ');
+    const firstName = nameParts[0];
+    const lastName = nameParts.length > 1 ? nameParts.slice(1).join(' ') : ' ';
+
+    // Format all extra form fields into a unified comprehensive block for the projectDetails column
+    const formattedDetails = `
+PROJECT NAME: ${projectName.trim()}
+SERVICES REQUESTED: ${selectedServices.join(', ')}
+BUDGET: ${budget}
+TIMELINE: ${timeline}
+
+[CONTACT PREFERENCES]
+Phone: ${phone.trim()}
+Preferred Method: ${preferredContactMethod || 'Email'}
+${companyName ? `Company: ${companyName.trim()}` : ''}
+${businessCategory ? `Category: ${businessCategory.trim()}` : ''}
+
+[PROJECT DESCRIPTION]
+${projectDescription.trim()}
+
+[WEBSITE DETAILS]
+Has Existing Website: ${hasExistingWebsite ? 'Yes' : 'No'}
+${websiteUrl ? `URL: ${websiteUrl.trim()}` : ''}
+${websiteType ? `Type: ${websiteType}` : ''}
+${pageRequirement ? `Pages: ${pageRequirement}` : ''}
+${features && features.length > 0 ? `Requested Features: ${features.join(', ')}` : ''}
+
+[SEO DETAILS]
+${seoGoals && seoGoals.length > 0 ? `SEO Goals: ${seoGoals.join(', ')}` : ''}
+${seoLocation ? `Target Location: ${seoLocation.trim()}` : ''}
+${seoBusinessDetails ? `Business Info: ${seoBusinessDetails.trim()}` : ''}
+
+[AUTOMATION DETAILS]
+${automationDescription ? `Automation Needed: ${automationDescription.trim()}` : ''}
+${automationPlatforms && automationPlatforms.length > 0 ? `Platforms: ${automationPlatforms.join(', ')}` : ''}
+${existingAutomationTools ? `Existing Tools: ${existingAutomationTools.trim()}` : ''}
+
+[ADDITIONAL NOTES]
+${additionalNotes ? additionalNotes.trim() : 'None'}
+    `.trim();
+
+    // Encrypt sensitive fields using existing agency security
+    const encFirstName = encrypt(firstName);
+    const encLastName = encrypt(lastName);
+    const encEmail = encrypt(email.trim().toLowerCase());
+    const encCompany = encrypt(companyName ? companyName.trim() : '');
+    const encProjectDetails = encrypt(formattedDetails);
+
+    // Insert into consultations table with 'new' status
     await execute(
-      `INSERT INTO project_inquiries (
-        selected_services, project_name, business_category, has_existing_website, website_url, 
-        project_description, website_type, page_requirement, features, seo_goals, 
-        seo_location, seo_business_details, automation_description, automation_platforms, 
-        existing_automation_tools, budget, timeline, full_name, email, phone, 
-        company_name, preferred_contact_method, additional_notes
-      ) VALUES (
-        $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $20, $21, $22, $23
-      )`,
-      [
-        JSON.stringify(selectedServices),
-        projectName.trim(),
-        businessCategory?.trim() || '',
-        hasExistingWebsite || null,
-        websiteUrl?.trim() || null,
-        projectDescription.trim(),
-        websiteType || null,
-        pageRequirement || null,
-        features ? JSON.stringify(features) : null,
-        seoGoals ? JSON.stringify(seoGoals) : null,
-        seoLocation?.trim() || null,
-        seoBusinessDetails?.trim() || null,
-        automationDescription?.trim() || null,
-        automationPlatforms ? JSON.stringify(automationPlatforms) : null,
-        existingAutomationTools?.trim() || null,
-        budget,
-        timeline,
-        fullName.trim(),
-        email.trim().toLowerCase(),
-        phone.trim(),
-        companyName?.trim() || null,
-        preferredContactMethod || 'Email',
-        additionalNotes?.trim() || null
-      ]
+      `INSERT INTO consultations (first_name, last_name, email, company, project_details, status)
+       VALUES ($1, $2, $3, $4, $5, 'new')`,
+      [encFirstName, encLastName, encEmail, encCompany, encProjectDetails]
     );
 
     // Attempt to send email via Resend if API key is present
@@ -121,7 +140,7 @@ export async function POST(request) {
             subject: `We've received your project request - Infronix`,
             html: `
               <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; line-height: 1.6;">
-                <h2>Hello ${fullName.split(' ')[0]},</h2>
+                <h2>Hello ${firstName},</h2>
                 <p>Thank you for reaching out to Infronix.</p>
                 <p>We've successfully received your project details. Our team will review your requirements for <strong>${projectName}</strong> and get back to you with the next steps.</p>
                 <br />
