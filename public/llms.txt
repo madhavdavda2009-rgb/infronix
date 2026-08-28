@@ -1,19 +1,31 @@
-# Infronix Web Agency
+# Infronix
 
-Infronix is a premier web agency specializing in designing digital brilliance and technical innovation for modern brands. We craft bespoke web experiences that drive brand growth, ensure engagement, and scale with modern business needs.
+Infronix is a premium web agency specializing in designing digital brilliance and technical innovation for modern brands. We craft bespoke web experiences that drive brand growth, ensure engagement, and scale with modern business needs.
 
 ## Services
-- Web Design: Stunning, user-centric interfaces.
-- Web Development: Robust, high-performance web applications built with React and Next.js.
-- UI/UX Strategy: Pixel-perfect designs backed by rigorous testing.
-- Digital Marketing: Data-driven strategies and SEO optimization.
 
-## Contact Information
-- Location: 123 Creative Studio, New York
-- Phone: +1 (555) 000-INFR
-- Email: hello@infronix.agency
-- Website: https://infronix.agency
+### Website Development
+We engineer robust, high-performance, and conversion-focused modern websites and web applications.
 
-## Important Links
-- Privacy Policy: https://infronix.agency/privacy-policy
-- Terms & Conditions: https://infronix.agency/terms-and-conditions
+### SEO Optimization
+Data-driven strategies to improve search visibility, organic growth, and technical SEO foundations.
+
+### AI Automation
+We automate repetitive business workflows with smart AI integrations to save time and scale operations.
+
+## Who We Help
+We serve forward-thinking brands, businesses, and startups looking to elevate their digital presence, automate their workflows, and achieve organic growth. 
+
+## Public Pages
+
+* Homepage: https://infronixweb.vercel.app/
+* Start Project: https://infronixweb.vercel.app/start-project
+* Privacy Policy: https://infronixweb.vercel.app/privacy-policy
+* Terms & Conditions: https://infronixweb.vercel.app/terms-and-conditions
+
+## Start a Project
+
+To work with us, please submit your project requirements at:
+https://infronixweb.vercel.app/start-project
+
+Our team will review your requirements and get back to you with the right approach and timeline.

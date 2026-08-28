@@ -25,7 +25,7 @@ export default function HeroSection() {
 
         <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 mt-2 sm:pl-gutter w-full sm:w-auto">
           <a 
-            href="/#contact" 
+            href="/start-project" 
             className="bg-champagne-light text-navy-muted font-label-caps uppercase tracking-widest text-xs px-6 py-3.5 rounded-none hover:bg-white transition-all shadow-lg border border-champagne-light text-center font-bold"
           >
             Get Started
