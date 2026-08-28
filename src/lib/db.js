@@ -18,6 +18,9 @@ export async function initDb() {
       connectionString: process.env.SUPABASE_DATABASE_URL,
       // For Supabase, connection pooling via Supavisor might require setting max connections
       max: 10,
+      ssl: {
+        rejectUnauthorized: false
+      }
     });
 
     // Test Postgres connection
