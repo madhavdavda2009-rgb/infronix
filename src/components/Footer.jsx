@@ -36,7 +36,7 @@ export default function Footer() {
             <a href="#" aria-label="Our Global Sites" className="text-champagne-light hover:text-white transition-colors">
               <Globe aria-hidden="true" className="text-xl" weight="bold" />
             </a>
-            <a href="mailto:hello@infronix.agency" aria-label="Email Us" className="text-champagne-light hover:text-white transition-colors">
+            <a href="mailto:support@infronixweb.in" aria-label="Email Us" className="text-champagne-light hover:text-white transition-colors">
               <Envelope aria-hidden="true" className="text-xl" weight="bold" />
             </a>
           </div>
@@ -75,7 +75,7 @@ export default function Footer() {
             </a>
             <p className="text-xs sm:text-sm text-slate-200 font-medium flex items-center gap-2">
               <Envelope aria-hidden="true" className="text-lg text-champagne-light" weight="bold" />
-              hello@infronix.agency
+              support@infronixweb.in
             </p>
           </address>
         </div>

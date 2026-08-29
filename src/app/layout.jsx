@@ -26,8 +26,8 @@ export default function RootLayout({ children }) {
               "@context": "https://schema.org",
               "@type": "Organization",
               "name": "Infronix",
-              "url": "https://infronix.agency/",
-              "logo": "https://infronix.agency/hero_bg.webp",
+              "url": "https://infronixweb.in/",
+              "logo": "https://infronixweb.in/hero_bg.webp",
               "contactPoint": {
                 "@type": "ContactPoint",
                 "telephone": "+91-6355792936",
@@ -43,7 +43,7 @@ export default function RootLayout({ children }) {
               "@context": "https://schema.org",
               "@type": "WebSite",
               "name": "Infronix Web Agency",
-              "url": "https://infronix.agency/"
+              "url": "https://infronixweb.in/"
             })
           }}
         />

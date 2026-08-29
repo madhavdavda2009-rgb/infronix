@@ -1,25 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://infronixweb.vercel.app/</loc>
+    <loc>https://infronixweb.in/</loc>
     <lastmod>2026-08-28</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://infronixweb.vercel.app/start-project</loc>
+    <loc>https://infronixweb.in/start-project</loc>
     <lastmod>2026-08-28</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://infronixweb.vercel.app/privacy-policy</loc>
+    <loc>https://infronixweb.in/privacy-policy</loc>
     <lastmod>2026-08-28</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>https://infronixweb.vercel.app/terms-and-conditions</loc>
+    <loc>https://infronixweb.in/terms-and-conditions</loc>
     <lastmod>2026-08-28</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.5</priority>

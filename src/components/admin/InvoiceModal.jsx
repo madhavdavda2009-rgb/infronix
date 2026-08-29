@@ -120,7 +120,7 @@ export default function InvoiceModal({ client, onClose }) {
               <p><strong>2. Scope of Services:</strong> This invoice defines the exact scope of work. Any features, integrations, revisions, or requests outside this scope will require additional fees as per Section 3.</p>
               <p><strong>3. Client Responsibilities:</strong> The Client agrees to provide necessary approvals, content, and timely feedback. Delays on the Client's end may result in project delays without liability to the Agency (Section 4).</p>
               <p><strong>4. Intellectual Property:</strong> Ownership of custom deliverables transfers to the Client only upon full and final payment. The Agency retains ownership of general-purpose code, libraries, and frameworks (Section 16).</p>
-              <p><strong>5. Governing Law:</strong> Payment of this invoice signifies complete agreement to the Infronix Web Agency Terms and Conditions available at infronix.agency/terms-and-conditions.</p>
+              <p><strong>5. Governing Law:</strong> Payment of this invoice signifies complete agreement to the Infronix Web Agency Terms and Conditions available at infronixweb.in/terms-and-conditions.</p>
             </div>
           </div>
 
