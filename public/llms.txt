@@ -2,30 +2,50 @@
 
 Infronix is a premium web agency specializing in designing digital brilliance and technical innovation for modern brands. We craft bespoke web experiences that drive brand growth, ensure engagement, and scale with modern business needs.
 
-## Services
+## Services & Pricing
 
 ### Website Development
 We engineer robust, high-performance, and conversion-focused modern websites and web applications.
+- **Landing Page**: Starting at ₹8,000
+- **Business Website**: Starting at ₹18,000
+- **Professional Website**: Starting at ₹30,000 (Recommended)
+- **E-commerce Website**: Starting at ₹45,000+
+- **Custom Web Application**: Starting at ₹60,000+
 
 ### SEO Optimization
 Data-driven strategies to improve search visibility, organic growth, and technical SEO foundations.
+- **SEO Starter**: ₹5,000/month
+- **Local SEO**: ₹7,500/month
+- **SEO Growth**: ₹10,000/month (Recommended)
+- **SEO Pro**: ₹18,000/month
 
 ### AI Automation
 We automate repetitive business workflows with smart AI integrations to save time and scale operations.
+- **Automation Starter**: Starting at ₹10,000
+- **Business Automation**: Starting at ₹25,000 (Recommended)
+- **AI Automation Pro**: Starting at ₹45,000+
+- **Custom AI System**: Starting at ₹75,000+
 
 ## Who We Help
 We serve forward-thinking brands, businesses, and startups looking to elevate their digital presence, automate their workflows, and achieve organic growth. 
 
 ## Public Pages
 
-* Homepage: https://infronixweb.in/
-* Start Project: https://infronixweb.in/start-project
-* Privacy Policy: https://infronixweb.in/privacy-policy
-* Terms & Conditions: https://infronixweb.in/terms-and-conditions
+* Homepage: https://www.infronixweb.in/
+* Website Development: https://www.infronixweb.in/web-development
+* SEO Optimization: https://www.infronixweb.in/seo
+* AI Automation: https://www.infronixweb.in/ai-automation
+* Portfolio/Projects: https://www.infronixweb.in/projects
+* About Us: https://www.infronixweb.in/about
+* Blog: https://www.infronixweb.in/blog
+* Contact: https://www.infronixweb.in/contact
+* Start Project: https://www.infronixweb.in/start-project
+* Privacy Policy: https://www.infronixweb.in/privacy-policy
+* Terms & Conditions: https://www.infronixweb.in/terms-and-conditions
 
 ## Start a Project
 
 To work with us, please submit your project requirements at:
-https://infronixweb.in/start-project
+https://www.infronixweb.in/start-project
 
 Our team will review your requirements and get back to you with the right approach and timeline.

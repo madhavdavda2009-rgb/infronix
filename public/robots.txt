@@ -5,4 +5,4 @@ Disallow: /admin/
 Disallow: /dashboard/
 Disallow: /login/
 
-Sitemap: https://infronixweb.in/sitemap.xml
+Sitemap: https://www.infronixweb.in/sitemap.xml

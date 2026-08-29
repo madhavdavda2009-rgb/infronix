@@ -23,6 +23,17 @@ export default function ConsultationForm() {
 
   useEffect(() => {
     checkRateLimit();
+    
+    if (typeof window !== 'undefined') {
+      const params = new URLSearchParams(window.location.search);
+      const service = params.get('service');
+      const pkg = params.get('package');
+      const budget = params.get('budget');
+      
+      if (service && pkg) {
+        setProjectDetails(`I am interested in the ${service} - ${pkg} package (${budget || 'Pricing variable'}).\n\nAdditional details: `);
+      }
+    }
   }, []);
 
   function checkRateLimit() {

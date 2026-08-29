@@ -1,5 +1,6 @@
 import ContactSection from '@/components/ContactSection';
 import FAQSection from '@/components/FAQSection';
+import PricingSection from '@/components/pricing/PricingSection';
 
 export const metadata = {
   title: 'AI Automation Agency in Ahmedabad | Workflow Automation',
@@ -70,6 +71,7 @@ export default function AIAutomationPage() {
           </div>
         </section>
 
+        <PricingSection serviceKey="ai" />
         <ContactSection />
         <FAQSection />
       </main>

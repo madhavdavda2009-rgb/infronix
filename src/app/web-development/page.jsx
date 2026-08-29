@@ -1,5 +1,6 @@
 import ContactSection from '@/components/ContactSection';
 import FAQSection from '@/components/FAQSection';
+import PricingSection from '@/components/pricing/PricingSection';
 
 export const metadata = {
   title: 'Custom Web Development Agency in Ahmedabad',
@@ -70,6 +71,7 @@ export default function WebDevelopmentPage() {
           </div>
         </section>
 
+        <PricingSection serviceKey="web" />
         <ContactSection />
         <FAQSection />
       </main>

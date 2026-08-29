@@ -1,5 +1,6 @@
 import ContactSection from '@/components/ContactSection';
 import FAQSection from '@/components/FAQSection';
+import PricingSection from '@/components/pricing/PricingSection';
 
 export const metadata = {
   title: 'SEO Agency & Technical SEO Services in Ahmedabad',
@@ -70,6 +71,7 @@ export default function SEOPage() {
           </div>
         </section>
 
+        <PricingSection serviceKey="seo" />
         <ContactSection />
         <FAQSection />
       </main>
