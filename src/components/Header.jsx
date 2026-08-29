@@ -54,6 +54,12 @@ export default function Header() {
             SEO
           </Link>
           <Link
+            href="/ai-automation"
+            className={`font-label-caps text-xs uppercase tracking-widest transition-colors ${isActive('/ai-automation')}`}
+          >
+            AI
+          </Link>
+          <Link
             href="/projects"
             className={`font-label-caps text-xs uppercase tracking-widest transition-colors ${isActive('/projects')}`}
           >
@@ -123,6 +129,13 @@ export default function Header() {
               className="py-2 text-sm font-label-caps uppercase tracking-widest text-slate-200 hover:text-champagne-light font-semibold"
             >
               SEO
+            </Link>
+            <Link
+              href="/ai-automation"
+              onClick={() => setMobileMenuOpen(false)}
+              className="py-2 text-sm font-label-caps uppercase tracking-widest text-slate-200 hover:text-champagne-light font-semibold"
+            >
+              AI Automation
             </Link>
             <Link
               href="/projects"
