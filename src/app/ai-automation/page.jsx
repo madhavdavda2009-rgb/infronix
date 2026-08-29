@@ -71,7 +71,7 @@ export default function AIAutomationPage() {
           </div>
         </section>
 
-        <PricingSection serviceKey="ai" />
+        <PricingSection serviceKey="ai-automation" />
         <ContactSection />
         <FAQSection />
       </main>

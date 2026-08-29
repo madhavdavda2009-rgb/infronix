@@ -1,14 +1,14 @@
 "use client";
 import { CheckCircle, ArrowRight, Star } from "@phosphor-icons/react";
 
-export default function PricingCard({ pkg, serviceQueryParam }) {
-  // Construct the URL to pass parameters to the contact form safely
+export default function PricingCard({ pkg, serviceId }) {
+  // Construct the URL to pass parameters to the start-project form safely
   const queryParams = new URLSearchParams({
-    service: serviceQueryParam,
+    service: serviceId,
     package: pkg.id
   }).toString();
   
-  const href = `/#consultation?${queryParams}`;
+  const href = `/start-project?${queryParams}`;
 
   return (
     <div className={`flex flex-col h-full bg-navy-dark/60 backdrop-blur-md border ${pkg.isRecommended ? 'border-champagne-light shadow-[0_0_15px_rgba(240,230,210,0.15)] scale-[1.02]' : 'border-outline-variant hover:border-champagne-light/50'} p-6 md:p-8 relative group transition-all`}>

@@ -71,7 +71,7 @@ export default function WebDevelopmentPage() {
           </div>
         </section>
 
-        <PricingSection serviceKey="web" />
+        <PricingSection serviceKey="web-development" />
         <ContactSection />
         <FAQSection />
       </main>

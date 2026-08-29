@@ -26,7 +26,7 @@ export default function PricingSection({ serviceKey }) {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 md:gap-8 justify-center items-stretch">
           {data.packages.map((pkg) => (
             <div key={pkg.id} className={data.packages.length < 4 ? "max-w-md w-full mx-auto" : ""}>
-               <PricingCard pkg={pkg} serviceQueryParam={data.serviceQueryParam} />
+               <PricingCard pkg={pkg} serviceId={data.id} />
             </div>
           ))}
         </div>
@@ -35,7 +35,7 @@ export default function PricingSection({ serviceKey }) {
         <div className="mt-20 pt-10 border-t border-outline-variant/30 text-center flex flex-col items-center">
           <h3 className="font-headline-md text-xl text-surface font-bold mb-6">Looking for another service?</h3>
           <div className="flex flex-wrap justify-center gap-4">
-            {serviceKey !== 'web' && (
+            {serviceKey !== 'web-development' && (
               <Link href="/web-development" className="bg-transparent border border-outline-variant text-slate-200 font-label-caps uppercase tracking-widest text-xs px-6 py-3 rounded-none hover:text-champagne-light hover:border-champagne-light transition-all font-bold">
                 Website Development
               </Link>
@@ -45,7 +45,7 @@ export default function PricingSection({ serviceKey }) {
                 SEO Optimization
               </Link>
             )}
-            {serviceKey !== 'ai' && (
+            {serviceKey !== 'ai-automation' && (
               <Link href="/ai-automation" className="bg-transparent border border-outline-variant text-slate-200 font-label-caps uppercase tracking-widest text-xs px-6 py-3 rounded-none hover:text-champagne-light hover:border-champagne-light transition-all font-bold">
                 AI Automation
               </Link>

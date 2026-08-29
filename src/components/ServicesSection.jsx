@@ -20,7 +20,7 @@ export default function ServicesSection() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
 
           {/* Card 1 */}
-          <Link href="#contact" className="bg-surface rounded-none p-6 md:p-8 flex flex-col gap-4 relative group overflow-hidden border border-outline-variant hover:border-champagne-light transition-all shadow-sm hover:shadow-md h-full">
+          <Link href="/web-development" className="bg-surface rounded-none p-6 md:p-8 flex flex-col gap-4 relative group overflow-hidden border border-outline-variant hover:border-champagne-light transition-all shadow-sm hover:shadow-md h-full">
             <div className="absolute top-0 left-0 w-full h-[2px] bg-champagne-light transform origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></div>
             <div className="flex items-center gap-3 mb-2">
               <span className="font-label-caps text-secondary font-bold text-xl opacity-50">01</span>
@@ -55,7 +55,7 @@ export default function ServicesSection() {
           </Link>
 
           {/* Card 2 */}
-          <Link href="#contact" className="bg-surface rounded-none p-6 md:p-8 flex flex-col gap-4 relative group overflow-hidden border border-outline-variant hover:border-champagne-light transition-all shadow-sm hover:shadow-md h-full">
+          <Link href="/seo" className="bg-surface rounded-none p-6 md:p-8 flex flex-col gap-4 relative group overflow-hidden border border-outline-variant hover:border-champagne-light transition-all shadow-sm hover:shadow-md h-full">
             <div className="absolute top-0 left-0 w-full h-[2px] bg-champagne-light transform origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></div>
             <div className="flex items-center gap-3 mb-2">
               <span className="font-label-caps text-secondary font-bold text-xl opacity-50">02</span>
@@ -90,7 +90,7 @@ export default function ServicesSection() {
           </Link>
 
           {/* Card 3 */}
-          <Link href="#contact" className="bg-surface rounded-none p-6 md:p-8 flex flex-col gap-4 relative group overflow-hidden border border-outline-variant hover:border-champagne-light transition-all shadow-sm hover:shadow-md h-full md:col-span-2 lg:col-span-1">
+          <Link href="/ai-automation" className="bg-surface rounded-none p-6 md:p-8 flex flex-col gap-4 relative group overflow-hidden border border-outline-variant hover:border-champagne-light transition-all shadow-sm hover:shadow-md h-full md:col-span-2 lg:col-span-1">
             <div className="absolute top-0 left-0 w-full h-[2px] bg-champagne-light transform origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></div>
             <div className="flex items-center gap-3 mb-2">
               <span className="font-label-caps text-secondary font-bold text-xl opacity-50">03</span>

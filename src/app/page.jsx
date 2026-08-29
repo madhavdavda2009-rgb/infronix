@@ -6,7 +6,7 @@ import PortfolioSection from '@/components/PortfolioSection';
 import TrustSection from '@/components/TrustSection';
 import ContactSection from '@/components/ContactSection';
 import FAQSection from '@/components/FAQSection';
-import ConsultationForm from '@/components/ConsultationForm';
+
 export default function Home() {
   return (
     <>
@@ -19,7 +19,6 @@ export default function Home() {
         <TrustSection />
         <ContactSection />
         <FAQSection />
-        <ConsultationForm />
       </main>
     </>
   );

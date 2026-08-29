@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { execute } from '@/lib/db';
 import { encrypt } from '@/lib/crypto';
+import { getPackage } from '@/components/pricing/pricingData';
 
 export async function POST(request) {
   try {
@@ -28,7 +29,9 @@ export async function POST(request) {
       phone,
       companyName,
       preferredContactMethod,
-      additionalNotes
+      additionalNotes,
+      serviceId,
+      packageId
     } = body;
 
     // Validate Required Fields
@@ -51,6 +54,22 @@ export async function POST(request) {
     const nameParts = fullName.trim().split(' ');
     const firstName = nameParts[0];
     const lastName = nameParts.length > 1 ? nameParts.slice(1).join(' ') : ' ';
+
+    // Resolve secure pricing data server-side
+    let serviceName = null;
+    let packageName = null;
+    let packagePrice = null;
+
+    if (serviceId && packageId) {
+      const pkg = getPackage(serviceId, packageId);
+      if (pkg) {
+        // Find the service name directly from the static data mapping
+        const { pricingData } = await import('@/components/pricing/pricingData');
+        serviceName = pricingData[serviceId]?.name || serviceId;
+        packageName = pkg.name;
+        packagePrice = `${pkg.label} ${pkg.price}`.trim();
+      }
+    }
 
     // Format all extra form fields into a unified comprehensive block for the projectDetails column
     const formattedDetails = `
@@ -98,9 +117,9 @@ ${additionalNotes ? additionalNotes.trim() : 'None'}
 
     // Insert into consultations table with 'new' status
     await execute(
-      `INSERT INTO consultations (first_name, last_name, email, company, project_details, status)
-       VALUES ($1, $2, $3, $4, $5, 'new')`,
-      [encFirstName, encLastName, encEmail, encCompany, encProjectDetails]
+      `INSERT INTO consultations (first_name, last_name, email, company, project_details, status, service, package, package_price)
+       VALUES ($1, $2, $3, $4, $5, 'new', $6, $7, $8)`,
+      [encFirstName, encLastName, encEmail, encCompany, encProjectDetails, serviceName, packageName, packagePrice]
     );
 
     // Attempt to send email via Resend if API key is present
