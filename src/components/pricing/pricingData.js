@@ -1,8 +1,9 @@
 export const pricingData = {
-  web: {
+  "web-development": {
+    id: "web-development",
+    name: "Website Development",
     heading: "Website Development Pricing",
     subheading: "Flexible website development packages for businesses, brands and growing companies.",
-    serviceQueryParam: "Website Development",
     packages: [
       {
         id: "landing-page",
@@ -95,10 +96,11 @@ export const pricingData = {
       }
     ]
   },
-  seo: {
+  "seo": {
+    id: "seo",
+    name: "SEO Optimization",
     heading: "SEO Plans",
     subheading: "Choose an SEO plan based on your website's current needs and growth goals.",
-    serviceQueryParam: "SEO Optimization",
     packages: [
       {
         id: "seo-starter",
@@ -177,10 +179,11 @@ export const pricingData = {
       }
     ]
   },
-  ai: {
+  "ai-automation": {
+    id: "ai-automation",
+    name: "AI Automation",
     heading: "AI Automation Pricing",
     subheading: "Start with a focused automation or build a complete AI-powered business workflow.",
-    serviceQueryParam: "AI Automation",
     packages: [
       {
         id: "automation-starter",
@@ -256,3 +259,19 @@ export const pricingData = {
     ]
   }
 };
+
+/**
+ * Get pricing data for a specific service ID
+ */
+export function getServicePricing(serviceId) {
+  return pricingData[serviceId] || null;
+}
+
+/**
+ * Get a specific package from a service
+ */
+export function getPackage(serviceId, packageId) {
+  const service = getServicePricing(serviceId);
+  if (!service) return null;
+  return service.packages.find(pkg => pkg.id === packageId) || null;
+}

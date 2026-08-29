@@ -1,9 +1,10 @@
 "use client";
-import { Clock, Timer, WarningCircle, ChatCircle } from "@phosphor-icons/react";
+import { Clock, Timer, WarningCircle, ChatCircle, Tag, CheckCircle, X } from "@phosphor-icons/react";
 import { useState, useEffect } from 'react';
 import { useToast } from '@/context/ToastContext';
 import { getFriendlyErrorMessage, parseJsonResponse } from '@/utils/errorHandler';
 import { formatTitleCase, formatEmail, isValidEmail } from '@/utils/formFormatters';
+import { getServicePricing, getPackage, pricingData } from './pricing/pricingData';
 
 const RATE_LIMIT_2H_MS = 2 * 60 * 60 * 1000; // 2 hours in milliseconds
 
@@ -13,6 +14,12 @@ export default function ConsultationForm() {
   const [email, setEmail] = useState('');
   const [company, setCompany] = useState('');
   const [projectDetails, setProjectDetails] = useState('');
+
+  // Dynamic Pricing State
+  const [selectedServiceId, setSelectedServiceId] = useState('');
+  const [selectedPackageId, setSelectedPackageId] = useState('');
+  const [resolvedService, setResolvedService] = useState(null);
+  const [resolvedPackage, setResolvedPackage] = useState(null);
 
   const [loading, setLoading] = useState(false);
   const [isRateLimited, setIsRateLimited] = useState(false);
@@ -26,12 +33,19 @@ export default function ConsultationForm() {
     
     if (typeof window !== 'undefined') {
       const params = new URLSearchParams(window.location.search);
-      const service = params.get('service');
-      const pkg = params.get('package');
-      const budget = params.get('budget');
+      const serviceId = params.get('service');
+      const packageId = params.get('package');
       
-      if (service && pkg) {
-        setProjectDetails(`I am interested in the ${service} - ${pkg} package (${budget || 'Pricing variable'}).\n\nAdditional details: `);
+      if (serviceId && packageId) {
+        const service = getServicePricing(serviceId);
+        const pkg = getPackage(serviceId, packageId);
+        
+        if (service && pkg) {
+          setSelectedServiceId(serviceId);
+          setSelectedPackageId(packageId);
+          setResolvedService(service);
+          setResolvedPackage(pkg);
+        }
       }
     }
   }, []);
@@ -79,6 +93,43 @@ export default function ConsultationForm() {
     }
   }
 
+  function handleServiceChange(e) {
+    const newServiceId = e.target.value;
+    setSelectedServiceId(newServiceId);
+    setSelectedPackageId('');
+    
+    if (newServiceId) {
+      setResolvedService(getServicePricing(newServiceId));
+      setResolvedPackage(null);
+    } else {
+      setResolvedService(null);
+      setResolvedPackage(null);
+    }
+  }
+
+  function handlePackageChange(e) {
+    const newPackageId = e.target.value;
+    setSelectedPackageId(newPackageId);
+    
+    if (selectedServiceId && newPackageId) {
+      setResolvedPackage(getPackage(selectedServiceId, newPackageId));
+    } else {
+      setResolvedPackage(null);
+    }
+  }
+
+  function clearPackageSelection() {
+    setSelectedServiceId('');
+    setSelectedPackageId('');
+    setResolvedService(null);
+    setResolvedPackage(null);
+    
+    // Clean URL silently
+    if (typeof window !== 'undefined') {
+      window.history.replaceState({}, '', '/start-project');
+    }
+  }
+
   async function handleSubmit(e) {
     e.preventDefault();
     if (isRateLimited) {
@@ -118,7 +169,9 @@ export default function ConsultationForm() {
           lastName: formattedLastName,
           email: formattedEmail,
           company: formattedCompany,
-          projectDetails: formattedDetails
+          projectDetails: formattedDetails,
+          serviceId: selectedServiceId,
+          packageId: selectedPackageId
         })
       });
 
@@ -136,6 +189,7 @@ export default function ConsultationForm() {
         setEmail('');
         setCompany('');
         setProjectDetails('');
+        clearPackageSelection();
       } else {
         const friendlyMsg = getFriendlyErrorMessage(data.error, 'Unable to submit your request at this time. Please check your entries and try again.');
         showToast(friendlyMsg, 'error');
@@ -177,6 +231,79 @@ export default function ConsultationForm() {
 
         <form onSubmit={handleSubmit} className="flex flex-col gap-6 w-full bg-surface-container-lowest p-6 sm:p-8 md:p-10 border border-outline-variant shadow-md" aria-label="Full consultation form">
           <fieldset disabled={isRateLimited} className="flex flex-col gap-margin-mobile w-full">
+            
+            {/* Dynamic Pricing Context Area */}
+            {resolvedService && resolvedPackage ? (
+              <div className="bg-navy-dark/95 border border-champagne-light p-4 md:p-6 shadow-lg mb-4 relative group">
+                <div className="flex items-start justify-between">
+                  <div className="flex items-start gap-3 md:gap-4">
+                    <CheckCircle className="text-champagne-light text-2xl mt-1 shrink-0" weight="fill" />
+                    <div>
+                      <span className="font-label-caps text-[10px] text-champagne-light/80 uppercase tracking-widest font-bold">Selected Package</span>
+                      <h3 className="font-headline-md text-lg text-white font-bold mt-1">
+                        {resolvedService.name} - {resolvedPackage.name}
+                      </h3>
+                      <p className="font-body-md text-sm text-slate-300 mt-1 font-medium">{resolvedPackage.scope}</p>
+                      <div className="mt-3 inline-block bg-champagne-light/10 border border-champagne-light/30 px-3 py-1.5 font-mono text-sm text-champagne-light font-bold">
+                        {resolvedPackage.label} {resolvedPackage.price}
+                      </div>
+                    </div>
+                  </div>
+                  <button 
+                    type="button" 
+                    onClick={clearPackageSelection}
+                    className="text-slate-400 hover:text-champagne-light transition-colors"
+                    title="Change Package"
+                  >
+                    <X className="text-xl" weight="bold" />
+                  </button>
+                </div>
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-margin-mobile mb-4">
+                <div className="flex flex-col gap-unit">
+                  <label htmlFor="service-select" className="font-label-caps uppercase tracking-widest text-on-surface font-bold text-xs">Service</label>
+                  <div className="relative">
+                    <select
+                      id="service-select"
+                      value={selectedServiceId}
+                      onChange={handleServiceChange}
+                      className="w-full bg-surface text-on-surface font-body-md px-margin-mobile py-[16px] rounded-none border border-outline focus:outline-none focus:border-secondary transition-all disabled:opacity-50 appearance-none font-medium cursor-pointer"
+                    >
+                      <option value="">Select a service...</option>
+                      {Object.values(pricingData).map(service => (
+                        <option key={service.id} value={service.id}>{service.name}</option>
+                      ))}
+                    </select>
+                    <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none">
+                      <Tag className="text-slate-400" />
+                    </div>
+                  </div>
+                </div>
+
+                <div className="flex flex-col gap-unit">
+                  <label htmlFor="package-select" className="font-label-caps uppercase tracking-widest text-on-surface font-bold text-xs">Package</label>
+                  <div className="relative">
+                    <select
+                      id="package-select"
+                      value={selectedPackageId}
+                      onChange={handlePackageChange}
+                      disabled={!selectedServiceId}
+                      className="w-full bg-surface text-on-surface font-body-md px-margin-mobile py-[16px] rounded-none border border-outline focus:outline-none focus:border-secondary transition-all disabled:opacity-50 appearance-none font-medium cursor-pointer"
+                    >
+                      <option value="">Select a package...</option>
+                      {resolvedService && resolvedService.packages.map(pkg => (
+                        <option key={pkg.id} value={pkg.id}>{pkg.name} ({pkg.price})</option>
+                      ))}
+                    </select>
+                    <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none">
+                      <Tag className="text-slate-400" />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+
             <div className="grid grid-cols-1 md:grid-cols-2 gap-margin-mobile">
               <div className="flex flex-col gap-unit">
                 <label htmlFor="first-name" className="font-label-caps uppercase tracking-widest text-on-surface font-bold text-xs">First Name *</label>

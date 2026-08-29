@@ -323,6 +323,7 @@ export default function AdminDashboard() {
                     <th className="p-4">Client Name</th>
                     <th className="p-4">Contact Info</th>
                     <th className="p-4">Company</th>
+                    <th className="p-4">Package Select</th>
                     <th className="p-4">Status</th>
                     <th className="p-4">Submitted</th>
                     <th className="p-4 text-right">Actions</th>
@@ -342,6 +343,17 @@ export default function AdminDashboard() {
                       </td>
                       <td className="p-4 text-slate-200 font-semibold">
                         {item.company || <span className="text-slate-400 italic">N/A</span>}
+                      </td>
+                      <td className="p-4 text-xs font-medium">
+                        {item.service ? (
+                          <div className="flex flex-col">
+                            <span className="text-champagne-light font-bold truncate max-w-[150px]">{item.service}</span>
+                            <span className="text-slate-300 truncate max-w-[150px]">{item.package}</span>
+                            <span className="text-slate-400 font-mono mt-0.5">{item.packagePrice}</span>
+                          </div>
+                        ) : (
+                          <span className="text-slate-500 italic">Custom / Unknown</span>
+                        )}
                       </td>
                       <td className="p-4">
                         <span className={`px-3 py-1 text-xs font-label-caps uppercase tracking-wider border shadow-sm ${getStatusBadge(item.status)}`}>
@@ -539,6 +551,23 @@ export default function AdminDashboard() {
                     />
                   </div>
                 </div>
+
+                {editingItem.service && (
+                  <div className="bg-navy-dark/50 border border-champagne-light/30 p-4">
+                    <span className="font-label-caps text-[10px] text-champagne-light uppercase tracking-widest block mb-1 font-bold">Selected Pricing Package</span>
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <p className="font-bold text-white text-sm">{editingItem.service}</p>
+                        <p className="text-slate-300 text-xs mt-0.5">{editingItem.package}</p>
+                      </div>
+                      <div className="text-right">
+                        <span className="font-mono text-champagne-light text-sm font-bold bg-champagne-light/10 px-2 py-1 rounded-sm border border-champagne-light/20">
+                          {editingItem.packagePrice}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                )}
 
                 <div>
                   <label className="font-label-caps text-xs text-slate-800 uppercase tracking-widest block mb-1 font-bold">Status</label>

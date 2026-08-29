@@ -22,6 +22,9 @@ export async function GET(request) {
       email: decrypt(row.email),
       company: decrypt(row.company),
       projectDetails: decrypt(row.project_details),
+      service: row.service,
+      package: row.package,
+      packagePrice: row.package_price,
       status: row.status,
       createdAt: row.created_at,
       updatedAt: row.updated_at

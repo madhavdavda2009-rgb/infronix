@@ -5,8 +5,7 @@ export default function PricingCard({ pkg, serviceQueryParam }) {
   // Construct the URL to pass parameters to the contact form safely
   const queryParams = new URLSearchParams({
     service: serviceQueryParam,
-    package: pkg.name,
-    budget: `${pkg.price} ${pkg.label}`.trim()
+    package: pkg.id
   }).toString();
   
   const href = `/#consultation?${queryParams}`;
