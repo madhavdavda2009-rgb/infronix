@@ -41,30 +41,42 @@ export default function Header() {
           >
             Home
           </Link>
-          <a
-            href="/#services"
-            className="font-label-caps text-xs text-slate-200 hover:text-champagne-light transition-colors uppercase tracking-widest font-semibold"
+          <Link
+            href="/web-development"
+            className={`font-label-caps text-xs uppercase tracking-widest transition-colors ${isActive('/web-development')}`}
           >
-            Services
-          </a>
-          <a
-            href="/#portfolio"
-            className="font-label-caps text-xs text-slate-200 hover:text-champagne-light transition-colors uppercase tracking-widest font-semibold"
+            Web Dev
+          </Link>
+          <Link
+            href="/seo"
+            className={`font-label-caps text-xs uppercase tracking-widest transition-colors ${isActive('/seo')}`}
           >
-            Portfolio
-          </a>
-          <a
-            href="/#about"
-            className="font-label-caps text-xs text-slate-200 hover:text-champagne-light transition-colors uppercase tracking-widest font-semibold"
+            SEO
+          </Link>
+          <Link
+            href="/projects"
+            className={`font-label-caps text-xs uppercase tracking-widest transition-colors ${isActive('/projects')}`}
+          >
+            Projects
+          </Link>
+          <Link
+            href="/about"
+            className={`font-label-caps text-xs uppercase tracking-widest transition-colors ${isActive('/about')}`}
           >
             About
-          </a>
-          <a
-            href="/#contact"
-            className="font-label-caps text-xs text-slate-200 hover:text-champagne-light transition-colors uppercase tracking-widest font-semibold"
+          </Link>
+          <Link
+            href="/contact"
+            className={`font-label-caps text-xs uppercase tracking-widest transition-colors ${isActive('/contact')}`}
           >
             Contact
-          </a>
+          </Link>
+          <Link
+            href="/blog"
+            className={`font-label-caps text-xs uppercase tracking-widest transition-colors ${isActive('/blog')}`}
+          >
+            Blog
+          </Link>
         </nav>
 
         {/* Action Buttons */}
@@ -98,34 +110,48 @@ export default function Header() {
             >
               Home
             </Link>
-            <a
-              href="/#services"
+            <Link
+              href="/web-development"
               onClick={() => setMobileMenuOpen(false)}
               className="py-2 text-sm font-label-caps uppercase tracking-widest text-slate-200 hover:text-champagne-light font-semibold"
             >
-              Services
-            </a>
-            <a
-              href="/#portfolio"
+              Web Dev
+            </Link>
+            <Link
+              href="/seo"
               onClick={() => setMobileMenuOpen(false)}
               className="py-2 text-sm font-label-caps uppercase tracking-widest text-slate-200 hover:text-champagne-light font-semibold"
             >
-              Portfolio
-            </a>
-            <a
-              href="/#about"
+              SEO
+            </Link>
+            <Link
+              href="/projects"
+              onClick={() => setMobileMenuOpen(false)}
+              className="py-2 text-sm font-label-caps uppercase tracking-widest text-slate-200 hover:text-champagne-light font-semibold"
+            >
+              Projects
+            </Link>
+            <Link
+              href="/about"
               onClick={() => setMobileMenuOpen(false)}
               className="py-2 text-sm font-label-caps uppercase tracking-widest text-slate-200 hover:text-champagne-light font-semibold"
             >
               About
-            </a>
-            <a
-              href="/#contact"
+            </Link>
+            <Link
+              href="/contact"
               onClick={() => setMobileMenuOpen(false)}
               className="py-2 text-sm font-label-caps uppercase tracking-widest text-slate-200 hover:text-champagne-light font-semibold"
             >
               Contact
-            </a>
+            </Link>
+            <Link
+              href="/blog"
+              onClick={() => setMobileMenuOpen(false)}
+              className="py-2 text-sm font-label-caps uppercase tracking-widest text-slate-200 hover:text-champagne-light font-semibold"
+            >
+              Blog
+            </Link>
 
             <div className="pt-4 border-t border-slate-800 flex justify-center">
               <a

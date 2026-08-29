@@ -45,16 +45,17 @@ export default function Footer() {
         <div className="flex flex-col gap-3">
           <h2 className="font-headline-md text-lg text-champagne-light font-bold border-b border-champagne-light/30 pb-2">Quick Links</h2>
           <Link href="/" className="text-xs uppercase tracking-widest font-label-caps text-slate-200 hover:text-champagne-light transition-colors font-semibold">Home</Link>
-          <a href="/#about" className="text-xs uppercase tracking-widest font-label-caps text-slate-200 hover:text-champagne-light transition-colors font-semibold">About Us</a>
-          <a href="/#portfolio" className="text-xs uppercase tracking-widest font-label-caps text-slate-200 hover:text-champagne-light transition-colors font-semibold">Portfolio</a>
-          <a href="/#services" className="text-xs uppercase tracking-widest font-label-caps text-slate-200 hover:text-champagne-light transition-colors font-semibold">Services</a>
+          <Link href="/about" className="text-xs uppercase tracking-widest font-label-caps text-slate-200 hover:text-champagne-light transition-colors font-semibold">About Us</Link>
+          <Link href="/projects" className="text-xs uppercase tracking-widest font-label-caps text-slate-200 hover:text-champagne-light transition-colors font-semibold">Portfolio</Link>
+          <Link href="/blog" className="text-xs uppercase tracking-widest font-label-caps text-slate-200 hover:text-champagne-light transition-colors font-semibold">Blog</Link>
+          <Link href="/contact" className="text-xs uppercase tracking-widest font-label-caps text-slate-200 hover:text-champagne-light transition-colors font-semibold">Contact</Link>
         </div>
 
         <div className="flex flex-col gap-3">
           <h2 className="font-headline-md text-lg text-champagne-light font-bold border-b border-champagne-light/30 pb-2">Services</h2>
-          <a href="/#services" className="text-xs uppercase tracking-widest font-label-caps text-slate-200 hover:text-champagne-light transition-colors font-semibold">Website Development</a>
-          <a href="/#services" className="text-xs uppercase tracking-widest font-label-caps text-slate-200 hover:text-champagne-light transition-colors font-semibold">SEO Optimization</a>
-          <a href="/#services" className="text-xs uppercase tracking-widest font-label-caps text-slate-200 hover:text-champagne-light transition-colors font-semibold">AI Automation</a>
+          <Link href="/web-development" className="text-xs uppercase tracking-widest font-label-caps text-slate-200 hover:text-champagne-light transition-colors font-semibold">Web Development</Link>
+          <Link href="/seo" className="text-xs uppercase tracking-widest font-label-caps text-slate-200 hover:text-champagne-light transition-colors font-semibold">SEO Optimization</Link>
+          <Link href="/ai-automation" className="text-xs uppercase tracking-widest font-label-caps text-slate-200 hover:text-champagne-light transition-colors font-semibold">AI Automation</Link>
         </div>
 
         <div className="flex flex-col gap-3">

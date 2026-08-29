@@ -8,8 +8,12 @@ import { ToastProvider } from '@/context/ToastContext';
 import Preloader from '@/components/Preloader';
 
 export const metadata = {
-  title: 'Infronix Web Agency',
-  description: 'Designing digital brilliance, high-converting web applications, and technical innovation for modern brands.',
+  metadataBase: new URL('https://www.infronixweb.in/'),
+  title: {
+    default: 'Infronix Web Agency | Web Development, SEO & AI Automation',
+    template: '%s | Infronix Web Agency'
+  },
+  description: 'Designing digital brilliance, high-converting web applications, and technical innovation for modern brands in Ahmedabad, Gujarat, and across India.',
   icons: {
     icon: '/title-logo1.webp',
   },
@@ -26,8 +30,8 @@ export default function RootLayout({ children }) {
               "@context": "https://schema.org",
               "@type": "Organization",
               "name": "Infronix",
-              "url": "https://infronixweb.in/",
-              "logo": "https://infronixweb.in/hero_bg.webp",
+              "url": "https://www.infronixweb.in/",
+              "logo": "https://www.infronixweb.in/hero_bg.webp",
               "contactPoint": {
                 "@type": "ContactPoint",
                 "telephone": "+91-6355792936",
@@ -43,7 +47,7 @@ export default function RootLayout({ children }) {
               "@context": "https://schema.org",
               "@type": "WebSite",
               "name": "Infronix Web Agency",
-              "url": "https://infronixweb.in/"
+              "url": "https://www.infronixweb.in/"
             })
           }}
         />
