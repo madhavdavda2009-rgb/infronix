@@ -3,12 +3,12 @@ import { verifyAdminAuth } from '@/lib/auth';
 import { sendInvoiceMail } from '@/lib/invoice-mailer';
 
 export async function POST(request) {
-  const auth = await verifyAdminAuth(request);
-  if (!auth.authenticated) {
-    return NextResponse.json({ success: false, error: auth.error }, { status: 401 });
-  }
-
   try {
+    const admin = verifyAdminAuth(request);
+    if (!admin) {
+      return NextResponse.json({ success: false, error: 'Unauthorized. Admin session expired.' }, { status: 401 });
+    }
+
     const body = await request.json();
     const { client, invoice, customMessage } = body;
 
