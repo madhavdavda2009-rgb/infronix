@@ -136,7 +136,7 @@ export async function verifySmtpConnection() {
 /**
  * Send Cold Outreach Email (Supports Hostinger Mail API SDK or SMTP)
  */
-export async function sendOutreachEmail({ leadId, recipient, subject, body, draftId = null }) {
+export async function sendOutreachEmail({ leadId, recipient, subject, body, draftId = null, htmlOverride = null }) {
   if (!recipient || !recipient.includes('@')) {
     throw new Error('A valid recipient email address is required.');
   }
@@ -152,6 +152,7 @@ export async function sendOutreachEmail({ leadId, recipient, subject, body, draf
   const apiToken = process.env.HOSTINGER_API_TOKEN;
   const mailboxId = process.env.HOSTINGER_MAILBOX_ID;
   const fromName = process.env.HOSTINGER_FROM_NAME || 'Infronix Web Agency';
+  const htmlContent = htmlOverride || formatHtmlEmail(body.trim());
   let messageId = null;
 
   try {
@@ -165,7 +166,7 @@ export async function sendOutreachEmail({ leadId, recipient, subject, body, draf
         to: [recipient.trim()],
         subject: subject.trim(),
         text: body.trim(),
-        html: formatHtmlEmail(body.trim()),
+        html: htmlContent,
         displayName: fromName
       });
 
@@ -182,7 +183,7 @@ export async function sendOutreachEmail({ leadId, recipient, subject, body, draf
         replyTo: senderEmail,
         subject: subject.trim(),
         text: body.trim(),
-        html: formatHtmlEmail(body.trim())
+        html: htmlContent
       });
 
       messageId = info.messageId || `smtp_msg_${Date.now()}`;
