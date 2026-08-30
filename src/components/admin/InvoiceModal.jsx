@@ -131,23 +131,23 @@ export default function InvoiceModal({ client, onClose }) {
 
   // Interactive Admin Modal View
   return (
-    <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4 md:p-8">
-      <div className="bg-surface-container-lowest border border-champagne-light/40 w-full max-w-4xl max-h-[90vh] overflow-y-auto shadow-2xl flex flex-col">
+    <div className="fixed inset-0 z-50 bg-black/85 backdrop-blur-sm flex items-center justify-center p-4 md:p-8 animate-fadeIn">
+      <div className="bg-slate-950 border border-champagne-light/40 w-full max-w-4xl max-h-[90vh] overflow-y-auto shadow-2xl flex flex-col">
 
         {/* Header */}
-        <div className="sticky top-0 bg-surface-container-lowest/90 backdrop-blur border-b border-outline-variant/30 p-6 flex justify-between items-center z-10">
+        <div className="sticky top-0 bg-navy-muted/90 backdrop-blur-md border-b border-champagne-light/20 p-6 flex justify-between items-center z-10">
           <div>
-            <span className="font-label-caps text-xs text-champagne-light uppercase tracking-widest font-bold">Generate Invoice</span>
-            <h2 className="font-headline-md text-xl text-primary font-bold">Client: {client.firstName} {client.lastName}</h2>
+            <span className="font-label-caps text-xs text-champagne-light uppercase tracking-widest block font-bold">Generate Invoice</span>
+            <h2 className="font-headline-lg text-xl md:text-2xl text-white font-bold mt-0.5">Client: {client.firstName} {client.lastName}</h2>
           </div>
           <div className="flex gap-3 items-center">
             <button
               onClick={handlePrint}
-              className="px-4 py-2 bg-champagne-light text-navy-muted font-bold text-xs font-label-caps uppercase tracking-widest hover:bg-white transition-colors cursor-pointer flex items-center gap-2"
+              className="px-4 py-2.5 bg-champagne-light hover:bg-white text-navy-muted font-bold text-xs font-label-caps uppercase tracking-widest transition-all cursor-pointer flex items-center gap-2 shadow-md"
             >
               <Printer weight="bold" className="text-base" /> Print / PDF
             </button>
-            <button onClick={onClose} className="text-slate-500 hover:text-red-400 transition-colors cursor-pointer p-2">
+            <button onClick={onClose} className="text-slate-400 hover:text-white transition-colors cursor-pointer p-2">
               <X className="text-2xl" weight="bold" />
             </button>
           </div>
@@ -161,12 +161,12 @@ export default function InvoiceModal({ client, onClose }) {
             {/* Left Col: Editable Items */}
             <div className="lg:col-span-2 space-y-6">
               <div>
-                <h3 className="font-headline-md text-lg text-primary font-bold border-b border-outline-variant/30 pb-2 mb-4">Line Items</h3>
+                <h3 className="font-headline-md text-lg text-white font-bold border-b border-slate-800 pb-2 mb-4">Line Items</h3>
                 <div className="space-y-4">
                   {items.map((item, index) => (
                     <div key={index} className="flex gap-4 items-start">
                       <div className="flex-grow">
-                        <label className="font-label-caps text-[10px] text-slate-400 uppercase tracking-widest block mb-1">Description</label>
+                        <label className="font-label-caps text-xs text-slate-300 uppercase tracking-wider block mb-1 font-semibold">Description</label>
                         <input
                           type="text"
                           value={item.description}
@@ -175,8 +175,8 @@ export default function InvoiceModal({ client, onClose }) {
                           placeholder="e.g. 50% Upfront Deposit for Web App"
                         />
                       </div>
-                      <div className="w-32">
-                        <label className="font-label-caps text-[10px] text-slate-400 uppercase tracking-widest block mb-1">Amount (₹)</label>
+                      <div className="w-36">
+                        <label className="font-label-caps text-xs text-slate-300 uppercase tracking-wider block mb-1 font-semibold">Amount (₹)</label>
                         <input
                           type="number"
                           value={item.amount}
@@ -188,7 +188,7 @@ export default function InvoiceModal({ client, onClose }) {
                       <div className="pt-6">
                         <button
                           onClick={() => handleRemoveItem(index)}
-                          className="p-3 bg-red-950/40 text-red-400 hover:bg-red-900 border border-red-900 transition-colors"
+                          className="p-3 bg-red-950/40 text-red-300 hover:bg-red-900/60 border border-red-900/80 transition-colors cursor-pointer"
                           title="Remove Item"
                         >
                           <Trash weight="fill" />
@@ -199,7 +199,7 @@ export default function InvoiceModal({ client, onClose }) {
                 </div>
                 <button
                   onClick={handleAddItem}
-                  className="mt-4 flex items-center gap-2 text-xs font-label-caps uppercase tracking-widest text-champagne-light hover:text-white transition-colors border border-champagne-light/30 border-dashed w-full justify-center p-3"
+                  className="mt-4 flex items-center gap-2 text-xs font-label-caps uppercase tracking-widest text-champagne-light hover:text-white transition-colors border border-champagne-light/30 border-dashed w-full justify-center p-3 hover:bg-champagne-light/10 cursor-pointer font-bold"
                 >
                   <Plus weight="bold" /> Add Line Item
                 </button>
@@ -207,21 +207,21 @@ export default function InvoiceModal({ client, onClose }) {
             </div>
 
             {/* Right Col: Summary & Settings */}
-            <div className="bg-slate-950 p-6 border border-outline-variant/30 h-fit">
-              <h3 className="font-headline-md text-lg text-primary font-bold border-b border-outline-variant/30 pb-2 mb-4">Invoice Settings</h3>
+            <div className="bg-slate-900/90 p-6 border border-champagne-light/20 h-fit space-y-6">
+              <h3 className="font-headline-md text-lg text-white font-bold border-b border-slate-800 pb-2">Invoice Settings</h3>
 
-              <div className="mb-6">
-                <label className="font-label-caps text-[10px] text-slate-400 uppercase tracking-widest block mb-1">Tax Rate (%)</label>
+              <div>
+                <label className="font-label-caps text-xs text-slate-300 uppercase tracking-wider block mb-1 font-semibold">Tax Rate (%)</label>
                 <input
                   type="number"
                   value={taxRate}
                   onChange={(e) => setTaxRate(parseFloat(e.target.value) || 0)}
-                  className="w-full bg-slate-900 text-white p-3 text-sm border border-slate-700 focus:outline-none focus:border-champagne-light font-medium"
+                  className="w-full bg-slate-950 text-white p-3 text-sm border border-slate-700 focus:outline-none focus:border-champagne-light font-medium"
                   min="0"
                 />
               </div>
 
-              <div className="space-y-3 mb-6 font-mono text-sm border-t border-outline-variant/30 pt-4">
+              <div className="space-y-3 font-mono text-sm border-t border-slate-800 pt-4">
                 <div className="flex justify-between text-slate-300">
                   <span>Subtotal:</span>
                   <span>₹{subtotal.toLocaleString('en-IN', { minimumFractionDigits: 2 })}</span>
@@ -230,15 +230,15 @@ export default function InvoiceModal({ client, onClose }) {
                   <span>Tax ({taxRate}%):</span>
                   <span>₹{taxAmount.toLocaleString('en-IN', { minimumFractionDigits: 2 })}</span>
                 </div>
-                <div className="flex justify-between text-champagne-light font-bold text-lg pt-2 border-t border-outline-variant/30">
+                <div className="flex justify-between text-champagne-light font-bold text-lg pt-2 border-t border-slate-800">
                   <span>Total:</span>
                   <span>₹{total.toLocaleString('en-IN', { minimumFractionDigits: 2 })}</span>
                 </div>
               </div>
 
-              <div className="bg-slate-900 p-4 border border-slate-800">
+              <div className="bg-slate-950 p-4 border border-slate-800">
                 <p className="text-xs text-slate-400 leading-relaxed font-medium">
-                  Clicking "Print / PDF" will generate a clean, white A4 invoice with the Infronix Terms and Conditions appended to the bottom. Background graphics will be hidden.
+                  Clicking &ldquo;Print / PDF&rdquo; will generate a clean, white A4 invoice with the Infronix Terms and Conditions appended to the bottom. Background graphics will be hidden.
                 </p>
               </div>
             </div>
