@@ -3,10 +3,7 @@ import {
   ChatCircle, 
   Envelope, 
   MapPin, 
-  LinkedinLogo, 
-  XLogo, 
   InstagramLogo, 
-  FacebookLogo, 
   GithubLogo 
 } from "@phosphor-icons/react";
 import { useState, useEffect } from "react";
@@ -57,24 +54,6 @@ export default function Footer() {
           </p>
           <div className="flex gap-3 mt-2 flex-wrap items-center" aria-label="Social Media Links">
             <a
-              href="https://www.linkedin.com/company/infronixweb"
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="Follow Infronix on LinkedIn"
-              className="w-9 h-9 border border-champagne-light/40 flex items-center justify-center text-champagne-light hover:text-navy-muted hover:bg-champagne-light transition-all shadow-sm"
-            >
-              <LinkedinLogo aria-hidden="true" className="text-lg" weight="bold" />
-            </a>
-            <a
-              href="https://twitter.com/infronixweb"
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="Follow Infronix on X (formerly Twitter)"
-              className="w-9 h-9 border border-champagne-light/40 flex items-center justify-center text-champagne-light hover:text-navy-muted hover:bg-champagne-light transition-all shadow-sm"
-            >
-              <XLogo aria-hidden="true" className="text-lg" weight="bold" />
-            </a>
-            <a
               href="https://www.instagram.com/infronix_web_agency"
               target="_blank"
               rel="noopener noreferrer"
@@ -82,15 +61,6 @@ export default function Footer() {
               className="w-9 h-9 border border-champagne-light/40 flex items-center justify-center text-champagne-light hover:text-navy-muted hover:bg-champagne-light transition-all shadow-sm"
             >
               <InstagramLogo aria-hidden="true" className="text-lg" weight="bold" />
-            </a>
-            <a
-              href="https://www.facebook.com/infronixweb"
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="Follow Infronix on Facebook"
-              className="w-9 h-9 border border-champagne-light/40 flex items-center justify-center text-champagne-light hover:text-navy-muted hover:bg-champagne-light transition-all shadow-sm"
-            >
-              <FacebookLogo aria-hidden="true" className="text-lg" weight="bold" />
             </a>
             <a
               href="https://github.com/madhavdavda2009-rgb"

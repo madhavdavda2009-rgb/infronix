@@ -56,8 +56,6 @@ export const metadata = {
     title: 'Infronix Web Agency | Best Web Development, SEO & AI Automation in Ahmedabad',
     description: 'Infronix is a premier web agency in Ahmedabad, Gujarat. We engineer high-converting websites, Next.js web applications, technical SEO, and custom AI automations for modern brands across India.',
     images: ['https://www.infronixweb.in/hero_bg.webp'],
-    creator: '@infronixweb',
-    site: '@infronixweb',
   },
   robots: {
     index: true,
@@ -149,10 +147,7 @@ export default function RootLayout({ children }) {
                     { "@type": "Country", "name": "India" }
                   ],
                   "sameAs": [
-                    "https://www.linkedin.com/company/infronixweb",
-                    "https://twitter.com/infronixweb",
                     "https://www.instagram.com/infronix_web_agency",
-                    "https://www.facebook.com/infronixweb",
                     "https://github.com/madhavdavda2009-rgb"
                   ],
                   "hasOfferCatalog": {
