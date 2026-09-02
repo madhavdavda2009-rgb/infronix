@@ -37,8 +37,8 @@ export default function SEOPage() {
             </div>
 
             <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 mt-2 sm:pl-gutter w-full sm:w-auto">
-              <a 
-                href="/start-project" 
+              <a
+                href="/start-project"
                 className="bg-champagne-light text-navy-muted font-label-caps uppercase tracking-widest text-xs px-6 py-3.5 rounded-none hover:bg-white transition-all shadow-lg border border-champagne-light text-center font-bold"
               >
                 Boost Your Rankings
@@ -54,7 +54,7 @@ export default function SEOPage() {
               <p>
                 Search Engine Optimization is not about tricks or shortcuts. It is about building a high-quality technical foundation and providing the exact value that search engines and users are looking for. As a specialized <strong>SEO Agency</strong>, we follow strict Google Search Essentials guidelines to ensure your traffic is sustainable.
               </p>
-              
+
               <h3 className="font-bold text-xl text-primary mt-8 mb-4">Our SEO Capabilities</h3>
               <ul className="list-disc pl-6 space-y-2">
                 <li><strong>Technical SEO:</strong> Core Web Vitals optimization, semantic HTML mapping, Server-Side Rendering (SSR) configuration, and crawl budget management.</li>

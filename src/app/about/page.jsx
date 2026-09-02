@@ -16,7 +16,7 @@ export default function AboutPage() {
       <main className="w-full pt-28 md:pt-32" id="main-content">
         <AboutSection />
         <TrustSection />
-        
+
         {/* Additional Local Context */}
         <section className="w-full py-16 bg-surface text-slate-900 border-b border-outline-variant/30">
           <div className="max-w-[1280px] mx-auto px-margin-mobile md:px-margin-desktop">
@@ -28,7 +28,7 @@ export default function AboutPage() {
             </div>
           </div>
         </section>
-        
+
         <ContactSection />
       </main>
     </>

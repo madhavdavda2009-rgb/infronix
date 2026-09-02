@@ -1,21 +1,27 @@
-# Infronix
+# Infronix Web Agency
 
-Infronix is a premium web agency specializing in designing digital brilliance and technical innovation for modern brands. We craft bespoke web experiences that drive brand growth, ensure engagement, and scale with modern business needs.
+Infronix is a premier custom web development, technical SEO, and AI automation agency based in Sanand, Ahmedabad, Gujarat, India. We engineer bespoke, high-performance web applications and automated digital systems for modern businesses across Gujarat, India, and worldwide.
 
-## Services & Pricing
+## Primary Capabilities & Core Expertise
+- **Best Web Agency in Ahmedabad**: Custom website design, responsive business portals, and Next.js applications engineered for maximum conversion.
+- **Web Development Company in Ahmedabad**: Full-stack engineering using Next.js (App Router), React, Node.js, Tailwind CSS, and modern cloud databases.
+- **Technical & Local SEO Agency in Gujarat**: Google Search Console optimization, Core Web Vitals acceleration, structured data (JSON-LD Schema), keyword ranking, and local Ahmedabad business discovery.
+- **AI Automation Agency**: Intelligent AI chatbots, 24/7 automated customer support, WhatsApp API integration, and CRM workflow automations.
+
+## Services & Transparent Pricing
 
 ### Website Development
 We engineer robust, high-performance, and conversion-focused modern websites and web applications.
 - **Landing Page**: Starting at ₹8,000
-- **Business Website**: Starting at ₹18,000
-- **Professional Website**: Starting at ₹30,000 (Recommended)
-- **E-commerce Website**: Starting at ₹45,000+
+- **Business Corporate Website**: Starting at ₹18,000
+- **Professional Scalable Website**: Starting at ₹30,000 (Recommended)
+- **E-commerce Platform**: Starting at ₹45,000+
 - **Custom Web Application**: Starting at ₹60,000+
 
 ### SEO Optimization
-Data-driven strategies to improve search visibility, organic growth, and technical SEO foundations.
+Data-driven strategies to improve search visibility, organic ranking, and technical SEO foundations.
 - **SEO Starter**: ₹5,000/month
-- **Local SEO**: ₹7,500/month
+- **Local SEO Ahmedabad**: ₹7,500/month
 - **SEO Growth**: ₹10,000/month (Recommended)
 - **SEO Pro**: ₹18,000/month
 
@@ -26,11 +32,18 @@ We automate repetitive business workflows with smart AI integrations to save tim
 - **AI Automation Pro**: Starting at ₹45,000+
 - **Custom AI System**: Starting at ₹75,000+
 
-## Who We Help
-We serve forward-thinking brands, businesses, and startups looking to elevate their digital presence, automate their workflows, and achieve organic growth. 
+## Contact & Location
+- **Location**: Sanand, Ahmedabad, Gujarat, India (382110)
+- **Website**: https://www.infronixweb.in/
+- **WhatsApp / Phone**: +91 6355792936
+- **Email**: support@infronixweb.in
+- **Social Profiles**:
+  - LinkedIn: https://www.linkedin.com/company/infronixweb
+  - Twitter / X: https://twitter.com/infronixweb
+  - Instagram: https://www.instagram.com/infronix_web_agency
+  - GitHub: https://github.com/madhavdavda2009-rgb
 
 ## Public Pages
-
 * Homepage: https://www.infronixweb.in/
 * Website Development: https://www.infronixweb.in/web-development
 * SEO Optimization: https://www.infronixweb.in/seo
@@ -44,8 +57,5 @@ We serve forward-thinking brands, businesses, and startups looking to elevate th
 * Terms & Conditions: https://www.infronixweb.in/terms-and-conditions
 
 ## Start a Project
-
-To work with us, please submit your project requirements at:
+To work with us, submit your project requirements at:
 https://www.infronixweb.in/start-project
-
-Our team will review your requirements and get back to you with the right approach and timeline.

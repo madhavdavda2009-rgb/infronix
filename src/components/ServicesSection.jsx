@@ -8,8 +8,8 @@ export default function ServicesSection() {
 
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-end mb-8 md:mb-12 border-b border-outline-variant pb-4 md:pb-6 gap-4">
           <div>
-            <span className="font-label-caps text-xs text-secondary tracking-widest uppercase mb-2 block font-bold">Our Expertise</span>
-            <h2 id="services-title" className="font-headline-lg text-2xl sm:text-3xl md:text-4xl text-primary font-bold">Digital Services & Capabilities</h2>
+            <span className="font-label-caps text-xs text-secondary tracking-widest uppercase mb-2 block font-bold">Our Core Capabilities</span>
+            <h2 id="services-title" className="font-headline-lg text-2xl sm:text-3xl md:text-4xl text-primary font-bold">Custom Web Development &amp; SEO Services</h2>
           </div>
           <a className="font-label-caps text-xs uppercase tracking-widest text-secondary hover:text-primary transition-colors flex items-center gap-1 font-bold" href="/#services">
             <span>View all services</span>
@@ -24,26 +24,25 @@ export default function ServicesSection() {
             <div className="absolute top-0 left-0 w-full h-[2px] bg-champagne-light transform origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></div>
             <div className="flex items-center gap-3 mb-2">
               <span className="font-label-caps text-secondary font-bold text-xl opacity-50">01</span>
-              <h3 className="font-headline-md text-xl md:text-2xl text-primary font-bold">Website Development</h3>
+              <h3 className="font-headline-md text-xl md:text-2xl text-primary font-bold">Custom Web Development</h3>
             </div>
             <p className="font-body-md text-sm text-on-surface-variant leading-relaxed font-medium">
-              We build websites that make your business look as good as it actually is.
+              We build custom, modern websites and web applications tailored for ambitious brands in Ahmedabad and across India.
             </p>
             <p className="font-body-md text-sm text-on-surface-variant leading-relaxed font-medium">
-              From high-converting landing pages to complete business websites, we create fast, responsive, modern experiences designed around your brand and goals.
+              From high-converting landing pages to scalable corporate web applications, we engineer lightning-fast experiences with Next.js, React, and clean code architectures.
             </p>
             <div className="mt-2 flex-grow">
               <p className="font-label-caps text-xs text-primary font-bold mb-3 uppercase tracking-widest">What we offer:</p>
               <ul className="space-y-2 font-body-md text-sm text-on-surface-variant">
-                <li className="flex items-start gap-2"><span className="text-secondary mt-1 text-xs">▹</span> Custom Website Development</li>
-                <li className="flex items-start gap-2"><span className="text-secondary mt-1 text-xs">▹</span> Business & Corporate Websites</li>
-                <li className="flex items-start gap-2"><span className="text-secondary mt-1 text-xs">▹</span> Landing Pages</li>
-                <li className="flex items-start gap-2"><span className="text-secondary mt-1 text-xs">▹</span> Portfolio Websites</li>
-                <li className="flex items-start gap-2"><span className="text-secondary mt-1 text-xs">▹</span> E-commerce Websites</li>
-                <li className="flex items-start gap-2"><span className="text-secondary mt-1 text-xs">▹</span> Responsive & Mobile-First Design</li>
-                <li className="flex items-start gap-2"><span className="text-secondary mt-1 text-xs">▹</span> Performance Optimization</li>
-                <li className="flex items-start gap-2"><span className="text-secondary mt-1 text-xs">▹</span> SEO-Friendly Development</li>
-                <li className="flex items-start gap-2"><span className="text-secondary mt-1 text-xs">▹</span> Website Maintenance & Updates</li>
+                <li className="flex items-start gap-2"><span className="text-secondary mt-1 text-xs">▹</span> Custom Next.js Web Development</li>
+                <li className="flex items-start gap-2"><span className="text-secondary mt-1 text-xs">▹</span> Business &amp; Corporate Websites</li>
+                <li className="flex items-start gap-2"><span className="text-secondary mt-1 text-xs">▹</span> High-Converting Landing Pages</li>
+                <li className="flex items-start gap-2"><span className="text-secondary mt-1 text-xs">▹</span> E-commerce Website Platforms</li>
+                <li className="flex items-start gap-2"><span className="text-secondary mt-1 text-xs">▹</span> Custom Web Applications &amp; Portals</li>
+                <li className="flex items-start gap-2"><span className="text-secondary mt-1 text-xs">▹</span> Responsive Mobile-First Design</li>
+                <li className="flex items-start gap-2"><span className="text-secondary mt-1 text-xs">▹</span> 100/100 Core Web Vitals Optimization</li>
+                <li className="flex items-start gap-2"><span className="text-secondary mt-1 text-xs">▹</span> Ongoing Website Maintenance &amp; Updates</li>
               </ul>
             </div>
             <div className="mt-6 pt-4 border-t border-outline-variant w-full flex flex-col gap-4">
@@ -59,27 +58,25 @@ export default function ServicesSection() {
             <div className="absolute top-0 left-0 w-full h-[2px] bg-champagne-light transform origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></div>
             <div className="flex items-center gap-3 mb-2">
               <span className="font-label-caps text-secondary font-bold text-xl opacity-50">02</span>
-              <h3 className="font-headline-md text-xl md:text-2xl text-primary font-bold">SEO Optimization</h3>
+              <h3 className="font-headline-md text-xl md:text-2xl text-primary font-bold">Technical &amp; Local SEO</h3>
             </div>
             <p className="font-body-md text-sm text-on-surface-variant leading-relaxed font-medium">
-              Get discovered. Get clicks. Turn visibility into growth.
+              Rank on Google search results and turn organic visibility into paying customers.
             </p>
             <p className="font-body-md text-sm text-on-surface-variant leading-relaxed font-medium">
-              We optimize your website so search engines can understand it and your potential customers can actually find it. Our approach focuses on technical performance, content structure, and search visibility.
+              Our data-driven SEO strategies help businesses in Ahmedabad, Gujarat, and across India dominate local search queries, accelerate crawl indexing, and drive qualified leads.
             </p>
             <div className="mt-2 flex-grow">
               <p className="font-label-caps text-xs text-primary font-bold mb-3 uppercase tracking-widest">What we offer:</p>
               <ul className="space-y-2 font-body-md text-sm text-on-surface-variant">
-                <li className="flex items-start gap-2"><span className="text-secondary mt-1 text-xs">▹</span> Technical SEO</li>
-                <li className="flex items-start gap-2"><span className="text-secondary mt-1 text-xs">▹</span> On-Page SEO</li>
-                <li className="flex items-start gap-2"><span className="text-secondary mt-1 text-xs">▹</span> Keyword Research</li>
-                <li className="flex items-start gap-2"><span className="text-secondary mt-1 text-xs">▹</span> Meta Tags & Structured Content</li>
-                <li className="flex items-start gap-2"><span className="text-secondary mt-1 text-xs">▹</span> Website Performance Optimization</li>
-                <li className="flex items-start gap-2"><span className="text-secondary mt-1 text-xs">▹</span> SEO-Friendly Site Architecture</li>
-                <li className="flex items-start gap-2"><span className="text-secondary mt-1 text-xs">▹</span> Sitemap & Robots.txt Setup</li>
-                <li className="flex items-start gap-2"><span className="text-secondary mt-1 text-xs">▹</span> Search Console Setup</li>
-                <li className="flex items-start gap-2"><span className="text-secondary mt-1 text-xs">▹</span> Local SEO Basics</li>
-                <li className="flex items-start gap-2"><span className="text-secondary mt-1 text-xs">▹</span> SEO Monitoring & Improvements</li>
+                <li className="flex items-start gap-2"><span className="text-secondary mt-1 text-xs">▹</span> Technical SEO Audits &amp; Fixes</li>
+                <li className="flex items-start gap-2"><span className="text-secondary mt-1 text-xs">▹</span> Ahmedabad &amp; Gujarat Local SEO</li>
+                <li className="flex items-start gap-2"><span className="text-secondary mt-1 text-xs">▹</span> Search Intent Keyword Research</li>
+                <li className="flex items-start gap-2"><span className="text-secondary mt-1 text-xs">▹</span> JSON-LD Schema &amp; Structured Data</li>
+                <li className="flex items-start gap-2"><span className="text-secondary mt-1 text-xs">▹</span> Core Web Vitals &amp; PageSpeed Optimization</li>
+                <li className="flex items-start gap-2"><span className="text-secondary mt-1 text-xs">▹</span> Google Search Console Setup &amp; Indexing</li>
+                <li className="flex items-start gap-2"><span className="text-secondary mt-1 text-xs">▹</span> Canonicalization &amp; Site Architecture</li>
+                <li className="flex items-start gap-2"><span className="text-secondary mt-1 text-xs">▹</span> Monthly SEO Growth Monitoring</li>
               </ul>
             </div>
             <div className="mt-6 pt-4 border-t border-outline-variant w-full flex flex-col gap-4 justify-end">
@@ -94,7 +91,7 @@ export default function ServicesSection() {
             <div className="absolute top-0 left-0 w-full h-[2px] bg-champagne-light transform origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></div>
             <div className="flex items-center gap-3 mb-2">
               <span className="font-label-caps text-secondary font-bold text-xl opacity-50">03</span>
-              <h3 className="font-headline-md text-xl md:text-2xl text-primary font-bold">AI Automation</h3>
+              <h3 className="font-headline-md text-xl md:text-2xl text-primary font-bold">AI Workflow Automation</h3>
             </div>
             <p className="font-body-md text-sm text-on-surface-variant leading-relaxed font-medium">
               Stop doing manually what AI can handle automatically.

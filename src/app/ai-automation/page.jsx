@@ -37,8 +37,8 @@ export default function AIAutomationPage() {
             </div>
 
             <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 mt-2 sm:pl-gutter w-full sm:w-auto">
-              <a 
-                href="/start-project" 
+              <a
+                href="/start-project"
                 className="bg-champagne-light text-navy-muted font-label-caps uppercase tracking-widest text-xs px-6 py-3.5 rounded-none hover:bg-white transition-all shadow-lg border border-champagne-light text-center font-bold"
               >
                 Automate Your Workflow
@@ -54,7 +54,7 @@ export default function AIAutomationPage() {
               <p>
                 In a rapidly evolving digital landscape, repetitive manual tasks are the biggest bottleneck to growth. As an expert <strong>AI Automation Agency</strong>, we build intelligent systems that work 24/7 to capture leads, process data, and assist customers automatically.
               </p>
-              
+
               <h3 className="font-bold text-xl text-primary mt-8 mb-4">Our AI Automation Solutions</h3>
               <ul className="list-disc pl-6 space-y-2">
                 <li><strong>AI Assistants & Chatbots:</strong> Provide instantaneous, accurate customer support and lead qualification directly on your website.</li>

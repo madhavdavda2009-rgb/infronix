@@ -20,7 +20,7 @@ export default function WhatsAppWidget() {
 
   return (
     <div className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-50 flex flex-col items-end pointer-events-none max-w-[calc(100vw-2rem)]">
-      
+
       {/* Quick Chat Popup Box */}
       {isOpen && (
         <div className="pointer-events-auto mb-3 w-72 sm:w-80 bg-navy-dark border border-champagne-light/40 shadow-2xl p-4 sm:p-5 rounded-none animate-slide-in backdrop-blur-md">

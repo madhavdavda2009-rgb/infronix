@@ -3,32 +3,36 @@ import { useEffect } from 'react';
 
 const SECTION_SEO_MAP = {
   'main-content': {
-    title: 'Home | Infronix Web Agency',
-    description: 'Infronix Web Agency - Designing digital brilliance, custom web applications, AI automation, and technical innovation.'
+    title: 'Infronix Web Agency | Best Web Development, SEO & AI Automation in Ahmedabad',
+    description: 'Infronix is a premier web agency in Ahmedabad, Gujarat. We engineer high-converting websites, Next.js web applications, technical SEO, and custom AI automations for modern brands across India.'
   },
   'services': {
-    title: 'Digital Services & Capabilities | Infronix Web Agency',
-    description: 'Explore our core capabilities in modern Web Development, Technical SEO Optimization, and Intelligent AI Automation.'
+    title: 'Digital Services & Capabilities | Infronix Web Agency Ahmedabad',
+    description: 'Explore our core capabilities in custom Website Development, Technical SEO Optimization, and Intelligent AI Automation.'
+  },
+  'process': {
+    title: 'Our 4-Step Strategic Web Development & SEO Process | Infronix',
+    description: 'Discover how Infronix delivers high-performance web applications through discovery, custom UI/UX design, full-stack engineering, and technical SEO.'
   },
   'portfolio': {
-    title: 'Featured Projects & Portfolio | Infronix Web Agency',
-    description: 'Discover featured digital projects, custom e-commerce redesigns, fintech dashboards, and AI portals crafted by Infronix.'
+    title: 'Featured Projects & Digital Solutions | Infronix Web Agency',
+    description: 'Discover featured digital projects, custom e-commerce redesigns, corporate portals, and AI systems crafted by Infronix in Ahmedabad.'
   },
   'about': {
-    title: 'About Us & Our Mission | Infronix Web Agency',
-    description: 'Learn about Infronix, our mission, collective engineering team, and commitment to technical excellence.'
+    title: 'About Us & Mission | Infronix Web Agency Ahmedabad',
+    description: 'Learn about Infronix Web Agency, our mission, collective engineering team in Sanand, Ahmedabad, and commitment to technical excellence.'
   },
   'trust': {
-    title: 'Professionalism & Client Support | Infronix Web Agency',
-    description: 'Unparalleled client support, transparent workflow, and comprehensive technical documentation.'
+    title: 'Professionalism & Dedicated Support | Infronix Web Agency',
+    description: 'Unparalleled client support, transparent workflow, and comprehensive technical documentation for modern brands.'
   },
   'contact': {
-    title: 'Get in Touch & Strategy | Infronix Web Agency',
-    description: 'Schedule a complimentary digital strategy session with our technical directors to elevate your brand.'
+    title: 'Schedule a Consultation | Infronix Web Agency Ahmedabad',
+    description: 'Schedule a complimentary digital strategy session with our technical directors to identify growth opportunities for your business.'
   },
   'faq': {
     title: 'Frequently Asked Questions | Infronix Web Agency',
-    description: 'Answers to common questions regarding our project timelines, ongoing SEO support, responsiveness, and tech stack.'
+    description: 'Answers to common questions regarding our project timelines, web development pricing in Ahmedabad, ongoing SEO support, and tech stack.'
   },
   'consultation': {
     title: 'Schedule a Consultation | Infronix Web Agency',

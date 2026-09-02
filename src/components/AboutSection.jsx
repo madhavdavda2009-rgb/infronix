@@ -9,7 +9,7 @@ export default function AboutSection() {
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-end mb-8 md:mb-12 border-b border-outline-variant pb-4 md:pb-6 gap-4">
           <div>
             <span className="font-label-caps text-xs text-secondary tracking-widest uppercase mb-2 block font-bold">Who We Are</span>
-            <h2 id="about-title" className="font-headline-lg text-2xl sm:text-3xl md:text-4xl text-primary font-bold">About infronix</h2>
+            <h2 id="about-title" className="font-headline-lg text-2xl sm:text-3xl md:text-4xl text-primary font-bold">About Infronix Web Agency</h2>
           </div>
           <a className="font-label-caps text-xs uppercase tracking-widest text-secondary hover:text-primary transition-colors flex items-center gap-1 font-bold" href="/#contact">
             <span>Get in touch</span>

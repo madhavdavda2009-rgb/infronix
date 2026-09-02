@@ -1,10 +1,36 @@
 "use client";
-import { ChatCircle, Envelope, ShareNetwork, Globe, MapPin } from "@phosphor-icons/react";
+import { 
+  ChatCircle, 
+  Envelope, 
+  MapPin, 
+  LinkedinLogo, 
+  XLogo, 
+  InstagramLogo, 
+  FacebookLogo, 
+  GithubLogo 
+} from "@phosphor-icons/react";
+import { useState, useEffect } from "react";
 
 import Link from 'next/link';
 import webLogo from '@/assets/web-logo.png';
 
 export default function Footer() {
+  const [emailAddress, setEmailAddress] = useState('');
+
+  useEffect(() => {
+    // Obfuscate email on mount to protect against raw text scraping
+    const user = 'support';
+    const domain = 'infronixweb.in';
+    setEmailAddress(`${user}@${domain}`);
+  }, []);
+
+  function handleEmailClick(e) {
+    e.preventDefault();
+    const user = 'support';
+    const domain = 'infronixweb.in';
+    window.location.href = `mailto:${user}@${domain}`;
+  }
+
   function openCookiePreferences() {
     window.dispatchEvent(new Event('open_cookie_preferences'));
   }
@@ -27,17 +53,53 @@ export default function Footer() {
             </Link>
           </div>
           <p className="text-xs sm:text-sm text-slate-200 font-medium leading-relaxed">
-            Designing digital brilliance, high-converting web applications, and technical innovation for modern brands.
+            Designing digital brilliance, high-converting web applications, and technical innovation for modern brands in Ahmedabad, Gujarat, and across India.
           </p>
-          <div className="flex gap-4 mt-1">
-            <a href="#" aria-label="Share" className="text-champagne-light hover:text-white transition-colors">
-              <ShareNetwork aria-hidden="true" className="text-xl" weight="bold" />
+          <div className="flex gap-3 mt-2 flex-wrap items-center" aria-label="Social Media Links">
+            <a
+              href="https://www.linkedin.com/company/infronixweb"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Follow Infronix on LinkedIn"
+              className="w-9 h-9 border border-champagne-light/40 flex items-center justify-center text-champagne-light hover:text-navy-muted hover:bg-champagne-light transition-all shadow-sm"
+            >
+              <LinkedinLogo aria-hidden="true" className="text-lg" weight="bold" />
             </a>
-            <a href="#" aria-label="Our Global Sites" className="text-champagne-light hover:text-white transition-colors">
-              <Globe aria-hidden="true" className="text-xl" weight="bold" />
+            <a
+              href="https://twitter.com/infronixweb"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Follow Infronix on X (formerly Twitter)"
+              className="w-9 h-9 border border-champagne-light/40 flex items-center justify-center text-champagne-light hover:text-navy-muted hover:bg-champagne-light transition-all shadow-sm"
+            >
+              <XLogo aria-hidden="true" className="text-lg" weight="bold" />
             </a>
-            <a href="mailto:support@infronixweb.in" aria-label="Email Us" className="text-champagne-light hover:text-white transition-colors">
-              <Envelope aria-hidden="true" className="text-xl" weight="bold" />
+            <a
+              href="https://www.instagram.com/infronix_web_agency"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Follow Infronix on Instagram"
+              className="w-9 h-9 border border-champagne-light/40 flex items-center justify-center text-champagne-light hover:text-navy-muted hover:bg-champagne-light transition-all shadow-sm"
+            >
+              <InstagramLogo aria-hidden="true" className="text-lg" weight="bold" />
+            </a>
+            <a
+              href="https://www.facebook.com/infronixweb"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Follow Infronix on Facebook"
+              className="w-9 h-9 border border-champagne-light/40 flex items-center justify-center text-champagne-light hover:text-navy-muted hover:bg-champagne-light transition-all shadow-sm"
+            >
+              <FacebookLogo aria-hidden="true" className="text-lg" weight="bold" />
+            </a>
+            <a
+              href="https://github.com/madhavdavda2009-rgb"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="View Infronix Open Source Code on GitHub"
+              className="w-9 h-9 border border-champagne-light/40 flex items-center justify-center text-champagne-light hover:text-navy-muted hover:bg-champagne-light transition-all shadow-sm"
+            >
+              <GithubLogo aria-hidden="true" className="text-lg" weight="bold" />
             </a>
           </div>
         </div>
@@ -62,8 +124,8 @@ export default function Footer() {
           <h2 className="font-headline-md text-lg text-champagne-light font-bold border-b border-champagne-light/30 pb-2">Contact Info</h2>
           <address className="not-italic flex flex-col gap-3">
             <p className="text-xs sm:text-sm text-slate-200 font-medium flex items-start gap-2">
-              <MapPin aria-hidden="true" className="text-lg mt-0.5 text-champagne-light" weight="bold" />
-              Infronix Digital Agency
+              <MapPin aria-hidden="true" className="text-lg mt-0.5 text-champagne-light shrink-0" weight="bold" />
+              <span>Infronix Digital Agency, Sanand, Ahmedabad, Gujarat, India</span>
             </p>
             <a
               href="https://wa.me/916355792936?text=Hi%20Infronix!%20I'm%20contacting%20you%20from%20your%20website."
@@ -71,13 +133,18 @@ export default function Footer() {
               rel="noopener noreferrer"
               className="text-xs sm:text-sm text-champagne-light hover:text-white font-bold flex items-center gap-2 transition-colors"
             >
-              <ChatCircle aria-hidden="true" className="text-lg" weight="bold" />
-              WhatsApp: +91 6355792936
+              <ChatCircle aria-hidden="true" className="text-lg shrink-0" weight="bold" />
+              <span>WhatsApp: +91 6355792936</span>
             </a>
-            <p className="text-xs sm:text-sm text-slate-200 font-medium flex items-center gap-2">
-              <Envelope aria-hidden="true" className="text-lg text-champagne-light" weight="bold" />
-              support@infronixweb.in
-            </p>
+            <button
+              onClick={handleEmailClick}
+              type="button"
+              className="text-xs sm:text-sm text-slate-200 hover:text-champagne-light font-medium flex items-center gap-2 transition-colors text-left cursor-pointer bg-transparent border-none p-0"
+              aria-label="Send email to Infronix"
+            >
+              <Envelope aria-hidden="true" className="text-lg text-champagne-light shrink-0" weight="bold" />
+              <span>{emailAddress || 'Contact via Email'}</span>
+            </button>
           </address>
         </div>
       </div>

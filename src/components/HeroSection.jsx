@@ -4,7 +4,7 @@ export default function HeroSection() {
     <section className="relative w-full min-h-[560px] md:h-[700px] flex items-center bg-navy-muted overflow-hidden pt-20 pb-12" aria-label="Introduction">
       <img
         src="/hero_bg.webp"
-        alt="A sleek, modern web design workspace, glowing screens showing UI/UX designs."
+        alt="Infronix Web Agency workspace showcasing custom UI/UX design, web development, and SEO in Ahmedabad"
         className="absolute inset-0 w-full h-full object-cover object-center opacity-30 mix-blend-luminosity"
         width="1920"
         height="700"
@@ -15,11 +15,14 @@ export default function HeroSection() {
 
       <div className="relative z-10 max-w-[1280px] w-full mx-auto px-margin-mobile md:px-margin-desktop flex flex-col gap-6">
         <div className="flex flex-col gap-4 max-w-3xl border-l-2 border-champagne-light pl-4 sm:pl-gutter py-2">
-          <h1 className="font-display text-3xl sm:text-4xl md:text-5xl lg:text-[60px] text-surface font-semibold leading-tight">
-            Crafting Digital Excellence in Ahmedabad
+          <span className="font-label-caps text-xs text-champagne-light tracking-widest uppercase font-bold">
+            Best Web Agency in Ahmedabad
+          </span>
+          <h1 className="font-display text-3xl sm:text-4xl md:text-5xl lg:text-[56px] text-surface font-semibold leading-tight">
+            Premier Web Development &amp; SEO Agency in Ahmedabad
           </h1>
           <p className="font-body-md text-sm sm:text-base md:text-lg text-slate-200 font-medium max-w-xl leading-relaxed">
-            We design and engineer bespoke web experiences that drive brand growth, ensure engagement, and scale with your modern business.
+            We engineer custom, high-converting websites, Next.js web applications, and intelligent AI automations that drive measurable growth for modern businesses across Gujarat and India.
           </p>
         </div>
 

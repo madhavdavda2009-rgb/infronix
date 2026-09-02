@@ -30,16 +30,16 @@ export default function ConsultationForm() {
 
   useEffect(() => {
     checkRateLimit();
-    
+
     if (typeof window !== 'undefined') {
       const params = new URLSearchParams(window.location.search);
       const serviceId = params.get('service');
       const packageId = params.get('package');
-      
+
       if (serviceId && packageId) {
         const service = getServicePricing(serviceId);
         const pkg = getPackage(serviceId, packageId);
-        
+
         if (service && pkg) {
           setSelectedServiceId(serviceId);
           setSelectedPackageId(packageId);
@@ -97,7 +97,7 @@ export default function ConsultationForm() {
     const newServiceId = e.target.value;
     setSelectedServiceId(newServiceId);
     setSelectedPackageId('');
-    
+
     if (newServiceId) {
       setResolvedService(getServicePricing(newServiceId));
       setResolvedPackage(null);
@@ -110,7 +110,7 @@ export default function ConsultationForm() {
   function handlePackageChange(e) {
     const newPackageId = e.target.value;
     setSelectedPackageId(newPackageId);
-    
+
     if (selectedServiceId && newPackageId) {
       setResolvedPackage(getPackage(selectedServiceId, newPackageId));
     } else {
@@ -123,7 +123,7 @@ export default function ConsultationForm() {
     setSelectedPackageId('');
     setResolvedService(null);
     setResolvedPackage(null);
-    
+
     // Clean URL silently
     if (typeof window !== 'undefined') {
       window.history.replaceState({}, '', '/start-project');
@@ -231,7 +231,7 @@ export default function ConsultationForm() {
 
         <form onSubmit={handleSubmit} className="flex flex-col gap-6 w-full bg-surface-container-lowest p-6 sm:p-8 md:p-10 border border-outline-variant shadow-md" aria-label="Full consultation form">
           <fieldset disabled={isRateLimited} className="flex flex-col gap-margin-mobile w-full">
-            
+
             {/* Dynamic Pricing Context Area */}
             {resolvedService && resolvedPackage ? (
               <div className="bg-navy-dark/95 border border-champagne-light p-4 md:p-6 shadow-lg mb-4 relative group">
@@ -249,8 +249,8 @@ export default function ConsultationForm() {
                       </div>
                     </div>
                   </div>
-                  <button 
-                    type="button" 
+                  <button
+                    type="button"
                     onClick={clearPackageSelection}
                     className="text-slate-400 hover:text-champagne-light transition-colors"
                     title="Change Package"

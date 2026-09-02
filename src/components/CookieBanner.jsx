@@ -18,7 +18,7 @@ export default function CookieBanner() {
 
     const currentConsent = getConsentPreferences();
     setConsent(currentConsent);
-    
+
     // Show banner if choice hasn't been made yet
     if (!currentConsent.chosen) {
       const timer = setTimeout(() => setShowBanner(true), 1000);
@@ -119,7 +119,7 @@ export default function CookieBanner() {
       {showModal && (
         <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-margin-mobile">
           <div className="bg-navy-dark text-surface border border-champagne-light/40 w-full max-w-lg p-6 sm:p-8 shadow-2xl animate-fade-in max-h-[90vh] overflow-y-auto">
-            
+
             <div className="flex justify-between items-start border-b border-champagne-light/30 pb-4 mb-6">
               <div className="flex items-center gap-2">
                 <Gear className="text-champagne-light text-2xl" weight="bold" />

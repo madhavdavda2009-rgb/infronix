@@ -98,7 +98,7 @@ export default function ContactSection() {
             <div className="absolute inset-0 bg-gradient-to-tr from-navy-muted to-transparent z-10 opacity-80 mix-blend-multiply"></div>
             <img
               src={id6.src || id6}
-              alt="Abstract technology representation"
+              alt="Infronix Web Agency digital strategy, web development, and AI automation consultation in Ahmedabad"
               className="absolute inset-0 w-full h-full object-cover grayscale transition-transform duration-1000 hover:scale-105"
               width="800"
               height="800"
@@ -107,7 +107,7 @@ export default function ContactSection() {
             <div className="absolute bottom-4 left-4 right-4 z-20">
               <div className="bg-surface/10 backdrop-blur-md border border-champagne-light/40 p-4 sm:p-6 rounded-[14px]">
                 <h3 className="font-headline-md text-xl sm:text-2xl text-champagne-light font-bold mb-2">Let&apos;s Build the Future</h3>
-                <p className="font-body-md text-xs sm:text-sm text-white font-medium leading-relaxed">Our experts are ready to turn your vision into reality with cutting-edge technology and unparalleled support.</p>
+                <p className="font-body-md text-xs sm:text-sm text-white font-medium leading-relaxed">Our engineers and SEO specialists are ready to turn your vision into reality with cutting-edge technology and unparalleled support.</p>
               </div>
             </div>
           </div>
@@ -116,9 +116,9 @@ export default function ContactSection() {
         {/* CTA Form Side */}
         <div id="contact" className="py-8 lg:py-section-gap lg:pl-margin-desktop flex flex-col justify-center relative z-10">
           <span className="font-label-caps text-xs text-secondary tracking-widest uppercase mb-2 block font-bold">Get in Touch</span>
-          <h2 className="font-headline-lg text-2xl sm:text-3xl md:text-4xl text-primary font-bold mb-4 leading-tight">Ready to Elevate Your Brand?</h2>
+          <h2 className="font-headline-lg text-2xl sm:text-3xl md:text-4xl text-primary font-bold mb-4 leading-tight">Ready to Elevate Your Brand with Infronix?</h2>
           <p className="font-body-md text-xs sm:text-sm md:text-base text-on-surface-variant font-medium mb-6 max-w-md leading-relaxed">
-            Schedule a complimentary digital strategy session with our technical directors to identify growth opportunities for your business.
+            Schedule a complimentary digital strategy session with our technical directors in Ahmedabad to identify growth opportunities for your business.
           </p>
 
           {isRateLimited ? (

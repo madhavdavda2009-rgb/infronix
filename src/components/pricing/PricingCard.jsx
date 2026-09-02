@@ -7,7 +7,7 @@ export default function PricingCard({ pkg, serviceId }) {
     service: serviceId,
     package: pkg.id
   }).toString();
-  
+
   const href = `/start-project?${queryParams}`;
 
   return (
@@ -21,7 +21,7 @@ export default function PricingCard({ pkg, serviceId }) {
       <div className="flex flex-col gap-2 mb-6 border-b border-outline-variant/50 pb-6">
         <h3 className="font-headline-md text-xl md:text-2xl text-surface font-bold">{pkg.name}</h3>
         <p className="font-body-md text-sm text-slate-300 font-medium h-10">{pkg.scope}</p>
-        
+
         <div className="mt-4 flex items-baseline gap-2">
           {pkg.label === "Starting at" && (
             <span className="font-label-caps uppercase tracking-widest text-[10px] text-champagne-light/80 font-bold">
@@ -51,13 +51,12 @@ export default function PricingCard({ pkg, serviceId }) {
       </div>
 
       <div className="mt-auto pt-6 border-t border-outline-variant/30 w-full">
-        <a 
+        <a
           href={href}
-          className={`w-full font-label-caps uppercase tracking-widest text-xs px-6 py-3.5 rounded-none transition-all text-center font-bold flex items-center justify-center gap-2 ${
-            pkg.isRecommended 
-              ? 'bg-champagne-light text-navy-muted hover:bg-white shadow-lg' 
+          className={`w-full font-label-caps uppercase tracking-widest text-xs px-6 py-3.5 rounded-none transition-all text-center font-bold flex items-center justify-center gap-2 ${pkg.isRecommended
+              ? 'bg-champagne-light text-navy-muted hover:bg-white shadow-lg'
               : 'bg-transparent border border-champagne-light text-champagne-light hover:bg-champagne-light hover:text-navy-muted'
-          }`}
+            }`}
         >
           {pkg.ctaText} <ArrowRight weight="bold" />
         </a>

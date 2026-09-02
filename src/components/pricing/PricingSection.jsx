@@ -6,13 +6,13 @@ import Link from "next/link";
 
 export default function PricingSection({ serviceKey }) {
   const data = pricingData[serviceKey];
-  
+
   if (!data) return null;
 
   return (
     <section className="w-full py-16 md:py-24 bg-navy-muted relative z-20 border-b border-champagne-light/20" aria-labelledby="pricing-title">
       <div className="max-w-[1280px] mx-auto px-margin-mobile md:px-margin-desktop">
-        
+
         {/* Pricing Header */}
         <div className="text-center mb-12 md:mb-16">
           <span className="font-label-caps text-xs text-champagne-light tracking-widest uppercase mb-2 block font-bold">Transparent Pricing</span>
@@ -26,7 +26,7 @@ export default function PricingSection({ serviceKey }) {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 md:gap-8 justify-center items-stretch">
           {data.packages.map((pkg) => (
             <div key={pkg.id} className={data.packages.length < 4 ? "max-w-md w-full mx-auto" : ""}>
-               <PricingCard pkg={pkg} serviceId={data.id} />
+              <PricingCard pkg={pkg} serviceId={data.id} />
             </div>
           ))}
         </div>

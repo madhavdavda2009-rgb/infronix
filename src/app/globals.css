@@ -21,18 +21,21 @@
   --color-ink-black: #050814;
   --color-on-primary: #ffffff;
   --color-surface-container-lowest: #ffffff;
-  
+
   /* High contrast colors for WCAG AAA/AA compliance */
-  --color-on-surface-variant: #2d3748; /* Darkened from #46464d for optimal readability (contrast ratio > 9:1) */
+  --color-on-surface-variant: #2d3748;
+  /* Darkened from #46464d for optimal readability (contrast ratio > 9:1) */
   --color-surface-dim: #dcd9db;
   --color-navy-muted: #1C2541;
-  --color-on-surface: #0f172a; /* Enhanced contrast for body titles */
+  --color-on-surface: #0f172a;
+  /* Enhanced contrast for body titles */
   --color-surface-variant: #e5e2e4;
   --color-surface-tint: #575d78;
   --color-secondary: #775a19;
   --color-on-tertiary: #ffffff;
   --color-surface-bright: #fcf8fb;
-  --color-outline: #4b5563; /* High contrast outline for inputs & borders */
+  --color-outline: #4b5563;
+  /* High contrast outline for inputs & borders */
   --color-surface-container-low: #f6f3f5;
   --color-on-tertiary-fixed: #1c1c19;
   --color-inverse-on-surface: #f3f0f2;
@@ -49,7 +52,8 @@
   --color-error-container: #ffdad6;
   --color-surface-container: #f0edef;
   --color-primary-fixed-dim: #bfc5e4;
-  --color-outline-variant: #94a3b8; /* Enhanced contrast border indicator */
+  --color-outline-variant: #94a3b8;
+  /* Enhanced contrast border indicator */
   --color-on-tertiary-fixed-variant: #474743;
   --color-background: #fcf8fb;
   --color-secondary-fixed-dim: #e9c176;
@@ -105,17 +109,22 @@
 }
 
 @layer base {
-  html, body {
+
+  html,
+  body {
     margin: 0;
     padding: 0;
   }
+
   body {
     overscroll-behavior: none;
   }
-  main > :first-child {
+
+  main> :first-child {
     margin-top: 0 !important;
   }
-  main > :last-child {
+
+  main> :last-child {
     margin-bottom: 0 !important;
   }
 }
@@ -125,29 +134,26 @@
   0% {
     background-position: -200% 0;
   }
+
   100% {
     background-position: 200% 0;
   }
 }
 
 .animate-skeleton {
-  background: linear-gradient(
-    90deg,
-    rgba(226, 232, 240, 0.6) 0%,
-    rgba(255, 255, 255, 0.9) 50%,
-    rgba(226, 232, 240, 0.6) 100%
-  );
+  background: linear-gradient(90deg,
+      rgba(226, 232, 240, 0.6) 0%,
+      rgba(255, 255, 255, 0.9) 50%,
+      rgba(226, 232, 240, 0.6) 100%);
   background-size: 200% 100%;
   animation: skeleton-shimmer 1.6s ease-in-out infinite;
 }
 
 .animate-skeleton-dark {
-  background: linear-gradient(
-    90deg,
-    rgba(30, 41, 59, 0.8) 0%,
-    rgba(51, 65, 85, 0.95) 50%,
-    rgba(30, 41, 59, 0.8) 100%
-  );
+  background: linear-gradient(90deg,
+      rgba(30, 41, 59, 0.8) 0%,
+      rgba(51, 65, 85, 0.95) 50%,
+      rgba(30, 41, 59, 0.8) 100%);
   background-size: 200% 100%;
   animation: skeleton-shimmer 1.6s ease-in-out infinite;
 }

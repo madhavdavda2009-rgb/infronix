@@ -25,7 +25,7 @@ export default function BlogPage() {
         <section className="w-full py-12 md:py-20 border-t border-outline-variant/30">
           <div className="max-w-[1280px] mx-auto px-margin-mobile md:px-margin-desktop">
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              
+
               {/* Placeholder Article 1 */}
               <article className="border border-outline-variant p-6 hover:shadow-lg transition-shadow bg-white flex flex-col gap-4 group">
                 <span className="text-xs font-label-caps text-primary uppercase tracking-widest">Web Development</span>
@@ -71,7 +71,7 @@ export default function BlogPage() {
             </div>
           </div>
         </section>
-        
+
         <ContactSection />
       </main>
     </>

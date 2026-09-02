@@ -8,10 +8,11 @@ export default function PortfolioSection() {
       {/* Background image overlay — same pattern as HeroSection */}
       <img
         src={id5.src || id5}
-        alt=""
-        aria-hidden="true"
+        alt="Infronix featured custom web development and client project portfolio showcase in Ahmedabad"
         className="absolute inset-0 w-full h-full object-cover object-center opacity-10 mix-blend-luminosity"
         loading="lazy"
+        width="1920"
+        height="800"
       />
       <div className="absolute inset-0 bg-gradient-to-b from-navy-muted via-navy-muted/95 to-navy-muted"></div>
 
@@ -20,9 +21,9 @@ export default function PortfolioSection() {
         {/* Header — mirrors HeroSection left-border accent */}
         <div className="flex flex-col gap-4 max-w-3xl border-l-2 border-champagne-light pl-4 sm:pl-gutter py-2 mb-8 md:mb-12">
           <span className="font-label-caps text-xs text-champagne-light tracking-widest uppercase font-bold">Our Work</span>
-          <h2 id="portfolio-title" className="font-headline-lg text-2xl sm:text-3xl md:text-4xl text-surface font-bold">Featured Projects</h2>
+          <h2 id="portfolio-title" className="font-headline-lg text-2xl sm:text-3xl md:text-4xl text-surface font-bold">Featured Projects &amp; Digital Solutions</h2>
           <p className="font-body-md text-sm sm:text-base text-slate-200 max-w-xl leading-relaxed font-medium">
-            We partner with forward-thinking brands to create digital experiences that merge stunning aesthetics with powerful technical execution.
+            We partner with forward-thinking brands in Ahmedabad and across India to create digital experiences that merge stunning aesthetics with powerful technical execution.
           </p>
         </div>
 
@@ -32,7 +33,7 @@ export default function PortfolioSection() {
             <div className="absolute top-0 right-0 p-8 opacity-10 transform translate-x-4 -translate-y-4 group-hover:scale-110 transition-transform duration-700">
               <RocketLaunch size={160} weight="fill" className="text-champagne-light" />
             </div>
-            
+
             <div className="relative z-10">
               <span className="inline-block bg-champagne-light text-navy-muted font-label-caps uppercase tracking-widest text-xs px-3 py-1 font-bold mb-4">
                 Special Welcome
@@ -43,7 +44,7 @@ export default function PortfolioSection() {
               <p className="font-body-md text-slate-200 text-lg max-w-2xl leading-relaxed mb-8">
                 We are incredibly thrilled to start this journey with you. Every great agency starts with a visionary client, and we can't wait to build something extraordinary together.
               </p>
-              
+
               <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center">
                 <a href="https://madhavdavda.vercel.app" target="_blank" rel="noopener noreferrer" className="bg-transparent border border-champagne-light text-champagne-light font-label-caps uppercase tracking-widest text-xs px-6 py-3 hover:bg-champagne-light hover:text-navy-muted transition-all font-bold flex items-center gap-2">
                   View Developer's Portfolio <ArrowRight weight="bold" />

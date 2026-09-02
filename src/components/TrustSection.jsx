@@ -12,7 +12,7 @@ export default function TrustSection() {
           <p className="font-body-md text-sm sm:text-base text-slate-200 leading-relaxed font-medium">
             We deliver more than just code. What we offer is unparalleled client support, professional-grade development, and comprehensive technical documentation. We partner with you transparently to ensure absolute project success.
           </p>
-          
+
           <div className="flex flex-col gap-6 mt-2">
             <div className="flex items-start gap-4">
               <div className="w-12 h-12 border border-champagne-light flex items-center justify-center flex-shrink-0 bg-navy-dark/40" aria-hidden="true">
@@ -51,10 +51,10 @@ export default function TrustSection() {
             </div>
           </div>
         </div>
-        
+
         <div className="relative h-[320px] sm:h-[400px] md:h-[480px] w-full rounded-none overflow-hidden border border-outline-variant shadow-2xl">
-          <img 
-            src="/trust_bg.webp" 
+          <img
+            src="/trust_bg.webp"
             alt="Creative team reviewing high fidelity wireframes on a tablet, modern minimalist office, dark aesthetic."
             className="absolute inset-0 w-full h-full object-cover object-center grayscale opacity-80"
             width="640"
@@ -63,7 +63,7 @@ export default function TrustSection() {
             decoding="async"
           />
           <div className="absolute inset-0 bg-navy-muted/20 mix-blend-multiply"></div>
-          
+
           {/* Decorative chart element overlay */}
           <div className="absolute bottom-4 right-4 bg-navy-muted/90 backdrop-blur-md p-4 rounded-none border border-champagne-light flex gap-4 items-center shadow-lg" aria-hidden="true">
             <svg className="text-champagne-light rotate-[-90deg]" height="48" viewBox="0 0 40 40" width="48" aria-hidden="true">

@@ -331,7 +331,7 @@ export default function StartProjectPage() {
                       className={`p-4 border text-left transition-all cursor-pointer group ${isActive
                         ? 'border-secondary bg-secondary/5 ring-1 ring-secondary'
                         : 'border-outline hover:border-secondary/50 hover:bg-surface-container'
-                      }`}
+                        }`}
                     >
                       <div className="flex items-center gap-3">
                         {Icon && <Icon className={`text-2xl shrink-0 ${isActive ? 'text-secondary' : 'text-on-surface-variant group-hover:text-secondary'}`} weight="duotone" />}
@@ -357,7 +357,7 @@ export default function StartProjectPage() {
                           className={`p-4 md:p-5 border text-left transition-all cursor-pointer relative ${isSelected
                             ? 'border-secondary bg-secondary/5 ring-1 ring-secondary'
                             : 'border-outline hover:border-secondary/50 hover:bg-surface-container'
-                          }`}
+                            }`}
                         >
                           {pkg.isRecommended && (
                             <span className="absolute top-0 right-0 bg-secondary text-white font-label-caps uppercase tracking-widest text-[9px] font-bold px-2 py-0.5 flex items-center gap-1">
@@ -490,7 +490,7 @@ export default function StartProjectPage() {
                     <label key={bg} className={`flex items-center gap-3 p-3.5 border cursor-pointer transition-all ${formData.budget === bg
                       ? 'border-secondary bg-secondary/5 ring-1 ring-secondary'
                       : 'border-outline hover:border-secondary/50'
-                    }`}>
+                      }`}>
                       <input type="radio" name="budget" value={bg} checked={formData.budget === bg} onChange={handleChange} className="accent-secondary w-4 h-4 shrink-0" />
                       <span className="text-sm font-bold text-on-surface">{bg}</span>
                     </label>
@@ -506,7 +506,7 @@ export default function StartProjectPage() {
                     <label key={tm} className={`flex items-center gap-3 p-3.5 border cursor-pointer transition-all ${formData.timeline === tm
                       ? 'border-secondary bg-secondary/5 ring-1 ring-secondary'
                       : 'border-outline hover:border-secondary/50'
-                    }`}>
+                      }`}>
                       <input type="radio" name="timeline" value={tm} checked={formData.timeline === tm} onChange={handleChange} className="accent-secondary w-4 h-4 shrink-0" />
                       <span className="text-sm font-bold text-on-surface">{tm}</span>
                     </label>
