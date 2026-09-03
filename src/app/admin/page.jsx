@@ -34,8 +34,30 @@ export default function AdminDashboard() {
   const { showToast } = useToast();
   const router = useRouter();
 
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [authChecking, setAuthChecking] = useState(true);
+
   useEffect(() => {
-    fetchConsultations();
+    async function verifySessionAndLoad() {
+      setAuthChecking(true);
+      try {
+        const res = await fetch('/api/admin/me');
+        const data = await parseJsonResponse(res);
+
+        if (res.ok && data.success) {
+          setIsAuthenticated(true);
+          await fetchConsultations();
+        } else {
+          router.replace('/admin/login');
+        }
+      } catch (err) {
+        router.replace('/admin/login');
+      } finally {
+        setAuthChecking(false);
+      }
+    }
+
+    verifySessionAndLoad();
   }, []);
 
   async function fetchConsultations() {
@@ -43,6 +65,10 @@ export default function AdminDashboard() {
     setError('');
     try {
       const response = await fetch('/api/admin/consultations');
+      if (response.status === 401) {
+        router.replace('/admin/login');
+        return;
+      }
       const data = await parseJsonResponse(response);
       
       if (response.ok && data.success) {
@@ -218,6 +244,23 @@ export default function AdminDashboard() {
         return 'bg-secondary/30 text-champagne-light border-secondary/60 font-bold';
     }
   };
+
+  if (authChecking || !isAuthenticated) {
+    return (
+      <>
+        <SEO title="Admin Portal Authentication" description="Restricted administrator portal." />
+        <div className="min-h-screen bg-navy-muted flex flex-col items-center justify-center p-6 text-center">
+          <div className="w-10 h-10 border-3 border-champagne-light border-t-transparent rounded-full animate-spin mb-4"></div>
+          <span className="font-label-caps text-xs text-champagne-light uppercase tracking-widest block font-bold">
+            Verifying Admin Session...
+          </span>
+          <p className="font-body-md text-xs text-slate-400 mt-1 font-medium">
+            Restricted access. Infronix Agency Portal.
+          </p>
+        </div>
+      </>
+    );
+  }
 
   return (
     <>
@@ -529,8 +572,15 @@ export default function AdminDashboard() {
 
         {/* EDIT / VIEW MODAL */}
         {editingItem && (
-          <div className="fixed inset-0 z-50 bg-black/85 backdrop-blur-sm flex items-center justify-center p-3 md:p-6 overflow-y-auto animate-fadeIn">
-            <div className="bg-slate-950 border border-champagne-light/40 w-full max-w-2xl max-h-[90vh] shadow-2xl flex flex-col overflow-hidden my-auto rounded-none">
+          <div 
+            className="fixed inset-0 z-50 bg-black/85 backdrop-blur-sm flex items-center justify-center p-3 md:p-6 overflow-y-auto animate-fadeIn"
+            data-lenis-prevent="true"
+            onWheel={(e) => e.stopPropagation()}
+          >
+            <div 
+              className="bg-slate-950 border border-champagne-light/40 w-full max-w-2xl max-h-[88vh] shadow-2xl flex flex-col my-auto rounded-none overflow-hidden"
+              data-lenis-prevent="true"
+            >
               {/* Fixed Header */}
               <div className="bg-navy-muted/95 border-b border-champagne-light/20 p-5 md:p-6 flex justify-between items-center shrink-0 z-10">
                 <div>
@@ -559,7 +609,13 @@ export default function AdminDashboard() {
               </div>
 
               {/* Scrollable Form Body */}
-              <form id="editConsultationForm" onSubmit={handleSaveEdit} className="p-5 md:p-8 flex flex-col gap-5 overflow-y-auto flex-1 min-h-0">
+              <form 
+                id="editConsultationForm" 
+                onSubmit={handleSaveEdit} 
+                className="p-5 md:p-8 flex flex-col gap-5 overflow-y-auto max-h-[calc(88vh-140px)] flex-1 min-h-0 overscroll-contain"
+                data-lenis-prevent="true"
+                onWheel={(e) => e.stopPropagation()}
+              >
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
                     <label className="font-label-caps text-xs text-slate-300 uppercase tracking-wider block mb-1.5 font-semibold">First Name *</label>
@@ -656,7 +712,7 @@ export default function AdminDashboard() {
               </form>
 
               {/* Pinned Action Footer */}
-              <div className="bg-slate-950/95 border-t border-slate-800 p-4 md:px-8 flex justify-end gap-3 shrink-0">
+              <div className="bg-slate-950/95 border-t border-slate-800 p-4 md:px-8 flex justify-end gap-3 shrink-0 z-10">
                 <button
                   type="button"
                   onClick={() => setEditingItem(null)}

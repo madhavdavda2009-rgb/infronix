@@ -11,6 +11,16 @@ export default function SmoothScroll({ children }) {
   const pathname = usePathname();
 
   useEffect(() => {
+    // Completely disable Lenis on Admin routes to prevent scroll hijacking on admin tables & modals
+    if (pathname && pathname.startsWith('/admin')) {
+      if (lenisRef.current) {
+        lenisRef.current.destroy();
+        lenisRef.current = null;
+        window.lenis = null;
+      }
+      return;
+    }
+
     // Respect user's motion preferences
     const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     if (prefersReducedMotion) return;
@@ -69,11 +79,11 @@ export default function SmoothScroll({ children }) {
       lenisRef.current = null;
       window.lenis = null;
     };
-  }, []);
+  }, [pathname]);
 
   // Reset scroll to top on route change
   useEffect(() => {
-    if (lenisRef.current) {
+    if (lenisRef.current && (!pathname || !pathname.startsWith('/admin'))) {
       lenisRef.current.scrollTo(0, { immediate: true });
     }
   }, [pathname]);

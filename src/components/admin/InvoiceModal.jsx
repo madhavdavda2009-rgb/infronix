@@ -473,11 +473,18 @@ ${enableUpi && upiId ? `Pay via UPI VPA: ${upiId}\n` : ''}Online Invoice & Terms
       {/* 
         INTERACTIVE ADMIN MODAL STUDIO (Screen view with independent smooth scrolling panes)
       */}
-      <div className="fixed inset-0 z-50 bg-black/90 backdrop-blur-md flex items-center justify-center p-2 md:p-6 print:hidden animate-fadeIn overflow-y-auto">
-        <div className="bg-slate-950 border border-champagne-light/40 w-full max-w-7xl h-[94vh] max-h-[94vh] shadow-2xl flex flex-col overflow-hidden my-auto rounded-none">
+      <div 
+        className="fixed inset-0 z-50 bg-black/90 backdrop-blur-md flex items-center justify-center p-2 md:p-6 print:hidden animate-fadeIn overflow-y-auto"
+        data-lenis-prevent="true"
+        onWheel={(e) => e.stopPropagation()}
+      >
+        <div 
+          className="bg-slate-950 border border-champagne-light/40 w-full max-w-7xl h-[92vh] max-h-[92vh] shadow-2xl flex flex-col overflow-hidden my-auto rounded-none"
+          data-lenis-prevent="true"
+        >
           
           {/* Top Bar Header */}
-          <div className="bg-navy-muted/95 border-b border-champagne-light/20 px-4 md:px-6 py-3.5 md:py-4 flex flex-wrap justify-between items-center gap-3 shrink-0">
+          <div className="bg-navy-muted/95 border-b border-champagne-light/20 px-4 md:px-6 py-3.5 md:py-4 flex flex-wrap justify-between items-center gap-3 shrink-0 z-10">
             <div className="flex items-center gap-3">
               <div className="w-9 h-9 bg-slate-900 border border-champagne-light/30 rounded flex items-center justify-center p-1">
                 <Receipt className="text-champagne-light text-xl" weight="bold" />
@@ -536,10 +543,17 @@ ${enableUpi && upiId ? `Pay via UPI VPA: ${upiId}\n` : ''}Online Invoice & Terms
           </div>
 
           {/* Main Dual-Pane Studio Body (Scrollable independently) */}
-          <div className="flex-1 min-h-0 grid grid-cols-1 lg:grid-cols-12 overflow-y-auto lg:overflow-hidden">
+          <div 
+            className="flex-1 min-h-0 h-[calc(92vh-70px)] grid grid-cols-1 lg:grid-cols-12 overflow-y-auto lg:overflow-hidden"
+            data-lenis-prevent="true"
+          >
             
             {/* LEFT PANE: Invoice Configurator (5 cols) */}
-            <div className="lg:col-span-5 border-r border-slate-800/80 p-5 overflow-y-auto h-full min-h-0 space-y-5 bg-slate-950 text-xs font-body-md text-slate-200">
+            <div 
+              className="lg:col-span-5 border-r border-slate-800/80 p-5 overflow-y-auto h-full max-h-[calc(92vh-70px)] space-y-5 bg-slate-950 text-xs font-body-md text-slate-200 overscroll-contain"
+              data-lenis-prevent="true"
+              onWheel={(e) => e.stopPropagation()}
+            >
               
               {/* Metadata row */}
               <div className="bg-slate-900/80 p-4 border border-slate-800 space-y-3">
@@ -822,10 +836,17 @@ ${enableUpi && upiId ? `Pay via UPI VPA: ${upiId}\n` : ''}Online Invoice & Terms
             </div>
 
             {/* RIGHT PANE: Live A4 Document Preview (7 cols - Scrollable) */}
-            <div className="lg:col-span-7 bg-slate-900/50 p-4 md:p-8 overflow-y-auto h-full min-h-0 flex items-start justify-center">
+            <div 
+              className="lg:col-span-7 bg-slate-900/50 p-4 md:p-8 overflow-y-auto h-full max-h-[calc(92vh-70px)] flex items-start justify-center overscroll-contain"
+              data-lenis-prevent="true"
+              onWheel={(e) => e.stopPropagation()}
+            >
               
               {/* Paper simulation */}
-              <div className="w-full max-w-[760px] bg-white text-slate-900 p-6 md:p-10 shadow-2xl rounded-sm border border-slate-300 font-sans my-auto">
+              <div 
+                className="w-full max-w-[760px] bg-white text-slate-900 p-6 md:p-10 shadow-2xl rounded-sm border border-slate-300 font-sans my-auto"
+                data-lenis-prevent="true"
+              >
                 
                 {/* Paper Header */}
                 <div className="flex justify-between items-start pb-6 border-b-2 border-slate-900 gap-4">
@@ -1049,8 +1070,15 @@ ${enableUpi && upiId ? `Pay via UPI VPA: ${upiId}\n` : ''}Online Invoice & Terms
         EMAIL INVOICE MODAL DIALOG
       */}
       {isEmailModalOpen && (
-        <div className="fixed inset-0 z-[60] bg-black/85 backdrop-blur-sm flex items-center justify-center p-4 print:hidden animate-fadeIn overflow-y-auto">
-          <div className="bg-slate-950 border border-champagne-light/50 w-full max-w-lg shadow-2xl overflow-hidden flex flex-col my-auto">
+        <div 
+          className="fixed inset-0 z-[60] bg-black/85 backdrop-blur-sm flex items-center justify-center p-4 print:hidden animate-fadeIn overflow-y-auto"
+          data-lenis-prevent="true"
+          onWheel={(e) => e.stopPropagation()}
+        >
+          <div 
+            className="bg-slate-950 border border-champagne-light/50 w-full max-w-lg shadow-2xl overflow-hidden flex flex-col my-auto max-h-[90vh]"
+            data-lenis-prevent="true"
+          >
             
             <div className="bg-navy-muted/90 border-b border-champagne-light/20 p-5 flex justify-between items-center shrink-0">
               <div className="flex items-center gap-2">
@@ -1068,7 +1096,11 @@ ${enableUpi && upiId ? `Pay via UPI VPA: ${upiId}\n` : ''}Online Invoice & Terms
               </button>
             </div>
 
-            <div className="p-6 space-y-4 text-xs text-slate-200 overflow-y-auto">
+            <div 
+              className="p-6 space-y-4 text-xs text-slate-200 overflow-y-auto max-h-[calc(90vh-140px)]"
+              data-lenis-prevent="true"
+              onWheel={(e) => e.stopPropagation()}
+            >
               {emailStatusMessage.text && (
                 <div className={`p-3 border text-xs flex items-center gap-2 font-medium ${
                   emailStatusMessage.type === 'success' 
