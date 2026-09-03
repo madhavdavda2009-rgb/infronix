@@ -34,7 +34,7 @@ export default function HeroSection() {
             Get Started
           </a>
           <a
-            href="/#services"
+            href="/web-development"
             className="bg-transparent border border-outline-variant text-slate-200 font-label-caps uppercase tracking-widest text-xs px-6 py-3.5 rounded-none hover:text-champagne-light hover:border-champagne-light transition-all text-center font-bold"
           >
             Explore Services
