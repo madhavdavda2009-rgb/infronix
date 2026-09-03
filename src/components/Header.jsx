@@ -18,18 +18,18 @@ export default function Header() {
 
   return (
     <header className="fixed top-0 w-full z-50 bg-navy-muted/95 backdrop-blur-md shadow-[0_1px_8px_rgba(0,0,0,0.2)] border-b border-champagne-light/20">
-      <div className="h-24 md:h-28 max-w-[1280px] mx-auto px-margin-mobile md:px-margin-desktop flex items-center justify-between">
+      <div className="h-20 md:h-22 max-w-[1280px] mx-auto px-margin-mobile md:px-margin-desktop flex items-center justify-between">
 
-        {/* Logo - Extra Large, bold, responsive, and clear */}
+        {/* Logo */}
         <Link href="/" className="flex items-center py-1 group shrink-0" aria-label="Infronix Home">
           <img
             alt="Infronix Logo"
-            className="h-20 sm:h-24 md:h-28 w-auto object-contain max-h-[100px] transition-transform duration-300 group-hover:scale-105 drop-shadow-md"
+            className="h-8 sm:h-10 md:h-11 w-auto object-contain max-h-11 transition-transform duration-300 group-hover:scale-105 drop-shadow-sm"
             src={webLogo.src || webLogo}
             loading="eager"
             fetchPriority="high"
-            width="250"
-            height="100"
+            width="170"
+            height="44"
           />
         </Link>
 

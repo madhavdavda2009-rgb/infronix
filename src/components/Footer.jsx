@@ -41,11 +41,11 @@ export default function Footer() {
             <Link href="/" className="inline-block group" aria-label="Infronix Home">
               <img
                 alt="Infronix Logo"
-                className="h-16 sm:h-20 md:h-24 lg:h-28 w-auto object-contain max-h-[100px] transition-transform duration-300 group-hover:scale-105 drop-shadow-md"
+                className="h-10 sm:h-11 md:h-12 w-auto object-contain max-h-12 transition-transform duration-300 group-hover:scale-105 drop-shadow-sm"
                 src={webLogo.src || webLogo}
                 loading="lazy"
-                width="240"
-                height="100"
+                width="180"
+                height="48"
               />
             </Link>
           </div>
