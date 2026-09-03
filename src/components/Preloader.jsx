@@ -138,7 +138,7 @@ export default function Preloader() {
           <img
             src={webLogo.src || webLogo}
             alt="Infronix Logo"
-            className="h-24 sm:h-32 md:h-40 lg:h-48 w-auto object-contain brightness-0 invert drop-shadow-lg"
+            className="h-24 sm:h-32 md:h-40 lg:h-48 w-auto object-contain drop-shadow-lg"
           />
         </div>
         <p

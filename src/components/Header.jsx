@@ -24,7 +24,7 @@ export default function Header() {
         <Link href="/" className="flex items-center py-1 group shrink-0" aria-label="Infronix Home">
           <img
             alt="Infronix Logo"
-            className="h-20 sm:h-24 md:h-28 w-auto object-contain brightness-0 invert max-h-[100px] transition-transform duration-300 group-hover:scale-105 drop-shadow-md"
+            className="h-20 sm:h-24 md:h-28 w-auto object-contain max-h-[100px] transition-transform duration-300 group-hover:scale-105 drop-shadow-md"
             src={webLogo.src || webLogo}
             loading="eager"
             fetchPriority="high"

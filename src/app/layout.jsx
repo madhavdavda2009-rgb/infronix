@@ -69,9 +69,12 @@ export const metadata = {
     },
   },
   icons: {
-    icon: '/title-logo1.webp',
+    icon: [
+      { url: '/title-logo1.webp', type: 'image/webp' },
+      { url: '/favicon.svg', type: 'image/svg+xml' },
+    ],
     shortcut: '/title-logo1.webp',
-    apple: '/title-logo1.webp',
+    apple: '/apple-touch-icon.png',
   },
 };
 
@@ -114,7 +117,7 @@ export default function RootLayout({ children }) {
                   "name": "Infronix Web Agency",
                   "alternateName": "Infronix Digital & Web Development Agency",
                   "url": "https://www.infronixweb.in/",
-                  "logo": "https://www.infronixweb.in/hero_bg.webp",
+                  "logo": "https://www.infronixweb.in/title-logo1.webp",
                   "image": "https://www.infronixweb.in/hero_bg.webp",
                   "description": "Infronix is a premier web agency based in Ahmedabad, Gujarat, offering custom web development, technical SEO, and AI workflow automation across India.",
                   "telephone": "+91-6355792936",
