@@ -2,7 +2,6 @@
 import React, { useState, useEffect } from 'react';
 import { 
   X, 
-  Printer, 
   Plus, 
   Trash, 
   PaperPlaneTilt, 
@@ -13,13 +12,17 @@ import {
   Receipt, 
   Copy, 
   FileText,
+  FilePdf,
+  QrCode,
   Building,
   User,
   Envelope,
   Phone,
   Globe,
-  Info
+  Info,
+  Check
 } from '@phosphor-icons/react';
+import { QRCodeSVG } from 'qrcode.react';
 
 export default function InvoiceModal({ client, onClose }) {
   // Extract initial defaults from client / consultation
@@ -50,6 +53,13 @@ export default function InvoiceModal({ client, onClose }) {
   const [paymentDate, setPaymentDate] = useState('');
   const [clientNotes, setClientNotes] = useState('Work begins upon confirmation of upfront deposit. Balance due upon staging approval before production launch.');
 
+  // UPI Payment Details & QR Code
+  const [enableUpi, setEnableUpi] = useState(true);
+  const [upiId, setUpiId] = useState('infronixweb@oksbi');
+  const [upiPayeeName, setUpiPayeeName] = useState('Infronix Web Agency');
+  const [upiNote, setUpiNote] = useState('');
+  const [copiedUpi, setCopiedUpi] = useState(false);
+
   // Email modal & loading state
   const [isEmailModalOpen, setIsEmailModalOpen] = useState(false);
   const [emailNote, setEmailNote] = useState('');
@@ -62,7 +72,9 @@ export default function InvoiceModal({ client, onClose }) {
     const today = new Date();
     const dateStr = today.toISOString().split('T')[0].replace(/-/g, '');
     const clientNum = (client?.id || Math.floor(Math.random() * 9000 + 1000)).toString().padStart(4, '0');
-    setInvoiceId(`INV-${dateStr}-${clientNum}`);
+    const generatedId = `INV-${dateStr}-${clientNum}`;
+    setInvoiceId(generatedId);
+    setUpiNote(generatedId);
 
     // Format dates (e.g. "30 Aug 2026")
     const formattedIssue = today.toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' });
@@ -116,9 +128,18 @@ export default function InvoiceModal({ client, onClose }) {
     ? manualStatus 
     : (paidVal >= total && total > 0 ? 'PAID' : (paidVal > 0 ? 'PARTIALLY PAID' : 'PENDING'));
 
-  // Trigger Print
-  const handlePrint = () => {
+  // UPI deep link string for instant QR Code generation
+  const upiPayAmount = balanceDue > 0 ? balanceDue : total;
+  const upiString = `upi://pay?pa=${encodeURIComponent(upiId.trim())}&pn=${encodeURIComponent(upiPayeeName.trim())}&am=${upiPayAmount > 0 ? upiPayAmount.toFixed(2) : '0.00'}&cu=INR&tn=${encodeURIComponent(upiNote || invoiceId)}`;
+
+  // Trigger Native PDF Save / Download
+  const handleDownloadPdf = () => {
+    const originalTitle = document.title;
+    document.title = `${invoiceId}-Infronix-Invoice`;
     window.print();
+    setTimeout(() => {
+      document.title = originalTitle;
+    }, 1500);
   };
 
   // Copy Summary text for WhatsApp/Message
@@ -130,11 +151,18 @@ Amount Paid: ₹${paidVal.toLocaleString('en-IN', { minimumFractionDigits: 2 })}
 Balance Due: ₹${balanceDue.toLocaleString('en-IN', { minimumFractionDigits: 2 })}
 Status: ${derivedStatus}
 Due Date: ${dueDate}
-Online Invoice & Terms: https://www.infronixweb.in/terms-and-conditions`;
+${enableUpi && upiId ? `Pay via UPI VPA: ${upiId}\n` : ''}Online Invoice & Terms: https://www.infronixweb.in/terms-and-conditions`;
 
     navigator.clipboard.writeText(summary);
     setCopiedNotification(true);
     setTimeout(() => setCopiedNotification(false), 2500);
+  };
+
+  // Copy UPI ID helper
+  const handleCopyUpi = () => {
+    navigator.clipboard.writeText(upiId);
+    setCopiedUpi(true);
+    setTimeout(() => setCopiedUpi(false), 2000);
   };
 
   // Send Invoice Email to Client
@@ -157,6 +185,10 @@ Online Invoice & Terms: https://www.infronixweb.in/terms-and-conditions`;
       paymentMethod,
       transactionId,
       paymentDate,
+      enableUpi,
+      upiId,
+      upiPayeeName,
+      upiAmount: upiPayAmount,
       notes: clientNotes
     };
 
@@ -204,7 +236,7 @@ Online Invoice & Terms: https://www.infronixweb.in/terms-and-conditions`;
   return (
     <>
       {/* 
-        PRINT CONTAINER (Visible ONLY when printing A4)
+        A4 PRINT / PDF CONTAINER (Targeted when triggering PDF save)
       */}
       <div className="hidden print:block fixed inset-0 z-[99999] bg-white text-slate-900 p-0 m-0 print-invoice-root">
         <style dangerouslySetInnerHTML={{ __html: `
@@ -340,7 +372,7 @@ Online Invoice & Terms: https://www.infronixweb.in/terms-and-conditions`;
 
           {/* Summary & Payment Info */}
           <div className="grid grid-cols-2 gap-8 pt-2 pb-6 border-b border-slate-200">
-            {/* Payment Details */}
+            {/* Payment Details & UPI QR Code */}
             <div className="text-xs space-y-2">
               <span className="font-bold uppercase tracking-wider text-slate-400 block text-[10px]">
                 Payment Instructions
@@ -354,6 +386,34 @@ Online Invoice & Terms: https://www.infronixweb.in/terms-and-conditions`;
                   {clientNotes}
                 </p>
               </div>
+
+              {/* Printable High-Resolution UPI QR Code */}
+              {enableUpi && upiId && (
+                <div className="bg-slate-50 p-3 border border-slate-200 rounded flex items-center gap-3.5 mt-2">
+                  <div className="bg-white p-1.5 border border-slate-200 rounded shrink-0">
+                    <QRCodeSVG
+                      value={upiString}
+                      size={74}
+                      level="M"
+                      includeMargin={false}
+                    />
+                  </div>
+                  <div className="text-[10px] text-slate-700 space-y-0.5 leading-tight">
+                    <p className="font-bold text-slate-900 text-[11px]">Instant UPI QR Payment</p>
+                    <p className="font-mono text-[10px] text-slate-800 font-bold bg-white px-1.5 py-0.5 rounded border border-slate-200 inline-block mt-0.5">
+                      {upiId}
+                    </p>
+                    <p className="text-slate-500 text-[9px] pt-0.5">
+                      Scan with GPay, PhonePe, Paytm or any UPI App
+                    </p>
+                    {upiPayAmount > 0 && (
+                      <p className="text-slate-800 font-semibold text-[10px]">
+                        Pay Amount: ₹{upiPayAmount.toLocaleString('en-IN', { minimumFractionDigits: 2 })}
+                      </p>
+                    )}
+                  </div>
+                </div>
+              )}
             </div>
 
             {/* Totals */}
@@ -411,13 +471,13 @@ Online Invoice & Terms: https://www.infronixweb.in/terms-and-conditions`;
       </div>
 
       {/* 
-        INTERACTIVE ADMIN MODAL STUDIO (Screen view)
+        INTERACTIVE ADMIN MODAL STUDIO (Screen view with independent smooth scrolling panes)
       */}
-      <div className="fixed inset-0 z-50 bg-black/90 backdrop-blur-md flex items-center justify-center p-2 md:p-6 print:hidden animate-fadeIn">
-        <div className="bg-slate-950 border border-champagne-light/40 w-full max-w-7xl h-[94vh] shadow-2xl flex flex-col overflow-hidden">
+      <div className="fixed inset-0 z-50 bg-black/90 backdrop-blur-md flex items-center justify-center p-2 md:p-6 print:hidden animate-fadeIn overflow-y-auto">
+        <div className="bg-slate-950 border border-champagne-light/40 w-full max-w-7xl h-[94vh] max-h-[94vh] shadow-2xl flex flex-col overflow-hidden my-auto rounded-none">
           
           {/* Top Bar Header */}
-          <div className="bg-navy-muted/95 border-b border-champagne-light/20 px-6 py-4 flex flex-wrap justify-between items-center gap-4 shrink-0">
+          <div className="bg-navy-muted/95 border-b border-champagne-light/20 px-4 md:px-6 py-3.5 md:py-4 flex flex-wrap justify-between items-center gap-3 shrink-0">
             <div className="flex items-center gap-3">
               <div className="w-9 h-9 bg-slate-900 border border-champagne-light/30 rounded flex items-center justify-center p-1">
                 <Receipt className="text-champagne-light text-xl" weight="bold" />
@@ -426,7 +486,7 @@ Online Invoice & Terms: https://www.infronixweb.in/terms-and-conditions`;
                 <span className="font-label-caps text-xs text-champagne-light uppercase tracking-widest block font-bold">
                   Professional Invoice Studio
                 </span>
-                <h2 className="font-headline-lg text-lg text-white font-bold">
+                <h2 className="font-headline-lg text-base md:text-lg text-white font-bold">
                   {client?.firstName} {client?.lastName} {client?.company ? `(${client.company})` : ''}
                 </h2>
               </div>
@@ -453,13 +513,15 @@ Online Invoice & Terms: https://www.infronixweb.in/terms-and-conditions`;
                 <span>Email Invoice</span>
               </button>
 
+              {/* Download PDF Option */}
               <button
                 type="button"
-                onClick={handlePrint}
-                className="px-5 py-2 bg-champagne-light hover:bg-white text-navy-muted font-bold text-xs font-label-caps uppercase tracking-widest transition-all cursor-pointer flex items-center gap-2 shadow-md"
+                onClick={handleDownloadPdf}
+                className="px-4 py-2 bg-champagne-light hover:bg-white text-navy-muted font-bold text-xs font-label-caps uppercase tracking-widest transition-all cursor-pointer flex items-center gap-2 shadow-md"
+                title="Download or Save Invoice as PDF"
               >
-                <Printer size={16} weight="bold" />
-                <span>Print / PDF</span>
+                <FilePdf size={16} weight="bold" />
+                <span>Download PDF</span>
               </button>
 
               <button 
@@ -473,11 +535,11 @@ Online Invoice & Terms: https://www.infronixweb.in/terms-and-conditions`;
             </div>
           </div>
 
-          {/* Main Dual-Pane Studio Body */}
-          <div className="flex-grow grid grid-cols-1 lg:grid-cols-12 overflow-hidden">
+          {/* Main Dual-Pane Studio Body (Scrollable independently) */}
+          <div className="flex-1 min-h-0 grid grid-cols-1 lg:grid-cols-12 overflow-y-auto lg:overflow-hidden">
             
             {/* LEFT PANE: Invoice Configurator (5 cols) */}
-            <div className="lg:col-span-5 border-r border-slate-800/80 p-5 overflow-y-auto space-y-5 bg-slate-950 text-xs font-body-md text-slate-200">
+            <div className="lg:col-span-5 border-r border-slate-800/80 p-5 overflow-y-auto h-full min-h-0 space-y-5 bg-slate-950 text-xs font-body-md text-slate-200">
               
               {/* Metadata row */}
               <div className="bg-slate-900/80 p-4 border border-slate-800 space-y-3">
@@ -497,7 +559,7 @@ Online Invoice & Terms: https://www.infronixweb.in/terms-and-conditions`;
                       type="text"
                       value={issueDate}
                       onChange={(e) => setIssueDate(e.target.value)}
-                      className="w-full bg-slate-950 text-white p-2 text-xs border border-slate-700 focus:outline-none focus:border-champagne-light"
+                      className="w-full bg-slate-950 text-white p-2 text-xs border border-slate-700 focus:outline-none focus:border-champagne-light font-medium"
                     />
                   </div>
 
@@ -509,7 +571,7 @@ Online Invoice & Terms: https://www.infronixweb.in/terms-and-conditions`;
                       type="text"
                       value={dueDate}
                       onChange={(e) => setDueDate(e.target.value)}
-                      className="w-full bg-slate-950 text-white p-2 text-xs border border-slate-700 focus:outline-none focus:border-champagne-light"
+                      className="w-full bg-slate-950 text-white p-2 text-xs border border-slate-700 focus:outline-none focus:border-champagne-light font-medium"
                     />
                   </div>
                 </div>
@@ -522,7 +584,7 @@ Online Invoice & Terms: https://www.infronixweb.in/terms-and-conditions`;
                     <select
                       value={manualStatus}
                       onChange={(e) => setManualStatus(e.target.value)}
-                      className="w-full bg-slate-950 text-white p-2 text-xs border border-slate-700 focus:outline-none focus:border-champagne-light font-bold"
+                      className="w-full bg-slate-950 text-white p-2 text-xs border border-slate-700 focus:outline-none focus:border-champagne-light font-bold cursor-pointer"
                     >
                       <option value="AUTO">Auto ({derivedStatus})</option>
                       <option value="PENDING">PENDING</option>
@@ -539,7 +601,7 @@ Online Invoice & Terms: https://www.infronixweb.in/terms-and-conditions`;
                       type="number"
                       value={taxRate}
                       onChange={(e) => setTaxRate(parseFloat(e.target.value) || 0)}
-                      className="w-full bg-slate-950 text-white p-2 text-xs border border-slate-700 focus:outline-none focus:border-champagne-light"
+                      className="w-full bg-slate-950 text-white p-2 text-xs border border-slate-700 focus:outline-none focus:border-champagne-light font-medium"
                       min="0"
                     />
                   </div>
@@ -607,7 +669,7 @@ Online Invoice & Terms: https://www.infronixweb.in/terms-and-conditions`;
                         </div>
                         <div>
                           <label className="text-slate-400 block mb-0.5">Amount (₹)</label>
-                          <div className="w-full bg-slate-900/60 p-1.5 border border-slate-800 text-right font-mono font-bold text-champagne-light">
+                          <div className="w-full bg-slate-900/60 p-1.5 border border-slate-800 text-right font-mono font-bold text-champagne-light truncate">
                             ₹{parseFloat(item.amount || 0).toLocaleString('en-IN')}
                           </div>
                         </div>
@@ -615,6 +677,71 @@ Online Invoice & Terms: https://www.infronixweb.in/terms-and-conditions`;
                     </div>
                   ))}
                 </div>
+              </div>
+
+              {/* UPI Instant QR Code Generator Settings */}
+              <div className="bg-slate-900/80 p-4 border border-slate-800 space-y-3">
+                <div className="flex items-center justify-between border-b border-slate-800 pb-2">
+                  <div className="flex items-center gap-2">
+                    <QrCode className="text-champagne-light text-base" weight="bold" />
+                    <h4 className="font-label-caps text-xs text-champagne-light uppercase tracking-wider font-bold">
+                      UPI QR Code Payment
+                    </h4>
+                  </div>
+                  <label className="relative inline-flex items-center cursor-pointer">
+                    <input
+                      type="checkbox"
+                      checked={enableUpi}
+                      onChange={(e) => setEnableUpi(e.target.checked)}
+                      className="sr-only peer"
+                    />
+                    <div className="w-9 h-5 bg-slate-800 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-champagne-light"></div>
+                  </label>
+                </div>
+
+                {enableUpi && (
+                  <div className="space-y-3 pt-1">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                      <div>
+                        <label className="font-label-caps text-[10px] text-slate-400 uppercase tracking-wider block mb-1">
+                          UPI VPA ID *
+                        </label>
+                        <input
+                          type="text"
+                          value={upiId}
+                          onChange={(e) => setUpiId(e.target.value)}
+                          placeholder="e.g. name@oksbi"
+                          className="w-full bg-slate-950 text-white p-2 text-xs border border-slate-700 focus:outline-none focus:border-champagne-light font-mono font-medium"
+                        />
+                      </div>
+
+                      <div>
+                        <label className="font-label-caps text-[10px] text-slate-400 uppercase tracking-wider block mb-1">
+                          Payee Name
+                        </label>
+                        <input
+                          type="text"
+                          value={upiPayeeName}
+                          onChange={(e) => setUpiPayeeName(e.target.value)}
+                          placeholder="Infronix Web Agency"
+                          className="w-full bg-slate-950 text-white p-2 text-xs border border-slate-700 focus:outline-none focus:border-champagne-light font-medium"
+                        />
+                      </div>
+                    </div>
+
+                    <div className="bg-slate-950 p-2.5 border border-slate-800 rounded flex items-center justify-between text-[11px]">
+                      <div>
+                        <span className="text-slate-400 block text-[10px] uppercase font-label-caps">QR Target Amount</span>
+                        <span className="font-mono text-champagne-light font-bold text-xs">
+                          ₹{upiPayAmount.toLocaleString('en-IN', { minimumFractionDigits: 2 })}
+                        </span>
+                      </div>
+                      <div className="text-[10px] text-slate-400 bg-slate-900 px-2 py-1 rounded border border-slate-800">
+                        {balanceDue > 0 ? 'Syncing Balance Due' : 'Syncing Total'}
+                      </div>
+                    </div>
+                  </div>
+                )}
               </div>
 
               {/* Payments & Deposits */}
@@ -646,7 +773,7 @@ Online Invoice & Terms: https://www.infronixweb.in/terms-and-conditions`;
                       value={paymentMethod}
                       onChange={(e) => setPaymentMethod(e.target.value)}
                       placeholder="UPI / NEFT / IMPS"
-                      className="w-full bg-slate-950 text-white p-2 text-xs border border-slate-700 focus:outline-none focus:border-champagne-light"
+                      className="w-full bg-slate-950 text-white p-2 text-xs border border-slate-700 focus:outline-none focus:border-champagne-light font-medium"
                     />
                   </div>
                 </div>
@@ -661,7 +788,7 @@ Online Invoice & Terms: https://www.infronixweb.in/terms-and-conditions`;
                       value={transactionId}
                       onChange={(e) => setTransactionId(e.target.value)}
                       placeholder="TXN-XXXX"
-                      className="w-full bg-slate-950 text-white p-2 text-xs border border-slate-700 focus:outline-none focus:border-champagne-light"
+                      className="w-full bg-slate-950 text-white p-2 text-xs border border-slate-700 focus:outline-none focus:border-champagne-light font-medium"
                     />
                   </div>
 
@@ -674,7 +801,7 @@ Online Invoice & Terms: https://www.infronixweb.in/terms-and-conditions`;
                       value={paymentDate}
                       onChange={(e) => setPaymentDate(e.target.value)}
                       placeholder="e.g. 30 Aug 2026"
-                      className="w-full bg-slate-950 text-white p-2 text-xs border border-slate-700 focus:outline-none focus:border-champagne-light"
+                      className="w-full bg-slate-950 text-white p-2 text-xs border border-slate-700 focus:outline-none focus:border-champagne-light font-medium"
                     />
                   </div>
                 </div>
@@ -694,11 +821,11 @@ Online Invoice & Terms: https://www.infronixweb.in/terms-and-conditions`;
 
             </div>
 
-            {/* RIGHT PANE: Live A4 Document Preview (7 cols) */}
-            <div className="lg:col-span-7 bg-slate-900/50 p-4 md:p-8 overflow-y-auto flex items-start justify-center">
+            {/* RIGHT PANE: Live A4 Document Preview (7 cols - Scrollable) */}
+            <div className="lg:col-span-7 bg-slate-900/50 p-4 md:p-8 overflow-y-auto h-full min-h-0 flex items-start justify-center">
               
               {/* Paper simulation */}
-              <div className="w-full max-w-[760px] bg-white text-slate-900 p-8 md:p-10 shadow-2xl rounded-sm border border-slate-300 font-sans">
+              <div className="w-full max-w-[760px] bg-white text-slate-900 p-6 md:p-10 shadow-2xl rounded-sm border border-slate-300 font-sans my-auto">
                 
                 {/* Paper Header */}
                 <div className="flex justify-between items-start pb-6 border-b-2 border-slate-900 gap-4">
@@ -805,7 +932,7 @@ Online Invoice & Terms: https://www.infronixweb.in/terms-and-conditions`;
 
                 {/* Summary & Payment Grid */}
                 <div className="grid grid-cols-2 gap-6 pt-2 pb-5 border-b border-slate-200 text-xs">
-                  {/* Left: Payment instruction */}
+                  {/* Left: Payment instruction & UPI QR */}
                   <div className="space-y-1.5">
                     <span className="font-bold uppercase tracking-wider text-slate-400 block text-[10px]">
                       Payment Information
@@ -819,6 +946,46 @@ Online Invoice & Terms: https://www.infronixweb.in/terms-and-conditions`;
                         {clientNotes}
                       </p>
                     </div>
+
+                    {/* Live UPI QR Code card */}
+                    {enableUpi && upiId && (
+                      <div className="bg-slate-50 p-2.5 border border-slate-200 rounded flex items-center gap-3 mt-2">
+                        <div className="bg-white p-1.5 border border-slate-200 rounded shrink-0 shadow-xs">
+                          <QRCodeSVG
+                            value={upiString}
+                            size={68}
+                            level="M"
+                            includeMargin={false}
+                          />
+                        </div>
+                        <div className="text-[10px] text-slate-700 space-y-0.5 leading-tight flex-1">
+                          <p className="font-bold text-slate-900 text-[11px] flex items-center gap-1">
+                            <span>Scan with UPI App</span>
+                          </p>
+                          <div className="flex items-center gap-1.5 mt-0.5">
+                            <span className="font-mono text-[10px] text-slate-800 font-bold bg-white px-1.5 py-0.5 rounded border border-slate-200 truncate max-w-[150px]">
+                              {upiId}
+                            </span>
+                            <button
+                              type="button"
+                              onClick={handleCopyUpi}
+                              className="text-slate-500 hover:text-slate-800 p-0.5 transition-colors cursor-pointer"
+                              title="Copy UPI ID"
+                            >
+                              {copiedUpi ? <Check size={12} className="text-emerald-600" /> : <Copy size={12} />}
+                            </button>
+                          </div>
+                          <p className="text-slate-500 text-[9px] pt-0.5">
+                            GPay &middot; PhonePe &middot; Paytm &middot; BHIM
+                          </p>
+                          {upiPayAmount > 0 && (
+                            <p className="text-slate-900 font-semibold text-[10px] font-mono">
+                              ₹{upiPayAmount.toLocaleString('en-IN', { minimumFractionDigits: 2 })}
+                            </p>
+                          )}
+                        </div>
+                      </div>
+                    )}
                   </div>
 
                   {/* Right: Calculations */}
@@ -882,10 +1049,10 @@ Online Invoice & Terms: https://www.infronixweb.in/terms-and-conditions`;
         EMAIL INVOICE MODAL DIALOG
       */}
       {isEmailModalOpen && (
-        <div className="fixed inset-0 z-[60] bg-black/85 backdrop-blur-sm flex items-center justify-center p-4 print:hidden animate-fadeIn">
-          <div className="bg-slate-950 border border-champagne-light/50 w-full max-w-lg shadow-2xl overflow-hidden flex flex-col">
+        <div className="fixed inset-0 z-[60] bg-black/85 backdrop-blur-sm flex items-center justify-center p-4 print:hidden animate-fadeIn overflow-y-auto">
+          <div className="bg-slate-950 border border-champagne-light/50 w-full max-w-lg shadow-2xl overflow-hidden flex flex-col my-auto">
             
-            <div className="bg-navy-muted/90 border-b border-champagne-light/20 p-5 flex justify-between items-center">
+            <div className="bg-navy-muted/90 border-b border-champagne-light/20 p-5 flex justify-between items-center shrink-0">
               <div className="flex items-center gap-2">
                 <PaperPlaneTilt className="text-champagne-light text-xl" weight="bold" />
                 <h3 className="font-headline-lg text-lg text-white font-bold">
@@ -893,6 +1060,7 @@ Online Invoice & Terms: https://www.infronixweb.in/terms-and-conditions`;
                 </h3>
               </div>
               <button 
+                type="button"
                 onClick={() => setIsEmailModalOpen(false)}
                 className="text-slate-400 hover:text-white transition-colors cursor-pointer"
               >
@@ -900,7 +1068,7 @@ Online Invoice & Terms: https://www.infronixweb.in/terms-and-conditions`;
               </button>
             </div>
 
-            <div className="p-6 space-y-4 text-xs text-slate-200">
+            <div className="p-6 space-y-4 text-xs text-slate-200 overflow-y-auto">
               {emailStatusMessage.text && (
                 <div className={`p-3 border text-xs flex items-center gap-2 font-medium ${
                   emailStatusMessage.type === 'success' 
@@ -931,17 +1099,24 @@ Online Invoice & Terms: https://www.infronixweb.in/terms-and-conditions`;
                   rows={3}
                   value={emailNote}
                   onChange={(e) => setEmailNote(e.target.value)}
-                  placeholder="e.g. Hi Madhav, thanks for getting in touch with Infronix. Attached is the initial invoice for our sprint..."
+                  placeholder="e.g. Hi, thanks for getting in touch with Infronix. Attached is the initial invoice for our sprint..."
                   className="w-full bg-slate-900 text-white p-3 text-xs border border-slate-700 focus:outline-none focus:border-champagne-light font-medium"
                 />
               </div>
+
+              {enableUpi && upiId && (
+                <div className="bg-slate-900/90 border border-champagne-light/30 p-3 text-[11px] text-slate-300 space-y-1">
+                  <span className="font-label-caps text-[10px] text-champagne-light uppercase tracking-wider block font-bold">Included Payment Option</span>
+                  <p>UPI VPA: <span className="font-mono text-white font-bold">{upiId}</span> ({upiPayeeName})</p>
+                </div>
+              )}
 
               <p className="text-[11px] text-slate-400 italic">
                 The client will receive an email containing the itemized invoice table, bank details, and Terms & Conditions.
               </p>
             </div>
 
-            <div className="p-5 border-t border-slate-800 bg-slate-900/40 flex justify-end gap-3">
+            <div className="p-5 border-t border-slate-800 bg-slate-900/40 flex justify-end gap-3 shrink-0">
               <button
                 type="button"
                 onClick={() => setIsEmailModalOpen(false)}

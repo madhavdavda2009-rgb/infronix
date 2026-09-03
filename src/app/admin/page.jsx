@@ -529,24 +529,27 @@ export default function AdminDashboard() {
 
         {/* EDIT / VIEW MODAL */}
         {editingItem && (
-          <div className="fixed inset-0 z-50 bg-black/85 backdrop-blur-sm flex items-center justify-center p-4 animate-fadeIn">
-            <div className="bg-slate-950 border border-champagne-light/40 w-full max-w-2xl max-h-[90vh] overflow-y-auto shadow-2xl flex flex-col">
-              <div className="bg-navy-muted/90 border-b border-champagne-light/20 p-6 flex justify-between items-center sticky top-0 z-10">
+          <div className="fixed inset-0 z-50 bg-black/85 backdrop-blur-sm flex items-center justify-center p-3 md:p-6 overflow-y-auto animate-fadeIn">
+            <div className="bg-slate-950 border border-champagne-light/40 w-full max-w-2xl max-h-[90vh] shadow-2xl flex flex-col overflow-hidden my-auto rounded-none">
+              {/* Fixed Header */}
+              <div className="bg-navy-muted/95 border-b border-champagne-light/20 p-5 md:p-6 flex justify-between items-center shrink-0 z-10">
                 <div>
                   <span className="font-label-caps text-xs text-champagne-light uppercase tracking-widest block font-bold">Consultation #{editingItem.id}</span>
-                  <h2 className="font-headline-lg text-xl text-white font-bold mt-0.5">Edit Client Consultation</h2>
+                  <h2 className="font-headline-lg text-lg md:text-xl text-white font-bold mt-0.5">Edit Client Consultation</h2>
                 </div>
                 <div className="flex items-center gap-3">
                   <button
+                    type="button"
                     onClick={() => {
                       setInvoicingItem(editingItem);
                       setEditingItem(null);
                     }}
-                    className="px-4 py-2 border border-champagne-light/60 text-champagne-light text-xs font-label-caps uppercase tracking-widest hover:bg-champagne-light hover:text-navy-muted font-bold transition-all cursor-pointer shadow-sm"
+                    className="px-3.5 py-1.5 md:px-4 md:py-2 border border-champagne-light/60 text-champagne-light text-xs font-label-caps uppercase tracking-widest hover:bg-champagne-light hover:text-navy-muted font-bold transition-all cursor-pointer shadow-sm"
                   >
                     Generate Invoice
                   </button>
                   <button
+                    type="button"
                     onClick={() => setEditingItem(null)}
                     className="text-slate-400 hover:text-white transition-colors cursor-pointer p-1"
                   >
@@ -555,7 +558,8 @@ export default function AdminDashboard() {
                 </div>
               </div>
 
-              <form onSubmit={handleSaveEdit} className="p-6 md:p-8 flex flex-col gap-5">
+              {/* Scrollable Form Body */}
+              <form id="editConsultationForm" onSubmit={handleSaveEdit} className="p-5 md:p-8 flex flex-col gap-5 overflow-y-auto flex-1 min-h-0">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
                     <label className="font-label-caps text-xs text-slate-300 uppercase tracking-wider block mb-1.5 font-semibold">First Name *</label>
@@ -645,28 +649,30 @@ export default function AdminDashboard() {
                     rows={5}
                     value={editingItem.projectDetails}
                     onChange={(e) => setEditingItem({ ...editingItem, projectDetails: e.target.value })}
-                    className="w-full bg-slate-900 text-white font-body-md p-3 text-sm border border-slate-700 focus:outline-none focus:border-champagne-light font-medium"
+                    className="w-full bg-slate-900 text-white font-body-md p-3 text-sm border border-slate-700 focus:outline-none focus:border-champagne-light font-medium resize-y"
                     required
                   />
                 </div>
-
-                <div className="flex justify-end gap-3 pt-4 border-t border-slate-800">
-                  <button
-                    type="button"
-                    onClick={() => setEditingItem(null)}
-                    className="px-5 py-2.5 border border-slate-700 hover:border-slate-500 text-slate-300 text-xs font-label-caps uppercase tracking-widest font-bold transition-colors cursor-pointer"
-                  >
-                    Cancel
-                  </button>
-                  <button
-                    type="submit"
-                    disabled={actionLoading}
-                    className="px-6 py-2.5 bg-champagne-light hover:bg-white text-navy-muted font-bold text-xs font-label-caps uppercase tracking-widest transition-all cursor-pointer shadow-md"
-                  >
-                    {actionLoading ? 'Saving...' : 'Save & Encrypt Changes'}
-                  </button>
-                </div>
               </form>
+
+              {/* Pinned Action Footer */}
+              <div className="bg-slate-950/95 border-t border-slate-800 p-4 md:px-8 flex justify-end gap-3 shrink-0">
+                <button
+                  type="button"
+                  onClick={() => setEditingItem(null)}
+                  className="px-5 py-2.5 border border-slate-700 hover:border-slate-500 text-slate-300 text-xs font-label-caps uppercase tracking-widest font-bold transition-colors cursor-pointer"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  form="editConsultationForm"
+                  disabled={actionLoading}
+                  className="px-6 py-2.5 bg-champagne-light hover:bg-white text-navy-muted font-bold text-xs font-label-caps uppercase tracking-widest transition-all cursor-pointer shadow-md disabled:opacity-50"
+                >
+                  {actionLoading ? 'Saving...' : 'Save & Encrypt Changes'}
+                </button>
+              </div>
             </div>
           </div>
         )}

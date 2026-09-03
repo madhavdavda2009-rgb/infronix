@@ -19,6 +19,10 @@ export function generateInvoiceEmailHtml({ client, invoice }) {
     paymentMethod = '',
     transactionId = '',
     paymentDate = '',
+    enableUpi = false,
+    upiId = '',
+    upiPayeeName = 'Infronix Web Agency',
+    upiAmount = 0,
     notes = ''
   } = invoice;
 
@@ -187,18 +191,31 @@ export function generateInvoiceEmailHtml({ client, invoice }) {
                 <tr>
                   <td width="50%" style="vertical-align: top; padding-right: 16px;">
                     ${paymentMethod || transactionId ? `
-                      <div style="background-color: #f8fafc; border: 1px solid #e2e8f0; border-radius: 6px; padding: 14px; font-size: 12px;">
+                      <div style="background-color: #f8fafc; border: 1px solid #e2e8f0; border-radius: 6px; padding: 14px; font-size: 12px; margin-bottom: 12px;">
                         <div style="font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: #475569; margin-bottom: 6px;">Payment Information</div>
                         ${paymentMethod ? `<div style="color: #334155; margin-bottom: 3px;"><strong>Method:</strong> ${paymentMethod}</div>` : ''}
                         ${transactionId ? `<div style="color: #334155; margin-bottom: 3px;"><strong>Ref / Txn ID:</strong> ${transactionId}</div>` : ''}
                         ${paymentDate ? `<div style="color: #334155;"><strong>Date:</strong> ${paymentDate}</div>` : ''}
                       </div>
                     ` : `
-                      <div style="background-color: #f8fafc; border: 1px solid #e2e8f0; border-radius: 6px; padding: 14px; font-size: 12px; color: #64748b;">
+                      <div style="background-color: #f8fafc; border: 1px solid #e2e8f0; border-radius: 6px; padding: 14px; font-size: 12px; color: #64748b; margin-bottom: 12px;">
                         <strong style="color: #334155;">Payment Notes:</strong><br>
                         Bank transfers & UPI accepted. Work begins upon deposit confirmation.
                       </div>
                     `}
+
+                    ${enableUpi && upiId ? `
+                      <div style="background-color: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 6px; padding: 14px; font-size: 12px;">
+                        <div style="font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: #166534; margin-bottom: 6px;">⚡ Instant UPI Payment</div>
+                        <div style="color: #14532d; margin-bottom: 4px;"><strong>UPI VPA ID:</strong> <span style="font-family: monospace; font-weight: 700; background: #dcfce7; padding: 2px 6px; border-radius: 4px;">${upiId}</span></div>
+                        <div style="color: #166534; font-size: 11px; margin-bottom: 8px;">Payee: ${upiPayeeName}</div>
+                        <div style="margin-top: 8px;">
+                          <a href="upi://pay?pa=${encodeURIComponent(upiId)}&pn=${encodeURIComponent(upiPayeeName)}&am=${(parseFloat(upiAmount) || balanceDue).toFixed(2)}&cu=INR&tn=${encodeURIComponent('Invoice ' + invoiceId)}" style="display: inline-block; background-color: #16a34a; color: #ffffff; text-decoration: none; padding: 6px 14px; font-size: 11px; font-weight: 700; border-radius: 4px; text-transform: uppercase; letter-spacing: 0.5px;">
+                            Tap to Pay ₹${(parseFloat(upiAmount) || balanceDue).toLocaleString('en-IN', { minimumFractionDigits: 2 })} via UPI
+                          </a>
+                        </div>
+                      </div>
+                    ` : ''}
                   </td>
                   <td width="50%" style="vertical-align: top; padding-left: 16px;">
                     <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="font-size: 13px;">
