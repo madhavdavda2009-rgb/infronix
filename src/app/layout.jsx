@@ -150,7 +150,7 @@ export default function RootLayout({ children }) {
                     { "@type": "Country", "name": "India" }
                   ],
                   "sameAs": [
-                    "https://www.instagram.com/infronix_web_agency",
+                    "https://www.instagram.com/infronixwebagency2026",
                     "https://github.com/madhavdavda2009-rgb"
                   ],
                   "hasOfferCatalog": {

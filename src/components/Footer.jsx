@@ -54,7 +54,7 @@ export default function Footer() {
           </p>
           <div className="flex gap-3 mt-2 flex-wrap items-center" aria-label="Social Media Links">
             <a
-              href="https://www.instagram.com/infronix_web_agency"
+              href="https://www.instagram.com/infronixwebagency2026"
               target="_blank"
               rel="noopener noreferrer"
               aria-label="Follow Infronix on Instagram"
