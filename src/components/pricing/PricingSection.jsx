@@ -31,6 +31,12 @@ export default function PricingSection({ serviceKey }) {
           ))}
         </div>
 
+        {data.disclaimer && (
+          <p className="font-body-md text-xs sm:text-sm text-slate-400 text-center max-w-3xl mx-auto mt-10 leading-relaxed">
+            {data.disclaimer}
+          </p>
+        )}
+
         {/* Cross-Service Navigation */}
         <div className="mt-20 pt-10 border-t border-outline-variant/30 text-center flex flex-col items-center">
           <h3 className="font-headline-md text-xl text-surface font-bold mb-6">Looking for another service?</h3>

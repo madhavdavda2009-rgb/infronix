@@ -23,7 +23,7 @@ export default function PricingCard({ pkg, serviceId }) {
         <p className="font-body-md text-sm text-slate-300 font-medium h-10">{pkg.scope}</p>
 
         <div className="mt-4 flex items-baseline gap-2">
-          {pkg.label === "Starting at" && (
+          {pkg.label === "Starting from" && (
             <span className="font-label-caps uppercase tracking-widest text-[10px] text-champagne-light/80 font-bold">
               {pkg.label}
             </span>
@@ -31,11 +31,6 @@ export default function PricingCard({ pkg, serviceId }) {
           <span className="font-display text-4xl text-champagne-light font-bold">
             {pkg.price}
           </span>
-          {pkg.label === "/month" && (
-            <span className="font-label-caps uppercase tracking-widest text-[10px] text-champagne-light/80 font-bold">
-              {pkg.label}
-            </span>
-          )}
         </div>
       </div>
 

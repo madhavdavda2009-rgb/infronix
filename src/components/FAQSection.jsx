@@ -27,7 +27,7 @@ const FAQS = [
   },
   {
     question: "What are your website development and SEO pricing packages?",
-    answer: "We offer transparent, value-focused pricing: landing pages starting at ₹8,000, complete business corporate websites from ₹18,000 to ₹30,000, and comprehensive monthly SEO packages starting at ₹5,000/month. We also build custom tailored packages based on your exact enterprise requirements."
+    answer: "We offer transparent, value-focused pricing: landing pages starting from ₹8,000, complete business corporate websites from ₹18,000 to ₹30,000, and comprehensive monthly SEO packages starting from ₹5,000/month. We also build custom tailored packages based on your exact enterprise requirements."
   },
   {
     question: "Do you provide post-launch website maintenance and technical support?",

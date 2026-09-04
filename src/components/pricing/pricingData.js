@@ -9,7 +9,7 @@ export const pricingData = {
         id: "landing-page",
         name: "Landing Page",
         price: "₹8,000",
-        label: "Starting at",
+        label: "Starting from",
         scope: "Single high-converting landing page",
         features: [
           "Responsive design",
@@ -26,7 +26,7 @@ export const pricingData = {
         id: "business-website",
         name: "Business Website",
         price: "₹18,000",
-        label: "Starting at",
+        label: "Starting from",
         scope: "Multi-page business website",
         features: [
           "Responsive design",
@@ -44,7 +44,7 @@ export const pricingData = {
         id: "professional-website",
         name: "Professional Website",
         price: "₹30,000",
-        label: "Starting at",
+        label: "Starting from",
         scope: "Advanced multi-page website",
         features: [
           "Custom UI",
@@ -61,8 +61,8 @@ export const pricingData = {
       {
         id: "ecommerce-website",
         name: "E-commerce Website",
-        price: "₹45,000+",
-        label: "Starting at",
+        price: "₹45,000",
+        label: "Starting from",
         scope: "Product/catalog system",
         features: [
           "Shopping experience",
@@ -79,8 +79,8 @@ export const pricingData = {
       {
         id: "custom-web-application",
         name: "Custom Web Application",
-        price: "₹60,000+",
-        label: "Starting at",
+        price: "₹60,000",
+        label: "Starting from",
         scope: "Custom application development",
         features: [
           "Authentication where required",
@@ -105,8 +105,8 @@ export const pricingData = {
       {
         id: "seo-starter",
         name: "SEO Starter",
-        price: "₹5,000",
-        label: "/month",
+        price: "₹5,000/month",
+        label: "Starting from",
         scope: "Essential SEO foundation",
         features: [
           "Technical SEO audit",
@@ -123,8 +123,8 @@ export const pricingData = {
       {
         id: "local-seo",
         name: "Local SEO",
-        price: "₹7,500",
-        label: "/month",
+        price: "₹7,500/month",
+        label: "Starting from",
         scope: "Dominate local search results",
         features: [
           "Local SEO setup",
@@ -142,8 +142,8 @@ export const pricingData = {
       {
         id: "seo-growth",
         name: "SEO Growth",
-        price: "₹10,000",
-        label: "/month",
+        price: "₹10,000/month",
+        label: "Starting from",
         scope: "Accelerated organic growth",
         features: [
           "Everything in Starter plus:",
@@ -161,8 +161,8 @@ export const pricingData = {
       {
         id: "seo-pro",
         name: "SEO Pro",
-        price: "₹18,000",
-        label: "/month",
+        price: "₹18,000/month",
+        label: "Starting from",
         scope: "Comprehensive SEO dominance",
         features: [
           "Everything in Growth plus:",
@@ -188,8 +188,8 @@ export const pricingData = {
       {
         id: "automation-starter",
         name: "Automation Starter",
-        price: "₹10,000",
-        label: "Starting at",
+        price: "₹12,000",
+        label: "Starting from",
         scope: "One simple automation workflow",
         features: [
           "Basic AI chatbot OR lead capture",
@@ -205,8 +205,8 @@ export const pricingData = {
       {
         id: "business-automation",
         name: "Business Automation",
-        price: "₹25,000",
-        label: "Starting at",
+        price: "₹30,000",
+        label: "Starting from",
         scope: "2–3 connected automation workflows",
         features: [
           "AI chatbot",
@@ -223,8 +223,8 @@ export const pricingData = {
       {
         id: "ai-automation-pro",
         name: "AI Automation Pro",
-        price: "₹45,000+",
-        label: "Starting at",
+        price: "₹55,000",
+        label: "Starting from",
         scope: "Multiple interconnected AI workflows",
         features: [
           "WhatsApp automation",
@@ -241,8 +241,8 @@ export const pricingData = {
       {
         id: "custom-ai-system",
         name: "Custom AI System",
-        price: "₹75,000+",
-        label: "Starting at",
+        price: "₹1,00,000",
+        label: "Starting from",
         scope: "Comprehensive custom AI infrastructure",
         features: [
           "Multiple integrations",
@@ -256,7 +256,8 @@ export const pricingData = {
         ctaText: "Build My AI System",
         isRecommended: false
       }
-    ]
+    ],
+    disclaimer: "Final pricing depends on workflow complexity, integrations, AI requirements, and number of automation workflows. Third-party services such as hosting, domains, API usage, WhatsApp providers, and other subscriptions are billed separately."
   }
 };
 

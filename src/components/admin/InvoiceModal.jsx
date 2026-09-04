@@ -132,14 +132,45 @@ export default function InvoiceModal({ client, onClose }) {
   const upiPayAmount = balanceDue > 0 ? balanceDue : total;
   const upiString = `upi://pay?pa=${encodeURIComponent(upiId.trim())}&pn=${encodeURIComponent(upiPayeeName.trim())}&am=${upiPayAmount > 0 ? upiPayAmount.toFixed(2) : '0.00'}&cu=INR&tn=${encodeURIComponent(upiNote || invoiceId)}`;
 
-  // Trigger Native PDF Save / Download
-  const handleDownloadPdf = () => {
-    const originalTitle = document.title;
-    document.title = `${invoiceId}-Infronix-Invoice`;
-    window.print();
-    setTimeout(() => {
-      document.title = originalTitle;
-    }, 1500);
+  // Trigger Direct PDF Download via html2pdf.js
+  const [generatingPdf, setGeneratingPdf] = useState(false);
+  const handleDownloadPdf = async () => {
+    setGeneratingPdf(true);
+    try {
+      const html2pdf = (await import('html2pdf.js')).default;
+      const element = document.querySelector('.print-invoice-root');
+      if (!element) return;
+
+      // Temporarily make the print container visible for capture
+      element.style.display = 'block';
+      element.style.position = 'static';
+      element.style.width = '210mm';
+      element.style.height = 'auto';
+      element.style.background = '#ffffff';
+      element.style.padding = '12mm 15mm';
+
+      const opt = {
+        margin: 0,
+        filename: `${invoiceId}-Infronix-Invoice.pdf`,
+        image: { type: 'jpeg', quality: 0.98 },
+        html2canvas: { scale: 2, useCORS: true, letterRendering: true },
+        jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+      };
+
+      await html2pdf().set(opt).from(element).save();
+
+      // Restore hidden state
+      element.style.display = '';
+      element.style.position = '';
+      element.style.width = '';
+      element.style.height = '';
+      element.style.background = '';
+      element.style.padding = '';
+    } catch (err) {
+      console.error('PDF generation failed:', err);
+    } finally {
+      setGeneratingPdf(false);
+    }
   };
 
   // Copy Summary text for WhatsApp/Message
@@ -474,89 +505,91 @@ ${enableUpi && upiId ? `Pay via UPI VPA: ${upiId}\n` : ''}Online Invoice & Terms
         INTERACTIVE ADMIN MODAL STUDIO (Screen view with independent smooth scrolling panes)
       */}
       <div 
-        className="fixed inset-0 z-50 bg-black/90 backdrop-blur-md flex items-center justify-center p-2 md:p-6 print:hidden animate-fadeIn overflow-y-auto"
+        className="fixed inset-0 z-50 bg-black/90 backdrop-blur-md flex items-center justify-center p-0 md:p-6 print:hidden animate-fadeIn overflow-y-auto"
         data-lenis-prevent="true"
         onWheel={(e) => e.stopPropagation()}
       >
         <div 
-          className="bg-slate-950 border border-champagne-light/40 w-full max-w-7xl h-[92vh] max-h-[92vh] shadow-2xl flex flex-col overflow-hidden my-auto rounded-none"
+          className="bg-slate-950 border-0 md:border border-champagne-light/40 w-full max-w-7xl h-full md:h-[92vh] md:max-h-[92vh] shadow-2xl flex flex-col overflow-hidden my-auto rounded-none"
           data-lenis-prevent="true"
         >
           
           {/* Top Bar Header */}
-          <div className="bg-navy-muted/95 border-b border-champagne-light/20 px-4 md:px-6 py-3.5 md:py-4 flex flex-wrap justify-between items-center gap-3 shrink-0 z-10">
-            <div className="flex items-center gap-3">
-              <div className="w-9 h-9 bg-slate-900 border border-champagne-light/30 rounded flex items-center justify-center p-1">
-                <Receipt className="text-champagne-light text-xl" weight="bold" />
+          <div className="bg-navy-muted/95 border-b border-champagne-light/20 px-3 md:px-6 py-2.5 md:py-4 flex flex-wrap justify-between items-center gap-2 md:gap-3 shrink-0 z-10">
+            <div className="flex items-center gap-2 md:gap-3 min-w-0">
+              <div className="w-8 h-8 md:w-9 md:h-9 bg-slate-900 border border-champagne-light/30 rounded flex items-center justify-center p-1 shrink-0">
+                <Receipt className="text-champagne-light text-lg md:text-xl" weight="bold" />
               </div>
-              <div>
-                <span className="font-label-caps text-xs text-champagne-light uppercase tracking-widest block font-bold">
-                  Professional Invoice Studio
+              <div className="min-w-0">
+                <span className="font-label-caps text-[10px] md:text-xs text-champagne-light uppercase tracking-widest block font-bold">
+                  Invoice Studio
                 </span>
-                <h2 className="font-headline-lg text-base md:text-lg text-white font-bold">
+                <h2 className="font-headline-lg text-sm md:text-lg text-white font-bold truncate">
                   {client?.firstName} {client?.lastName} {client?.company ? `(${client.company})` : ''}
                 </h2>
               </div>
             </div>
 
             {/* Quick Actions */}
-            <div className="flex items-center gap-2.5 flex-wrap">
+            <div className="flex items-center gap-1.5 md:gap-2.5 flex-wrap">
               <button
                 type="button"
                 onClick={handleCopySummary}
-                className="px-3.5 py-2 bg-slate-900 hover:bg-slate-800 border border-slate-700 text-slate-200 text-xs font-label-caps uppercase tracking-wider font-bold transition-all flex items-center gap-2 cursor-pointer"
+                className="p-2 md:px-3.5 md:py-2 bg-slate-900 hover:bg-slate-800 border border-slate-700 text-slate-200 text-xs font-label-caps uppercase tracking-wider font-bold transition-all flex items-center gap-2 cursor-pointer"
                 title="Copy Invoice text summary for WhatsApp or message"
               >
                 <Copy size={15} />
-                <span>{copiedNotification ? 'Copied!' : 'Copy Summary'}</span>
+                <span className="hidden md:inline">{copiedNotification ? 'Copied!' : 'Copy Summary'}</span>
               </button>
 
               <button
                 type="button"
                 onClick={() => setIsEmailModalOpen(true)}
-                className="px-4 py-2 bg-slate-900 hover:bg-slate-800 border border-champagne-light/50 hover:border-champagne-light text-champagne-light text-xs font-label-caps uppercase tracking-widest font-bold transition-all flex items-center gap-2 cursor-pointer shadow-sm"
+                className="p-2 md:px-4 md:py-2 bg-slate-900 hover:bg-slate-800 border border-champagne-light/50 hover:border-champagne-light text-champagne-light text-xs font-label-caps uppercase tracking-widest font-bold transition-all flex items-center gap-2 cursor-pointer shadow-sm"
+                title="Email Invoice"
               >
                 <PaperPlaneTilt size={15} weight="bold" />
-                <span>Email Invoice</span>
+                <span className="hidden md:inline">Email Invoice</span>
               </button>
 
               {/* Download PDF Option */}
               <button
                 type="button"
                 onClick={handleDownloadPdf}
-                className="px-4 py-2 bg-champagne-light hover:bg-white text-navy-muted font-bold text-xs font-label-caps uppercase tracking-widest transition-all cursor-pointer flex items-center gap-2 shadow-md"
+                disabled={generatingPdf}
+                className={`p-2 md:px-4 md:py-2 font-bold text-xs font-label-caps uppercase tracking-widest transition-all flex items-center gap-2 shadow-md ${generatingPdf ? 'bg-slate-600 text-slate-300 cursor-wait' : 'bg-champagne-light hover:bg-white text-navy-muted cursor-pointer'}`}
                 title="Download or Save Invoice as PDF"
               >
                 <FilePdf size={16} weight="bold" />
-                <span>Download PDF</span>
+                <span className="hidden md:inline">{generatingPdf ? 'Generating...' : 'Download PDF'}</span>
               </button>
 
               <button 
                 type="button"
                 onClick={onClose} 
-                className="text-slate-400 hover:text-white p-2 transition-colors cursor-pointer ml-1"
+                className="text-slate-400 hover:text-white p-2 transition-colors cursor-pointer ml-0.5 md:ml-1"
                 title="Close"
               >
-                <X size={22} weight="bold" />
+                <X size={20} weight="bold" className="md:w-[22px] md:h-[22px]" />
               </button>
             </div>
           </div>
 
           {/* Main Dual-Pane Studio Body (Scrollable independently) */}
           <div 
-            className="flex-1 min-h-0 h-[calc(92vh-70px)] grid grid-cols-1 lg:grid-cols-12 overflow-y-auto lg:overflow-hidden"
+            className="flex-1 min-h-0 h-[calc(100vh-56px)] md:h-[calc(92vh-70px)] grid grid-cols-1 lg:grid-cols-12 overflow-y-auto lg:overflow-hidden"
             data-lenis-prevent="true"
           >
             
             {/* LEFT PANE: Invoice Configurator (5 cols) */}
             <div 
-              className="lg:col-span-5 border-r border-slate-800/80 p-5 overflow-y-auto h-full max-h-[calc(92vh-70px)] space-y-5 bg-slate-950 text-xs font-body-md text-slate-200 overscroll-contain"
+              className="lg:col-span-5 border-r border-slate-800/80 p-3 md:p-5 overflow-y-auto h-auto lg:h-full lg:max-h-[calc(92vh-70px)] space-y-4 md:space-y-5 bg-slate-950 text-xs font-body-md text-slate-200 overscroll-contain"
               data-lenis-prevent="true"
               onWheel={(e) => e.stopPropagation()}
             >
               
               {/* Metadata row */}
-              <div className="bg-slate-900/80 p-4 border border-slate-800 space-y-3">
+              <div className="bg-slate-900/80 p-3 md:p-4 border border-slate-800 space-y-3">
                 <div className="flex items-center justify-between border-b border-slate-800 pb-2">
                   <h4 className="font-label-caps text-xs text-champagne-light uppercase tracking-wider font-bold">
                     Invoice Metadata
@@ -564,7 +597,7 @@ ${enableUpi && upiId ? `Pay via UPI VPA: ${upiId}\n` : ''}Online Invoice & Terms
                   <span className="font-mono text-[11px] text-slate-400">{invoiceId}</span>
                 </div>
 
-                <div className="grid grid-cols-2 gap-3">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   <div>
                     <label className="font-label-caps text-[10px] text-slate-400 uppercase tracking-wider block mb-1">
                       Issue Date
@@ -590,7 +623,7 @@ ${enableUpi && upiId ? `Pay via UPI VPA: ${upiId}\n` : ''}Online Invoice & Terms
                   </div>
                 </div>
 
-                <div className="grid grid-cols-2 gap-3 pt-1">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
                   <div>
                     <label className="font-label-caps text-[10px] text-slate-400 uppercase tracking-wider block mb-1">
                       Payment Status
@@ -623,7 +656,7 @@ ${enableUpi && upiId ? `Pay via UPI VPA: ${upiId}\n` : ''}Online Invoice & Terms
               </div>
 
               {/* Line Items Editor */}
-              <div className="bg-slate-900/80 p-4 border border-slate-800 space-y-3">
+              <div className="bg-slate-900/80 p-3 md:p-4 border border-slate-800 space-y-3">
                 <div className="flex items-center justify-between border-b border-slate-800 pb-2">
                   <h4 className="font-label-caps text-xs text-champagne-light uppercase tracking-wider font-bold">
                     Line Items ({items.length})
@@ -694,7 +727,7 @@ ${enableUpi && upiId ? `Pay via UPI VPA: ${upiId}\n` : ''}Online Invoice & Terms
               </div>
 
               {/* UPI Instant QR Code Generator Settings */}
-              <div className="bg-slate-900/80 p-4 border border-slate-800 space-y-3">
+              <div className="bg-slate-900/80 p-3 md:p-4 border border-slate-800 space-y-3">
                 <div className="flex items-center justify-between border-b border-slate-800 pb-2">
                   <div className="flex items-center gap-2">
                     <QrCode className="text-champagne-light text-base" weight="bold" />
@@ -759,12 +792,12 @@ ${enableUpi && upiId ? `Pay via UPI VPA: ${upiId}\n` : ''}Online Invoice & Terms
               </div>
 
               {/* Payments & Deposits */}
-              <div className="bg-slate-900/80 p-4 border border-slate-800 space-y-3">
+              <div className="bg-slate-900/80 p-3 md:p-4 border border-slate-800 space-y-3">
                 <h4 className="font-label-caps text-xs text-champagne-light uppercase tracking-wider font-bold border-b border-slate-800 pb-2">
                   Payment Collection & Reconciliation
                 </h4>
 
-                <div className="grid grid-cols-2 gap-3">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   <div>
                     <label className="font-label-caps text-[10px] text-slate-400 uppercase tracking-wider block mb-1">
                       Amount Paid (₹)
@@ -792,7 +825,7 @@ ${enableUpi && upiId ? `Pay via UPI VPA: ${upiId}\n` : ''}Online Invoice & Terms
                   </div>
                 </div>
 
-                <div className="grid grid-cols-2 gap-3">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   <div>
                     <label className="font-label-caps text-[10px] text-slate-400 uppercase tracking-wider block mb-1">
                       Transaction / Ref ID
@@ -837,21 +870,21 @@ ${enableUpi && upiId ? `Pay via UPI VPA: ${upiId}\n` : ''}Online Invoice & Terms
 
             {/* RIGHT PANE: Live A4 Document Preview (7 cols - Scrollable) */}
             <div 
-              className="lg:col-span-7 bg-slate-900/50 p-4 md:p-8 overflow-y-auto h-full max-h-[calc(92vh-70px)] flex items-start justify-center overscroll-contain"
+              className="lg:col-span-7 bg-slate-900/50 p-2 md:p-8 overflow-y-auto h-auto lg:h-full lg:max-h-[calc(92vh-70px)] flex items-start justify-center overscroll-contain"
               data-lenis-prevent="true"
               onWheel={(e) => e.stopPropagation()}
             >
               
               {/* Paper simulation */}
               <div 
-                className="w-full max-w-[760px] bg-white text-slate-900 p-6 md:p-10 shadow-2xl rounded-sm border border-slate-300 font-sans my-auto"
+                className="w-full max-w-[760px] bg-white text-slate-900 p-4 md:p-10 shadow-2xl rounded-sm border border-slate-300 font-sans my-auto"
                 data-lenis-prevent="true"
               >
                 
                 {/* Paper Header */}
-                <div className="flex justify-between items-start pb-6 border-b-2 border-slate-900 gap-4">
-                  <div className="flex items-start gap-3.5">
-                    <div className="w-12 h-12 bg-[#1C2541] rounded flex items-center justify-center p-2 shrink-0 shadow-sm">
+                <div className="flex flex-col sm:flex-row justify-between items-start pb-4 md:pb-6 border-b-2 border-slate-900 gap-3 md:gap-4">
+                  <div className="flex items-start gap-2.5 md:gap-3.5">
+                    <div className="w-10 h-10 md:w-12 md:h-12 bg-[#1C2541] rounded flex items-center justify-center p-1.5 md:p-2 shrink-0 shadow-sm">
                       <img 
                         src="/web-log-removebg-preview.png" 
                         alt="Infronix Logo" 
@@ -859,23 +892,23 @@ ${enableUpi && upiId ? `Pay via UPI VPA: ${upiId}\n` : ''}Online Invoice & Terms
                       />
                     </div>
                     <div>
-                      <h3 className="text-xl font-bold text-slate-950 font-serif tracking-tight leading-none">
+                      <h3 className="text-base md:text-xl font-bold text-slate-950 font-serif tracking-tight leading-none">
                         INFRONIX WEB AGENCY
                       </h3>
-                      <p className="text-[11px] text-slate-500 font-semibold tracking-wider uppercase mt-1">
+                      <p className="text-[10px] md:text-[11px] text-slate-500 font-semibold tracking-wider uppercase mt-1">
                         Web Development &middot; SEO &middot; AI Automation
                       </p>
-                      <p className="text-[11px] text-slate-600 mt-0.5">
+                      <p className="text-[10px] md:text-[11px] text-slate-600 mt-0.5">
                         www.infronixweb.in &middot; support@infronixweb.in
                       </p>
                     </div>
                   </div>
 
-                  <div className="text-right shrink-0">
-                    <h4 className="text-xl font-bold uppercase tracking-widest text-[#1C2541] font-serif">
+                  <div className="text-left sm:text-right shrink-0">
+                    <h4 className="text-base md:text-xl font-bold uppercase tracking-widest text-[#1C2541] font-serif">
                       INVOICE
                     </h4>
-                    <p className="text-xs font-mono font-bold text-slate-800 mt-0.5">{invoiceId}</p>
+                    <p className="text-[11px] md:text-xs font-mono font-bold text-slate-800 mt-0.5">{invoiceId}</p>
                     <div className="mt-1.5">
                       <span className={`inline-block px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider border rounded ${getStatusBadge(derivedStatus)}`}>
                         {derivedStatus}
@@ -885,7 +918,7 @@ ${enableUpi && upiId ? `Pay via UPI VPA: ${upiId}\n` : ''}Online Invoice & Terms
                 </div>
 
                 {/* Bill To & From Grid */}
-                <div className="grid grid-cols-3 gap-4 py-5 border-b border-slate-200 text-xs">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-4 py-4 md:py-5 border-b border-slate-200 text-xs">
                   <div>
                     <span className="font-bold uppercase tracking-wider text-slate-400 block mb-1 text-[10px]">
                       Billed To
@@ -924,14 +957,14 @@ ${enableUpi && upiId ? `Pay via UPI VPA: ${upiId}\n` : ''}Online Invoice & Terms
                 </div>
 
                 {/* Items Table */}
-                <div className="py-5">
-                  <table className="w-full text-left border-collapse text-xs">
+                <div className="py-4 md:py-5 overflow-x-auto -mx-4 px-4 md:mx-0 md:px-0">
+                  <table className="w-full text-left border-collapse text-xs min-w-[400px]">
                     <thead>
-                      <tr className="bg-[#1C2541] text-white text-[10px] uppercase tracking-wider font-bold">
-                        <th className="py-2.5 px-3">Description</th>
-                        <th className="py-2.5 px-3 text-center w-14">Qty</th>
-                        <th className="py-2.5 px-3 text-right w-24">Rate (₹)</th>
-                        <th className="py-2.5 px-3 text-right w-28">Amount (₹)</th>
+                      <tr className="bg-[#1C2541] text-white text-[9px] md:text-[10px] uppercase tracking-wider font-bold">
+                        <th className="py-2 px-2 md:py-2.5 md:px-3">Description</th>
+                        <th className="py-2 px-2 md:py-2.5 md:px-3 text-center w-12 md:w-14">Qty</th>
+                        <th className="py-2 px-2 md:py-2.5 md:px-3 text-right w-20 md:w-24">Rate (₹)</th>
+                        <th className="py-2 px-2 md:py-2.5 md:px-3 text-right w-24 md:w-28">Amount (₹)</th>
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-slate-200">
@@ -952,7 +985,7 @@ ${enableUpi && upiId ? `Pay via UPI VPA: ${upiId}\n` : ''}Online Invoice & Terms
                 </div>
 
                 {/* Summary & Payment Grid */}
-                <div className="grid grid-cols-2 gap-6 pt-2 pb-5 border-b border-slate-200 text-xs">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 pt-2 pb-5 border-b border-slate-200 text-xs">
                   {/* Left: Payment instruction & UPI QR */}
                   <div className="space-y-1.5">
                     <span className="font-bold uppercase tracking-wider text-slate-400 block text-[10px]">
@@ -1148,7 +1181,7 @@ ${enableUpi && upiId ? `Pay via UPI VPA: ${upiId}\n` : ''}Online Invoice & Terms
               </p>
             </div>
 
-            <div className="p-5 border-t border-slate-800 bg-slate-900/40 flex justify-end gap-3 shrink-0">
+            <div className="p-4 md:p-5 border-t border-slate-800 bg-slate-900/40 flex flex-col-reverse sm:flex-row justify-end gap-2 md:gap-3 shrink-0">
               <button
                 type="button"
                 onClick={() => setIsEmailModalOpen(false)}

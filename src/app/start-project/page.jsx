@@ -292,10 +292,7 @@ export default function StartProjectPage() {
                     <p className="font-body-md text-sm text-on-surface-variant mt-0.5 font-medium">{resolvedService.name} • {resolvedPackage.scope}</p>
                     <div className="mt-3 inline-flex items-center gap-2">
                       <span className="font-display text-2xl text-primary font-bold">{resolvedPackage.price}</span>
-                      {resolvedPackage.label === '/month' && (
-                        <span className="text-on-surface-variant text-xs font-bold uppercase tracking-widest">/month</span>
-                      )}
-                      {resolvedPackage.label === 'Starting at' && (
+                      {resolvedPackage.label === 'Starting from' && (
                         <span className="text-on-surface-variant text-xs font-bold uppercase tracking-widest">starting</span>
                       )}
                     </div>
