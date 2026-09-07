@@ -1,6 +1,7 @@
 import ContactSection from '@/components/ContactSection';
 import FAQSection from '@/components/FAQSection';
 import PricingSection from '@/components/pricing/PricingSection';
+import Link from 'next/link';
 
 export const metadata = {
   title: 'SEO Agency & Technical SEO Services in Ahmedabad',
@@ -14,7 +15,7 @@ export default function SEOPage() {
   return (
     <>
       <main className="w-full pt-28 md:pt-32" id="main-content">
-        <section className="relative w-full min-h-[560px] md:h-[700px] flex items-center bg-navy-muted overflow-hidden pt-20 pb-12" aria-label="SEO Services">
+        <section className="relative w-full min-h-[560px] md:min-h-[700px] flex items-center bg-navy-muted overflow-hidden pt-20 pb-12" aria-label="SEO Services">
           <img
             src="/hero_bg.webp"
             alt="SEO Analytics and Search Rankings"
@@ -37,12 +38,12 @@ export default function SEOPage() {
             </div>
 
             <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 mt-2 sm:pl-gutter w-full sm:w-auto">
-              <a
+              <Link
                 href="/start-project"
                 className="bg-champagne-light text-navy-muted font-label-caps uppercase tracking-widest text-xs px-6 py-3.5 rounded-none hover:bg-white transition-all shadow-lg border border-champagne-light text-center font-bold"
               >
                 Boost Your Rankings
-              </a>
+              </Link>
             </div>
           </div>
         </section>

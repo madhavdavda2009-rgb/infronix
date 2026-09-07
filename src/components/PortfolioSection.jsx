@@ -2,7 +2,8 @@
 import id5 from '@/assets/id-5.webp';
 import { RocketLaunch, ArrowRight } from '@phosphor-icons/react';
 
-export default function PortfolioSection() {
+export default function PortfolioSection({ asH1 = false }) {
+  const Heading = asH1 ? 'h1' : 'h2';
   return (
     <section className="relative w-full bg-navy-muted overflow-hidden py-section-gap" id="portfolio" aria-labelledby="portfolio-title">
       {/* Background image overlay — same pattern as HeroSection */}
@@ -21,7 +22,7 @@ export default function PortfolioSection() {
         {/* Header — mirrors HeroSection left-border accent */}
         <div className="flex flex-col gap-4 max-w-3xl border-l-2 border-champagne-light pl-4 sm:pl-gutter py-2 mb-8 md:mb-12">
           <span className="font-label-caps text-xs text-champagne-light tracking-widest uppercase font-bold">Our Work</span>
-          <h2 id="portfolio-title" className="font-headline-lg text-2xl sm:text-3xl md:text-4xl text-surface font-bold">Featured Projects &amp; Digital Solutions</h2>
+          <Heading id="portfolio-title" className="font-headline-lg text-2xl sm:text-3xl md:text-4xl text-surface font-bold">Featured Projects &amp; Digital Solutions</Heading>
           <p className="font-body-md text-sm sm:text-base text-slate-200 max-w-xl leading-relaxed font-medium">
             We partner with forward-thinking brands in Ahmedabad and across India to create digital experiences that merge stunning aesthetics with powerful technical execution.
           </p>

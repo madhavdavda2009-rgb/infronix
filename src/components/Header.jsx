@@ -87,12 +87,12 @@ export default function Header() {
 
         {/* Action Buttons */}
         <div className="flex items-center gap-3">
-          <a
+          <Link
             href="/start-project"
             className="hidden sm:inline-block bg-transparent border border-champagne-light text-champagne-light font-label-caps uppercase tracking-widest text-xs px-5 py-2.5 rounded-none hover:bg-champagne-light hover:text-navy-muted transition-all font-bold"
           >
             Start Project
-          </a>
+          </Link>
 
           {/* Mobile Hamburger Toggle */}
           <button
@@ -167,13 +167,13 @@ export default function Header() {
             </Link>
 
             <div className="pt-4 border-t border-slate-800 flex justify-center">
-              <a
+              <Link
                 href="/start-project"
                 onClick={() => setMobileMenuOpen(false)}
                 className="w-full max-w-xs bg-champagne-light text-navy-muted font-label-caps uppercase tracking-widest text-xs py-3 rounded-none font-bold text-center"
               >
                 Start Project
-              </a>
+              </Link>
             </div>
           </nav>
         </div>

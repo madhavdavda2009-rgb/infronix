@@ -35,7 +35,6 @@ export default function StartProjectPage() {
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
-  const [isChecking, setIsChecking] = useState(true);
 
   // Pricing state
   const [selectedServiceId, setSelectedServiceId] = useState('');
@@ -82,7 +81,6 @@ export default function StartProjectPage() {
         }
       }
     }
-    setIsChecking(false);
   }, []);
 
   useGSAP(() => {
@@ -226,14 +224,6 @@ export default function StartProjectPage() {
   const budgetOptions = selectedServiceId ? (BUDGET_OPTIONS[selectedServiceId] || DEFAULT_BUDGETS) : DEFAULT_BUDGETS;
   const ServiceIcon = selectedServiceId ? SERVICE_ICONS[selectedServiceId] : null;
 
-  // Loading spinner
-  if (isChecking) {
-    return (
-      <section className="min-h-screen pt-32 pb-16 bg-surface flex items-center justify-center px-4">
-        <div className="w-8 h-8 border-2 border-secondary border-t-transparent rounded-full animate-spin"></div>
-      </section>
-    );
-  }
 
   // Success state
   if (success) {

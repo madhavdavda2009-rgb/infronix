@@ -14,7 +14,7 @@ export default function AboutPage() {
   return (
     <>
       <main className="w-full pt-28 md:pt-32" id="main-content">
-        <AboutSection />
+        <AboutSection asH1={true} />
         <TrustSection />
 
         {/* Additional Local Context */}

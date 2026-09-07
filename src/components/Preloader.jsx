@@ -15,6 +15,10 @@ export default function Preloader() {
   const text3Ref = useRef(null); // LOADING...
 
   useEffect(() => {
+    // Completely bypass preloader for search engine & LLM crawlers
+    const isBot = typeof navigator !== 'undefined' && /bot|crawler|spider|googlebot|bingbot|yandex|duckduckbot|slurp|baiduspider|facebookexternalhit|twitterbot|linkedinbot|embedly|quora|whatsapp|slackbot|claude|chatgpt|gptbot|perplexity/i.test(navigator.userAgent);
+    if (isBot) return;
+
     // Only run on initial session load
     const hasPlayed = localStorage.getItem('infronix_preloader_played');
     if (!hasPlayed) {
@@ -104,7 +108,12 @@ export default function Preloader() {
         .to(containerRef.current, {
           yPercent: -100,
           duration: 1,
-          ease: 'power4.inOut'
+          ease: 'power4.inOut',
+          onStart: () => {
+            if (containerRef.current) {
+              containerRef.current.style.pointerEvents = 'none';
+            }
+          }
         });
     });
 
