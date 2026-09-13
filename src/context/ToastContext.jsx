@@ -35,8 +35,8 @@ export function ToastProvider({ children }) {
               toast.type === 'error'
                 ? 'bg-red-950/95 border-red-500/50 text-red-100'
                 : toast.type === 'warning'
-                ? 'bg-navy-muted/95 border-secondary/60 text-champagne-light shadow-2xl border-l-4 border-l-secondary'
-                : 'bg-navy-muted/95 border-champagne-light/50 text-champagne-light'
+                ? 'bg-deep-space/95 border-accent/60 text-accent shadow-2xl border-l-4 border-l-accent'
+                : 'bg-deep-space/95 border-accent/50 text-accent'
             }`}
           >
             <div className="flex items-start gap-3">

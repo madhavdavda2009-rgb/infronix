@@ -49,16 +49,19 @@ export default function AdminLogin() {
   return (
     <>
       <SEO title="Admin Login" description="Secure Administrator Authentication Portal for Infronix Web Agency." />
-      <main className="min-h-screen w-full bg-navy-muted flex items-center justify-center px-margin-mobile py-24 relative overflow-hidden">
+      <main className="min-h-screen w-full bg-surface flex items-center justify-center px-margin-mobile py-24 relative overflow-hidden">
         {/* Subtle background glow */}
-        <div className="absolute inset-0 bg-gradient-to-tr from-navy-muted via-navy-muted/90 to-navy-muted/60"></div>
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-champagne-light/5 blur-[120px] rounded-full pointer-events-none"></div>
+        <div className="absolute inset-0 bg-gradient-to-tr from-surface via-surface/90 to-surface/60"></div>
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-primary/5 blur-[120px] rounded-full pointer-events-none"></div>
 
-        <div className="relative z-10 w-full max-w-md bg-surface-container-lowest p-8 md:p-10 border border-champagne-light/40 shadow-2xl">
-          <div className="text-center mb-8 border-b border-outline-variant/30 pb-6">
-            <span className="font-label-caps text-xs text-champagne-light uppercase tracking-widest block mb-2 font-bold">Restricted Portal</span>
-            <h1 className="font-headline-lg text-2xl md:text-3xl text-primary font-bold">Admin Portal</h1>
-            <p className="font-body-md text-xs text-slate-700 font-semibold mt-2">
+        <div className="relative z-10 w-full max-w-md bg-surface-container-lowest p-8 md:p-10 border border-primary/40 shadow-2xl">
+          <div className="text-center mb-8 border-b border-outline-variant/60 pb-6">
+            <div className="flex justify-center mb-6">
+              <img src="/light-web-logo.png" alt="Infronix Icon" className="h-10 md:h-12 w-auto object-contain" />
+            </div>
+            <span className="font-label-caps text-xs text-primary uppercase tracking-widest block mb-2 font-bold">Restricted Portal</span>
+            <h1 className="font-headline-lg text-2xl md:text-3xl text-on-surface font-bold">Admin Portal</h1>
+            <p className="font-body-md text-xs text-main-text font-semibold mt-2">
               Authorized personnel only. Credentials required.
             </p>
           </div>
@@ -81,7 +84,7 @@ export default function AdminLogin() {
                   type="text"
                   value={username}
                   onChange={(e) => setUsername(e.target.value)}
-                  className="w-full bg-surface text-on-surface font-body-md px-4 py-3 border border-outline focus:outline-none focus:border-champagne-light transition-colors font-medium placeholder:text-slate-500"
+                  className="w-full bg-surface text-on-surface font-body-md px-4 py-3 border border-outline focus:outline-none focus:border-primary transition-colors font-medium placeholder:text-text-light"
                   placeholder="Enter username"
                   required
                   autoComplete="username"
@@ -99,7 +102,7 @@ export default function AdminLogin() {
                   type="password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="w-full bg-surface text-on-surface font-body-md px-4 py-3 border border-outline focus:outline-none focus:border-champagne-light transition-colors font-medium placeholder:text-slate-500"
+                  className="w-full bg-surface text-on-surface font-body-md px-4 py-3 border border-outline focus:outline-none focus:border-primary transition-colors font-medium placeholder:text-text-light"
                   placeholder="Enter password"
                   required
                   autoComplete="current-password"
@@ -110,11 +113,11 @@ export default function AdminLogin() {
             <button
               type="submit"
               disabled={loading}
-              className="mt-2 w-full bg-champagne-light text-navy-muted font-label-caps uppercase tracking-widest py-3.5 hover:bg-white transition-all shadow-md border border-champagne-light flex items-center justify-center gap-2 font-bold disabled:opacity-50 cursor-pointer text-sm"
+              className="mt-2 w-full bg-primary text-surface font-label-caps uppercase tracking-widest py-3.5 hover:bg-white transition-all shadow-md border border-primary flex items-center justify-center gap-2 font-bold disabled:opacity-50 cursor-pointer text-sm"
             >
               {loading ? (
                 <>
-                  <div className="w-4 h-4 border-2 border-navy-muted border-t-transparent rounded-full animate-spin"></div>
+                  <div className="w-4 h-4 border-2 border-surface border-t-transparent rounded-full animate-spin"></div>
                   <span>Authenticating...</span>
                 </>
               ) : (
@@ -126,7 +129,7 @@ export default function AdminLogin() {
             </button>
           </form>
 
-          <div className="mt-8 text-center text-xs text-slate-500 font-semibold">
+          <div className="mt-8 text-center text-xs text-text-light font-semibold">
             <span>Infronix Admin Panel</span>
           </div>
         </div>

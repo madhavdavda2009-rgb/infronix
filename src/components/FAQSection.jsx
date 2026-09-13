@@ -22,6 +22,10 @@ const FAQS = [
     answer: "We build custom AI chatbots, 24/7 automated customer support assistants, WhatsApp API lead generation systems, CRM data sync automations, and LLM-powered workflow tools that eliminate repetitive manual tasks and drastically lower operational overhead."
   },
   {
+    question: "How do your Digital Marketing and Lead Generation services work?",
+    answer: "We develop full-funnel digital marketing strategies including Meta Ads (Facebook & Instagram), Google Search Ads, Social Media Management, Reels creation, and automated WhatsApp inquiry funnels to consistently generate high-intent customer leads and increase sales ROI."
+  },
+  {
     question: "Will my website be mobile-friendly and responsive across all devices?",
     answer: "Yes, 100%. Every digital product we engineer follows a rigorous mobile-first design philosophy. We test across iPhones, Android smartphones, tablets, laptops, and ultra-wide desktop monitors to ensure responsive typography, seamless touch navigation, and fluid layouts."
   },
@@ -37,35 +41,35 @@ const FAQS = [
 
 export default function FAQSection() {
   return (
-    <section id="faq" className="w-full py-16 md:py-24 bg-surface relative z-20" aria-labelledby="faq-title">
-      <div className="max-w-[900px] mx-auto px-margin-mobile md:px-margin-desktop">
+    <section id="faq" className="w-full py-14 sm:py-20 md:py-24 bg-surface relative z-20" aria-labelledby="faq-title">
+      <div className="max-w-[900px] mx-auto px-4 sm:px-6 md:px-8">
 
-        <div className="text-center mb-10 md:mb-14 border-b border-outline-variant pb-6">
-          <span className="font-label-caps text-xs text-secondary tracking-widest uppercase mb-2 block font-bold">
+        <div className="text-center mb-8 sm:mb-12 md:mb-14 border-b border-outline-variant pb-6">
+          <span className="font-label-caps text-xs text-primary tracking-widest uppercase mb-2 block font-bold">
             Frequently Asked Questions
           </span>
-          <h2 id="faq-title" className="font-headline-lg text-2xl sm:text-3xl md:text-4xl text-primary font-bold">
+          <h2 id="faq-title" className="font-headline-lg text-2xl sm:text-3xl md:text-4xl text-on-surface font-bold">
             Web Development &amp; SEO FAQs
           </h2>
-          <p className="font-body-md text-sm sm:text-base text-on-surface-variant max-w-xl mx-auto mt-2 leading-relaxed font-medium">
+          <p className="font-body-md text-xs sm:text-sm md:text-base text-main-text max-w-xl mx-auto mt-2 leading-relaxed font-medium">
             Everything you need to know about partnering with Infronix Web Agency for your website, SEO, and AI automation needs.
           </p>
         </div>
 
-        <div className="flex flex-col gap-4" itemScope itemType="https://schema.org/FAQPage">
+        <div className="flex flex-col gap-3 sm:gap-4" itemScope itemType="https://schema.org/FAQPage">
           {FAQS.map((faq, index) => (
             <div
               key={index}
-              className="border border-outline-variant p-6 sm:p-7 bg-surface-container-lowest hover:border-champagne-light transition-all shadow-sm"
+              className="border border-outline-variant p-4 sm:p-6 md:p-7 bg-surface-container-lowest hover:border-primary transition-all shadow-sm rounded-xl"
               itemScope
               itemProp="mainEntity"
               itemType="https://schema.org/Question"
             >
-              <h3 className="font-headline-md text-base sm:text-lg text-primary mb-2 font-bold leading-snug" itemProp="name">
+              <h3 className="font-headline-md text-sm sm:text-base md:text-lg text-on-surface mb-2 font-bold leading-snug" itemProp="name">
                 {faq.question}
               </h3>
               <div itemScope itemProp="acceptedAnswer" itemType="https://schema.org/Answer">
-                <p className="font-body-md text-xs sm:text-sm text-on-surface-variant leading-relaxed font-medium" itemProp="text">
+                <p className="font-body-md text-xs sm:text-sm text-main-text leading-relaxed font-medium" itemProp="text">
                   {faq.answer}
                 </p>
               </div>

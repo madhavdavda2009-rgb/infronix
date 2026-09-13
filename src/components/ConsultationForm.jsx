@@ -1,12 +1,11 @@
 "use client";
-import { Clock, Timer, WarningCircle, ChatCircle, Tag, CheckCircle, X } from "@phosphor-icons/react";
+import { Clock, Timer, WarningCircle, ChatCircle, CheckCircle } from "@phosphor-icons/react";
 import { useState, useEffect } from 'react';
 import { useToast } from '@/context/ToastContext';
 import { getFriendlyErrorMessage, parseJsonResponse } from '@/utils/errorHandler';
 import { formatTitleCase, formatEmail, isValidEmail } from '@/utils/formFormatters';
-import { getServicePricing, getPackage, pricingData } from './pricing/pricingData';
 
-const RATE_LIMIT_2H_MS = 2 * 60 * 60 * 1000; // 2 hours in milliseconds
+const RATE_LIMIT_2H_MS = 2 * 60 * 60 * 1000;
 
 export default function ConsultationForm() {
   const [firstName, setFirstName] = useState('');
@@ -14,12 +13,6 @@ export default function ConsultationForm() {
   const [email, setEmail] = useState('');
   const [company, setCompany] = useState('');
   const [projectDetails, setProjectDetails] = useState('');
-
-  // Dynamic Pricing State
-  const [selectedServiceId, setSelectedServiceId] = useState('');
-  const [selectedPackageId, setSelectedPackageId] = useState('');
-  const [resolvedService, setResolvedService] = useState(null);
-  const [resolvedPackage, setResolvedPackage] = useState(null);
 
   const [loading, setLoading] = useState(false);
   const [isRateLimited, setIsRateLimited] = useState(false);
@@ -30,24 +23,6 @@ export default function ConsultationForm() {
 
   useEffect(() => {
     checkRateLimit();
-
-    if (typeof window !== 'undefined') {
-      const params = new URLSearchParams(window.location.search);
-      const serviceId = params.get('service');
-      const packageId = params.get('package');
-
-      if (serviceId && packageId) {
-        const service = getServicePricing(serviceId);
-        const pkg = getPackage(serviceId, packageId);
-
-        if (service && pkg) {
-          setSelectedServiceId(serviceId);
-          setSelectedPackageId(packageId);
-          setResolvedService(service);
-          setResolvedPackage(pkg);
-        }
-      }
-    }
   }, []);
 
   function checkRateLimit() {
@@ -66,7 +41,6 @@ export default function ConsultationForm() {
     }
   }
 
-  // Real-time blur formatters
   function handleFirstNameBlur() {
     if (firstName) setFirstName(formatTitleCase(firstName));
   }
@@ -93,67 +67,27 @@ export default function ConsultationForm() {
     }
   }
 
-  function handleServiceChange(e) {
-    const newServiceId = e.target.value;
-    setSelectedServiceId(newServiceId);
-    setSelectedPackageId('');
-
-    if (newServiceId) {
-      setResolvedService(getServicePricing(newServiceId));
-      setResolvedPackage(null);
-    } else {
-      setResolvedService(null);
-      setResolvedPackage(null);
-    }
-  }
-
-  function handlePackageChange(e) {
-    const newPackageId = e.target.value;
-    setSelectedPackageId(newPackageId);
-
-    if (selectedServiceId && newPackageId) {
-      setResolvedPackage(getPackage(selectedServiceId, newPackageId));
-    } else {
-      setResolvedPackage(null);
-    }
-  }
-
-  function clearPackageSelection() {
-    setSelectedServiceId('');
-    setSelectedPackageId('');
-    setResolvedService(null);
-    setResolvedPackage(null);
-
-    // Clean URL silently
-    if (typeof window !== 'undefined') {
-      window.history.replaceState({}, '', '/start-project');
-    }
-  }
-
   async function handleSubmit(e) {
     e.preventDefault();
     if (isRateLimited) {
-      showToast('You have already submitted a consultation request within the last 2 hours.', 'warning');
+      showToast('You have already submitted a request within the last 2 hours.', 'warning');
       return;
     }
 
-    // Auto-format all fields regardless of how user entered them
     const formattedFirstName = formatTitleCase(firstName);
     const formattedLastName = formatTitleCase(lastName);
     const formattedCompany = formatTitleCase(company);
     const formattedEmail = formatEmail(email);
     const formattedDetails = projectDetails.trim();
 
-    // Update state to match clean formatting
     setFirstName(formattedFirstName);
     setLastName(formattedLastName);
     setCompany(formattedCompany);
     setEmail(formattedEmail);
 
-    // Validate email format
     if (!isValidEmail(formattedEmail)) {
       setEmailError('Please enter a valid work email address (e.g. jane@company.com)');
-      showToast('Please enter a valid work email address (e.g. jane@company.com)', 'warning');
+      showToast('Please enter a valid work email address', 'warning');
       return;
     }
 
@@ -169,9 +103,7 @@ export default function ConsultationForm() {
           lastName: formattedLastName,
           email: formattedEmail,
           company: formattedCompany,
-          projectDetails: formattedDetails,
-          serviceId: selectedServiceId,
-          packageId: selectedPackageId
+          projectDetails: formattedDetails
         })
       });
 
@@ -181,151 +113,74 @@ export default function ConsultationForm() {
         localStorage.setItem('infronix_last_submission_time', Date.now().toString());
         setIsRateLimited(true);
         setTimeRemainingText('2h 0m');
-
         showToast(data.message || 'Thank you! Your request has been securely received.', 'success');
-
         setFirstName('');
         setLastName('');
         setEmail('');
         setCompany('');
         setProjectDetails('');
-        clearPackageSelection();
       } else {
-        const friendlyMsg = getFriendlyErrorMessage(data.error, 'Unable to submit your request at this time. Please check your entries and try again.');
-        showToast(friendlyMsg, 'error');
+        showToast(getFriendlyErrorMessage(data.error, 'Unable to submit your request.'), 'error');
       }
     } catch (err) {
-      const friendlyMsg = getFriendlyErrorMessage(err, 'We are having trouble connecting to our services. Please try again shortly.');
-      showToast(friendlyMsg, 'error');
+      showToast(getFriendlyErrorMessage(err, 'We are having trouble connecting.'), 'error');
     } finally {
       setLoading(false);
     }
   }
 
   return (
-    <section id="consultation" className="w-full py-16 md:py-24 bg-surface relative z-20 pt-24 md:pt-32" aria-labelledby="consultation-form-title">
-      <div className="max-w-[800px] mx-auto px-margin-mobile md:px-margin-desktop">
+    <section id="consultation" className="w-full py-12 sm:py-16 md:py-24 bg-surface relative z-20 pt-20 sm:pt-24 md:pt-32" aria-labelledby="consultation-form-title">
+      <div className="max-w-[800px] mx-auto px-4 sm:px-6 md:px-8">
         <div className="text-center mb-8 md:mb-12 border-b border-outline-variant pb-6 md:pb-8">
-          <span className="font-label-caps text-xs text-secondary tracking-widest uppercase mb-2 block font-bold">Get in Touch</span>
-          <h1 id="consultation-form-title" className="font-headline-lg text-2xl sm:text-3xl md:text-4xl text-primary font-bold">Schedule a Consultation</h1>
-          <p className="font-body-md text-xs sm:text-sm md:text-base text-on-surface-variant font-medium mt-2 max-w-2xl mx-auto leading-relaxed">
+          <span className="font-label-caps text-xs text-primary tracking-widest uppercase mb-2 block font-bold">Contact Us</span>
+          <h1 id="consultation-form-title" className="font-headline-lg text-2xl sm:text-3xl md:text-4xl text-on-surface font-bold">Get a Quote</h1>
+          <p className="font-body-md text-xs sm:text-sm md:text-base text-main-text font-medium mt-2 max-w-2xl mx-auto leading-relaxed">
             Ready to transform your digital presence? Fill out the form below and one of our creative directors will get back to you within 24 hours.
           </p>
         </div>
 
         {isRateLimited && (
-          <div className="mb-8 p-5 sm:p-6 bg-navy-muted border border-secondary/50 text-white text-sm flex items-start gap-4 rounded-none shadow-lg relative overflow-hidden border-l-4 border-l-secondary">
-            <Clock className="text-champagne-light text-2xl mt-0.5 shrink-0" weight="bold" />
+          <div className="mb-8 p-4 sm:p-6 bg-surface-container-lowest border border-primary/50 text-on-surface text-sm flex items-start gap-4 shadow-lg relative border-l-4 border-l-primary rounded-xl">
+            <Clock className="text-primary text-2xl mt-0.5 shrink-0" weight="bold" />
             <div className="flex-1">
-              <h2 className="font-headline-md text-base sm:text-lg text-champagne-light font-bold mb-1.5 tracking-wide">2-Hour Submission Limit Active</h2>
-              <p className="font-body-md text-xs sm:text-sm text-slate-200 leading-relaxed font-medium">
-                You have already submitted a consultation request within the last 2 hours. To ensure highest service quality, new submissions are limited to once every 2 hours per client.
+              <h2 className="font-headline-md text-base sm:text-lg text-on-surface font-bold mb-1.5 tracking-wide">2-Hour Submission Limit Active</h2>
+              <p className="font-body-md text-xs sm:text-sm text-main-text leading-relaxed font-medium">
+                You have already submitted a request within the last 2 hours. To ensure highest service quality, new submissions are limited.
               </p>
-              <div className="mt-3.5 inline-flex items-center gap-2 px-3.5 py-1.5 bg-ink-black/80 border border-secondary/40 text-champagne-light text-xs font-mono font-bold tracking-wide">
-                <Timer className="text-sm text-champagne-light" weight="bold" />
+              <div className="mt-3.5 inline-flex items-center gap-2 px-3.5 py-1.5 bg-surface border border-outline-variant text-primary text-xs font-mono font-bold tracking-wide rounded">
+                <Timer className="text-sm" weight="bold" />
                 <span>Next submission available in: {timeRemainingText}</span>
               </div>
             </div>
           </div>
         )}
 
-        <form onSubmit={handleSubmit} className="flex flex-col gap-6 w-full bg-surface-container-lowest p-6 sm:p-8 md:p-10 border border-outline-variant shadow-md" aria-label="Full consultation form">
-          <fieldset disabled={isRateLimited} className="flex flex-col gap-margin-mobile w-full">
+        <form onSubmit={handleSubmit} className="flex flex-col gap-6 w-full bg-surface-container-lowest p-5 sm:p-8 md:p-10 border border-outline-variant shadow-md rounded-2xl" aria-label="Full consultation form">
+          <fieldset disabled={isRateLimited} className="flex flex-col gap-6 w-full">
 
-            {/* Dynamic Pricing Context Area */}
-            {resolvedService && resolvedPackage ? (
-              <div className="bg-navy-dark/95 border border-champagne-light p-4 md:p-6 shadow-lg mb-4 relative group">
-                <div className="flex items-start justify-between">
-                  <div className="flex items-start gap-3 md:gap-4">
-                    <CheckCircle className="text-champagne-light text-2xl mt-1 shrink-0" weight="fill" />
-                    <div>
-                      <span className="font-label-caps text-[10px] text-champagne-light/80 uppercase tracking-widest font-bold">Selected Package</span>
-                      <h3 className="font-headline-md text-lg text-white font-bold mt-1">
-                        {resolvedService.name} - {resolvedPackage.name}
-                      </h3>
-                      <p className="font-body-md text-sm text-slate-300 mt-1 font-medium">{resolvedPackage.scope}</p>
-                      <div className="mt-3 inline-block bg-champagne-light/10 border border-champagne-light/30 px-3 py-1.5 font-mono text-sm text-champagne-light font-bold">
-                        {resolvedPackage.label} {resolvedPackage.price}
-                      </div>
-                    </div>
-                  </div>
-                  <button
-                    type="button"
-                    onClick={clearPackageSelection}
-                    className="text-slate-400 hover:text-champagne-light transition-colors"
-                    title="Change Package"
-                  >
-                    <X className="text-xl" weight="bold" />
-                  </button>
-                </div>
-              </div>
-            ) : (
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-margin-mobile mb-4">
-                <div className="flex flex-col gap-unit">
-                  <label htmlFor="service-select" className="font-label-caps uppercase tracking-widest text-on-surface font-bold text-xs">Service</label>
-                  <div className="relative">
-                    <select
-                      id="service-select"
-                      value={selectedServiceId}
-                      onChange={handleServiceChange}
-                      className="w-full bg-surface text-on-surface font-body-md px-margin-mobile py-[16px] rounded-none border border-outline focus:outline-none focus:border-secondary transition-all disabled:opacity-50 appearance-none font-medium cursor-pointer"
-                    >
-                      <option value="">Select a service...</option>
-                      {Object.values(pricingData).map(service => (
-                        <option key={service.id} value={service.id}>{service.name}</option>
-                      ))}
-                    </select>
-                    <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none">
-                      <Tag className="text-slate-400" />
-                    </div>
-                  </div>
-                </div>
-
-                <div className="flex flex-col gap-unit">
-                  <label htmlFor="package-select" className="font-label-caps uppercase tracking-widest text-on-surface font-bold text-xs">Package</label>
-                  <div className="relative">
-                    <select
-                      id="package-select"
-                      value={selectedPackageId}
-                      onChange={handlePackageChange}
-                      disabled={!selectedServiceId}
-                      className="w-full bg-surface text-on-surface font-body-md px-margin-mobile py-[16px] rounded-none border border-outline focus:outline-none focus:border-secondary transition-all disabled:opacity-50 appearance-none font-medium cursor-pointer"
-                    >
-                      <option value="">Select a package...</option>
-                      {resolvedService && resolvedService.packages.map(pkg => (
-                        <option key={pkg.id} value={pkg.id}>{pkg.name} ({pkg.price})</option>
-                      ))}
-                    </select>
-                    <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none">
-                      <Tag className="text-slate-400" />
-                    </div>
-                  </div>
-                </div>
-              </div>
-            )}
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-margin-mobile">
-              <div className="flex flex-col gap-unit">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
+              <div className="flex flex-col gap-2">
                 <label htmlFor="first-name" className="font-label-caps uppercase tracking-widest text-on-surface font-bold text-xs">First Name *</label>
                 <input
                   id="first-name"
                   value={firstName}
                   onChange={(e) => setFirstName(e.target.value)}
                   onBlur={handleFirstNameBlur}
-                  className="w-full bg-surface text-on-surface font-body-md px-margin-mobile py-[16px] rounded-none border border-outline focus:outline-none focus:border-secondary transition-all disabled:opacity-50 placeholder:text-slate-500 font-medium"
+                  className="w-full bg-surface text-on-surface font-body-md px-4 py-3 sm:py-4 rounded-lg border border-outline focus:outline-none focus:border-primary transition-all disabled:opacity-50 placeholder:text-text-light font-medium text-sm sm:text-base"
                   placeholder="Jane"
                   type="text"
                   required
                 />
               </div>
-              <div className="flex flex-col gap-unit">
+              <div className="flex flex-col gap-2">
                 <label htmlFor="last-name" className="font-label-caps uppercase tracking-widest text-on-surface font-bold text-xs">Last Name *</label>
                 <input
                   id="last-name"
                   value={lastName}
                   onChange={(e) => setLastName(e.target.value)}
                   onBlur={handleLastNameBlur}
-                  className="w-full bg-surface text-on-surface font-body-md px-margin-mobile py-[16px] rounded-none border border-outline focus:outline-none focus:border-secondary transition-all disabled:opacity-50 placeholder:text-slate-500 font-medium"
+                  className="w-full bg-surface text-on-surface font-body-md px-4 py-3 sm:py-4 rounded-lg border border-outline focus:outline-none focus:border-primary transition-all disabled:opacity-50 placeholder:text-text-light font-medium text-sm sm:text-base"
                   placeholder="Doe"
                   type="text"
                   required
@@ -333,8 +188,8 @@ export default function ConsultationForm() {
               </div>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-margin-mobile">
-              <div className="flex flex-col gap-unit">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
+              <div className="flex flex-col gap-2">
                 <label htmlFor="email" className="font-label-caps uppercase tracking-widest text-on-surface font-bold text-xs">Work Email *</label>
                 <input
                   id="email"
@@ -344,8 +199,7 @@ export default function ConsultationForm() {
                     if (emailError) setEmailError('');
                   }}
                   onBlur={handleEmailBlur}
-                  className={`w-full bg-surface text-on-surface font-body-md px-margin-mobile py-[16px] rounded-none border ${emailError ? 'border-red-500 ring-1 ring-red-500' : 'border-outline'
-                    } focus:outline-none focus:border-secondary transition-all disabled:opacity-50 placeholder:text-slate-500 font-medium`}
+                  className={`w-full bg-surface text-on-surface font-body-md px-4 py-3 sm:py-4 rounded-lg border ${emailError ? 'border-red-500 ring-1 ring-red-500' : 'border-outline'} focus:outline-none focus:border-primary transition-all disabled:opacity-50 placeholder:text-text-light font-medium text-sm sm:text-base`}
                   placeholder="jane@company.com"
                   type="email"
                   required
@@ -357,36 +211,36 @@ export default function ConsultationForm() {
                   </span>
                 )}
               </div>
-              <div className="flex flex-col gap-unit">
+              <div className="flex flex-col gap-2">
                 <label htmlFor="company" className="font-label-caps uppercase tracking-widest text-on-surface font-bold text-xs">Company Name</label>
                 <input
                   id="company"
                   value={company}
                   onChange={(e) => setCompany(e.target.value)}
                   onBlur={handleCompanyBlur}
-                  className="w-full bg-surface text-on-surface font-body-md px-margin-mobile py-[16px] rounded-none border border-outline focus:outline-none focus:border-secondary transition-all disabled:opacity-50 placeholder:text-slate-500 font-medium"
+                  className="w-full bg-surface text-on-surface font-body-md px-4 py-3 sm:py-4 rounded-lg border border-outline focus:outline-none focus:border-primary transition-all disabled:opacity-50 placeholder:text-text-light font-medium text-sm sm:text-base"
                   placeholder="Acme Corp"
                   type="text"
                 />
               </div>
             </div>
 
-            <div className="flex flex-col gap-unit">
+            <div className="flex flex-col gap-2">
               <label htmlFor="project-details" className="font-label-caps uppercase tracking-widest text-on-surface font-bold text-xs">Project Details *</label>
               <textarea
                 id="project-details"
                 value={projectDetails}
                 onChange={(e) => setProjectDetails(e.target.value)}
-                className="w-full bg-surface text-on-surface font-body-md px-margin-mobile py-[16px] rounded-none border border-outline focus:outline-none focus:border-secondary transition-all min-h-[150px] resize-y disabled:opacity-50 placeholder:text-slate-500 font-medium"
+                className="w-full bg-surface text-on-surface font-body-md px-4 py-3 sm:py-4 rounded-lg border border-outline focus:outline-none focus:border-primary transition-all min-h-[130px] sm:min-h-[150px] resize-y disabled:opacity-50 placeholder:text-text-light font-medium text-sm sm:text-base"
                 placeholder="Tell us about your goals and what you're looking to achieve..."
                 required
               ></textarea>
             </div>
 
-            <div className="mt-unit flex flex-col md:flex-row gap-4 items-stretch md:items-center">
+            <div className="mt-2 sm:mt-4 flex flex-col sm:flex-row gap-3 sm:gap-4 items-stretch sm:items-center">
               <button
                 disabled={loading || isRateLimited}
-                className="bg-navy-muted text-white font-label-caps uppercase tracking-widest px-margin-mobile py-[16px] rounded-none hover:bg-ink-black transition-all border border-navy-muted flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed font-bold shadow-md"
+                className="bg-primary text-white font-label-caps uppercase tracking-widest px-6 py-3.5 sm:px-8 sm:py-4 hover:bg-primary-dark transition-all border border-primary flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed font-bold shadow-md rounded-lg text-xs sm:text-sm w-full sm:w-auto"
                 type="submit"
               >
                 {loading ? (
@@ -397,7 +251,7 @@ export default function ConsultationForm() {
                 ) : isRateLimited ? (
                   <span>Rate Limited (2h)</span>
                 ) : (
-                  <span>Submit Request</span>
+                  <span>Get a Quote</span>
                 )}
               </button>
 
@@ -405,10 +259,10 @@ export default function ConsultationForm() {
                 href="https://wa.me/916355792936?text=Hi%20Infronix!%20I'm%20on%20your%20website%20and%20would%20like%20to%20chat%20about%20a%20project."
                 target="_blank"
                 rel="noopener noreferrer"
-                className="bg-champagne-light hover:bg-white text-navy-muted font-label-caps uppercase tracking-widest px-margin-mobile py-[16px] rounded-none transition-all border border-champagne-light flex items-center justify-center gap-2 font-bold shadow-md cursor-pointer"
+                className="bg-surface-container-lowest hover:bg-surface text-on-surface font-label-caps uppercase tracking-widest px-6 py-3.5 sm:px-8 sm:py-4 transition-all border border-outline-variant flex items-center justify-center gap-2 font-bold shadow-sm cursor-pointer rounded-lg text-xs sm:text-sm w-full sm:w-auto"
               >
-                <ChatCircle className="text-lg" weight="bold" />
-                <span>Chat Instantly on WhatsApp</span>
+                <ChatCircle className="text-lg text-primary" weight="bold" />
+                <span>Chat Instantly</span>
               </a>
             </div>
           </fieldset>

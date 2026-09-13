@@ -1,126 +1,189 @@
 "use client";
-import { MagnifyingGlass, ArrowRight, Code, Robot } from "@phosphor-icons/react";
+import { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
+import { ArrowRight, Globe, MagnifyingGlass, Robot, Megaphone } from "@phosphor-icons/react";
+
+const services = [
+  {
+    id: "01",
+    title: "Website Development",
+    short: "High-performance Next.js architectures.",
+    desc: "We build modern, fast, and scalable websites that look premium and perform flawlessly. From corporate sites to complex web applications, we engineer digital experiences that drive conversions.",
+    features: ["Next.js & React", "Custom UI/UX Design", "Performance Optimized", "E-commerce Ready"],
+    icon: Globe,
+    link: "/web-development",
+    color: "var(--color-primary)"
+  },
+  {
+    id: "02",
+    title: "SEO Optimization",
+    short: "Data-driven organic growth.",
+    desc: "Achieve sustainable growth with our technical SEO strategies. We go beyond basic keywords to optimize architecture, speed, and content, ensuring you dominate search results.",
+    features: ["Technical SEO", "Local SEO & GMB", "Content Strategy", "Performance Audits"],
+    icon: MagnifyingGlass,
+    link: "/seo",
+    color: "var(--color-accent)"
+  },
+  {
+    id: "03",
+    title: "AI Automation",
+    short: "Intelligent workflows for scale.",
+    desc: "Automate repetitive tasks and supercharge your customer support. We integrate custom AI chatbots and automated workflows directly into your business processes.",
+    features: ["Custom Chatbots", "WhatsApp AI Agents", "Workflow Automation", "CRM Integration"],
+    icon: Robot,
+    link: "/ai-automation",
+    color: "var(--color-primary-dark)"
+  },
+  {
+    id: "04",
+    title: "Digital Marketing",
+    short: "Social media & high-converting paid ads.",
+    desc: "Scale brand awareness and customer acquisition with strategic social media management, Reels production, and targeted Meta & Google advertising campaigns.",
+    features: ["Social Media Marketing", "Meta & Google Ads", "Reels & Video Editing", "Conversion Tracking"],
+    icon: Megaphone,
+    link: "/digital-marketing",
+    color: "var(--color-primary)"
+  }
+];
+
 export default function ServicesSection() {
+  const [activeService, setActiveService] = useState(0);
+
   return (
-    <section id="services" className="w-full py-16 md:py-24 bg-surface relative z-20" aria-labelledby="services-title">
-      <div className="max-w-[1280px] mx-auto px-margin-mobile md:px-margin-desktop">
-
-        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-end mb-8 md:mb-12 border-b border-outline-variant pb-4 md:pb-6 gap-4">
-          <div>
-            <span className="font-label-caps text-xs text-secondary tracking-widest uppercase mb-2 block font-bold">Our Core Capabilities</span>
-            <h2 id="services-title" className="font-headline-lg text-2xl sm:text-3xl md:text-4xl text-primary font-bold">Custom Web Development &amp; SEO Services</h2>
+    <section id="services" className="py-16 sm:py-20 md:py-24 bg-surface-container-lowest relative overflow-hidden">
+      {/* Decorative gradient blur */}
+      <div className="absolute top-0 right-0 w-[300px] sm:w-[600px] h-[300px] sm:h-[600px] bg-primary/5 rounded-full blur-[80px] sm:blur-[120px] pointer-events-none translate-x-1/3 -translate-y-1/3" />
+      
+      <div className="max-w-[1440px] mx-auto px-4 sm:px-6 md:px-12 relative z-10">
+        <motion.div 
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-100px" }}
+          transition={{ duration: 0.6 }}
+          className="mb-10 sm:mb-16 md:mb-24 flex flex-col md:flex-row md:items-end justify-between gap-6 md:gap-8"
+        >
+          <div className="max-w-2xl">
+            <h2 className="text-xs sm:text-sm font-bold tracking-widest uppercase text-primary mb-3 sm:mb-4 flex items-center gap-3">
+              <span className="w-8 sm:w-12 h-[2px] bg-primary" /> Our Expertise
+            </h2>
+            <h3 className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-heading font-bold text-on-surface leading-tight">
+              We specialize in the core <br className="hidden md:block" />
+              pillars of digital growth.
+            </h3>
           </div>
-          <a className="font-label-caps text-xs uppercase tracking-widest text-secondary hover:text-primary transition-colors flex items-center gap-1 font-bold" href="/#services">
-            <span>View all services</span>
-            <ArrowRight aria-hidden="true" className="text-[16px]" weight="bold" />
-          </a>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
-
-          {/* Card 1 */}
-          <Link href="/web-development" className="bg-surface rounded-none p-6 md:p-8 flex flex-col gap-4 relative group overflow-hidden border border-outline-variant hover:border-champagne-light transition-all shadow-sm hover:shadow-md h-full">
-            <div className="absolute top-0 left-0 w-full h-[2px] bg-champagne-light transform origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></div>
-            <div className="flex items-center gap-3 mb-2">
-              <span className="font-label-caps text-secondary font-bold text-xl opacity-50">01</span>
-              <h3 className="font-headline-md text-xl md:text-2xl text-primary font-bold">Custom Web Development</h3>
-            </div>
-            <p className="font-body-md text-sm text-on-surface-variant leading-relaxed font-medium">
-              We build custom, modern websites and web applications tailored for ambitious brands in Ahmedabad and across India.
-            </p>
-            <p className="font-body-md text-sm text-on-surface-variant leading-relaxed font-medium">
-              From high-converting landing pages to scalable corporate web applications, we engineer lightning-fast experiences with Next.js, React, and clean code architectures.
-            </p>
-            <div className="mt-2 flex-grow">
-              <p className="font-label-caps text-xs text-primary font-bold mb-3 uppercase tracking-widest">What we offer:</p>
-              <ul className="space-y-2 font-body-md text-sm text-on-surface-variant">
-                <li className="flex items-start gap-2"><span className="text-secondary mt-1 text-xs">▹</span> Custom Next.js Web Development</li>
-                <li className="flex items-start gap-2"><span className="text-secondary mt-1 text-xs">▹</span> Business &amp; Corporate Websites</li>
-                <li className="flex items-start gap-2"><span className="text-secondary mt-1 text-xs">▹</span> High-Converting Landing Pages</li>
-                <li className="flex items-start gap-2"><span className="text-secondary mt-1 text-xs">▹</span> E-commerce Website Platforms</li>
-                <li className="flex items-start gap-2"><span className="text-secondary mt-1 text-xs">▹</span> Custom Web Applications &amp; Portals</li>
-                <li className="flex items-start gap-2"><span className="text-secondary mt-1 text-xs">▹</span> Responsive Mobile-First Design</li>
-                <li className="flex items-start gap-2"><span className="text-secondary mt-1 text-xs">▹</span> 100/100 Core Web Vitals Optimization</li>
-                <li className="flex items-start gap-2"><span className="text-secondary mt-1 text-xs">▹</span> Ongoing Website Maintenance &amp; Updates</li>
-              </ul>
-            </div>
-            <div className="mt-6 pt-4 border-t border-outline-variant w-full flex flex-col gap-4">
-              <p className="font-body-md text-xs text-on-surface-variant font-medium">Tech: Next.js · React · Node.js · Tailwind CSS</p>
-              <div className="flex items-center gap-2 font-label-caps text-xs uppercase tracking-widest font-bold text-secondary group-hover:text-primary transition-colors">
-                Build My Website <ArrowRight aria-hidden="true" className="text-[14px]" weight="bold" />
-              </div>
-            </div>
+          <Link href="/services" className="group flex items-center gap-2 text-sm sm:text-base text-on-surface font-bold border-b-2 border-transparent hover:border-primary pb-1 hover:text-primary transition-all self-start md:self-auto">
+            View All Capabilities <ArrowRight weight="bold" className="group-hover:translate-x-1 transition-transform" />
           </Link>
+        </motion.div>
 
-          {/* Card 2 */}
-          <Link href="/seo" className="bg-surface rounded-none p-6 md:p-8 flex flex-col gap-4 relative group overflow-hidden border border-outline-variant hover:border-champagne-light transition-all shadow-sm hover:shadow-md h-full">
-            <div className="absolute top-0 left-0 w-full h-[2px] bg-champagne-light transform origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></div>
-            <div className="flex items-center gap-3 mb-2">
-              <span className="font-label-caps text-secondary font-bold text-xl opacity-50">02</span>
-              <h3 className="font-headline-md text-xl md:text-2xl text-primary font-bold">Technical &amp; Local SEO</h3>
-            </div>
-            <p className="font-body-md text-sm text-on-surface-variant leading-relaxed font-medium">
-              Rank on Google search results and turn organic visibility into paying customers.
-            </p>
-            <p className="font-body-md text-sm text-on-surface-variant leading-relaxed font-medium">
-              Our data-driven SEO strategies help businesses in Ahmedabad, Gujarat, and across India dominate local search queries, accelerate crawl indexing, and drive qualified leads.
-            </p>
-            <div className="mt-2 flex-grow">
-              <p className="font-label-caps text-xs text-primary font-bold mb-3 uppercase tracking-widest">What we offer:</p>
-              <ul className="space-y-2 font-body-md text-sm text-on-surface-variant">
-                <li className="flex items-start gap-2"><span className="text-secondary mt-1 text-xs">▹</span> Technical SEO Audits &amp; Fixes</li>
-                <li className="flex items-start gap-2"><span className="text-secondary mt-1 text-xs">▹</span> Ahmedabad &amp; Gujarat Local SEO</li>
-                <li className="flex items-start gap-2"><span className="text-secondary mt-1 text-xs">▹</span> Search Intent Keyword Research</li>
-                <li className="flex items-start gap-2"><span className="text-secondary mt-1 text-xs">▹</span> JSON-LD Schema &amp; Structured Data</li>
-                <li className="flex items-start gap-2"><span className="text-secondary mt-1 text-xs">▹</span> Core Web Vitals &amp; PageSpeed Optimization</li>
-                <li className="flex items-start gap-2"><span className="text-secondary mt-1 text-xs">▹</span> Google Search Console Setup &amp; Indexing</li>
-                <li className="flex items-start gap-2"><span className="text-secondary mt-1 text-xs">▹</span> Canonicalization &amp; Site Architecture</li>
-                <li className="flex items-start gap-2"><span className="text-secondary mt-1 text-xs">▹</span> Monthly SEO Growth Monitoring</li>
-              </ul>
-            </div>
-            <div className="mt-6 pt-4 border-t border-outline-variant w-full flex flex-col gap-4 justify-end">
-              <div className="flex items-center gap-2 font-label-caps text-xs uppercase tracking-widest font-bold text-secondary group-hover:text-primary transition-colors">
-                Grow My Visibility <ArrowRight aria-hidden="true" className="text-[14px]" weight="bold" />
-              </div>
-            </div>
-          </Link>
+        <div className="flex flex-col lg:flex-row gap-6 sm:gap-8 lg:gap-16">
+          {/* Left: Interactive List */}
+          <div className="lg:w-1/2 flex flex-col gap-3 sm:gap-4 relative z-10">
+            {services.map((service, index) => (
+              <motion.div
+                initial={{ opacity: 0, x: -20 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true, margin: "-50px" }}
+                transition={{ duration: 0.4, delay: index * 0.1 }}
+                key={service.id}
+                onMouseEnter={() => setActiveService(index)}
+                onClick={() => setActiveService(index)}
+                className={`group cursor-pointer p-4 sm:p-6 md:p-8 rounded-xl transition-all duration-500 border ${activeService === index
+                  ? 'bg-surface border-outline-variant shadow-[0_20px_40px_rgba(0,0,0,0.03)] scale-[1.01] sm:scale-[1.02]'
+                  : 'bg-surface-container-lowest border-outline-variant/40 hover:border-outline hover:bg-surface/50'
+                  }`}
+              >
+                <div className="flex items-center gap-4 sm:gap-6 md:gap-8">
+                  <span className={`text-2xl sm:text-4xl md:text-5xl font-heading font-bold transition-colors duration-500 ${activeService === index ? 'text-primary' : 'text-text-light/50'}`}>
+                    {service.id}
+                  </span>
+                  <div>
+                    <h4 className={`text-lg sm:text-2xl md:text-3xl font-heading font-bold mb-1 sm:mb-2 transition-colors duration-500 ${activeService === index ? 'text-on-surface' : 'text-main-text group-hover:text-on-surface'}`}>
+                      {service.title}
+                    </h4>
+                    <p className={`text-xs sm:text-base md:text-lg transition-colors duration-500 ${activeService === index ? 'text-main-text' : 'text-text-light'}`}>
+                      {service.short}
+                    </p>
+                  </div>
+                </div>
 
-          {/* Card 3 */}
-          <Link href="/ai-automation" className="bg-surface rounded-none p-6 md:p-8 flex flex-col gap-4 relative group overflow-hidden border border-outline-variant hover:border-champagne-light transition-all shadow-sm hover:shadow-md h-full md:col-span-2 lg:col-span-1">
-            <div className="absolute top-0 left-0 w-full h-[2px] bg-champagne-light transform origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></div>
-            <div className="flex items-center gap-3 mb-2">
-              <span className="font-label-caps text-secondary font-bold text-xl opacity-50">03</span>
-              <h3 className="font-headline-md text-xl md:text-2xl text-primary font-bold">AI Workflow Automation</h3>
-            </div>
-            <p className="font-body-md text-sm text-on-surface-variant leading-relaxed font-medium">
-              Stop doing manually what AI can handle automatically.
-            </p>
-            <p className="font-body-md text-sm text-on-surface-variant leading-relaxed font-medium">
-              We build intelligent automations that connect your tools, reduce repetitive work, and help your business operate faster with less manual effort.
-            </p>
-            <div className="mt-2 flex-grow">
-              <p className="font-label-caps text-xs text-primary font-bold mb-3 uppercase tracking-widest">What we offer:</p>
-              <ul className="space-y-2 font-body-md text-sm text-on-surface-variant">
-                <li className="flex items-start gap-2"><span className="text-secondary mt-1 text-xs">▹</span> AI Chatbots</li>
-                <li className="flex items-start gap-2"><span className="text-secondary mt-1 text-xs">▹</span> WhatsApp Automation</li>
-                <li className="flex items-start gap-2"><span className="text-secondary mt-1 text-xs">▹</span> Lead Capture & Qualification</li>
-                <li className="flex items-start gap-2"><span className="text-secondary mt-1 text-xs">▹</span> Automated Customer Support</li>
-                <li className="flex items-start gap-2"><span className="text-secondary mt-1 text-xs">▹</span> Email Automation</li>
-                <li className="flex items-start gap-2"><span className="text-secondary mt-1 text-xs">▹</span> Workflow Automation</li>
-                <li className="flex items-start gap-2"><span className="text-secondary mt-1 text-xs">▹</span> AI-Powered Business Tools</li>
-                <li className="flex items-start gap-2"><span className="text-secondary mt-1 text-xs">▹</span> CRM Automation</li>
-                <li className="flex items-start gap-2"><span className="text-secondary mt-1 text-xs">▹</span> Data Processing Automation</li>
-                <li className="flex items-start gap-2"><span className="text-secondary mt-1 text-xs">▹</span> Custom AI Integrations</li>
-              </ul>
-            </div>
-            <div className="mt-6 pt-4 border-t border-outline-variant w-full flex flex-col gap-4 justify-end">
-              <div className="flex items-center gap-2 font-label-caps text-xs uppercase tracking-widest font-bold text-secondary group-hover:text-primary transition-colors">
-                Automate My Business <ArrowRight aria-hidden="true" className="text-[14px]" weight="bold" />
-              </div>
-            </div>
-          </Link>
+                {/* Mobile Expandable Content */}
+                <AnimatePresence>
+                  {activeService === index && (
+                    <motion.div
+                      initial={{ height: 0, opacity: 0, marginTop: 0 }}
+                      animate={{ height: "auto", opacity: 1, marginTop: 16 }}
+                      exit={{ height: 0, opacity: 0, marginTop: 0 }}
+                      className="lg:hidden overflow-hidden pt-2"
+                    >
+                      <p className="text-main-text mb-4 sm:mb-6 text-sm sm:text-base">{service.desc}</p>
+                      <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-3 mb-6">
+                        {service.features.map((feature, i) => (
+                          <li key={i} className="flex items-center gap-2 sm:gap-3 text-on-surface font-medium text-xs sm:text-sm">
+                            <div className="w-1.5 h-1.5 rounded-full bg-primary shrink-0" /> {feature}
+                          </li>
+                        ))}
+                      </ul>
+                      <Link
+                        href={service.link}
+                        className="inline-flex items-center justify-center gap-2 text-xs sm:text-sm font-bold bg-deep-space text-surface-container-lowest px-5 py-3 sm:px-6 sm:py-3.5 rounded-md hover:bg-primary hover:text-ink-black transition-colors shadow-lg w-full sm:w-auto text-center"
+                      >
+                        Explore Service <ArrowRight weight="bold" />
+                      </Link>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </motion.div>
+            ))}
+          </div>
 
+          {/* Right: Detailed View (Desktop Only) */}
+          <div className="hidden lg:block lg:w-1/2 relative">
+            <div className="sticky top-32">
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={activeService}
+                  initial={{ opacity: 0, y: 20, scale: 0.98 }}
+                  animate={{ opacity: 1, y: 0, scale: 1 }}
+                  exit={{ opacity: 0, y: -20, scale: 0.98 }}
+                  transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+                  className="bg-surface-container-lowest p-12 border border-outline-variant shadow-2xl rounded-2xl h-[520px] flex flex-col justify-between relative overflow-hidden"
+                >
+                  <div className="absolute top-0 right-0 w-64 h-64 bg-primary/5 rounded-full blur-[80px] -translate-y-1/2 translate-x-1/2" />
+                  <div className="relative z-10">
+                    <div className="w-16 h-16 rounded-2xl bg-surface border border-outline-variant flex items-center justify-center mb-8 shadow-sm">
+                      {(() => {
+                        const Icon = services[activeService].icon;
+                        return Icon ? <Icon size={32} className="text-primary" weight="duotone" /> : null;
+                      })()}
+                    </div>
+                    <h4 className="text-4xl font-heading font-bold text-on-surface mb-6">
+                      {services[activeService].title}
+                    </h4>
+                    <p className="text-xl text-main-text leading-relaxed mb-8">
+                      {services[activeService].desc}
+                    </p>
+
+                    <ul className="grid grid-cols-2 gap-y-4 gap-x-2">
+                      {services[activeService].features.map((feature, i) => (
+                        <li key={i} className="flex items-center gap-3 text-on-surface font-medium">
+                          <div className="w-2 h-2 rounded-full bg-primary" /> {feature}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+
+                  <Link
+                    href={services[activeService].link}
+                    className="relative z-10 inline-flex items-center justify-center gap-2 text-base font-bold bg-deep-space text-surface-container-lowest px-8 py-4 rounded-md hover:bg-primary hover:text-ink-black transition-colors shadow-xl w-fit mt-8 group"
+                  >
+                    Explore {services[activeService].title} <ArrowRight weight="bold" className="group-hover:translate-x-1 transition-transform" />
+                  </Link>
+                </motion.div>
+              </AnimatePresence>
+            </div>
+          </div>
         </div>
       </div>
     </section>

@@ -3,7 +3,6 @@
 import { useState, useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
-import webLogo from '@/assets/web-logo.png';
 
 export default function Preloader() {
   const [shouldRender, setShouldRender] = useState(false);
@@ -139,20 +138,20 @@ export default function Preloader() {
   return (
     <div
       ref={containerRef}
-      className="fixed inset-0 z-[9999] bg-navy-muted flex flex-col justify-between p-8 md:p-16"
+      className="fixed inset-0 z-[9999] bg-deep-space flex flex-col justify-between p-8 md:p-16"
       aria-hidden="true"
     >
       <div className="flex-grow flex flex-col items-center justify-center text-center">
         <div ref={text1Ref} className="mb-6 flex justify-center">
           <img
-            src={webLogo.src || webLogo}
+            src="/dark-web-logo.png"
             alt="Infronix Logo"
             className="h-24 sm:h-32 md:h-40 lg:h-48 w-auto object-contain drop-shadow-lg"
           />
         </div>
         <p
           ref={text2Ref}
-          className="font-label-caps text-xs sm:text-sm text-champagne-light tracking-[0.3em] uppercase font-bold"
+          className="font-label-caps text-xs sm:text-sm text-accent tracking-[0.3em] uppercase font-bold"
         >
           Introducing the Infronix Web Agency
         </p>
@@ -168,17 +167,17 @@ export default function Preloader() {
           </span>
           <span
             ref={counterRef}
-            className="font-headline-lg text-2xl sm:text-4xl text-champagne-light font-bold"
+            className="font-headline-lg text-2xl sm:text-4xl text-accent font-bold"
             style={{ fontVariantNumeric: 'tabular-nums' }}
           >
             00%
           </span>
         </div>
 
-        <div className="w-full h-[2px] bg-white/10 relative overflow-hidden">
+        <div className="w-full h-[2px] bg-surface-container-lowest/10 relative overflow-hidden">
           <div
             ref={progressBarRef}
-            className="absolute top-0 left-0 h-full w-full bg-champagne-light origin-left scale-x-0"
+            className="absolute top-0 left-0 h-full w-full bg-accent origin-left scale-x-0"
           ></div>
         </div>
       </div>

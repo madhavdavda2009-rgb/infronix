@@ -11,7 +11,7 @@ export function SkeletonLine({ width = 'w-full', height = 'h-4', className = '',
 
 export function SkeletonHero({ dark = false }) {
   return (
-    <div className={`w-full py-16 md:py-24 px-margin-mobile md:px-margin-desktop ${dark ? 'bg-navy-muted' : 'bg-surface'}`}>
+    <div className={`w-full py-16 md:py-24 px-margin-mobile md:px-margin-desktop ${dark ? 'bg-deep-space' : 'bg-surface'}`}>
       <div className="max-w-[1280px] mx-auto flex flex-col items-center text-center space-y-6">
         <SkeletonLine width="w-32" height="h-4" dark={dark} />
         <SkeletonLine width="w-3/4 max-w-2xl" height="h-10" dark={dark} />
@@ -64,7 +64,7 @@ export function SkeletonTable({ rows = 5, dark = true }) {
 
 export function SkeletonPage({ dark = false }) {
   return (
-    <div className={`min-h-screen w-full pt-20 ${dark ? 'bg-navy-muted' : 'bg-surface'}`} aria-busy="true" aria-label="Loading page content">
+    <div className={`min-h-screen w-full pt-20 ${dark ? 'bg-deep-space' : 'bg-surface'}`} aria-busy="true" aria-label="Loading page content">
       <SkeletonHero dark={dark} />
       <div className="max-w-[1280px] mx-auto px-margin-mobile md:px-margin-desktop py-12">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">

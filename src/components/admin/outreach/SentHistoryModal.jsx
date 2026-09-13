@@ -44,30 +44,30 @@ export default function SentHistoryModal({ isOpen, onClose, showToast }) {
   });
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 backdrop-blur-sm animate-fadeIn">
-      <div className="bg-slate-950 border border-champagne-light/40 w-full max-w-4xl max-h-[90vh] overflow-hidden shadow-2xl flex flex-col">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-on-surface/40 backdrop-blur-sm animate-fadeIn">
+      <div className="bg-surface-container-lowest border border-primary/40 w-full max-w-4xl max-h-[90vh] overflow-hidden shadow-2xl flex flex-col">
         
         {/* Header */}
-        <div className="p-6 border-b border-champagne-light/20 flex justify-between items-center bg-navy-muted/90 backdrop-blur-md">
+        <div className="p-6 border-b border-primary/20 flex justify-between items-center bg-surface/90 backdrop-blur-md">
           <div>
-            <span className="font-label-caps text-xs text-champagne-light uppercase tracking-widest block font-bold">
+            <span className="font-label-caps text-xs text-primary uppercase tracking-widest block font-bold">
               Dispatch History & Audit Log
             </span>
-            <h2 className="font-headline-lg text-xl md:text-2xl text-white font-bold mt-0.5">
+            <h2 className="font-headline-lg text-xl md:text-2xl text-on-surface font-bold mt-0.5">
               Sent Cold Outreach Emails ({sentList.length})
             </h2>
           </div>
           <div className="flex items-center gap-2">
             <button
               onClick={fetchSentHistory}
-              className="p-2 border border-slate-700 hover:border-champagne-light text-slate-300 hover:text-white transition-colors cursor-pointer"
+              className="p-2 border border-outline hover:border-primary text-main-text hover:text-on-surface transition-colors cursor-pointer"
               title="Refresh History"
             >
               <ArrowsClockwise size={16} />
             </button>
             <button
               onClick={onClose}
-              className="text-slate-400 hover:text-white p-2 transition-colors cursor-pointer"
+              className="text-text-light hover:text-on-surface p-2 transition-colors cursor-pointer"
             >
               <X size={20} weight="bold" />
             </button>
@@ -75,15 +75,15 @@ export default function SentHistoryModal({ isOpen, onClose, showToast }) {
         </div>
 
         {/* Search */}
-        <div className="p-4 bg-slate-900/80 border-b border-slate-800">
+        <div className="p-4 bg-surface/80 border-b border-outline-variant">
           <div className="relative">
-            <MagnifyingGlass className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" size={16} />
+            <MagnifyingGlass className="absolute left-3 top-1/2 -translate-y-1/2 text-text-light" size={16} />
             <input
               type="text"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               placeholder="Search by recipient, company, subject..."
-              className="w-full bg-slate-950 text-white font-body-md pl-9 pr-4 py-2 text-xs border border-slate-700 focus:outline-none focus:border-champagne-light transition-colors"
+              className="w-full bg-surface-container-lowest text-on-surface font-body-md pl-9 pr-4 py-2 text-xs border border-outline focus:outline-none focus:border-primary transition-colors"
             />
           </div>
         </div>
@@ -91,11 +91,11 @@ export default function SentHistoryModal({ isOpen, onClose, showToast }) {
         {/* Content */}
         <div className="flex-grow overflow-y-auto p-6">
           {loading ? (
-            <div className="text-center py-12 text-slate-400 text-xs font-body-md">
+            <div className="text-center py-12 text-text-light text-xs font-body-md">
               Loading sent history...
             </div>
           ) : filtered.length === 0 ? (
-            <div className="text-center py-12 text-slate-400 text-xs font-body-md">
+            <div className="text-center py-12 text-text-light text-xs font-body-md">
               No sent emails recorded yet.
             </div>
           ) : (
@@ -103,15 +103,15 @@ export default function SentHistoryModal({ isOpen, onClose, showToast }) {
               {filtered.map(item => (
                 <div
                   key={item.id}
-                  className="bg-slate-900/60 border border-slate-800 p-4 hover:border-champagne-light/40 transition-colors"
+                  className="bg-surface/60 border border-outline-variant p-4 hover:border-primary/40 transition-colors"
                 >
-                  <div className="flex flex-col md:flex-row md:items-center justify-between gap-2 border-b border-slate-800 pb-2.5 mb-2.5">
+                  <div className="flex flex-col md:flex-row md:items-center justify-between gap-2 border-b border-outline-variant pb-2.5 mb-2.5">
                     <div>
-                      <span className="text-xs font-bold text-white block">
+                      <span className="text-xs font-bold text-on-surface block">
                         To: {item.recipient}
                       </span>
                       {item.company_name && (
-                        <span className="text-[11px] text-slate-400">
+                        <span className="text-[11px] text-text-light">
                           Company: {item.company_name}
                         </span>
                       )}
@@ -120,14 +120,14 @@ export default function SentHistoryModal({ isOpen, onClose, showToast }) {
                     <div className="flex items-center gap-3">
                       <span className={`inline-flex items-center gap-1 px-2.5 py-0.5 text-[10px] font-label-caps uppercase font-bold border ${
                         item.status === 'Sent'
-                          ? 'bg-emerald-500/20 text-emerald-300 border-emerald-500/40'
+                          ? 'bg-violet-500/20 text-cyan-300 border-violet-500/40'
                           : 'bg-red-500/20 text-red-300 border-red-500/40'
                       }`}>
                         {item.status === 'Sent' ? <CheckCircle size={12} weight="fill" /> : <Warning size={12} weight="fill" />}
                         {item.status}
                       </span>
 
-                      <span className="text-[11px] text-slate-400 flex items-center gap-1 font-mono">
+                      <span className="text-[11px] text-text-light flex items-center gap-1 font-mono">
                         <Clock size={12} />
                         {new Date(item.sent_at).toLocaleString()}
                       </span>
@@ -135,7 +135,7 @@ export default function SentHistoryModal({ isOpen, onClose, showToast }) {
                   </div>
 
                   <div className="text-xs space-y-1">
-                    <p className="text-champagne-light font-semibold">
+                    <p className="text-primary font-semibold">
                       Subject: {item.subject}
                     </p>
                     
@@ -144,7 +144,7 @@ export default function SentHistoryModal({ isOpen, onClose, showToast }) {
                         Error: {item.error_message}
                       </p>
                     ) : (
-                      <div className="mt-2 text-slate-300 bg-slate-950/80 p-3 border border-slate-800 font-mono text-[11px] whitespace-pre-wrap max-h-36 overflow-y-auto">
+                      <div className="mt-2 text-main-text bg-surface-container-lowest/80 p-3 border border-outline-variant font-mono text-[11px] whitespace-pre-wrap max-h-36 overflow-y-auto">
                         {item.body}
                       </div>
                     )}
@@ -156,10 +156,10 @@ export default function SentHistoryModal({ isOpen, onClose, showToast }) {
         </div>
 
         {/* Footer */}
-        <div className="p-4 border-t border-slate-800 bg-slate-900/60 flex justify-end">
+        <div className="p-4 border-t border-outline-variant bg-surface/60 flex justify-end">
           <button
             onClick={onClose}
-            className="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-white text-xs uppercase font-label-caps tracking-widest transition-colors cursor-pointer"
+            className="px-4 py-2 bg-outline-variant hover:bg-slate-700 text-on-surface text-xs uppercase font-label-caps tracking-widest transition-colors cursor-pointer"
           >
             Close
           </button>

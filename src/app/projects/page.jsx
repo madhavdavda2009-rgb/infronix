@@ -1,6 +1,7 @@
 import PortfolioSection from '@/components/PortfolioSection';
-import ContactSection from '@/components/ContactSection';
+import CTASection from '@/components/CTASection';
 import FAQSection from '@/components/FAQSection';
+import Breadcrumb from '@/components/Breadcrumb';
 
 export const metadata = {
   title: 'Client Projects & Portfolio | Infronix Web Agency',
@@ -13,9 +14,12 @@ export const metadata = {
 export default function ProjectsPage() {
   return (
     <>
-      <main className="w-full pt-28 md:pt-32" id="main-content">
+      <main className="w-full pt-20 sm:pt-28 md:pt-32" id="main-content">
+        <div className="max-w-[1440px] mx-auto px-4 sm:px-6 md:px-12 pt-4 sm:pt-6">
+          <Breadcrumb />
+        </div>
         <PortfolioSection asH1={true} />
-        <ContactSection />
+        <CTASection />
         <FAQSection />
       </main>
     </>

@@ -7,8 +7,17 @@ import ErrorBoundary from '@/components/ErrorBoundary';
 import { ToastProvider } from '@/context/ToastContext';
 import Preloader from '@/components/Preloader';
 import SmoothScroll from '@/components/SmoothScroll';
-
+import { Inter, Outfit } from 'next/font/google';
 import Script from 'next/script';
+
+const inter = Inter({ subsets: ['latin'], variable: '--font-inter' });
+const outfit = Outfit({ subsets: ['latin'], variable: '--font-outfit' });
+
+export const viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 5,
+};
 
 export const metadata = {
   metadataBase: new URL('https://www.infronixweb.in/'),
@@ -44,7 +53,7 @@ export const metadata = {
     description: 'Infronix is a premier web agency in Ahmedabad, Gujarat. We engineer high-converting websites, Next.js web applications, technical SEO, and custom AI automations for modern brands across India.',
     images: [
       {
-        url: 'https://www.infronixweb.in/hero_bg.webp',
+        url: 'https://www.infronixweb.in/web-logo.png',
         width: 1200,
         height: 630,
         alt: 'Infronix Web Agency - Best Web Development & SEO in Ahmedabad',
@@ -55,7 +64,7 @@ export const metadata = {
     card: 'summary_large_image',
     title: 'Infronix Web Agency | Best Web Development, SEO & AI Automation in Ahmedabad',
     description: 'Infronix is a premier web agency in Ahmedabad, Gujarat. We engineer high-converting websites, Next.js web applications, technical SEO, and custom AI automations for modern brands across India.',
-    images: ['https://www.infronixweb.in/hero_bg.webp'],
+    images: ['https://www.infronixweb.in/web-logo.png'],
   },
   robots: {
     index: true,
@@ -70,11 +79,10 @@ export const metadata = {
   },
   icons: {
     icon: [
-      { url: '/title-logo1.webp', type: 'image/webp' },
-      { url: '/favicon.svg', type: 'image/svg+xml' },
+      { url: '/title-logo.png', type: 'image/png' },
     ],
-    shortcut: '/title-logo1.webp',
-    apple: '/apple-touch-icon.png',
+    shortcut: '/title-logo.png',
+    apple: '/title-logo.png',
   },
 };
 
@@ -117,8 +125,8 @@ export default function RootLayout({ children }) {
                   "name": "Infronix Web Agency",
                   "alternateName": "Infronix Digital & Web Development Agency",
                   "url": "https://www.infronixweb.in/",
-                  "logo": "https://www.infronixweb.in/title-logo1.webp",
-                  "image": "https://www.infronixweb.in/hero_bg.webp",
+                  "logo": "https://www.infronixweb.in/web-logo.png",
+                  "image": "https://www.infronixweb.in/web-logo.png",
                   "description": "Infronix is a premier web agency based in Ahmedabad, Gujarat, offering custom web development, technical SEO, and AI workflow automation across India.",
                   "telephone": "+91-6355792936",
                   "email": "support@infronixweb.in",
@@ -198,7 +206,7 @@ export default function RootLayout({ children }) {
           }}
         />
       </head>
-      <body className="bg-[#F8FAFA] text-[#101416] antialiased">
+      <body className={`${inter.variable} ${outfit.variable} bg-[var(--color-light-bg)] text-[var(--color-deep-space)] antialiased`}>
         <Preloader />
         <ErrorBoundary>
           <ToastProvider>

@@ -1,125 +1,81 @@
 "use client";
-import { Compass, Palette, CodeBlock, Rocket, CheckCircle, ArrowRight } from "@phosphor-icons/react";
-import Link from "next/link";
+import { motion, useScroll, useTransform } from "framer-motion";
+import { useRef } from "react";
 
-const PROCESS_STEPS = [
-  {
-    step: "01",
-    title: "Discovery & Technical Architecture",
-    icon: Compass,
-    summary: "Every high-impact digital project starts with deep strategic clarity.",
-    description:
-      "We analyze your business objectives, target audience, competitive landscape in Ahmedabad and across India, and technical requirements. We then architect a bespoke software roadmap, select the ideal technology stack (Next.js, React, Node.js), and outline data structures for maximum scalability and organic search performance.",
-    deliverables: ["Project Scope & Architecture", "SEO Keyword Mapping", "Tech Stack Strategy"]
-  },
-  {
-    step: "02",
-    title: "Custom UI/UX & Responsive Design",
-    icon: Palette,
-    summary: "Visual excellence engineered specifically to maximize client conversions.",
-    description:
-      "Our design philosophy blends modern aesthetic elegance with intuitive user experiences. We craft custom, brand-tailored layouts with sleek dark-mode aesthetics, responsive typography, and mobile-first micro-animations that captivate visitors on smartphones, tablets, and desktop displays alike.",
-    deliverables: ["High-Fidelity Wireframes", "Interactive Design Prototypes", "Design System & Tokens"]
-  },
-  {
-    step: "03",
-    title: "Full-Stack Engineering & AI Automation",
-    icon: CodeBlock,
-    summary: "Clean, robust codebases powered by modern web technologies and AI.",
-    description:
-      "We develop lightning-fast web applications using Server-Side Rendering (SSR), secure API routes, and optimized database integrations. For modern businesses seeking operational efficiency, we seamlessly integrate custom AI chatbots, automated lead qualification, and WhatsApp customer communication workflows.",
-    deliverables: ["Clean Next.js Codebase", "AI Chatbots & Workflows", "API Integrations & Security"]
-  },
-  {
-    step: "04",
-    title: "Technical SEO & Performance Launch",
-    icon: Rocket,
-    summary: "Flawless deployment backed by 100/100 Core Web Vitals and Google indexation.",
-    description:
-      "Before launch, we conduct rigorous multi-browser testing, automated security audits, speed optimization, and complete on-page and technical SEO setup. We implement JSON-LD Schema structured data, XML sitemaps, canonical tags, and Google Search Console registration to ensure immediate search engine discoverability.",
-    deliverables: ["100/100 Lighthouse Score", "Structured Data & Schema", "Search Console Indexing"]
-  }
+const steps = [
+  { id: "01", title: "Discover", desc: "We analyze your business, target audience, and competition to uncover unique opportunities for digital growth." },
+  { id: "02", title: "Plan", desc: "Architecting the solution. We create wireframes, define technical requirements, and map out the SEO strategy." },
+  { id: "03", title: "Build", desc: "Our engineering team develops high-performance systems using Next.js, React, and modern backend technologies." },
+  { id: "04", title: "Launch", desc: "Rigorous QA testing, performance optimization, and seamless deployment to production environments." },
+  { id: "05", title: "Grow", desc: "Post-launch SEO execution, AI automation implementation, and continuous performance scaling." }
 ];
 
 export default function ProcessSection() {
-  return (
-    <section id="process" className="w-full py-16 md:py-24 bg-surface relative z-20 border-b border-outline-variant/30" aria-labelledby="process-title">
-      <div className="max-w-[1280px] mx-auto px-margin-mobile md:px-margin-desktop">
+  const containerRef = useRef(null);
+  
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start center", "end center"]
+  });
 
-        {/* Section Header */}
-        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-end mb-10 md:mb-14 border-b border-outline-variant pb-6 gap-4">
-          <div>
-            <span className="font-label-caps text-xs text-secondary tracking-widest uppercase mb-2 block font-bold">
-              Our Proven Methodology
-            </span>
-            <h2 id="process-title" className="font-headline-lg text-2xl sm:text-3xl md:text-4xl text-primary font-bold">
-              Strategic Web Development &amp; SEO Process
-            </h2>
-            <p className="font-body-md text-sm sm:text-base text-on-surface-variant max-w-2xl mt-2 leading-relaxed font-medium">
-              From concept to deployment, our 4-step engineering framework ensures your web applications achieve elite performance, higher Google rankings, and tangible business ROI.
-            </p>
-          </div>
-          <Link
-            href="/start-project"
-            className="font-label-caps text-xs uppercase tracking-widest text-secondary hover:text-primary transition-colors flex items-center gap-1 font-bold whitespace-nowrap"
-          >
-            <span>Start Your Project</span>
-            <ArrowRight aria-hidden="true" className="text-[16px]" weight="bold" />
-          </Link>
+  return (
+    <section className="py-16 sm:py-24 md:py-32 bg-surface-container-lowest" ref={containerRef}>
+      <div className="max-w-[1000px] mx-auto px-4 sm:px-6 md:px-12">
+        
+        <div className="text-center mb-12 sm:mb-16 md:mb-24">
+          <h2 className="text-xs sm:text-sm font-bold tracking-widest uppercase text-text-light mb-3 sm:mb-4">Our Methodology</h2>
+          <h3 className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-heading font-bold text-on-surface">
+            How we <span className="text-primary">execute.</span>
+          </h3>
         </div>
 
-        {/* 4-Step Cards Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {PROCESS_STEPS.map((item, index) => {
-            const IconComponent = item.icon;
-            return (
-              <div
-                key={index}
-                className="bg-surface rounded-none p-6 md:p-8 flex flex-col justify-between border border-outline-variant hover:border-champagne-light transition-all shadow-sm hover:shadow-md relative group overflow-hidden"
-              >
-                <div className="absolute top-0 left-0 w-full h-[2px] bg-champagne-light transform origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></div>
+        <div className="relative">
+          {/* Vertical Progress Line (Background) */}
+          <div className="absolute left-4 sm:left-6 md:left-1/2 top-0 bottom-0 w-[1px] bg-outline-variant md:-translate-x-1/2" />
+          
+          {/* Vertical Progress Line (Active) */}
+          <motion.div 
+            className="absolute left-4 sm:left-6 md:left-1/2 top-0 bottom-0 w-[2px] bg-primary md:-translate-x-1/2 origin-top"
+            style={{ scaleY: scrollYProgress }}
+          />
 
-                <div>
-                  <div className="flex items-center justify-between mb-4">
-                    <span className="font-label-caps text-secondary font-bold text-2xl opacity-60">
-                      {item.step}
-                    </span>
-                    <div className="w-12 h-12 border border-champagne-light/50 flex items-center justify-center bg-surface-container-lowest text-secondary group-hover:bg-navy-muted group-hover:text-champagne-light transition-colors">
-                      <IconComponent size={24} weight="bold" />
-                    </div>
+          <div className="flex flex-col gap-10 sm:gap-16 md:gap-24 relative z-10">
+            {steps.map((step, index) => {
+              const isEven = index % 2 === 0;
+              return (
+                <motion.div 
+                  key={step.id}
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, margin: "-100px" }}
+                  transition={{ duration: 0.6 }}
+                  className={`flex flex-col md:flex-row items-start md:items-center ${isEven ? 'md:flex-row-reverse' : ''}`}
+                >
+                  {/* Content */}
+                  <div className={`w-full md:w-1/2 pl-10 sm:pl-16 md:pl-0 ${isEven ? 'md:pr-16 md:text-right' : 'md:pl-16'}`}>
+                    <div className="md:hidden text-2xl sm:text-3xl font-heading font-bold text-primary/30 mb-1">{step.id}</div>
+                    <h4 className="text-xl sm:text-2xl md:text-3xl font-heading font-bold text-on-surface mb-2 sm:mb-4">
+                      {step.title}
+                    </h4>
+                    <p className="text-sm sm:text-base md:text-lg text-main-text leading-relaxed font-medium">
+                      {step.desc}
+                    </p>
                   </div>
 
-                  <h3 className="font-headline-md text-lg sm:text-xl text-primary font-bold mb-2">
-                    {item.title}
-                  </h3>
+                  {/* Center Node */}
+                  <div className="absolute left-4 sm:left-6 md:left-1/2 w-3.5 h-3.5 sm:w-4 sm:h-4 rounded-full bg-surface-container-lowest border-2 border-primary -translate-x-[6px] sm:-translate-x-[7px] md:-translate-x-[7px] mt-1.5 sm:mt-2 md:mt-0 shadow-[0_0_10px_rgba(139,92,246,0.4)]" />
 
-                  <p className="font-body-md text-xs font-semibold text-secondary mb-3">
-                    {item.summary}
-                  </p>
-
-                  <p className="font-body-md text-xs sm:text-sm text-on-surface-variant leading-relaxed font-medium mb-6">
-                    {item.description}
-                  </p>
-                </div>
-
-                <div className="pt-4 border-t border-outline-variant/60">
-                  <p className="font-label-caps text-[10px] uppercase tracking-widest text-primary font-bold mb-2">
-                    Key Deliverables:
-                  </p>
-                  <ul className="space-y-1.5 font-body-md text-xs text-on-surface-variant font-medium">
-                    {item.deliverables.map((deliv, dIdx) => (
-                      <li key={dIdx} className="flex items-center gap-1.5">
-                        <CheckCircle size={14} weight="fill" className="text-secondary shrink-0" />
-                        <span>{deliv}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              </div>
-            );
-          })}
+                  {/* Large Number (Desktop) */}
+                  <div className={`hidden md:block w-1/2 ${isEven ? 'pl-16 text-left' : 'pr-16 text-right'}`}>
+                    <span className="text-[90px] lg:text-[120px] font-heading font-bold text-outline-variant/60 leading-none select-none">
+                      {step.id}
+                    </span>
+                  </div>
+                </motion.div>
+              );
+            })}
+          </div>
         </div>
-
       </div>
     </section>
   );

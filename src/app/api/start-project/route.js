@@ -1,7 +1,6 @@
 import { NextResponse } from 'next/server';
 import { execute } from '@/lib/db';
 import { encrypt } from '@/lib/crypto';
-import { getPackage } from '@/components/pricing/pricingData';
 
 export async function POST(request) {
   try {
@@ -29,13 +28,11 @@ export async function POST(request) {
       phone,
       companyName,
       preferredContactMethod,
-      additionalNotes,
-      serviceId,
-      packageId
+      additionalNotes
     } = body;
 
     // Validate Required Fields
-    if (!selectedServices || selectedServices.length === 0 || !projectName || !projectDescription || !budget || !timeline || !fullName || !email || !phone) {
+    if (!fullName || !email || !phone || !projectDescription) {
       return NextResponse.json(
         { success: false, error: 'Please fill in all required fields.' },
         { status: 400 }
@@ -54,22 +51,6 @@ export async function POST(request) {
     const nameParts = fullName.trim().split(' ');
     const firstName = nameParts[0];
     const lastName = nameParts.length > 1 ? nameParts.slice(1).join(' ') : ' ';
-
-    // Resolve secure pricing data server-side
-    let serviceName = null;
-    let packageName = null;
-    let packagePrice = null;
-
-    if (serviceId && packageId) {
-      const pkg = getPackage(serviceId, packageId);
-      if (pkg) {
-        // Find the service name directly from the static data mapping
-        const { pricingData } = await import('@/components/pricing/pricingData');
-        serviceName = pricingData[serviceId]?.name || serviceId;
-        packageName = pkg.name;
-        packagePrice = `${pkg.label} ${pkg.price}`.trim();
-      }
-    }
 
     // Format all extra form fields into a unified comprehensive block for the projectDetails column
     const formattedDetails = `
@@ -119,7 +100,7 @@ ${additionalNotes ? additionalNotes.trim() : 'None'}
     await execute(
       `INSERT INTO consultations (first_name, last_name, email, company, project_details, status, service, package, package_price)
        VALUES ($1, $2, $3, $4, $5, 'new', $6, $7, $8)`,
-      [encFirstName, encLastName, encEmail, encCompany, encProjectDetails, serviceName, packageName, packagePrice]
+      [encFirstName, encLastName, encEmail, encCompany, encProjectDetails, null, null, null]
     );
 
     // Attempt to send email via Resend if API key is present

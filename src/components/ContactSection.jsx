@@ -90,12 +90,12 @@ export default function ContactSection() {
 
   return (
     <section className="w-full bg-surface relative overflow-hidden border-b border-outline-variant" aria-label="Contact Section">
-      <div className="max-w-[1280px] mx-auto px-margin-mobile md:px-margin-desktop grid grid-cols-1 lg:grid-cols-2 min-h-[500px]">
+      <div className="max-w-[1280px] mx-auto px-4 sm:px-6 md:px-12 grid grid-cols-1 lg:grid-cols-2 min-h-[500px]">
 
         {/* Premium Visual Side */}
-        <div className="py-8 lg:py-section-gap lg:pr-margin-desktop flex flex-col justify-center relative z-10 border-b lg:border-b-0 lg:border-r border-outline-variant">
-          <div className="relative w-full aspect-square md:aspect-auto md:h-full max-h-[420px] lg:max-h-[500px] overflow-hidden rounded-[20px] shadow-lg">
-            <div className="absolute inset-0 bg-gradient-to-tr from-navy-muted to-transparent z-10 opacity-80 mix-blend-multiply"></div>
+        <div className="py-8 sm:py-12 lg:py-20 lg:pr-12 flex flex-col justify-center relative z-10 border-b lg:border-b-0 lg:border-r border-outline-variant">
+          <div className="relative w-full aspect-square md:aspect-auto md:h-full max-h-[360px] sm:max-h-[420px] lg:max-h-[500px] overflow-hidden rounded-2xl shadow-lg">
+            <div className="absolute inset-0 bg-gradient-to-tr from-deep-space to-transparent z-10 opacity-80 mix-blend-multiply"></div>
             <img
               src={id6.src || id6}
               alt="Infronix Web Agency digital strategy, web development, and AI automation consultation in Ahmedabad"
@@ -105,8 +105,8 @@ export default function ContactSection() {
               loading="lazy"
             />
             <div className="absolute bottom-4 left-4 right-4 z-20">
-              <div className="bg-surface/10 backdrop-blur-md border border-champagne-light/40 p-4 sm:p-6 rounded-[14px]">
-                <h3 className="font-headline-md text-xl sm:text-2xl text-champagne-light font-bold mb-2">Let&apos;s Build the Future</h3>
+              <div className="bg-surface/10 backdrop-blur-md border border-accent/40 p-4 sm:p-6 rounded-xl">
+                <h3 className="font-headline-md text-lg sm:text-2xl text-accent font-bold mb-1.5 sm:mb-2">Let&apos;s Build the Future</h3>
                 <p className="font-body-md text-xs sm:text-sm text-white font-medium leading-relaxed">Our engineers and SEO specialists are ready to turn your vision into reality with cutting-edge technology and unparalleled support.</p>
               </div>
             </div>
@@ -114,33 +114,33 @@ export default function ContactSection() {
         </div>
 
         {/* CTA Form Side */}
-        <div id="contact" className="py-8 lg:py-section-gap lg:pl-margin-desktop flex flex-col justify-center relative z-10">
-          <span className="font-label-caps text-xs text-secondary tracking-widest uppercase mb-2 block font-bold">Get in Touch</span>
-          <h2 className="font-headline-lg text-2xl sm:text-3xl md:text-4xl text-primary font-bold mb-4 leading-tight">Ready to Elevate Your Brand with Infronix?</h2>
-          <p className="font-body-md text-xs sm:text-sm md:text-base text-on-surface-variant font-medium mb-6 max-w-md leading-relaxed">
+        <div id="contact" className="py-8 sm:py-12 lg:py-20 lg:pl-12 flex flex-col justify-center relative z-10">
+          <span className="font-label-caps text-xs text-accent tracking-widest uppercase mb-2 block font-bold">Get in Touch</span>
+          <h2 className="font-headline-lg text-2xl sm:text-3xl md:text-4xl text-on-surface font-bold mb-3 sm:mb-4 leading-tight">Ready to Elevate Your Brand with Infronix?</h2>
+          <p className="font-body-md text-xs sm:text-sm md:text-base text-main-text font-medium mb-6 max-w-md leading-relaxed">
             Schedule a complimentary digital strategy session with our technical directors in Ahmedabad to identify growth opportunities for your business.
           </p>
 
           {isRateLimited ? (
-            <div className="p-5 sm:p-6 bg-navy-muted border border-secondary/50 text-white text-sm flex items-start gap-4 rounded-none shadow-lg relative overflow-hidden border-l-4 border-l-secondary">
-              <Clock className="text-champagne-light text-2xl mt-0.5 shrink-0" weight="bold" />
+            <div className="p-4 sm:p-6 bg-deep-space border border-accent/50 text-white text-sm flex items-start gap-4 rounded-lg shadow-lg relative overflow-hidden border-l-4 border-l-accent">
+              <Clock className="text-accent text-2xl mt-0.5 shrink-0" weight="bold" />
               <div className="flex-1">
-                <h3 className="font-label-caps uppercase tracking-widest text-xs font-bold text-champagne-light mb-1.5">2-Hour Submission Limit Active</h3>
+                <h3 className="font-label-caps uppercase tracking-widest text-xs font-bold text-accent mb-1.5">2-Hour Submission Limit Active</h3>
                 <p className="font-body-md text-xs sm:text-sm text-slate-200 leading-relaxed font-medium">
                   You have already requested a consultation within the last 2 hours. To maintain exceptional service quality, submissions are limited to once per 2 hours per client.
                 </p>
-                <div className="mt-3 inline-flex items-center gap-2 text-xs font-mono text-champagne-light font-bold bg-ink-black/60 px-3 py-1.5 border border-secondary/30">
+                <div className="mt-3 inline-flex items-center gap-2 text-xs font-mono text-accent font-bold bg-ink-black/60 px-3 py-1.5 border border-accent/30 rounded">
                   <LockKey className="text-sm" weight="bold" />
                   <span>Direct consultation limit enforced</span>
                 </div>
               </div>
             </div>
           ) : (
-            <form onSubmit={handleSubmit} className="flex flex-col gap-margin-mobile max-w-md w-full" aria-label="Quick consultation form">
+            <form onSubmit={handleSubmit} className="flex flex-col gap-4 max-w-md w-full" aria-label="Quick consultation form">
               <div className="relative group">
                 <label htmlFor="corporate-email" className="sr-only">Corporate Email</label>
                 <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                  <Envelope className="text-slate-500 group-focus-within:text-secondary transition-colors" weight="bold" />
+                  <Envelope className="text-slate-500 group-focus-within:text-accent transition-colors" weight="bold" />
                 </div>
                 <input
                   id="corporate-email"
@@ -150,8 +150,8 @@ export default function ContactSection() {
                     if (emailError) setEmailError('');
                   }}
                   onBlur={handleEmailBlur}
-                  className={`w-full bg-surface text-on-surface font-body-md pl-[48px] pr-margin-mobile py-[16px] rounded-none border ${emailError ? 'border-red-500 ring-1 ring-red-500' : 'border-outline'
-                    } focus:outline-none focus:border-secondary focus:ring-1 focus:ring-secondary transition-all placeholder:text-slate-600 font-medium`}
+                  className={`w-full bg-surface text-on-surface font-body-md pl-12 pr-4 py-3.5 sm:py-4 rounded-md border ${emailError ? 'border-red-500 ring-1 ring-red-500' : 'border-outline'
+                    } focus:outline-none focus:border-accent focus:ring-1 focus:ring-accent transition-all placeholder:text-slate-600 font-medium text-sm sm:text-base`}
                   placeholder="Corporate Email Address"
                   type="email"
                   required
@@ -165,7 +165,7 @@ export default function ContactSection() {
               )}
               <button
                 disabled={loading}
-                className="bg-navy-muted text-white font-label-caps uppercase tracking-widest px-margin-mobile py-[18px] rounded-none hover:bg-champagne-light hover:text-navy-muted transition-all duration-300 border border-transparent hover:border-navy-muted w-full flex justify-center items-center gap-2 group cursor-pointer disabled:opacity-50 font-bold shadow-md"
+                className="bg-deep-space text-white font-label-caps uppercase tracking-widest px-6 py-3.5 sm:py-4 rounded-md hover:bg-primary hover:text-white transition-all duration-300 border border-transparent hover:border-primary w-full flex justify-center items-center gap-2 group cursor-pointer disabled:opacity-50 font-bold shadow-md text-xs sm:text-sm"
                 type="submit"
               >
                 {loading ? (
@@ -176,7 +176,7 @@ export default function ContactSection() {
                 ) : (
                   <>
                     <span>Schedule Consultation</span>
-                    <ArrowRight className="text-[18px] transform group-hover:translate-x-1 transition-transform" weight="bold" />
+                    <ArrowRight className="text-base sm:text-lg transform group-hover:translate-x-1 transition-transform" weight="bold" />
                   </>
                 )}
               </button>

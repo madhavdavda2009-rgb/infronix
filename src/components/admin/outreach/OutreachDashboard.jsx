@@ -149,18 +149,18 @@ export default function OutreachDashboard({ showToast }) {
       case 'email generated':
         return 'bg-purple-500/20 text-purple-200 border-purple-500/40';
       case 'sent':
-        return 'bg-emerald-500/20 text-emerald-200 border-emerald-500/40';
+        return 'bg-violet-500/20 text-cyan-200 border-violet-500/40';
       case 'replied':
       case 'interested':
       case 'converted':
-        return 'bg-green-500/30 text-green-100 border-green-400 font-bold';
+        return 'bg-cyan-500/30 text-green-100 border-cyan-400 font-bold';
       case 'not interested':
       case 'archived':
-        return 'bg-slate-700/60 text-slate-300 border-slate-600';
+        return 'bg-slate-700/60 text-main-text border-outline';
       case 'follow up':
         return 'bg-pink-500/20 text-pink-200 border-pink-500/40';
       default:
-        return 'bg-slate-800 text-slate-200 border-slate-700';
+        return 'bg-outline-variant text-main-text border-outline';
     }
   };
 
@@ -187,22 +187,22 @@ export default function OutreachDashboard({ showToast }) {
       {/* Top Metrics Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         
-        <div className="bg-slate-950 p-5 border border-slate-800 relative overflow-hidden shadow-lg">
-          <span className="font-label-caps text-xs text-slate-400 uppercase tracking-wider block font-semibold">
+        <div className="bg-surface-container-lowest p-5 border border-outline-variant relative overflow-hidden shadow-lg">
+          <span className="font-label-caps text-xs text-text-light uppercase tracking-wider block font-semibold">
             Total Leads in System
           </span>
           <div className="flex items-baseline justify-between mt-2">
-            <span className="text-3xl font-headline-lg font-bold text-white">
+            <span className="text-3xl font-headline-lg font-bold text-on-surface">
               {totalLeads}
             </span>
             <Buildings className="text-slate-600 text-2xl" />
           </div>
-          <p className="text-[11px] text-slate-400 mt-2">
+          <p className="text-[11px] text-text-light mt-2">
             Database records across all niches
           </p>
         </div>
 
-        <div className="bg-slate-950 p-5 border border-purple-500/30 relative overflow-hidden shadow-lg">
+        <div className="bg-surface-container-lowest p-5 border border-purple-500/30 relative overflow-hidden shadow-lg">
           <span className="font-label-caps text-xs text-purple-300 uppercase tracking-wider block font-semibold">
             Emails Generated
           </span>
@@ -217,28 +217,28 @@ export default function OutreachDashboard({ showToast }) {
           </p>
         </div>
 
-        <div className="bg-slate-950 p-5 border border-emerald-500/30 relative overflow-hidden shadow-lg">
-          <span className="font-label-caps text-xs text-emerald-300 uppercase tracking-wider block font-semibold">
+        <div className="bg-surface-container-lowest p-5 border border-violet-500/30 relative overflow-hidden shadow-lg">
+          <span className="font-label-caps text-xs text-cyan-300 uppercase tracking-wider block font-semibold">
             Sent Outreach
           </span>
           <div className="flex items-baseline justify-between mt-2">
-            <span className="text-3xl font-headline-lg font-bold text-emerald-200">
+            <span className="text-3xl font-headline-lg font-bold text-cyan-200">
               {statusCounts['Sent'] || statusCounts['SENT'] || 0}
             </span>
-            <PaperPlaneTilt className="text-emerald-400 text-2xl" weight="fill" />
+            <PaperPlaneTilt className="text-violet-400 text-2xl" weight="fill" />
           </div>
-          <p className="text-[11px] text-emerald-300/80 mt-2">
+          <p className="text-[11px] text-cyan-300/80 mt-2">
             Dispatched via Hostinger professional email
           </p>
         </div>
 
-        <div className="bg-slate-950 p-5 border border-champagne-light/30 relative overflow-hidden shadow-lg">
-          <span className="font-label-caps text-xs text-champagne-light uppercase tracking-wider block font-semibold">
+        <div className="bg-surface-container-lowest p-5 border border-primary/30 relative overflow-hidden shadow-lg">
+          <span className="font-label-caps text-xs text-primary uppercase tracking-wider block font-semibold">
             Hostinger Integration
           </span>
           <div className="flex items-center gap-2 mt-3">
             {smtpStatus?.connected ? (
-              <span className="inline-flex items-center gap-1.5 px-2.5 py-1 text-xs font-bold font-label-caps uppercase bg-emerald-500/20 text-emerald-300 border border-emerald-500/40">
+              <span className="inline-flex items-center gap-1.5 px-2.5 py-1 text-xs font-bold font-label-caps uppercase bg-violet-500/20 text-cyan-300 border border-violet-500/40">
                 <CheckCircle size={14} weight="fill" />
                 Connected ({smtpStatus.senderEmail || 'Ready'})
               </span>
@@ -248,13 +248,13 @@ export default function OutreachDashboard({ showToast }) {
                 Configured ({smtpStatus?.mode || 'Check Auth'})
               </span>
             ) : (
-              <span className="inline-flex items-center gap-1.5 px-2.5 py-1 text-xs font-bold font-label-caps uppercase bg-slate-800 text-slate-300 border border-slate-700">
+              <span className="inline-flex items-center gap-1.5 px-2.5 py-1 text-xs font-bold font-label-caps uppercase bg-outline-variant text-main-text border border-outline">
                 <Warning size={14} />
                 Set .env Credentials
               </span>
             )}
           </div>
-          <p className="text-[11px] text-slate-400 mt-2 truncate">
+          <p className="text-[11px] text-text-light mt-2 truncate">
             {smtpStatus?.message || 'Hostinger API / SMTP configuration'}
           </p>
         </div>
@@ -262,21 +262,21 @@ export default function OutreachDashboard({ showToast }) {
       </div>
 
       {/* Action Controls & Filters Bar */}
-      <div className="bg-slate-950 p-6 border border-champagne-light/30 flex flex-col gap-4 shadow-xl">
+      <div className="bg-surface-container-lowest p-6 border border-primary/30 flex flex-col gap-4 shadow-xl">
         
         {/* Search & Main Buttons */}
         <div className="flex flex-col md:flex-row justify-between items-stretch md:items-center gap-4">
           
           {/* Search Input */}
           <div className="relative w-full md:w-96">
-            <MagnifyingGlass className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-base" weight="bold" />
+            <MagnifyingGlass className="absolute left-3 top-1/2 -translate-y-1/2 text-text-light text-base" weight="bold" />
             <input
               type="text"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               onKeyDown={(e) => e.key === 'Enter' && fetchLeads()}
               placeholder="Search company, contact, email, niche..."
-              className="w-full bg-slate-900 text-white font-body-md pl-10 pr-4 py-2.5 text-xs border border-slate-700 focus:outline-none focus:border-champagne-light transition-colors placeholder:text-slate-400 font-medium"
+              className="w-full bg-surface text-on-surface font-body-md pl-10 pr-4 py-2.5 text-xs border border-outline focus:outline-none focus:border-primary transition-colors placeholder:text-text-light font-medium"
             />
           </div>
 
@@ -284,7 +284,7 @@ export default function OutreachDashboard({ showToast }) {
           <div className="flex items-center gap-3 flex-wrap">
             <button
               onClick={() => setIsSentHistoryOpen(true)}
-              className="px-4 py-2.5 bg-slate-900 hover:bg-slate-800 border border-slate-700 hover:border-champagne-light text-slate-200 text-xs uppercase font-label-caps tracking-widest transition-colors flex items-center gap-2 cursor-pointer font-bold"
+              className="px-4 py-2.5 bg-surface hover:bg-outline-variant border border-outline hover:border-primary text-main-text text-xs uppercase font-label-caps tracking-widest transition-colors flex items-center gap-2 cursor-pointer font-bold"
             >
               <ClockCounterClockwise size={16} />
               <span>Sent History</span>
@@ -295,7 +295,7 @@ export default function OutreachDashboard({ showToast }) {
                 setEditingLead(null);
                 setIsAddModalOpen(true);
               }}
-              className="px-5 py-2.5 bg-champagne-light hover:bg-white text-navy-muted text-xs uppercase font-label-caps tracking-widest font-bold transition-all shadow-md flex items-center gap-2 cursor-pointer"
+              className="px-5 py-2.5 bg-primary hover:bg-primary-dark text-white text-xs uppercase font-label-caps tracking-widest font-bold transition-all shadow-md flex items-center gap-2 cursor-pointer"
             >
               <UserPlus size={16} weight="bold" />
               <span>Add New Lead</span>
@@ -303,7 +303,7 @@ export default function OutreachDashboard({ showToast }) {
 
             <button
               onClick={fetchLeads}
-              className="p-2.5 border border-slate-700 hover:border-champagne-light text-slate-200 hover:text-white transition-colors cursor-pointer"
+              className="p-2.5 border border-outline hover:border-primary text-main-text hover:text-on-surface transition-colors cursor-pointer"
               title="Refresh Leads"
             >
               <ArrowsClockwise className={loading ? 'animate-spin' : ''} size={16} weight="bold" />
@@ -313,7 +313,7 @@ export default function OutreachDashboard({ showToast }) {
 
         {/* Status Filter Tabs */}
         <div className="flex items-center gap-2 flex-wrap pt-2 border-t border-slate-850">
-          <span className="text-[11px] font-label-caps text-slate-400 uppercase tracking-wider mr-1">
+          <span className="text-[11px] font-label-caps text-text-light uppercase tracking-wider mr-1">
             Filter Status:
           </span>
           {STATUS_FILTERS.map((status) => {
@@ -324,13 +324,13 @@ export default function OutreachDashboard({ showToast }) {
                 onClick={() => setStatusFilter(status)}
                 className={`px-3 py-1 text-xs font-label-caps uppercase tracking-wider transition-colors border cursor-pointer flex items-center gap-1.5 ${
                   statusFilter === status
-                    ? 'bg-champagne-light text-navy-muted border-champagne-light font-bold shadow-md'
-                    : 'bg-slate-900/80 text-slate-300 border-slate-800 hover:border-slate-600'
+                    ? 'bg-primary text-white border-primary font-bold shadow-md'
+                    : 'bg-surface/80 text-main-text border-outline-variant hover:border-outline'
                 }`}
               >
                 <span>{status}</span>
                 <span className={`text-[10px] px-1.5 py-0.2 rounded-sm ${
-                  statusFilter === status ? 'bg-navy-muted/30 text-navy-muted font-bold' : 'bg-slate-800 text-slate-400'
+                  statusFilter === status ? 'bg-surface/30 text-deep-space font-bold' : 'bg-outline-variant text-text-light'
                 }`}>
                   {count}
                 </span>
@@ -342,21 +342,21 @@ export default function OutreachDashboard({ showToast }) {
       </div>
 
       {/* Leads Table */}
-      <div className="bg-slate-950 border border-slate-800 shadow-2xl overflow-hidden">
+      <div className="bg-surface-container-lowest border border-outline-variant shadow-2xl overflow-hidden">
         {loading ? (
-          <div className="text-center py-20 text-slate-400 font-body-md text-sm">
-            <ArrowsClockwise className="animate-spin text-2xl mx-auto mb-2 text-champagne-light" />
+          <div className="text-center py-20 text-text-light font-body-md text-sm">
+            <ArrowsClockwise className="animate-spin text-2xl mx-auto mb-2 text-primary" />
             Loading outreach leads database...
           </div>
         ) : filteredLeads.length === 0 ? (
-          <div className="text-center py-20 text-slate-400 font-body-md text-sm">
+          <div className="text-center py-20 text-text-light font-body-md text-sm">
             <Buildings className="text-3xl mx-auto mb-2 text-slate-600" />
             No leads found matching your filter criteria.
           </div>
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full text-left text-xs font-body-md">
-              <thead className="bg-navy-muted/90 text-champagne-light uppercase font-label-caps tracking-widest text-[11px] border-b border-slate-800">
+              <thead className="bg-surface/90 text-primary uppercase font-label-caps tracking-widest text-[11px] border-b border-outline-variant">
                 <tr>
                   <th className="py-3.5 px-4 font-bold">Company / Contact</th>
                   <th className="py-3.5 px-4 font-bold">Online Presence</th>
@@ -371,21 +371,21 @@ export default function OutreachDashboard({ showToast }) {
                   return (
                     <tr 
                       key={lead.id} 
-                      className="hover:bg-slate-900/60 transition-colors group"
+                      className="hover:bg-surface/60 transition-colors group"
                     >
                       {/* Company & Contact */}
                       <td className="py-4 px-4 align-top">
-                        <div className="font-semibold text-white text-sm">
+                        <div className="font-semibold text-on-surface text-sm">
                           {companyName}
                         </div>
                         {lead.name && (
-                          <div className="text-slate-400 text-xs flex items-center gap-1 mt-0.5">
+                          <div className="text-text-light text-xs flex items-center gap-1 mt-0.5">
                             <User size={12} className="shrink-0" />
                             <span>{lead.name}</span>
                           </div>
                         )}
                         {lead.company_description && (
-                          <div className="text-[11px] text-slate-400 mt-1 max-w-xs truncate" title={lead.company_description}>
+                          <div className="text-[11px] text-text-light mt-1 max-w-xs truncate" title={lead.company_description}>
                             {lead.company_description}
                           </div>
                         )}
@@ -394,44 +394,44 @@ export default function OutreachDashboard({ showToast }) {
                       {/* Online Presence (Email & Web) */}
                       <td className="py-4 px-4 align-top">
                         {lead.email ? (
-                          <div className="text-slate-200 flex items-center gap-1.5">
-                            <EnvelopeSimple size={13} className="text-champagne-light shrink-0" />
+                          <div className="text-main-text flex items-center gap-1.5">
+                            <EnvelopeSimple size={13} className="text-primary shrink-0" />
                             <span className="font-mono text-[11px]">{lead.email}</span>
                           </div>
                         ) : (
-                          <span className="text-slate-400 italic text-[11px]">No email listed</span>
+                          <span className="text-text-light italic text-[11px]">No email listed</span>
                         )}
 
                         {lead.website ? (
-                          <div className="text-slate-400 flex items-center gap-1.5 mt-1">
-                            <Globe size={13} className="text-slate-400 shrink-0" />
+                          <div className="text-text-light flex items-center gap-1.5 mt-1">
+                            <Globe size={13} className="text-text-light shrink-0" />
                             <a 
                               href={lead.website.startsWith('http') ? lead.website : `https://${lead.website}`}
                               target="_blank" 
                               rel="noreferrer" 
-                              className="text-slate-300 hover:text-champagne-light truncate max-w-[180px] hover:underline"
+                              className="text-main-text hover:text-primary truncate max-w-[180px] hover:underline"
                             >
                               {lead.website.replace(/^https?:\/\//, '')}
                             </a>
                           </div>
                         ) : (
-                          <span className="text-slate-400 text-[11px] block mt-0.5">No website</span>
+                          <span className="text-text-light text-[11px] block mt-0.5">No website</span>
                         )}
                       </td>
 
                       {/* Industry & Location */}
                       <td className="py-4 px-4 align-top">
                         {(lead.industry || lead.category) ? (
-                          <span className="inline-flex items-center gap-1 px-2 py-0.5 bg-slate-900 border border-slate-800 text-slate-300 text-[11px] font-medium">
-                            <Tag size={11} className="text-slate-400" />
+                          <span className="inline-flex items-center gap-1 px-2 py-0.5 bg-surface border border-outline-variant text-main-text text-[11px] font-medium">
+                            <Tag size={11} className="text-text-light" />
                             {lead.industry || lead.category}
                           </span>
                         ) : (
-                          <span className="text-slate-400 text-[11px]">-</span>
+                          <span className="text-text-light text-[11px]">-</span>
                         )}
 
                         {lead.location && (
-                          <div className="text-slate-400 text-[11px] flex items-center gap-1 mt-1.5">
+                          <div className="text-text-light text-[11px] flex items-center gap-1 mt-1.5">
                             <MapPin size={11} className="shrink-0" />
                             <span className="truncate max-w-[160px]">{lead.location}</span>
                           </div>
@@ -444,7 +444,7 @@ export default function OutreachDashboard({ showToast }) {
                           {lead.status || 'New'}
                         </span>
                         {lead.personalization_context && (
-                          <span className="block text-[10px] text-champagne-light/80 mt-1.5 truncate max-w-[140px]" title={lead.personalization_context}>
+                          <span className="block text-[10px] text-primary/80 mt-1.5 truncate max-w-[140px]" title={lead.personalization_context}>
                             • Context Added
                           </span>
                         )}
@@ -457,7 +457,7 @@ export default function OutreachDashboard({ showToast }) {
                           {/* Main Generate / Open Studio CTA */}
                           <button
                             onClick={() => setSelectedStudioLead(lead)}
-                            className="px-3 py-1.5 bg-champagne-light hover:bg-champagne-light/90 text-navy-muted text-xs uppercase font-label-caps tracking-wider font-bold transition-all shadow flex items-center gap-1.5 cursor-pointer"
+                            className="px-3 py-1.5 bg-primary hover:bg-primary/90 text-deep-space text-xs uppercase font-label-caps tracking-wider font-bold transition-all shadow flex items-center gap-1.5 cursor-pointer"
                             title="Generate and preview personalized cold email"
                           >
                             <Sparkle size={13} weight="fill" />
@@ -470,7 +470,7 @@ export default function OutreachDashboard({ showToast }) {
                               setEditingLead(lead);
                               setIsAddModalOpen(true);
                             }}
-                            className="p-1.5 bg-slate-900 border border-slate-700 hover:border-champagne-light text-slate-300 hover:text-white transition-colors cursor-pointer"
+                            className="p-1.5 bg-surface border border-outline hover:border-primary text-main-text hover:text-on-surface transition-colors cursor-pointer"
                             title="Edit Lead"
                           >
                             <Pencil size={14} />
@@ -479,7 +479,7 @@ export default function OutreachDashboard({ showToast }) {
                           {/* Delete Lead */}
                           <button
                             onClick={() => setDeletingId(lead.id)}
-                            className="p-1.5 bg-slate-900 border border-slate-700 hover:border-red-500 text-slate-400 hover:text-red-300 transition-colors cursor-pointer"
+                            className="p-1.5 bg-surface border border-outline hover:border-red-500 text-text-light hover:text-red-300 transition-colors cursor-pointer"
                             title="Delete Lead"
                           >
                             <Trash size={14} />
@@ -527,27 +527,27 @@ export default function OutreachDashboard({ showToast }) {
 
       {/* Delete Confirmation Modal */}
       {deletingId && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-fadeIn">
-          <div className="bg-slate-950 border border-red-500/50 p-6 max-w-sm w-full shadow-2xl space-y-4">
-            <h3 className="font-headline-lg text-lg text-white font-bold flex items-center gap-2">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-on-surface/40 backdrop-blur-sm animate-fadeIn">
+          <div className="bg-surface-container-lowest border border-red-500/50 p-6 max-w-sm w-full shadow-2xl space-y-4">
+            <h3 className="font-headline-lg text-lg text-on-surface font-bold flex items-center gap-2">
               <Warning className="text-red-400" />
               Delete Lead Record?
             </h3>
-            <p className="text-xs text-slate-300 font-body-md leading-relaxed">
+            <p className="text-xs text-main-text font-body-md leading-relaxed">
               Are you sure you want to permanently delete this lead and its associated drafts? This action cannot be undone.
             </p>
             <div className="flex justify-end gap-3 pt-2">
               <button
                 onClick={() => setDeletingId(null)}
                 disabled={actionLoading}
-                className="px-4 py-2 border border-slate-700 text-slate-300 text-xs uppercase font-label-caps tracking-widest cursor-pointer"
+                className="px-4 py-2 border border-outline text-main-text text-xs uppercase font-label-caps tracking-widest cursor-pointer"
               >
                 Cancel
               </button>
               <button
                 onClick={handleDeleteConfirm}
                 disabled={actionLoading}
-                className="px-4 py-2 bg-red-600 hover:bg-red-700 text-white text-xs uppercase font-label-caps tracking-widest font-bold cursor-pointer"
+                className="px-4 py-2 bg-red-600 hover:bg-red- text-white text-xs uppercase font-label-caps tracking-widest font-bold cursor-pointer"
               >
                 {actionLoading ? 'Deleting...' : 'Delete'}
               </button>

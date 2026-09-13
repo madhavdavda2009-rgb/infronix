@@ -1,5 +1,6 @@
 "use client";
 import SEO from '@/components/SEO';
+import Breadcrumb from '@/components/Breadcrumb';
 
 export default function TermsAndConditions() {
   return (
@@ -8,14 +9,15 @@ export default function TermsAndConditions() {
         title="Terms and Conditions | Infronix"
         description="Comprehensive Terms and Conditions governing the use of Infronix Web Agency services, web development, SEO, AI automation, and digital solutions."
       />
-      <main className="w-full pt-32 pb-section-gap bg-surface text-on-surface" id="main-content">
-        <div className="max-w-[900px] mx-auto px-margin-mobile md:px-margin-desktop">
+      <main className="w-full pt-20 sm:pt-28 md:pt-32 pb-16 sm:pb-24 bg-surface text-on-surface" id="main-content">
+        <div className="max-w-[900px] mx-auto px-4 sm:px-6 md:px-8">
+          <Breadcrumb />
           {/* Header Section */}
-          <header className="border-b border-outline-variant pb-8 mb-12">
-            <span className="text-xs font-semibold tracking-widest uppercase text-secondary mb-2 block">
+          <header className="border-b border-outline-variant pb-6 sm:pb-8 mb-8 sm:mb-12">
+            <span className="text-xs font-semibold tracking-widest uppercase text-accent mb-2 block">
               Legal & Terms of Service
             </span>
-            <h1 className="font-headline-lg text-4xl md:text-5xl font-bold text-primary mb-4">
+            <h1 className="font-headline-lg text-2xl sm:text-4xl md:text-5xl font-bold text-on-surface mb-3 sm:mb-4">
               Terms and Conditions
             </h1>
             <p className="text-sm font-medium text-on-surface-variant">
@@ -28,7 +30,7 @@ export default function TermsAndConditions() {
             
             {/* 1. Introduction */}
             <section aria-labelledby="section-1" className="space-y-4">
-              <h2 id="section-1" className="font-headline-md text-2xl font-semibold text-primary border-l-4 border-secondary pl-4">
+              <h2 id="section-1" className="font-headline-md text-2xl font-semibold text-primary border-l-4 border-accent pl-4">
                 1. Introduction
               </h2>
               <p>
@@ -37,7 +39,7 @@ export default function TermsAndConditions() {
               <p>
                 Our services may include:
               </p>
-              <ul className="list-disc pl-6 space-y-1.5 marker:text-secondary">
+              <ul className="list-disc pl-6 space-y-1.5 marker:text-accent">
                 <li>Website design and development</li>
                 <li>Web applications</li>
                 <li>Search Engine Optimization (SEO)</li>
@@ -61,7 +63,7 @@ export default function TermsAndConditions() {
 
             {/* 2. Definitions */}
             <section aria-labelledby="section-2" className="space-y-4">
-              <h2 id="section-2" className="font-headline-md text-2xl font-semibold text-primary border-l-4 border-secondary pl-4">
+              <h2 id="section-2" className="font-headline-md text-2xl font-semibold text-primary border-l-4 border-accent pl-4">
                 2. Definitions
               </h2>
               <p>For these Terms:</p>
@@ -88,13 +90,13 @@ export default function TermsAndConditions() {
 
             {/* 3. Scope of Services */}
             <section aria-labelledby="section-3" className="space-y-4">
-              <h2 id="section-3" className="font-headline-md text-2xl font-semibold text-primary border-l-4 border-secondary pl-4">
+              <h2 id="section-3" className="font-headline-md text-2xl font-semibold text-primary border-l-4 border-accent pl-4">
                 3. Scope of Services
               </h2>
               <p>
                 The exact scope of a project will be determined by the applicable:
               </p>
-              <ul className="list-disc pl-6 space-y-1.5 marker:text-secondary">
+              <ul className="list-disc pl-6 space-y-1.5 marker:text-accent">
                 <li>Proposal</li>
                 <li>Quotation</li>
                 <li>Statement of Work</li>
@@ -115,11 +117,11 @@ export default function TermsAndConditions() {
 
             {/* 4. Client Responsibilities */}
             <section aria-labelledby="section-4" className="space-y-4">
-              <h2 id="section-4" className="font-headline-md text-2xl font-semibold text-primary border-l-4 border-secondary pl-4">
+              <h2 id="section-4" className="font-headline-md text-2xl font-semibold text-primary border-l-4 border-accent pl-4">
                 4. Client Responsibilities
               </h2>
               <p>The Client agrees to:</p>
-              <ul className="list-disc pl-6 space-y-1.5 marker:text-secondary">
+              <ul className="list-disc pl-6 space-y-1.5 marker:text-accent">
                 <li>Provide accurate information</li>
                 <li>Provide required content and materials</li>
                 <li>Provide necessary approvals</li>
@@ -142,7 +144,7 @@ export default function TermsAndConditions() {
 
             {/* 5. Strict Prohibition of Illegal or Abusive Use */}
             <section aria-labelledby="section-5" className="space-y-4">
-              <h2 id="section-5" className="font-headline-md text-2xl font-semibold text-primary border-l-4 border-secondary pl-4">
+              <h2 id="section-5" className="font-headline-md text-2xl font-semibold text-primary border-l-4 border-accent pl-4">
                 5. Strict Prohibition of Illegal or Abusive Use
               </h2>
               <p>
@@ -199,13 +201,13 @@ export default function TermsAndConditions() {
 
             {/* 6. Right to Suspend or Refuse Services */}
             <section aria-labelledby="section-6" className="space-y-4">
-              <h2 id="section-6" className="font-headline-md text-2xl font-semibold text-primary border-l-4 border-secondary pl-4">
+              <h2 id="section-6" className="font-headline-md text-2xl font-semibold text-primary border-l-4 border-accent pl-4">
                 6. Right to Suspend or Refuse Services
               </h2>
               <p>
                 We may suspend, restrict, or terminate services where we reasonably believe that:
               </p>
-              <ul className="list-disc pl-6 space-y-1.5 marker:text-secondary">
+              <ul className="list-disc pl-6 space-y-1.5 marker:text-accent">
                 <li>The Client is using the service unlawfully</li>
                 <li>The Client has provided misleading information</li>
                 <li>The project creates a material security risk</li>
@@ -225,7 +227,7 @@ export default function TermsAndConditions() {
 
             {/* 7. Client Authorization and Access */}
             <section aria-labelledby="section-7" className="space-y-4">
-              <h2 id="section-7" className="font-headline-md text-2xl font-semibold text-primary border-l-4 border-secondary pl-4">
+              <h2 id="section-7" className="font-headline-md text-2xl font-semibold text-primary border-l-4 border-accent pl-4">
                 7. Client Authorization and Access
               </h2>
               <p>
@@ -243,11 +245,11 @@ export default function TermsAndConditions() {
 
             {/* 8. Website Development */}
             <section aria-labelledby="section-8" className="space-y-4">
-              <h2 id="section-8" className="font-headline-md text-2xl font-semibold text-primary border-l-4 border-secondary pl-4">
+              <h2 id="section-8" className="font-headline-md text-2xl font-semibold text-primary border-l-4 border-accent pl-4">
                 8. Website Development
               </h2>
               <p>For website and software development projects:</p>
-              <ul className="list-disc pl-6 space-y-1.5 marker:text-secondary">
+              <ul className="list-disc pl-6 space-y-1.5 marker:text-accent">
                 <li>Project requirements will be based on the agreed scope.</li>
                 <li>Client-provided content must be legally usable by the Client.</li>
                 <li>Third-party assets remain subject to their respective licenses.</li>
@@ -263,14 +265,14 @@ export default function TermsAndConditions() {
 
             {/* 9. SEO Services */}
             <section aria-labelledby="section-9" className="space-y-4">
-              <h2 id="section-9" className="font-headline-md text-2xl font-semibold text-primary border-l-4 border-secondary pl-4">
+              <h2 id="section-9" className="font-headline-md text-2xl font-semibold text-primary border-l-4 border-accent pl-4">
                 9. SEO Services
               </h2>
               <p>
                 SEO outcomes depend on factors outside the Agency&apos;s control.
               </p>
               <p>We do not guarantee:</p>
-              <ul className="list-disc pl-6 space-y-1.5 marker:text-secondary">
+              <ul className="list-disc pl-6 space-y-1.5 marker:text-accent">
                 <li>Specific Google rankings</li>
                 <li>Permanent rankings</li>
                 <li>Specific traffic levels</li>
@@ -294,7 +296,7 @@ export default function TermsAndConditions() {
 
             {/* 10. AI Services and AI Automation */}
             <section aria-labelledby="section-10" className="space-y-4">
-              <h2 id="section-10" className="font-headline-md text-2xl font-semibold text-primary border-l-4 border-secondary pl-4">
+              <h2 id="section-10" className="font-headline-md text-2xl font-semibold text-primary border-l-4 border-accent pl-4">
                 10. AI Services and AI Automation
               </h2>
               <p>
@@ -304,7 +306,7 @@ export default function TermsAndConditions() {
                 AI-generated content should be reviewed before being used for high-impact or business-critical decisions.
               </p>
               <p>We do not guarantee that AI systems will:</p>
-              <ul className="list-disc pl-6 space-y-1.5 marker:text-secondary">
+              <ul className="list-disc pl-6 space-y-1.5 marker:text-accent">
                 <li>Always provide correct answers</li>
                 <li>Always understand user intent</li>
                 <li>Always remain available</li>
@@ -324,14 +326,14 @@ export default function TermsAndConditions() {
 
             {/* 11. Automated Actions */}
             <section aria-labelledby="section-11" className="space-y-4">
-              <h2 id="section-11" className="font-headline-md text-2xl font-semibold text-primary border-l-4 border-secondary pl-4">
+              <h2 id="section-11" className="font-headline-md text-2xl font-semibold text-primary border-l-4 border-accent pl-4">
                 11. Automated Actions
               </h2>
               <p>
                 Where an AI or automation system performs actions automatically, the Client is responsible for approving the intended workflow and business rules.
               </p>
               <p>Depending on the project, automated actions may include:</p>
-              <ul className="list-disc pl-6 space-y-1.5 marker:text-secondary">
+              <ul className="list-disc pl-6 space-y-1.5 marker:text-accent">
                 <li>Sending messages</li>
                 <li>Creating leads</li>
                 <li>Updating records</li>
@@ -353,7 +355,7 @@ export default function TermsAndConditions() {
 
             {/* 12. WhatsApp, Email, SMS, and Messaging Automation */}
             <section aria-labelledby="section-12" className="space-y-4">
-              <h2 id="section-12" className="font-headline-md text-2xl font-semibold text-primary border-l-4 border-secondary pl-4">
+              <h2 id="section-12" className="font-headline-md text-2xl font-semibold text-primary border-l-4 border-accent pl-4">
                 12. WhatsApp, Email, SMS, and Messaging Automation
               </h2>
               <p>
@@ -365,7 +367,7 @@ export default function TermsAndConditions() {
               <p>
                 The Agency will not knowingly build automation intended to facilitate:
               </p>
-              <ul className="list-disc pl-6 space-y-1.5 marker:text-secondary">
+              <ul className="list-disc pl-6 space-y-1.5 marker:text-accent">
                 <li>Unlawful spam</li>
                 <li>Phishing</li>
                 <li>Fraud</li>
@@ -386,7 +388,7 @@ export default function TermsAndConditions() {
 
             {/* 13. Client Data */}
             <section aria-labelledby="section-13" className="space-y-4">
-              <h2 id="section-13" className="font-headline-md text-2xl font-semibold text-primary border-l-4 border-secondary pl-4">
+              <h2 id="section-13" className="font-headline-md text-2xl font-semibold text-primary border-l-4 border-accent pl-4">
                 13. Client Data
               </h2>
               <p>
@@ -404,14 +406,14 @@ export default function TermsAndConditions() {
 
             {/* 14. Third-Party Services */}
             <section aria-labelledby="section-14" className="space-y-4">
-              <h2 id="section-14" className="font-headline-md text-2xl font-semibold text-primary border-l-4 border-secondary pl-4">
+              <h2 id="section-14" className="font-headline-md text-2xl font-semibold text-primary border-l-4 border-accent pl-4">
                 14. Third-Party Services
               </h2>
               <p>
                 Projects may rely on third-party services including AI providers, cloud platforms, hosting providers, payment processors, messaging platforms, APIs, CRM platforms, analytics platforms, domain providers, email providers, and software libraries.
               </p>
               <p>Third-party services may:</p>
-              <ul className="list-disc pl-6 space-y-1.5 marker:text-secondary">
+              <ul className="list-disc pl-6 space-y-1.5 marker:text-accent">
                 <li>Change their APIs</li>
                 <li>Change pricing</li>
                 <li>Change policies</li>
@@ -429,14 +431,14 @@ export default function TermsAndConditions() {
 
             {/* 15. Payments */}
             <section aria-labelledby="section-15" className="space-y-4">
-              <h2 id="section-15" className="font-headline-md text-2xl font-semibold text-primary border-l-4 border-secondary pl-4">
+              <h2 id="section-15" className="font-headline-md text-2xl font-semibold text-primary border-l-4 border-accent pl-4">
                 15. Payments
               </h2>
               <p>
                 Project pricing and payment schedules will be specified in the applicable quotation, proposal, invoice, or agreement.
               </p>
               <p>Unless otherwise agreed:</p>
-              <ul className="list-disc pl-6 space-y-1.5 marker:text-secondary">
+              <ul className="list-disc pl-6 space-y-1.5 marker:text-accent">
                 <li>Work may begin after required advance payment.</li>
                 <li>Work may be paused if invoices become overdue.</li>
                 <li>Third-party costs may be billed separately.</li>
@@ -451,7 +453,7 @@ export default function TermsAndConditions() {
 
             {/* 16. Intellectual Property */}
             <section aria-labelledby="section-16" className="space-y-6">
-              <h2 id="section-16" className="font-headline-md text-2xl font-semibold text-primary border-l-4 border-secondary pl-4">
+              <h2 id="section-16" className="font-headline-md text-2xl font-semibold text-primary border-l-4 border-accent pl-4">
                 16. Intellectual Property
               </h2>
               <p>Unless otherwise agreed in writing:</p>
@@ -488,14 +490,14 @@ export default function TermsAndConditions() {
 
             {/* 17. Confidentiality */}
             <section aria-labelledby="section-17" className="space-y-4">
-              <h2 id="section-17" className="font-headline-md text-2xl font-semibold text-primary border-l-4 border-secondary pl-4">
+              <h2 id="section-17" className="font-headline-md text-2xl font-semibold text-primary border-l-4 border-accent pl-4">
                 17. Confidentiality
               </h2>
               <p>
                 Both parties should take reasonable measures to protect confidential information received during a project.
               </p>
               <p>Confidential information may include:</p>
-              <ul className="list-disc pl-6 space-y-1.5 marker:text-secondary">
+              <ul className="list-disc pl-6 space-y-1.5 marker:text-accent">
                 <li>Business strategies</li>
                 <li>Credentials</li>
                 <li>Customer information</li>
@@ -514,7 +516,7 @@ export default function TermsAndConditions() {
 
             {/* 18. Security */}
             <section aria-labelledby="section-18" className="space-y-4">
-              <h2 id="section-18" className="font-headline-md text-2xl font-semibold text-primary border-l-4 border-secondary pl-4">
+              <h2 id="section-18" className="font-headline-md text-2xl font-semibold text-primary border-l-4 border-accent pl-4">
                 18. Security
               </h2>
               <p>
@@ -524,7 +526,7 @@ export default function TermsAndConditions() {
                 However, cybersecurity risk cannot be completely eliminated.
               </p>
               <p>The Client remains responsible for:</p>
-              <ul className="list-disc pl-6 space-y-1.5 marker:text-secondary">
+              <ul className="list-disc pl-6 space-y-1.5 marker:text-accent">
                 <li>Securing its own accounts</li>
                 <li>Protecting passwords</li>
                 <li>Using appropriate authentication</li>
@@ -541,11 +543,11 @@ export default function TermsAndConditions() {
 
             {/* 19. No Guarantee of Business Results */}
             <section aria-labelledby="section-19" className="space-y-4">
-              <h2 id="section-19" className="font-headline-md text-2xl font-semibold text-primary border-l-4 border-secondary pl-4">
+              <h2 id="section-19" className="font-headline-md text-2xl font-semibold text-primary border-l-4 border-accent pl-4">
                 19. No Guarantee of Business Results
               </h2>
               <p>Unless explicitly agreed in writing, we do not guarantee:</p>
-              <ul className="list-disc pl-6 space-y-1.5 marker:text-secondary">
+              <ul className="list-disc pl-6 space-y-1.5 marker:text-accent">
                 <li>Revenue</li>
                 <li>Profit</li>
                 <li>Sales</li>
@@ -566,7 +568,7 @@ export default function TermsAndConditions() {
 
             {/* 20. Intellectual Property and Legal Compliance */}
             <section aria-labelledby="section-20" className="space-y-4">
-              <h2 id="section-20" className="font-headline-md text-2xl font-semibold text-primary border-l-4 border-secondary pl-4">
+              <h2 id="section-20" className="font-headline-md text-2xl font-semibold text-primary border-l-4 border-accent pl-4">
                 20. Intellectual Property and Legal Compliance
               </h2>
               <p>
@@ -584,13 +586,13 @@ export default function TermsAndConditions() {
 
             {/* 21. Prohibited Requests */}
             <section aria-labelledby="section-21" className="space-y-4">
-              <h2 id="section-21" className="font-headline-md text-2xl font-semibold text-primary border-l-4 border-secondary pl-4">
+              <h2 id="section-21" className="font-headline-md text-2xl font-semibold text-primary border-l-4 border-accent pl-4">
                 21. Prohibited Requests
               </h2>
               <p>
                 The Agency reserves the right to reject requests involving:
               </p>
-              <ul className="list-disc pl-6 space-y-1.5 marker:text-secondary">
+              <ul className="list-disc pl-6 space-y-1.5 marker:text-accent">
                 <li>Fraud</li>
                 <li>Scams</li>
                 <li>Phishing</li>
@@ -617,7 +619,7 @@ export default function TermsAndConditions() {
 
             {/* 22. Legal and Regulatory Compliance */}
             <section aria-labelledby="section-22" className="space-y-4">
-              <h2 id="section-22" className="font-headline-md text-2xl font-semibold text-primary border-l-4 border-secondary pl-4">
+              <h2 id="section-22" className="font-headline-md text-2xl font-semibold text-primary border-l-4 border-accent pl-4">
                 22. Legal and Regulatory Compliance
               </h2>
               <p>
@@ -638,7 +640,7 @@ export default function TermsAndConditions() {
 
             {/* 23. Government and Law-Enforcement Requests */}
             <section aria-labelledby="section-23" className="space-y-4">
-              <h2 id="section-23" className="font-headline-md text-2xl font-semibold text-primary border-l-4 border-secondary pl-4">
+              <h2 id="section-23" className="font-headline-md text-2xl font-semibold text-primary border-l-4 border-accent pl-4">
                 23. Government and Law-Enforcement Requests
               </h2>
               <p>
@@ -656,7 +658,7 @@ export default function TermsAndConditions() {
 
             {/* 24. Records and Documentation */}
             <section aria-labelledby="section-24" className="space-y-4">
-              <h2 id="section-24" className="font-headline-md text-2xl font-semibold text-primary border-l-4 border-secondary pl-4">
+              <h2 id="section-24" className="font-headline-md text-2xl font-semibold text-primary border-l-4 border-accent pl-4">
                 24. Records and Documentation
               </h2>
               <p>
@@ -671,14 +673,14 @@ export default function TermsAndConditions() {
 
             {/* 25. Service Availability */}
             <section aria-labelledby="section-25" className="space-y-4">
-              <h2 id="section-25" className="font-headline-md text-2xl font-semibold text-primary border-l-4 border-secondary pl-4">
+              <h2 id="section-25" className="font-headline-md text-2xl font-semibold text-primary border-l-4 border-accent pl-4">
                 25. Service Availability
               </h2>
               <p>
                 We aim to provide reliable services but do not guarantee uninterrupted availability.
               </p>
               <p>Downtime may occur because of:</p>
-              <ul className="list-disc pl-6 space-y-1.5 marker:text-secondary">
+              <ul className="list-disc pl-6 space-y-1.5 marker:text-accent">
                 <li>Maintenance</li>
                 <li>Hosting failures</li>
                 <li>Internet failures</li>
@@ -695,7 +697,7 @@ export default function TermsAndConditions() {
 
             {/* 26. Force Majeure */}
             <section aria-labelledby="section-26" className="space-y-4">
-              <h2 id="section-26" className="font-headline-md text-2xl font-semibold text-primary border-l-4 border-secondary pl-4">
+              <h2 id="section-26" className="font-headline-md text-2xl font-semibold text-primary border-l-4 border-accent pl-4">
                 26. Force Majeure
               </h2>
               <p>
@@ -707,14 +709,14 @@ export default function TermsAndConditions() {
 
             {/* 27. Limitation of Liability */}
             <section aria-labelledby="section-27" className="space-y-4">
-              <h2 id="section-27" className="font-headline-md text-2xl font-semibold text-primary border-l-4 border-secondary pl-4">
+              <h2 id="section-27" className="font-headline-md text-2xl font-semibold text-primary border-l-4 border-accent pl-4">
                 27. Limitation of Liability
               </h2>
               <p>
                 To the maximum extent permitted by applicable law, the Agency will not be liable for indirect, incidental, consequential, special, or unforeseeable losses arising from use of our website or services.
               </p>
               <p>This may include losses relating to:</p>
-              <ul className="list-disc pl-6 space-y-1.5 marker:text-secondary">
+              <ul className="list-disc pl-6 space-y-1.5 marker:text-accent">
                 <li>Lost profits</li>
                 <li>Lost revenue</li>
                 <li>Lost business opportunities</li>
@@ -735,13 +737,13 @@ export default function TermsAndConditions() {
 
             {/* 28. Indemnification */}
             <section aria-labelledby="section-28" className="space-y-4">
-              <h2 id="section-28" className="font-headline-md text-2xl font-semibold text-primary border-l-4 border-secondary pl-4">
+              <h2 id="section-28" className="font-headline-md text-2xl font-semibold text-primary border-l-4 border-accent pl-4">
                 28. Indemnification
               </h2>
               <p>
                 To the extent permitted by applicable law, the Client may be responsible for losses, claims, liabilities, or expenses arising from:
               </p>
-              <ul className="list-disc pl-6 space-y-1.5 marker:text-secondary">
+              <ul className="list-disc pl-6 space-y-1.5 marker:text-accent">
                 <li>Illegal use of delivered systems</li>
                 <li>Client-provided unlawful content</li>
                 <li>Client&apos;s violation of third-party rights</li>
@@ -759,14 +761,14 @@ export default function TermsAndConditions() {
 
             {/* 29. Termination */}
             <section aria-labelledby="section-29" className="space-y-4">
-              <h2 id="section-29" className="font-headline-md text-2xl font-semibold text-primary border-l-4 border-secondary pl-4">
+              <h2 id="section-29" className="font-headline-md text-2xl font-semibold text-primary border-l-4 border-accent pl-4">
                 29. Termination
               </h2>
               <p>
                 Either party may terminate a project according to the applicable project agreement.
               </p>
               <p>We may suspend or terminate services where:</p>
-              <ul className="list-disc pl-6 space-y-1.5 marker:text-secondary">
+              <ul className="list-disc pl-6 space-y-1.5 marker:text-accent">
                 <li>Payments are overdue</li>
                 <li>The Client materially breaches these Terms</li>
                 <li>The Client requests unlawful activity</li>
@@ -784,11 +786,11 @@ export default function TermsAndConditions() {
 
             {/* 30. Effect of Termination */}
             <section aria-labelledby="section-30" className="space-y-4">
-              <h2 id="section-30" className="font-headline-md text-2xl font-semibold text-primary border-l-4 border-secondary pl-4">
+              <h2 id="section-30" className="font-headline-md text-2xl font-semibold text-primary border-l-4 border-accent pl-4">
                 30. Effect of Termination
               </h2>
               <p>Upon termination:</p>
-              <ul className="list-disc pl-6 space-y-1.5 marker:text-secondary">
+              <ul className="list-disc pl-6 space-y-1.5 marker:text-accent">
                 <li>Access to certain services may be disabled.</li>
                 <li>Outstanding payments may remain payable.</li>
                 <li>Client data may be returned or handled according to the applicable agreement and law.</li>
@@ -801,7 +803,7 @@ export default function TermsAndConditions() {
 
             {/* 31. Dispute Resolution */}
             <section aria-labelledby="section-31" className="space-y-4">
-              <h2 id="section-31" className="font-headline-md text-2xl font-semibold text-primary border-l-4 border-secondary pl-4">
+              <h2 id="section-31" className="font-headline-md text-2xl font-semibold text-primary border-l-4 border-accent pl-4">
                 31. Dispute Resolution
               </h2>
               <p>
@@ -816,7 +818,7 @@ export default function TermsAndConditions() {
 
             {/* 32. Governing Law */}
             <section aria-labelledby="section-32" className="space-y-4">
-              <h2 id="section-32" className="font-headline-md text-2xl font-semibold text-primary border-l-4 border-secondary pl-4">
+              <h2 id="section-32" className="font-headline-md text-2xl font-semibold text-primary border-l-4 border-accent pl-4">
                 32. Governing Law
               </h2>
               <p>
@@ -831,7 +833,7 @@ export default function TermsAndConditions() {
 
             {/* 33. Changes to These Terms */}
             <section aria-labelledby="section-33" className="space-y-4">
-              <h2 id="section-33" className="font-headline-md text-2xl font-semibold text-primary border-l-4 border-secondary pl-4">
+              <h2 id="section-33" className="font-headline-md text-2xl font-semibold text-primary border-l-4 border-accent pl-4">
                 33. Changes to These Terms
               </h2>
               <p>
@@ -849,7 +851,7 @@ export default function TermsAndConditions() {
 
             {/* 34. No Legal or Professional Advice */}
             <section aria-labelledby="section-34" className="space-y-4">
-              <h2 id="section-34" className="font-headline-md text-2xl font-semibold text-primary border-l-4 border-secondary pl-4">
+              <h2 id="section-34" className="font-headline-md text-2xl font-semibold text-primary border-l-4 border-accent pl-4">
                 34. No Legal or Professional Advice
               </h2>
               <p>
@@ -861,7 +863,7 @@ export default function TermsAndConditions() {
 
             {/* 35. Contact */}
             <section aria-labelledby="section-35" className="space-y-4">
-              <h2 id="section-35" className="font-headline-md text-2xl font-semibold text-primary border-l-4 border-secondary pl-4">
+              <h2 id="section-35" className="font-headline-md text-2xl font-semibold text-primary border-l-4 border-accent pl-4">
                 35. Contact
               </h2>
               <p>

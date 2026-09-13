@@ -189,23 +189,23 @@ export default function EmailStudioModal({ isOpen, onClose, lead, onEmailSent, s
 
   return (
     <>
-      <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 backdrop-blur-sm animate-fadeIn">
-        <div className="bg-slate-950 border border-champagne-light/40 w-full max-w-4xl max-h-[92vh] overflow-y-auto shadow-2xl flex flex-col">
+      <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-on-surface/40 backdrop-blur-sm animate-fadeIn">
+        <div className="bg-surface-container-lowest border border-primary/40 w-full max-w-4xl max-h-[92vh] overflow-y-auto shadow-2xl flex flex-col">
           
           {/* Studio Header */}
-          <div className="p-6 border-b border-champagne-light/20 flex justify-between items-center bg-navy-muted/90 backdrop-blur-md sticky top-0 z-10">
+          <div className="p-6 border-b border-primary/20 flex justify-between items-center bg-surface/90 backdrop-blur-md sticky top-0 z-10">
             <div>
-              <span className="font-label-caps text-xs text-champagne-light uppercase tracking-widest block font-bold flex items-center gap-1.5">
+              <span className="font-label-caps text-xs text-primary uppercase tracking-widest block font-bold flex items-center gap-1.5">
                 <Sparkle size={14} weight="fill" />
                 Personalized Outreach Studio
               </span>
-              <h2 className="font-headline-lg text-xl md:text-2xl text-white font-bold mt-0.5">
+              <h2 className="font-headline-lg text-xl md:text-2xl text-on-surface font-bold mt-0.5">
                 {companyName}
               </h2>
             </div>
             <button
               onClick={onClose}
-              className="text-slate-400 hover:text-white p-2 transition-colors cursor-pointer"
+              className="text-text-light hover:text-on-surface p-2 transition-colors cursor-pointer"
             >
               <X size={20} weight="bold" />
             </button>
@@ -217,35 +217,35 @@ export default function EmailStudioModal({ isOpen, onClose, lead, onEmailSent, s
             <div className="lg:col-span-5 space-y-5">
               
               {/* Lead Information Card */}
-              <div className="bg-slate-900/90 border border-slate-800 p-4 space-y-2.5">
-                <h4 className="font-label-caps text-xs text-champagne-light uppercase tracking-wider font-bold border-b border-slate-800 pb-2">
+              <div className="bg-surface/90 border border-outline-variant p-4 space-y-2.5">
+                <h4 className="font-label-caps text-xs text-primary uppercase tracking-wider font-bold border-b border-outline-variant pb-2">
                   Lead Information
                 </h4>
                 
-                <div className="text-xs space-y-1.5 text-slate-300">
+                <div className="text-xs space-y-1.5 text-main-text">
                   <div className="flex items-center gap-2">
-                    <Buildings className="text-slate-400 shrink-0" size={14} />
-                    <span className="text-slate-400">Company:</span>
-                    <span className="text-white font-semibold">{companyName}</span>
+                    <Buildings className="text-text-light shrink-0" size={14} />
+                    <span className="text-text-light">Company:</span>
+                    <span className="text-on-surface font-semibold">{companyName}</span>
                   </div>
 
                   {lead.name && (
                     <div className="flex items-center gap-2">
-                      <User className="text-slate-400 shrink-0" size={14} />
-                      <span className="text-slate-400">Contact:</span>
-                      <span className="text-white">{lead.name}</span>
+                      <User className="text-text-light shrink-0" size={14} />
+                      <span className="text-text-light">Contact:</span>
+                      <span className="text-on-surface">{lead.name}</span>
                     </div>
                   )}
 
                   {lead.website && (
                     <div className="flex items-center gap-2">
-                      <Globe className="text-slate-400 shrink-0" size={14} />
-                      <span className="text-slate-400">Website:</span>
+                      <Globe className="text-text-light shrink-0" size={14} />
+                      <span className="text-text-light">Website:</span>
                       <a 
                         href={lead.website.startsWith('http') ? lead.website : `https://${lead.website}`} 
                         target="_blank" 
                         rel="noreferrer" 
-                        className="text-champagne-light hover:underline truncate max-w-[200px]"
+                        className="text-primary hover:underline truncate max-w-[200px]"
                       >
                         {lead.website.replace(/^https?:\/\//, '')}
                       </a>
@@ -254,16 +254,16 @@ export default function EmailStudioModal({ isOpen, onClose, lead, onEmailSent, s
 
                   {(lead.industry || lead.category) && (
                     <div className="flex items-center gap-2">
-                      <Tag className="text-slate-400 shrink-0" size={14} />
-                      <span className="text-slate-400">Industry:</span>
-                      <span className="text-white">{lead.industry || lead.category}</span>
+                      <Tag className="text-text-light shrink-0" size={14} />
+                      <span className="text-text-light">Industry:</span>
+                      <span className="text-on-surface">{lead.industry || lead.category}</span>
                     </div>
                   )}
 
                   {lead.location && (
-                    <div className="text-slate-400">
+                    <div className="text-text-light">
                       <span>Location: </span>
-                      <span className="text-slate-200">{lead.location}</span>
+                      <span className="text-main-text">{lead.location}</span>
                     </div>
                   )}
                 </div>
@@ -271,7 +271,7 @@ export default function EmailStudioModal({ isOpen, onClose, lead, onEmailSent, s
 
               {/* Service Angle Selector */}
               <div className="space-y-2">
-                <label className="block text-xs font-label-caps text-slate-300 uppercase tracking-wider font-semibold">
+                <label className="block text-xs font-label-caps text-main-text uppercase tracking-wider font-semibold">
                   Target Service Angle
                 </label>
                 <div className="space-y-1.5">
@@ -282,12 +282,12 @@ export default function EmailStudioModal({ isOpen, onClose, lead, onEmailSent, s
                       onClick={() => setSelectedService(svc.id)}
                       className={`w-full text-left px-3 py-2.5 text-xs font-medium transition-all border cursor-pointer flex items-center justify-between ${
                         selectedService === svc.id
-                          ? 'bg-champagne-light/15 border-champagne-light text-white font-bold'
-                          : 'bg-slate-900/60 border-slate-800 text-slate-400 hover:text-slate-200 hover:border-slate-700'
+                          ? 'bg-primary/15 border-primary text-on-surface font-bold'
+                          : 'bg-surface/60 border-outline-variant text-text-light hover:text-main-text hover:border-outline'
                       }`}
                     >
                       <span>{svc.name}</span>
-                      {selectedService === svc.id && <Sparkle size={14} className="text-champagne-light" weight="fill" />}
+                      {selectedService === svc.id && <Sparkle size={14} className="text-primary" weight="fill" />}
                     </button>
                   ))}
                 </div>
@@ -295,7 +295,7 @@ export default function EmailStudioModal({ isOpen, onClose, lead, onEmailSent, s
 
               {/* Specific Observation Override */}
               <div className="space-y-1.5">
-                <label className="block text-xs font-label-caps text-slate-300 uppercase tracking-wider font-semibold">
+                <label className="block text-xs font-label-caps text-main-text uppercase tracking-wider font-semibold">
                   Specific Observation / Note
                 </label>
                 <textarea
@@ -303,9 +303,9 @@ export default function EmailStudioModal({ isOpen, onClose, lead, onEmailSent, s
                   value={customObservation}
                   onChange={(e) => setCustomObservation(e.target.value)}
                   placeholder="e.g. while looking at your homepage, I noticed the hero button doesn't link to a booking form..."
-                  className="w-full bg-slate-900 text-white font-body-md p-3 text-xs border border-slate-700 focus:outline-none focus:border-champagne-light transition-colors"
+                  className="w-full bg-surface text-on-surface font-body-md p-3 text-xs border border-outline focus:outline-none focus:border-primary transition-colors"
                 />
-                <span className="text-[11px] text-slate-400 block">
+                <span className="text-[11px] text-text-light block">
                   Add direct observation to tailor the generated email.
                 </span>
               </div>
@@ -315,7 +315,7 @@ export default function EmailStudioModal({ isOpen, onClose, lead, onEmailSent, s
                 type="button"
                 onClick={() => generateEmailForLead(lead, true)}
                 disabled={generating}
-                className="w-full py-2.5 bg-slate-900 hover:bg-slate-800 border border-champagne-light/60 hover:border-champagne-light text-champagne-light text-xs uppercase font-label-caps tracking-widest font-bold transition-colors flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50"
+                className="w-full py-2.5 bg-surface hover:bg-outline-variant border border-primary/60 hover:border-primary text-primary text-xs uppercase font-label-caps tracking-widest font-bold transition-colors flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50"
               >
                 <ArrowsClockwise className={generating ? 'animate-spin' : ''} size={16} weight="bold" />
                 <span>{generating ? 'Generating Email...' : 'Regenerate Email'}</span>
@@ -324,19 +324,19 @@ export default function EmailStudioModal({ isOpen, onClose, lead, onEmailSent, s
 
             {/* Right Column: Live Editable Email Preview (7 Cols) */}
             <div className="lg:col-span-7 flex flex-col space-y-4">
-              <div className="flex items-center justify-between pb-1 border-b border-slate-800">
-                <h4 className="font-label-caps text-xs text-champagne-light uppercase tracking-wider font-bold flex items-center gap-1.5">
+              <div className="flex items-center justify-between pb-1 border-b border-outline-variant">
+                <h4 className="font-label-caps text-xs text-primary uppercase tracking-wider font-bold flex items-center gap-1.5">
                   <Eye size={16} />
                   Email Preview & Editor
                 </h4>
-                <span className="text-[11px] text-slate-400 font-label-caps">
+                <span className="text-[11px] text-text-light font-label-caps">
                   Editable Before Sending
                 </span>
               </div>
 
               {/* To field */}
-              <div className="bg-slate-900/90 border border-slate-800 p-2.5 flex items-center gap-3">
-                <span className="text-xs font-label-caps text-slate-400 uppercase tracking-wider w-14 font-semibold">
+              <div className="bg-surface/90 border border-outline-variant p-2.5 flex items-center gap-3">
+                <span className="text-xs font-label-caps text-text-light uppercase tracking-wider w-14 font-semibold">
                   To:
                 </span>
                 <input
@@ -344,13 +344,13 @@ export default function EmailStudioModal({ isOpen, onClose, lead, onEmailSent, s
                   value={recipient}
                   onChange={(e) => setRecipient(e.target.value)}
                   placeholder="recipient@company.com"
-                  className="w-full bg-transparent text-white font-body-md text-xs focus:outline-none placeholder:text-slate-400 font-medium"
+                  className="w-full bg-transparent text-on-surface font-body-md text-xs focus:outline-none placeholder:text-text-light font-medium"
                 />
               </div>
 
               {/* Subject field */}
-              <div className="bg-slate-900/90 border border-slate-800 p-2.5 flex items-center gap-3">
-                <span className="text-xs font-label-caps text-slate-400 uppercase tracking-wider w-14 font-semibold">
+              <div className="bg-surface/90 border border-outline-variant p-2.5 flex items-center gap-3">
+                <span className="text-xs font-label-caps text-text-light uppercase tracking-wider w-14 font-semibold">
                   Subject:
                 </span>
                 <input
@@ -358,13 +358,13 @@ export default function EmailStudioModal({ isOpen, onClose, lead, onEmailSent, s
                   value={subject}
                   onChange={(e) => setSubject(e.target.value)}
                   placeholder="Cold outreach subject line..."
-                  className="w-full bg-transparent text-champagne-light font-body-md text-xs focus:outline-none font-semibold"
+                  className="w-full bg-transparent text-primary font-body-md text-xs focus:outline-none font-semibold"
                 />
               </div>
 
               {/* Body field */}
               <div className="flex-grow flex flex-col">
-                <span className="text-xs font-label-caps text-slate-400 uppercase tracking-wider mb-1.5 font-semibold">
+                <span className="text-xs font-label-caps text-text-light uppercase tracking-wider mb-1.5 font-semibold">
                   Body:
                 </span>
                 <textarea
@@ -372,17 +372,17 @@ export default function EmailStudioModal({ isOpen, onClose, lead, onEmailSent, s
                   value={body}
                   onChange={(e) => setBody(e.target.value)}
                   placeholder="Personalized cold email body..."
-                  className="w-full flex-grow bg-slate-900/95 text-slate-100 font-mono text-xs leading-relaxed p-4 border border-slate-700 focus:outline-none focus:border-champagne-light transition-colors resize-y"
+                  className="w-full flex-grow bg-surface/95 text-on-surface font-mono text-xs leading-relaxed p-4 border border-outline focus:outline-none focus:border-primary transition-colors resize-y"
                 />
               </div>
 
               {/* Action Buttons */}
-              <div className="pt-3 border-t border-slate-800 flex items-center justify-between gap-3 flex-wrap">
+              <div className="pt-3 border-t border-outline-variant flex items-center justify-between gap-3 flex-wrap">
                 <button
                   type="button"
                   onClick={handleSaveDraft}
                   disabled={savingDraft}
-                  className="px-4 py-2 border border-slate-700 hover:border-champagne-light/50 text-slate-200 text-xs uppercase font-label-caps tracking-widest transition-colors flex items-center gap-2 cursor-pointer disabled:opacity-50"
+                  className="px-4 py-2 border border-outline hover:border-primary/50 text-main-text text-xs uppercase font-label-caps tracking-widest transition-colors flex items-center gap-2 cursor-pointer disabled:opacity-50"
                 >
                   <FloppyDisk size={16} weight="bold" />
                   <span>{savingDraft ? 'Saving...' : 'Save Draft'}</span>
@@ -392,7 +392,7 @@ export default function EmailStudioModal({ isOpen, onClose, lead, onEmailSent, s
                   <button
                     type="button"
                     onClick={onClose}
-                    className="px-4 py-2 text-slate-400 hover:text-white text-xs uppercase font-label-caps tracking-widest transition-colors cursor-pointer"
+                    className="px-4 py-2 text-text-light hover:text-on-surface text-xs uppercase font-label-caps tracking-widest transition-colors cursor-pointer"
                   >
                     Close
                   </button>
@@ -406,7 +406,7 @@ export default function EmailStudioModal({ isOpen, onClose, lead, onEmailSent, s
                       }
                       setShowConfirmModal(true);
                     }}
-                    className="px-5 py-2.5 bg-champagne-light hover:bg-white text-navy-muted text-xs uppercase font-label-caps tracking-widest font-bold transition-all shadow-md flex items-center gap-2 cursor-pointer"
+                    className="px-5 py-2.5 bg-primary hover:bg-primary-dark text-white text-xs uppercase font-label-caps tracking-widest font-bold transition-all shadow-md flex items-center gap-2 cursor-pointer"
                   >
                     <PaperPlaneTilt size={16} weight="bold" />
                     <span>Review & Send Email</span>

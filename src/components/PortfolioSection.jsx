@@ -1,71 +1,102 @@
 "use client";
-import id5 from '@/assets/id-5.webp';
-import { RocketLaunch, ArrowRight } from '@phosphor-icons/react';
+import { motion } from "framer-motion";
+import Link from "next/link";
+import { ArrowUpRight } from "@phosphor-icons/react";
 
-export default function PortfolioSection({ asH1 = false }) {
-  const Heading = asH1 ? 'h1' : 'h2';
+const projects = [
+  {
+    id: 1,
+    title: "Toyon Industry Pvt Ltd",
+    category: "Ongoing Project",
+    desc: "Developing 3D interaction and digital solutions for their industrial operations.",
+    tech: ["Next.js", "Three.js", "TailwindCSS"],
+    image: "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&w=1200&q=80",
+    link: "#"
+  }
+];
+
+export default function PortfolioSection() {
   return (
-    <section className="relative w-full bg-navy-muted overflow-hidden py-section-gap" id="portfolio" aria-labelledby="portfolio-title">
-      {/* Background image overlay — same pattern as HeroSection */}
-      <img
-        src={id5.src || id5}
-        alt="Infronix featured custom web development and client project portfolio showcase in Ahmedabad"
-        className="absolute inset-0 w-full h-full object-cover object-center opacity-10 mix-blend-luminosity"
-        loading="lazy"
-        width="1920"
-        height="800"
-      />
-      <div className="absolute inset-0 bg-gradient-to-b from-navy-muted via-navy-muted/95 to-navy-muted"></div>
-
-      <div className="relative z-10 max-w-[1280px] mx-auto px-margin-mobile md:px-margin-desktop">
-
-        {/* Header — mirrors HeroSection left-border accent */}
-        <div className="flex flex-col gap-4 max-w-3xl border-l-2 border-champagne-light pl-4 sm:pl-gutter py-2 mb-8 md:mb-12">
-          <span className="font-label-caps text-xs text-champagne-light tracking-widest uppercase font-bold">Our Work</span>
-          <Heading id="portfolio-title" className="font-headline-lg text-2xl sm:text-3xl md:text-4xl text-surface font-bold">Featured Projects &amp; Digital Solutions</Heading>
-          <p className="font-body-md text-sm sm:text-base text-slate-200 max-w-xl leading-relaxed font-medium">
-            We partner with forward-thinking brands in Ahmedabad and across India to create digital experiences that merge stunning aesthetics with powerful technical execution.
-          </p>
-        </div>
-
-        {/* Welcome Card */}
-        <div className="mt-6 sm:mt-10 max-w-4xl">
-          <div className="relative overflow-hidden bg-navy-dark/60 backdrop-blur-md border border-champagne-light/30 p-8 md:p-12 shadow-2xl flex flex-col items-start gap-6 group hover:border-champagne-light/60 transition-colors">
-            <div className="absolute top-0 right-0 p-8 opacity-10 transform translate-x-4 -translate-y-4 group-hover:scale-110 transition-transform duration-700">
-              <RocketLaunch size={160} weight="fill" className="text-champagne-light" />
-            </div>
-
-            <div className="relative z-10">
-              <span className="inline-block bg-champagne-light text-navy-muted font-label-caps uppercase tracking-widest text-xs px-3 py-1 font-bold mb-4">
-                Special Welcome
-              </span>
-              <h3 className="font-headline-lg text-3xl md:text-5xl text-surface font-bold mb-4 leading-tight">
-                You Are Our First Customer!
-              </h3>
-              <p className="font-body-md text-slate-200 text-lg max-w-2xl leading-relaxed mb-8">
-                We are incredibly thrilled to start this journey with you. Every great agency starts with a visionary client, and we can't wait to build something extraordinary together.
-              </p>
-
-              <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center">
-                <a href="https://madhavdavda.vercel.app" target="_blank" rel="noopener noreferrer" className="bg-transparent border border-champagne-light text-champagne-light font-label-caps uppercase tracking-widest text-xs px-6 py-3 hover:bg-champagne-light hover:text-navy-muted transition-all font-bold flex items-center gap-2">
-                  View Developer's Portfolio <ArrowRight weight="bold" />
-                </a>
-                <p className="text-xs text-slate-400 max-w-xs leading-relaxed">
-                  While we build out this agency's portfolio, check out the lead developer's past work.
-                </p>
-              </div>
-            </div>
+    <section className="py-16 sm:py-20 md:py-24 bg-surface-container-lowest">
+      <div className="max-w-[1440px] mx-auto px-4 sm:px-6 md:px-12">
+        
+        {/* Header */}
+        <div className="mb-10 sm:mb-16 md:mb-24 flex flex-col md:flex-row md:items-end justify-between gap-6 md:gap-8">
+          <div>
+            <h2 className="text-xs sm:text-sm font-bold tracking-widest uppercase text-text-light mb-3 sm:mb-4">Selected Work</h2>
+            <h3 className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-heading font-bold text-on-surface leading-tight">
+              Digital products that <br className="hidden md:block" />
+              perform and inspire.
+            </h3>
           </div>
+          <Link 
+            href="/projects" 
+            className="group flex items-center gap-2 text-on-surface font-bold text-sm sm:text-base md:text-lg hover:text-primary transition-colors"
+          >
+            View All Projects 
+            <ArrowUpRight weight="bold" className="group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
+          </Link>
         </div>
 
-        {/* CTA */}
-        <div className="mt-8 md:mt-12 flex flex-col sm:flex-row gap-3 sm:gap-4 sm:pl-gutter w-full sm:w-auto">
-          <a href="/#contact" className="bg-champagne-light text-navy-muted font-label-caps uppercase tracking-widest text-xs px-6 py-3.5 rounded-none hover:bg-white transition-all shadow-lg border border-champagne-light text-center font-bold">
-            Start Your Project
-          </a>
-          <a href="/#services" className="bg-transparent border border-outline-variant text-slate-200 font-label-caps uppercase tracking-widest text-xs px-6 py-3.5 rounded-none hover:text-champagne-light hover:border-champagne-light transition-all text-center font-bold">
-            Our Services
-          </a>
+        {/* Projects Grid */}
+        <div className="flex flex-col gap-12 sm:gap-16 md:gap-20">
+          {projects.map((project, index) => (
+            <motion.div 
+              key={project.id}
+              initial={{ opacity: 0, y: 40 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-100px" }}
+              transition={{ duration: 0.7, delay: index * 0.1 }}
+              className="group flex flex-col lg:flex-row gap-6 sm:gap-8 lg:gap-16 items-start lg:items-center"
+            >
+              {/* Project Image */}
+              <div className={`w-full lg:w-3/5 overflow-hidden rounded-xl bg-surface border border-outline-variant/60 ${index % 2 !== 0 ? 'lg:order-2' : ''}`}>
+                <Link href={project.link} className="block relative aspect-[16/10] sm:aspect-[4/3] w-full overflow-hidden">
+                  <motion.img 
+                    src={project.image} 
+                    alt={project.title}
+                    className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+                  />
+                  {/* Overlay */}
+                  <div className="absolute inset-0 bg-black/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                  
+                  {/* Floating View Project Button */}
+                  <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-16 h-16 sm:w-24 sm:h-24 bg-primary text-white rounded-full flex items-center justify-center font-bold text-xs sm:text-sm opacity-0 scale-50 group-hover:opacity-100 group-hover:scale-100 transition-all duration-500 ease-out z-10 shadow-xl">
+                    View
+                  </div>
+                </Link>
+              </div>
+
+              {/* Project Info */}
+              <div className={`w-full lg:w-2/5 flex flex-col justify-center ${index % 2 !== 0 ? 'lg:order-1' : ''}`}>
+                <div className="flex items-center gap-3 sm:gap-4 mb-3 sm:mb-6">
+                  <span className="text-xs sm:text-sm font-bold tracking-widest uppercase text-primary">
+                    {project.category}
+                  </span>
+                  <span className="w-8 sm:w-12 h-[1px] bg-outline-variant"></span>
+                </div>
+                
+                <h4 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-heading font-bold text-on-surface mb-3 sm:mb-6 transition-colors group-hover:text-primary">
+                  <Link href={project.link}>{project.title}</Link>
+                </h4>
+                
+                <p className="text-sm sm:text-base md:text-lg lg:text-xl text-main-text mb-6 sm:mb-8 leading-relaxed max-w-md font-medium">
+                  {project.desc}
+                </p>
+
+                <div className="flex flex-wrap gap-2 sm:gap-3">
+                  {project.tech.map((t, i) => (
+                    <span 
+                      key={i} 
+                      className="px-3 py-1.5 sm:px-4 sm:py-2 border border-outline-variant text-on-surface text-xs sm:text-sm font-medium rounded-md bg-surface"
+                    >
+                      {t}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            </motion.div>
+          ))}
         </div>
 
       </div>

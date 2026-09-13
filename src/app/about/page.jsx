@@ -1,6 +1,6 @@
 import AboutSection from '@/components/AboutSection';
-import TrustSection from '@/components/TrustSection';
-import ContactSection from '@/components/ContactSection';
+import CTASection from '@/components/CTASection';
+import Breadcrumb from '@/components/Breadcrumb';
 
 export const metadata = {
   title: 'About Us | Infronix Web Agency',
@@ -13,15 +13,17 @@ export const metadata = {
 export default function AboutPage() {
   return (
     <>
-      <main className="w-full pt-28 md:pt-32" id="main-content">
+      <main className="w-full pt-20 sm:pt-28 md:pt-32" id="main-content">
+        <div className="max-w-[1440px] mx-auto px-4 sm:px-6 md:px-12 pt-4 sm:pt-6">
+          <Breadcrumb />
+        </div>
         <AboutSection asH1={true} />
-        <TrustSection />
 
-        {/* Additional Local Context */}
-        <section className="w-full py-16 bg-surface text-slate-900 border-b border-outline-variant/30">
-          <div className="max-w-[1280px] mx-auto px-margin-mobile md:px-margin-desktop">
-            <h2 className="font-headline-lg text-2xl sm:text-3xl text-primary font-bold mb-6">Our Roots in Ahmedabad</h2>
-            <div className="prose max-w-4xl font-body-md text-slate-700 space-y-4">
+        {/* Local Context */}
+        <section className="w-full py-12 sm:py-16 bg-surface border-b border-outline-variant/30">
+          <div className="max-w-[1280px] mx-auto px-4 sm:px-6 md:px-12">
+            <h2 className="text-xl sm:text-2xl md:text-3xl font-heading font-bold text-on-surface mb-4 sm:mb-6">Our Roots in Ahmedabad</h2>
+            <div className="prose max-w-4xl text-main-text space-y-4 text-sm sm:text-base leading-relaxed">
               <p>
                 Operating out of Sanand, Ahmedabad, Infronix Web Agency partners with forward-thinking businesses across Gujarat and India. While we operate a modern, remote-first workflow to ensure maximum efficiency, our roots in the thriving tech ecosystem of Ahmedabad drive our commitment to quality, innovation, and local business growth.
               </p>
@@ -29,7 +31,7 @@ export default function AboutPage() {
           </div>
         </section>
 
-        <ContactSection />
+        <CTASection />
       </main>
     </>
   );

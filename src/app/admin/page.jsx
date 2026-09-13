@@ -236,12 +236,12 @@ export default function AdminDashboard() {
         return 'bg-pink-500/30 text-pink-200 border-pink-400/80 font-bold';
       case 'won':
       case 'completed':
-        return 'bg-emerald-500/30 text-emerald-200 border-emerald-400/80 font-bold';
+        return 'bg-violet-500/30 text-cyan-200 border-violet-400/80 font-bold';
       case 'lost':
       case 'archived':
-        return 'bg-slate-700/60 text-slate-200 border-slate-400/80 font-bold';
+        return 'bg-slate-700/60 text-main-text border-slate-400/80 font-bold';
       default:
-        return 'bg-secondary/30 text-champagne-light border-secondary/60 font-bold';
+        return 'bg-accent/30 text-primary border-accent/60 font-bold';
     }
   };
 
@@ -249,12 +249,12 @@ export default function AdminDashboard() {
     return (
       <>
         <SEO title="Admin Portal Authentication" description="Restricted administrator portal." />
-        <div className="min-h-screen bg-navy-muted flex flex-col items-center justify-center p-6 text-center">
-          <div className="w-10 h-10 border-3 border-champagne-light border-t-transparent rounded-full animate-spin mb-4"></div>
-          <span className="font-label-caps text-xs text-champagne-light uppercase tracking-widest block font-bold">
+        <div className="min-h-screen bg-surface flex flex-col items-center justify-center p-6 text-center">
+          <img src="/title-logo.png" alt="Infronix Icon" className="h-10 w-10 mb-4 animate-pulse opacity-80" />
+          <span className="font-label-caps text-xs text-primary uppercase tracking-widest block font-bold">
             Verifying Admin Session...
           </span>
-          <p className="font-body-md text-xs text-slate-400 mt-1 font-medium">
+          <p className="font-body-md text-xs text-text-light mt-1 font-medium">
             Restricted access. Infronix Agency Portal.
           </p>
         </div>
@@ -265,17 +265,18 @@ export default function AdminDashboard() {
   return (
     <>
       <SEO title="Admin Dashboard" description="Infronix Web Agency Client Consultations Management Dashboard." />
-      <div className="min-h-screen bg-navy-muted text-surface flex flex-col pt-24 pb-16">
+      <div className="min-h-screen bg-surface text-surface flex flex-col pt-24 pb-16">
 
         {/* Dashboard Header */}
-        <header className="border-b border-outline-variant/30 bg-navy-muted/90 backdrop-blur-md py-6 mb-8">
+        <header className="border-b border-outline-variant/30 bg-surface/90 backdrop-blur-md py-6 mb-8">
           <div className="max-w-[1280px] mx-auto px-margin-mobile md:px-margin-desktop flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-            <div>
-              <span className="font-label-caps text-xs text-champagne-light uppercase tracking-widest block font-bold">Infronix Portal</span>
-              <h1 className="font-headline-lg text-2xl md:text-3xl text-white font-bold mt-1">
+            <div className="flex flex-col gap-2">
+              <img src="/light-web-logo.png" alt="Infronix Web Agency" className="h-8 w-auto object-contain self-start mb-2" />
+              <span className="font-label-caps text-xs text-primary uppercase tracking-widest block font-bold">Infronix Portal</span>
+              <h1 className="font-headline-lg text-2xl md:text-3xl text-on-surface font-bold mt-1">
                 {activeTab === 'consultations' ? 'Client Consultations' : 'Email Automation Studio'}
               </h1>
-              <p className="font-body-md text-xs text-slate-200 mt-1 font-medium">
+              <p className="font-body-md text-xs text-main-text mt-1 font-medium">
                 {activeTab === 'consultations'
                   ? `Decrypted AES-256 Client Submissions • Total: ${consultations.length} records`
                   : 'Personalized Cold Outreach Engine • Hostinger SMTP Dispatch (Phase 1)'}
@@ -284,13 +285,13 @@ export default function AdminDashboard() {
 
             <div className="flex items-center gap-3 flex-wrap">
               {/* Primary Navigation Switcher */}
-              <div className="flex items-center bg-slate-950 p-1 border border-champagne-light/30">
+              <div className="flex items-center bg-surface-container-lowest p-1 border border-primary/30">
                 <button
                   onClick={() => setActiveTab('consultations')}
                   className={`px-3.5 py-2 text-xs font-label-caps uppercase tracking-wider transition-all flex items-center gap-1.5 cursor-pointer font-bold ${
                     activeTab === 'consultations'
-                      ? 'bg-champagne-light text-navy-muted shadow-md'
-                      : 'text-slate-300 hover:text-white'
+                      ? 'bg-primary text-white shadow-md'
+                      : 'text-main-text hover:text-on-surface'
                   }`}
                 >
                   <Users size={14} weight="bold" />
@@ -301,8 +302,8 @@ export default function AdminDashboard() {
                   onClick={() => setActiveTab('outreach')}
                   className={`px-3.5 py-2 text-xs font-label-caps uppercase tracking-wider transition-all flex items-center gap-1.5 cursor-pointer font-bold ${
                     activeTab === 'outreach'
-                      ? 'bg-champagne-light text-navy-muted shadow-md'
-                      : 'text-slate-300 hover:text-white'
+                      ? 'bg-primary text-white shadow-md'
+                      : 'text-main-text hover:text-on-surface'
                   }`}
                 >
                   <PaperPlaneTilt size={14} weight="bold" />
@@ -313,7 +314,7 @@ export default function AdminDashboard() {
               {activeTab === 'consultations' && (
                 <button
                   onClick={fetchConsultations}
-                  className="px-4 py-2.5 border border-outline-variant/60 hover:border-champagne-light text-slate-100 hover:text-white text-xs uppercase font-label-caps tracking-widest transition-colors flex items-center gap-1 cursor-pointer font-bold bg-slate-900/40"
+                  className="px-4 py-2.5 border border-outline-variant/60 hover:border-primary text-on-surface hover:text-on-surface text-xs uppercase font-label-caps tracking-widest transition-colors flex items-center gap-1 cursor-pointer font-bold bg-surface/40"
                   title="Refresh Records"
                 >
                   <ArrowsClockwise className="text-sm" weight="bold" />
@@ -323,7 +324,7 @@ export default function AdminDashboard() {
 
               <button
                 onClick={() => setShowPasswordModal(true)}
-                className="px-4 py-2.5 bg-champagne-light/20 hover:bg-champagne-light/30 border border-champagne-light/60 text-champagne-light text-xs uppercase font-label-caps tracking-widest transition-colors flex items-center gap-1.5 cursor-pointer font-bold"
+                className="px-4 py-2.5 bg-primary/20 hover:bg-primary/30 border border-primary/60 text-primary text-xs uppercase font-label-caps tracking-widest transition-colors flex items-center gap-1.5 cursor-pointer font-bold"
               >
                 <Key className="text-sm" weight="bold" />
                 <span>Password</span>
@@ -352,17 +353,17 @@ export default function AdminDashboard() {
           {activeTab === 'consultations' && (
             <>
               {/* Controls Bar: Search & Status Filter */}
-              <div className="bg-slate-950 p-6 border border-champagne-light/30 mb-8 flex flex-col md:flex-row gap-4 justify-between items-center shadow-xl">
+              <div className="bg-surface-container-lowest p-6 border border-primary/30 mb-8 flex flex-col md:flex-row gap-4 justify-between items-center shadow-xl">
                 
                 {/* Search Input */}
                 <div className="relative w-full md:w-96">
-                  <MagnifyingGlass className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-300 text-lg" weight="bold" />
+                  <MagnifyingGlass className="absolute left-3 top-1/2 -translate-y-1/2 text-main-text text-lg" weight="bold" />
                   <input
                     type="text"
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
                     placeholder="Search name, email, company, details..."
-                    className="w-full bg-slate-900 text-white font-body-md pl-10 pr-4 py-2.5 text-sm border border-slate-700 focus:outline-none focus:border-champagne-light transition-colors placeholder:text-slate-400 font-medium"
+                    className="w-full bg-surface text-on-surface font-body-md pl-10 pr-4 py-2.5 text-sm border border-outline focus:outline-none focus:border-primary transition-colors placeholder:text-text-light font-medium"
                   />
                 </div>
 
@@ -374,8 +375,8 @@ export default function AdminDashboard() {
                       onClick={() => setStatusFilter(status)}
                       className={`px-3 py-1.5 text-xs font-label-caps uppercase tracking-widest transition-colors border cursor-pointer ${
                         statusFilter === status
-                          ? 'bg-champagne-light text-navy-muted border-champagne-light font-bold shadow-md'
-                          : 'bg-slate-900 text-slate-200 border-slate-700 hover:border-champagne-light/50 font-bold'
+                          ? 'bg-primary text-white border-primary font-bold shadow-md'
+                          : 'bg-surface text-main-text border-outline hover:border-primary/50 font-bold'
                       }`}
                     >
                       {status.replace('_', ' ')}
@@ -392,21 +393,21 @@ export default function AdminDashboard() {
               <p className="text-red-100 font-bold mb-4">{error}</p>
               <button
                 onClick={fetchConsultations}
-                className="px-6 py-2 bg-red-900/80 border border-red-500/80 text-white text-xs font-label-caps uppercase tracking-widest hover:bg-red-800 font-bold cursor-pointer"
+                className="px-6 py-2 bg-red-900/80 border border-red-500/80 text-on-surface text-xs font-label-caps uppercase tracking-widest hover:bg-red-800 font-bold cursor-pointer"
               >
                 Retry Loading
               </button>
             </div>
           ) : filteredConsultations.length === 0 ? (
-            <div className="py-16 text-center border border-dashed border-slate-700 bg-slate-950/60 p-8">
-              <Tray className="text-4xl text-slate-300 mb-2" weight="bold" />
-              <p className="font-headline-md text-lg text-slate-200 font-semibold">No client consultations found matching filters.</p>
+            <div className="py-16 text-center border border-dashed border-outline bg-surface-container-lowest/60 p-8">
+              <Tray className="text-4xl text-main-text mb-2" weight="bold" />
+              <p className="font-headline-md text-lg text-main-text font-semibold">No client consultations found matching filters.</p>
             </div>
           ) : (
-            <div className="overflow-x-auto border border-champagne-light/30 bg-slate-950 shadow-2xl">
+            <div className="overflow-x-auto border border-primary/30 bg-surface-container-lowest shadow-2xl">
               <table className="w-full text-left text-sm font-body-md border-collapse">
                 <thead>
-                  <tr className="border-b border-champagne-light/30 bg-slate-900 font-label-caps text-xs text-champagne-light uppercase tracking-widest font-bold">
+                  <tr className="border-b border-primary/30 bg-surface font-label-caps text-xs text-primary uppercase tracking-widest font-bold">
                     <th className="p-4">ID</th>
                     <th className="p-4">Client Name</th>
                     <th className="p-4">Contact Info</th>
@@ -419,28 +420,28 @@ export default function AdminDashboard() {
                 </thead>
                 <tbody className="divide-y divide-slate-800">
                   {filteredConsultations.map((item) => (
-                    <tr key={item.id} className="hover:bg-slate-900/90 transition-colors group">
-                      <td className="p-4 font-mono text-xs text-slate-200 font-bold">#{item.id}</td>
-                      <td className="p-4 font-bold text-white text-base">
+                    <tr key={item.id} className="hover:bg-surface/90 transition-colors group">
+                      <td className="p-4 font-mono text-xs text-main-text font-bold">#{item.id}</td>
+                      <td className="p-4 font-bold text-on-surface text-base">
                         {item.firstName} {item.lastName}
                       </td>
-                      <td className="p-4 text-slate-100 font-medium">
-                        <a href={`mailto:${item.email}`} className="text-champagne-light font-bold underline hover:text-white transition-colors">
+                      <td className="p-4 text-on-surface font-medium">
+                        <a href={`mailto:${item.email}`} className="text-primary font-bold underline hover:text-on-surface transition-colors">
                           {item.email}
                         </a>
                       </td>
-                      <td className="p-4 text-slate-200 font-semibold">
-                        {item.company || <span className="text-slate-400 italic">N/A</span>}
+                      <td className="p-4 text-main-text font-semibold">
+                        {item.company || <span className="text-text-light italic">N/A</span>}
                       </td>
                       <td className="p-4 text-xs font-medium">
                         {item.service ? (
                           <div className="flex flex-col">
-                            <span className="text-champagne-light font-bold truncate max-w-[150px]">{item.service}</span>
-                            <span className="text-slate-300 truncate max-w-[150px]">{item.package}</span>
-                            <span className="text-slate-400 font-mono mt-0.5">{item.packagePrice}</span>
+                            <span className="text-primary font-bold truncate max-w-[150px]">{item.service}</span>
+                            <span className="text-main-text truncate max-w-[150px]">{item.package}</span>
+                            <span className="text-text-light font-mono mt-0.5">{item.packagePrice}</span>
                           </div>
                         ) : (
-                          <span className="text-slate-500 italic">Custom / Unknown</span>
+                          <span className="text-text-light italic">Custom / Unknown</span>
                         )}
                       </td>
                       <td className="p-4">
@@ -448,7 +449,7 @@ export default function AdminDashboard() {
                           {item.status}
                         </span>
                       </td>
-                      <td className="p-4 text-xs text-slate-200 font-mono font-semibold">
+                      <td className="p-4 text-xs text-main-text font-mono font-semibold">
                         {new Date(item.createdAt).toLocaleDateString(undefined, {
                           month: 'short',
                           day: 'numeric',
@@ -459,7 +460,7 @@ export default function AdminDashboard() {
                         <div className="flex items-center justify-end gap-2">
                           <button
                             onClick={() => setEditingItem(item)}
-                            className="p-2 text-champagne-light hover:bg-champagne-light/20 rounded transition-colors cursor-pointer"
+                            className="p-2 text-primary hover:bg-primary/20 rounded transition-colors cursor-pointer"
                             title="Edit / View Details"
                           >
                             <Pencil className="text-xl" weight="bold" />
@@ -485,16 +486,16 @@ export default function AdminDashboard() {
 
         {/* CHANGE PASSWORD MODAL */}
         {showPasswordModal && (
-          <div className="fixed inset-0 z-50 bg-black/85 backdrop-blur-sm flex items-center justify-center p-4 animate-fadeIn">
-            <div className="bg-slate-950 border border-champagne-light/40 w-full max-w-md shadow-2xl overflow-hidden">
-              <div className="bg-navy-muted/90 border-b border-champagne-light/20 p-6 flex justify-between items-center">
+          <div className="fixed inset-0 z-50 bg-on-surface/40 backdrop-blur-sm flex items-center justify-center p-4 animate-fadeIn">
+            <div className="bg-surface-container-lowest border border-primary/40 w-full max-w-md shadow-2xl overflow-hidden">
+              <div className="bg-surface/90 border-b border-primary/20 p-6 flex justify-between items-center">
                 <div>
-                  <span className="font-label-caps text-xs text-champagne-light uppercase tracking-widest block font-bold">Security Settings</span>
-                  <h2 className="font-headline-lg text-xl text-white font-bold mt-0.5">Change Admin Password</h2>
+                  <span className="font-label-caps text-xs text-primary uppercase tracking-widest block font-bold">Security Settings</span>
+                  <h2 className="font-headline-lg text-xl text-on-surface font-bold mt-0.5">Change Admin Password</h2>
                 </div>
                 <button
                   onClick={() => setShowPasswordModal(false)}
-                  className="text-slate-400 hover:text-white transition-colors cursor-pointer"
+                  className="text-text-light hover:text-on-surface transition-colors cursor-pointer"
                 >
                   <X className="text-2xl" weight="bold" />
                 </button>
@@ -510,56 +511,56 @@ export default function AdminDashboard() {
 
                 <form onSubmit={handleChangePassword} className="flex flex-col gap-4">
                   <div>
-                    <label className="font-label-caps text-xs text-slate-300 uppercase tracking-wider block mb-1.5 font-semibold">
+                    <label className="font-label-caps text-xs text-main-text uppercase tracking-wider block mb-1.5 font-semibold">
                       Current Password *
                     </label>
                     <input
                       type="password"
                       value={currentPassword}
                       onChange={(e) => setCurrentPassword(e.target.value)}
-                      className="w-full bg-slate-900 text-white font-body-md p-3 text-sm border border-slate-700 focus:outline-none focus:border-champagne-light font-medium"
+                      className="w-full bg-surface text-on-surface font-body-md p-3 text-sm border border-outline focus:outline-none focus:border-primary font-medium"
                       required
                     />
                   </div>
 
                   <div>
-                    <label className="font-label-caps text-xs text-slate-300 uppercase tracking-wider block mb-1.5 font-semibold">
+                    <label className="font-label-caps text-xs text-main-text uppercase tracking-wider block mb-1.5 font-semibold">
                       New Password (Min 8 chars) *
                     </label>
                     <input
                       type="password"
                       value={newPassword}
                       onChange={(e) => setNewPassword(e.target.value)}
-                      className="w-full bg-slate-900 text-white font-body-md p-3 text-sm border border-slate-700 focus:outline-none focus:border-champagne-light font-medium"
+                      className="w-full bg-surface text-on-surface font-body-md p-3 text-sm border border-outline focus:outline-none focus:border-primary font-medium"
                       required
                     />
                   </div>
 
                   <div>
-                    <label className="font-label-caps text-xs text-slate-300 uppercase tracking-wider block mb-1.5 font-semibold">
+                    <label className="font-label-caps text-xs text-main-text uppercase tracking-wider block mb-1.5 font-semibold">
                       Confirm New Password *
                     </label>
                     <input
                       type="password"
                       value={confirmPassword}
                       onChange={(e) => setConfirmPassword(e.target.value)}
-                      className="w-full bg-slate-900 text-white font-body-md p-3 text-sm border border-slate-700 focus:outline-none focus:border-champagne-light font-medium"
+                      className="w-full bg-surface text-on-surface font-body-md p-3 text-sm border border-outline focus:outline-none focus:border-primary font-medium"
                       required
                     />
                   </div>
 
-                  <div className="flex justify-end gap-3 pt-4 border-t border-slate-800 mt-2">
+                  <div className="flex justify-end gap-3 pt-4 border-t border-outline-variant mt-2">
                     <button
                       type="button"
                       onClick={() => setShowPasswordModal(false)}
-                      className="px-4 py-2 border border-slate-700 hover:border-slate-500 text-slate-300 text-xs font-label-caps uppercase tracking-widest font-bold cursor-pointer transition-colors"
+                      className="px-4 py-2 border border-outline hover:border-slate-500 text-main-text text-xs font-label-caps uppercase tracking-widest font-bold cursor-pointer transition-colors"
                     >
                       Cancel
                     </button>
                     <button
                       type="submit"
                       disabled={actionLoading}
-                      className="px-5 py-2 bg-champagne-light hover:bg-white text-navy-muted font-bold text-xs font-label-caps uppercase tracking-widest transition-all cursor-pointer disabled:opacity-50 shadow-md"
+                      className="px-5 py-2 bg-primary hover:bg-primary-dark text-white font-bold text-xs font-label-caps uppercase tracking-widest transition-all cursor-pointer disabled:opacity-50 shadow-md"
                     >
                       {actionLoading ? 'Updating...' : 'Update Password'}
                     </button>
@@ -573,19 +574,19 @@ export default function AdminDashboard() {
         {/* EDIT / VIEW MODAL */}
         {editingItem && (
           <div 
-            className="fixed inset-0 z-50 bg-black/85 backdrop-blur-sm flex items-center justify-center p-3 md:p-6 overflow-y-auto animate-fadeIn"
+            className="fixed inset-0 z-50 bg-on-surface/40 backdrop-blur-sm flex items-center justify-center p-3 md:p-6 overflow-y-auto animate-fadeIn"
             data-lenis-prevent="true"
             onWheel={(e) => e.stopPropagation()}
           >
             <div 
-              className="bg-slate-950 border border-champagne-light/40 w-full max-w-2xl max-h-[88vh] shadow-2xl flex flex-col my-auto rounded-none overflow-hidden"
+              className="bg-surface-container-lowest border border-primary/40 w-full max-w-2xl max-h-[88vh] shadow-2xl flex flex-col my-auto rounded-none overflow-hidden"
               data-lenis-prevent="true"
             >
               {/* Fixed Header */}
-              <div className="bg-navy-muted/95 border-b border-champagne-light/20 p-5 md:p-6 flex justify-between items-center shrink-0 z-10">
+              <div className="bg-surface/95 border-b border-primary/20 p-5 md:p-6 flex justify-between items-center shrink-0 z-10">
                 <div>
-                  <span className="font-label-caps text-xs text-champagne-light uppercase tracking-widest block font-bold">Consultation #{editingItem.id}</span>
-                  <h2 className="font-headline-lg text-lg md:text-xl text-white font-bold mt-0.5">Edit Client Consultation</h2>
+                  <span className="font-label-caps text-xs text-primary uppercase tracking-widest block font-bold">Consultation #{editingItem.id}</span>
+                  <h2 className="font-headline-lg text-lg md:text-xl text-on-surface font-bold mt-0.5">Edit Client Consultation</h2>
                 </div>
                 <div className="flex items-center gap-3">
                   <button
@@ -594,14 +595,14 @@ export default function AdminDashboard() {
                       setInvoicingItem(editingItem);
                       setEditingItem(null);
                     }}
-                    className="px-3.5 py-1.5 md:px-4 md:py-2 border border-champagne-light/60 text-champagne-light text-xs font-label-caps uppercase tracking-widest hover:bg-champagne-light hover:text-navy-muted font-bold transition-all cursor-pointer shadow-sm"
+                    className="px-3.5 py-1.5 md:px-4 md:py-2 border border-primary/60 text-primary text-xs font-label-caps uppercase tracking-widest hover:bg-primary hover:text-deep-space font-bold transition-all cursor-pointer shadow-sm"
                   >
                     Generate Invoice
                   </button>
                   <button
                     type="button"
                     onClick={() => setEditingItem(null)}
-                    className="text-slate-400 hover:text-white transition-colors cursor-pointer p-1"
+                    className="text-text-light hover:text-on-surface transition-colors cursor-pointer p-1"
                   >
                     <X className="text-2xl" weight="bold" />
                   </button>
@@ -618,22 +619,22 @@ export default function AdminDashboard() {
               >
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
-                    <label className="font-label-caps text-xs text-slate-300 uppercase tracking-wider block mb-1.5 font-semibold">First Name *</label>
+                    <label className="font-label-caps text-xs text-main-text uppercase tracking-wider block mb-1.5 font-semibold">First Name *</label>
                     <input
                       type="text"
                       value={editingItem.firstName}
                       onChange={(e) => setEditingItem({ ...editingItem, firstName: e.target.value })}
-                      className="w-full bg-slate-900 text-white font-body-md p-3 text-sm border border-slate-700 focus:outline-none focus:border-champagne-light font-medium"
+                      className="w-full bg-surface text-on-surface font-body-md p-3 text-sm border border-outline focus:outline-none focus:border-primary font-medium"
                       required
                     />
                   </div>
                   <div>
-                    <label className="font-label-caps text-xs text-slate-300 uppercase tracking-wider block mb-1.5 font-semibold">Last Name *</label>
+                    <label className="font-label-caps text-xs text-main-text uppercase tracking-wider block mb-1.5 font-semibold">Last Name *</label>
                     <input
                       type="text"
                       value={editingItem.lastName}
                       onChange={(e) => setEditingItem({ ...editingItem, lastName: e.target.value })}
-                      className="w-full bg-slate-900 text-white font-body-md p-3 text-sm border border-slate-700 focus:outline-none focus:border-champagne-light font-medium"
+                      className="w-full bg-surface text-on-surface font-body-md p-3 text-sm border border-outline focus:outline-none focus:border-primary font-medium"
                       required
                     />
                   </div>
@@ -641,36 +642,36 @@ export default function AdminDashboard() {
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
-                    <label className="font-label-caps text-xs text-slate-300 uppercase tracking-wider block mb-1.5 font-semibold">Email Address *</label>
+                    <label className="font-label-caps text-xs text-main-text uppercase tracking-wider block mb-1.5 font-semibold">Email Address *</label>
                     <input
                       type="email"
                       value={editingItem.email}
                       onChange={(e) => setEditingItem({ ...editingItem, email: e.target.value })}
-                      className="w-full bg-slate-900 text-white font-body-md p-3 text-sm border border-slate-700 focus:outline-none focus:border-champagne-light font-medium"
+                      className="w-full bg-surface text-on-surface font-body-md p-3 text-sm border border-outline focus:outline-none focus:border-primary font-medium"
                       required
                     />
                   </div>
                   <div>
-                    <label className="font-label-caps text-xs text-slate-300 uppercase tracking-wider block mb-1.5 font-semibold">Company</label>
+                    <label className="font-label-caps text-xs text-main-text uppercase tracking-wider block mb-1.5 font-semibold">Company</label>
                     <input
                       type="text"
                       value={editingItem.company || ''}
                       onChange={(e) => setEditingItem({ ...editingItem, company: e.target.value })}
-                      className="w-full bg-slate-900 text-white font-body-md p-3 text-sm border border-slate-700 focus:outline-none focus:border-champagne-light font-medium"
+                      className="w-full bg-surface text-on-surface font-body-md p-3 text-sm border border-outline focus:outline-none focus:border-primary font-medium"
                     />
                   </div>
                 </div>
 
                 {editingItem.service && (
-                  <div className="bg-slate-900/90 border border-champagne-light/30 p-4">
-                    <span className="font-label-caps text-[10px] text-champagne-light uppercase tracking-widest block mb-1 font-bold">Selected Pricing Package</span>
+                  <div className="bg-surface/90 border border-primary/30 p-4">
+                    <span className="font-label-caps text-[10px] text-primary uppercase tracking-widest block mb-1 font-bold">Selected Pricing Package</span>
                     <div className="flex items-center justify-between">
                       <div>
-                        <p className="font-bold text-white text-sm">{editingItem.service}</p>
-                        <p className="text-slate-300 text-xs mt-0.5">{editingItem.package}</p>
+                        <p className="font-bold text-on-surface text-sm">{editingItem.service}</p>
+                        <p className="text-main-text text-xs mt-0.5">{editingItem.package}</p>
                       </div>
                       <div className="text-right">
-                        <span className="font-mono text-champagne-light text-sm font-bold bg-champagne-light/10 px-2.5 py-1 rounded-sm border border-champagne-light/30">
+                        <span className="font-mono text-primary text-sm font-bold bg-primary/10 px-2.5 py-1 rounded-sm border border-primary/30">
                           {editingItem.packagePrice}
                         </span>
                       </div>
@@ -679,11 +680,11 @@ export default function AdminDashboard() {
                 )}
 
                 <div>
-                  <label className="font-label-caps text-xs text-slate-300 uppercase tracking-wider block mb-1.5 font-semibold">Status</label>
+                  <label className="font-label-caps text-xs text-main-text uppercase tracking-wider block mb-1.5 font-semibold">Status</label>
                   <select
                     value={editingItem.status}
                     onChange={(e) => setEditingItem({ ...editingItem, status: e.target.value })}
-                    className="w-full bg-slate-900 text-white font-body-md p-3 text-sm border border-slate-700 focus:outline-none focus:border-champagne-light cursor-pointer font-bold"
+                    className="w-full bg-surface text-on-surface font-body-md p-3 text-sm border border-outline focus:outline-none focus:border-primary cursor-pointer font-bold"
                   >
                     <option value="new">new</option>
                     <option value="reviewing">reviewing</option>
@@ -700,23 +701,23 @@ export default function AdminDashboard() {
                 </div>
 
                 <div>
-                  <label className="font-label-caps text-xs text-slate-300 uppercase tracking-wider block mb-1.5 font-semibold">Project Details</label>
+                  <label className="font-label-caps text-xs text-main-text uppercase tracking-wider block mb-1.5 font-semibold">Project Details</label>
                   <textarea
                     rows={5}
                     value={editingItem.projectDetails}
                     onChange={(e) => setEditingItem({ ...editingItem, projectDetails: e.target.value })}
-                    className="w-full bg-slate-900 text-white font-body-md p-3 text-sm border border-slate-700 focus:outline-none focus:border-champagne-light font-medium resize-y"
+                    className="w-full bg-surface text-on-surface font-body-md p-3 text-sm border border-outline focus:outline-none focus:border-primary font-medium resize-y"
                     required
                   />
                 </div>
               </form>
 
               {/* Pinned Action Footer */}
-              <div className="bg-slate-950/95 border-t border-slate-800 p-4 md:px-8 flex justify-end gap-3 shrink-0 z-10">
+              <div className="bg-surface-container-lowest/95 border-t border-outline-variant p-4 md:px-8 flex justify-end gap-3 shrink-0 z-10">
                 <button
                   type="button"
                   onClick={() => setEditingItem(null)}
-                  className="px-5 py-2.5 border border-slate-700 hover:border-slate-500 text-slate-300 text-xs font-label-caps uppercase tracking-widest font-bold transition-colors cursor-pointer"
+                  className="px-5 py-2.5 border border-outline hover:border-slate-500 text-main-text text-xs font-label-caps uppercase tracking-widest font-bold transition-colors cursor-pointer"
                 >
                   Cancel
                 </button>
@@ -724,7 +725,7 @@ export default function AdminDashboard() {
                   type="submit"
                   form="editConsultationForm"
                   disabled={actionLoading}
-                  className="px-6 py-2.5 bg-champagne-light hover:bg-white text-navy-muted font-bold text-xs font-label-caps uppercase tracking-widest transition-all cursor-pointer shadow-md disabled:opacity-50"
+                  className="px-6 py-2.5 bg-primary hover:bg-primary-dark text-white font-bold text-xs font-label-caps uppercase tracking-widest transition-all cursor-pointer shadow-md disabled:opacity-50"
                 >
                   {actionLoading ? 'Saving...' : 'Save & Encrypt Changes'}
                 </button>
@@ -735,25 +736,25 @@ export default function AdminDashboard() {
 
         {/* DELETE CONFIRMATION MODAL */}
         {deletingId && (
-          <div className="fixed inset-0 z-50 bg-black/85 backdrop-blur-sm flex items-center justify-center p-4 animate-fadeIn">
-            <div className="bg-slate-950 border border-red-500/50 w-full max-w-md p-6 shadow-2xl text-center">
+          <div className="fixed inset-0 z-50 bg-on-surface/40 backdrop-blur-sm flex items-center justify-center p-4 animate-fadeIn">
+            <div className="bg-surface-container-lowest border border-red-500/50 w-full max-w-md p-6 shadow-2xl text-center">
               <Warning className="text-red-400 text-5xl mx-auto mb-2" weight="bold" />
-              <h3 className="font-headline-lg text-xl text-white font-bold mb-2">Confirm Deletion</h3>
-              <p className="font-body-md text-xs text-slate-300 mb-6 leading-relaxed">
+              <h3 className="font-headline-lg text-xl text-on-surface font-bold mb-2">Confirm Deletion</h3>
+              <p className="font-body-md text-xs text-main-text mb-6 leading-relaxed">
                 Are you sure you want to permanently delete consultation #{deletingId}? This action cannot be undone.
               </p>
 
               <div className="flex justify-center gap-3">
                 <button
                   onClick={() => setDeletingId(null)}
-                  className="px-5 py-2 border border-slate-700 hover:border-slate-500 text-slate-300 text-xs font-label-caps uppercase tracking-widest cursor-pointer font-bold transition-colors"
+                  className="px-5 py-2 border border-outline hover:border-slate-500 text-main-text text-xs font-label-caps uppercase tracking-widest cursor-pointer font-bold transition-colors"
                 >
                   Cancel
                 </button>
                 <button
                   onClick={handleDeleteConfirm}
                   disabled={actionLoading}
-                  className="px-5 py-2 bg-red-600 hover:bg-red-700 text-white font-bold text-xs font-label-caps uppercase tracking-widest transition-colors cursor-pointer shadow-md"
+                  className="px-5 py-2 bg-red-600 hover:bg-red- text-white font-bold text-xs font-label-caps uppercase tracking-widest transition-colors cursor-pointer shadow-md"
                 >
                   {actionLoading ? 'Deleting...' : 'Delete Permanently'}
                 </button>
