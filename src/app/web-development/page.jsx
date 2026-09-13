@@ -32,7 +32,7 @@ export default function WebDevelopmentPage() {
                 Custom Web Development Agency
               </h1>
               <p className="text-base sm:text-lg md:text-xl text-main-text font-medium max-w-xl leading-relaxed">
-                We engineer lightning-fast, accessible, and highly responsive web applications tailored for modern businesses in Ahmedabad and beyond.
+                We build fast, elegant, and mobile-friendly websites designed to attract visitors and turn them into paying customers for businesses in Ahmedabad and beyond.
               </p>
             </div>
 
@@ -50,21 +50,21 @@ export default function WebDevelopmentPage() {
         {/* Content Section */}
         <section className="w-full py-12 sm:py-16 md:py-24 bg-surface border-b border-outline-variant/30">
           <div className="max-w-[1280px] mx-auto px-4 sm:px-6 md:px-12">
-            <h2 className="text-2xl sm:text-3xl md:text-4xl font-heading font-bold text-on-surface mb-6 sm:mb-8">Modern Business Websites</h2>
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-heading font-bold text-on-surface mb-6 sm:mb-8">Custom Websites Built for Business Growth</h2>
             <div className="prose max-w-4xl text-main-text space-y-6">
               <p>
-                In today&apos;s digital-first economy, a generic website is no longer enough. Your website is the core of your brand&apos;s digital identity. At Infronix Web Agency, we specialize in <strong className="text-on-surface">custom website development</strong> that combines breathtaking design with uncompromising performance.
+                In today&apos;s digital-first economy, a generic template is no longer enough. Your website is the core of your brand&apos;s digital identity. At Infronix Web Agency, we specialize in <strong className="text-on-surface">custom website development</strong> that combines clean design with fast loading and reliable performance.
               </p>
-              <h3 className="font-bold text-xl text-on-surface mt-8 mb-4">Why Modern Development?</h3>
+              <h3 className="font-bold text-xl text-on-surface mt-8 mb-4">Why Choose a Custom Website?</h3>
               <p>
-                We exclusively build using the modern tech stack. This ensures your business website achieves perfect Core Web Vitals, instantaneous page loads, and seamless integrations. This isn&apos;t just about looks; it&apos;s about providing a frictionless experience that converts visitors into loyal clients.
+                We build fast, modern websites tailored specifically to your business goals. Your website will load instantly on all mobile phones, tablets, and computers, giving your visitors a smooth experience that builds trust and drives more inquiries.
               </p>
-              <h3 className="font-bold text-xl text-on-surface mt-8 mb-4">Our Web Development Process</h3>
+              <h3 className="font-bold text-xl text-on-surface mt-8 mb-4">Our Website Creation Process</h3>
               <ul className="list-disc pl-6 space-y-2">
-                <li><strong className="text-on-surface">Discovery & Architecture:</strong> We map out your exact business needs and technical requirements.</li>
-                <li><strong className="text-on-surface">UI/UX Design:</strong> Crafting a premium, responsive interface with smooth animations.</li>
-                <li><strong className="text-on-surface">Full-Stack Engineering:</strong> Building robust, secure frontend and backend systems.</li>
-                <li><strong className="text-on-surface">Performance & SEO Optimization:</strong> Launching with 100/100 Lighthouse scores.</li>
+                <li><strong className="text-on-surface">Discovery &amp; Planning:</strong> We learn about your business goals, target customers, and essential features.</li>
+                <li><strong className="text-on-surface">Custom Design:</strong> Creating a modern, premium look that reflects your brand identity.</li>
+                <li><strong className="text-on-surface">Clean Development:</strong> Building a fast, secure, and reliable website that works smoothly on every screen.</li>
+                <li><strong className="text-on-surface">Testing &amp; Launch:</strong> Thoroughly checking every page and setting up your site to be easily found on Google.</li>
               </ul>
             </div>
           </div>

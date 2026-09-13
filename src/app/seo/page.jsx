@@ -29,10 +29,10 @@ export default function SEOPage() {
                 <span className="w-8 sm:w-12 h-[2px] bg-primary" /> SEO Optimization
               </span>
               <h1 className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-heading font-bold text-on-surface leading-tight tracking-tight">
-                Technical SEO Agency
+                Search Engine Optimization (SEO)
               </h1>
               <p className="text-base sm:text-lg md:text-xl text-main-text font-medium max-w-xl leading-relaxed">
-                We implement robust technical and on-page SEO strategies that drive legitimate, long-term organic visibility for modern brands.
+                We help your business get found on Google by customers who are actively searching for the products and services you offer.
               </p>
             </div>
 
@@ -49,23 +49,23 @@ export default function SEOPage() {
 
         <section className="w-full py-12 sm:py-16 md:py-24 bg-surface border-b border-outline-variant/30">
           <div className="max-w-[1280px] mx-auto px-4 sm:px-6 md:px-12">
-            <h2 className="text-2xl sm:text-3xl md:text-4xl font-heading font-bold text-on-surface mb-6 sm:mb-8">Data-Driven SEO Strategies</h2>
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-heading font-bold text-on-surface mb-6 sm:mb-8">Proven SEO for Real Business Growth</h2>
             <div className="prose max-w-4xl text-main-text space-y-6">
               <p>
-                Search Engine Optimization is not about tricks or shortcuts. It is about building a high-quality technical foundation and providing the exact value that search engines and users are looking for. As a specialized <strong className="text-on-surface">SEO Agency</strong>, we follow strict Google Search Essentials guidelines to ensure your traffic is sustainable.
+                Search Engine Optimization is not about tricks or temporary shortcuts. It is about building a clean, trustworthy website that gives search engines and real customers exactly what they are looking for. As your dedicated <strong className="text-on-surface">SEO partner</strong>, we follow best practices to bring steady, long-term traffic to your business.
               </p>
 
-              <h3 className="font-bold text-xl text-on-surface mt-8 mb-4">Our SEO Capabilities</h3>
+              <h3 className="font-bold text-xl text-on-surface mt-8 mb-4">How We Help You Rank Higher</h3>
               <ul className="list-disc pl-6 space-y-2">
-                <li><strong className="text-on-surface">Technical SEO:</strong> Core Web Vitals optimization, semantic HTML mapping, Server-Side Rendering (SSR) configuration, and crawl budget management.</li>
-                <li><strong className="text-on-surface">Local SEO:</strong> Ensuring businesses in Ahmedabad and Gujarat appear exactly when local customers search for their services.</li>
-                <li><strong className="text-on-surface">Content & On-Page:</strong> Strategic keyword mapping, internal linking architecture, and structured data (JSON-LD) implementation.</li>
-                <li><strong className="text-on-surface">Performance Monitoring:</strong> Continuous tracking via Google Search Console and technical audits.</li>
+                <li><strong className="text-on-surface">Speed &amp; Structure:</strong> Ensuring your website loads fast, works seamlessly on mobile, and is easy for Google to understand.</li>
+                <li><strong className="text-on-surface">Local Search Visibility:</strong> Helping local customers in Ahmedabad, Gujarat, and across India find your business when searching nearby.</li>
+                <li><strong className="text-on-surface">Content &amp; Keywords:</strong> Crafting page titles and descriptions that match the exact search terms your potential buyers use.</li>
+                <li><strong className="text-on-surface">Performance Tracking:</strong> Regular reports and visibility updates so you can see your search rankings grow over time.</li>
               </ul>
 
-              <h3 className="font-bold text-xl text-on-surface mt-8 mb-4">Why Technical SEO Matters</h3>
+              <h3 className="font-bold text-xl text-on-surface mt-8 mb-4">Why Search Visibility Matters</h3>
               <p>
-                A beautiful website is useless if search engines cannot crawl or understand it. By fixing indexing issues, optimizing site architecture, and utilizing proper canonicalization, we ensure that Google correctly interprets your domain authority and content intent.
+                A great website needs qualified visitors to generate sales. By making your site easy for search engines to find, index, and recommend, we help you reach active buyers without relying solely on paid ads.
               </p>
             </div>
           </div>

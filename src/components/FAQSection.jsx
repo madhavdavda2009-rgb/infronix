@@ -2,40 +2,40 @@
 
 const FAQS = [
   {
-    question: "Why is Infronix considered one of the best web agencies in Ahmedabad?",
-    answer: "Infronix Web Agency combines state-of-the-art web engineering (Next.js, React, Node.js) with tailored UI/UX design and data-driven Technical SEO. Unlike typical template-based agencies, we build bespoke, lightning-fast digital products engineered to achieve 100/100 Core Web Vitals and convert visitors into qualified paying clients."
+    question: "Why choose Infronix for my business website?",
+    answer: "Infronix creates custom, fast-loading, and modern websites designed to turn visitors into real customers. We focus on clean design, effortless customer navigation, and strong Google search visibility to help your business grow and stand out from competitors."
   },
   {
-    question: "How long does custom website development take?",
-    answer: "Our typical project turnaround ranges from 1 to 3 weeks for high-converting landing pages and business corporate websites, and 3 to 6 weeks for full-scale custom web applications, e-commerce platforms, or AI integrations. We provide clear milestone deliverables and transparent sprint updates throughout the build."
+    question: "How long does it take to build and launch a website?",
+    answer: "A focused sales landing page or standard business website usually takes 1 to 3 weeks. Larger online stores or advanced business websites take around 3 to 6 weeks. We keep you updated at every stage so you always know the exact progress."
   },
   {
-    question: "How does your SEO agency help Ahmedabad and Gujarat businesses rank on Google?",
-    answer: "Our SEO strategy focuses on comprehensive on-page optimization, local Ahmedabad search intent mapping, server-side rendering (SSR), structured data (JSON-LD Schema), site speed acceleration, and Google Search Console optimization. This ensures your website ranks at the top when local customers search for your products and services."
+    question: "How will you help more people find my business on Google?",
+    answer: "We structure your website so Google easily understands your business, your services, and your location in Ahmedabad and across Gujarat. We optimize your page content, speed, and local business listings so customers searching for your products or services find you first."
   },
   {
-    question: "What web development technologies and frameworks do you use?",
-    answer: "We specialize in the modern web stack: Next.js (App Router), React, Tailwind CSS, Node.js, and PostgreSQL / Supabase, paired with GSAP for high-end micro-animations. This architecture guarantees unmatched loading speed, rock-solid security, and effortless scaling without plugin bloat."
+    question: "What kind of websites and digital solutions can you create for my business?",
+    answer: "We create everything from clean corporate websites and high-converting landing pages to online stores, customer inquiry systems, and automated customer support tools tailored specifically to your business goals."
   },
   {
-    question: "What AI automation services do you provide for businesses?",
-    answer: "We build custom AI chatbots, 24/7 automated customer support assistants, WhatsApp API lead generation systems, CRM data sync automations, and LLM-powered workflow tools that eliminate repetitive manual tasks and drastically lower operational overhead."
+    question: "Can you automate repetitive tasks and save my team time?",
+    answer: "Yes. We build smart, easy-to-use automations like 24/7 instant chat assistants, automatic WhatsApp inquiry replies, and customer inquiry notifications that help you respond to leads instantly without manual effort."
   },
   {
-    question: "How do your Digital Marketing and Lead Generation services work?",
-    answer: "We develop full-funnel digital marketing strategies including Meta Ads (Facebook & Instagram), Google Search Ads, Social Media Management, Reels creation, and automated WhatsApp inquiry funnels to consistently generate high-intent customer leads and increase sales ROI."
+    question: "Can you connect my website with the tools my business already uses?",
+    answer: "Yes. We can seamlessly connect your website with your WhatsApp, email inbox, payment gateways, booking systems, or customer management software so all your business data stays organized in one place."
   },
   {
-    question: "Will my website be mobile-friendly and responsive across all devices?",
-    answer: "Yes, 100%. Every digital product we engineer follows a rigorous mobile-first design philosophy. We test across iPhones, Android smartphones, tablets, laptops, and ultra-wide desktop monitors to ensure responsive typography, seamless touch navigation, and fluid layouts."
+    question: "Will my website work properly on mobile phones, tablets, and computers?",
+    answer: "Yes, 100%. Every website we create is thoroughly tested on iPhones, Android smartphones, tablets, laptops, and desktop computers to ensure fast loading, easy reading, and simple navigation on every screen size."
   },
   {
-    question: "What are your website development and SEO pricing packages?",
-    answer: "We offer transparent, value-focused pricing: landing pages starting from ₹8,000, complete business corporate websites from ₹18,000 to ₹30,000, and comprehensive monthly SEO packages starting from ₹5,000/month. We also build custom tailored packages based on your exact enterprise requirements."
+    question: "How much does a new website or marketing service cost?",
+    answer: "We offer transparent, upfront pricing: high-impact landing pages starting from ₹8,000, complete business websites from ₹18,000 to ₹30,000, and ongoing Google visibility and marketing plans from ₹5,000/month. We also create custom packages tailored to your specific budget."
   },
   {
-    question: "Do you provide post-launch website maintenance and technical support?",
-    answer: "Yes. We offer dedicated maintenance, uptime monitoring, security patching, Core Web Vitals checks, and ongoing content updates to ensure your web application remains secure, up-to-date, and top-performing at all times."
+    question: "Do you help maintain and update my website after it goes live?",
+    answer: "Yes. We provide continuous support, regular security updates, fast technical help, and content changes so your website stays secure, fast, and up-to-date while you focus on running your business."
   }
 ];
 

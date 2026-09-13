@@ -7,7 +7,7 @@ const WHATSAPP_NUMBER = '919106291540';
 const quickTopics = [
   { label: '🌐 Website Development', text: 'Hi Infronix! I would like to inquire about Website Development for my business.' },
   { label: '📈 SEO Optimization', text: 'Hi Infronix! I want to boost my search rankings and organic traffic with SEO.' },
-  { label: '🤖 AI Automation', text: 'Hi Infronix! I am interested in custom AI Automation and LLM workflows.' },
+  { label: '🤖 AI Automation', text: 'Hi Infronix! I am interested in custom AI Automation and smart business workflows.' },
   { label: '💬 General Inquiry', text: 'Hi Infronix Team! I would like to schedule a strategy consultation.' }
 ];
 

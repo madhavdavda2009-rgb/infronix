@@ -22,7 +22,7 @@ export default function BlogPage() {
             </span>
             <h1 className="text-2xl sm:text-4xl md:text-5xl font-heading font-bold text-on-surface mb-4 sm:mb-6">Infronix Digital Insights</h1>
             <p className="text-sm sm:text-base text-main-text max-w-2xl mx-auto leading-relaxed">
-              Expert articles, guides, and technical deep-dives into Next.js web development, local SEO strategies, and business automation.
+              Actionable articles, guides, and practical insights on custom website creation, local Google search growth, and smart business automations.
             </p>
             </div>
           </div>
@@ -38,7 +38,7 @@ export default function BlogPage() {
                   What Should a Modern Business Website Include?
                 </h2>
                 <p className="text-sm text-main-text line-clamp-3">
-                  Discover the essential technical requirements, performance benchmarks, and accessibility standards every modern business website needs to succeed in a competitive digital landscape.
+                  Discover the essential features, clean design principles, and mobile-friendly standards every business website needs to build trust and attract customers.
                 </p>
                 <div className="mt-auto pt-4 border-t border-outline-variant/50">
                   <span className="text-sm font-bold text-text-light">Coming Soon</span>
@@ -51,7 +51,7 @@ export default function BlogPage() {
                   How Local SEO Helps Ahmedabad Businesses
                 </h2>
                 <p className="text-sm text-main-text line-clamp-3">
-                  A comprehensive guide on leveraging local search intent, Google Business Profiles, and structured data to capture market share in Ahmedabad and Gujarat.
+                  A practical guide on setting up Google Maps, local search visibility, and customer reviews to attract more nearby clients in Ahmedabad and Gujarat.
                 </p>
                 <div className="mt-auto pt-4 border-t border-outline-variant/50">
                   <span className="text-sm font-bold text-text-light">Coming Soon</span>
@@ -64,7 +64,7 @@ export default function BlogPage() {
                   How AI Automation Can Help Small Businesses
                 </h2>
                 <p className="text-sm text-main-text line-clamp-3">
-                  Learn how integrating custom LLM workflows, automated lead routing, and intelligent chatbots can drastically reduce operational overhead.
+                  Learn how 24/7 customer chat assistants and automatic inquiry follow-ups can save your team hours of manual work every week.
                 </p>
                 <div className="mt-auto pt-4 border-t border-outline-variant/50">
                   <span className="text-sm font-bold text-text-light">Coming Soon</span>

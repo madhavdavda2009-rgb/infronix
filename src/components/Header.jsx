@@ -76,19 +76,22 @@ export default function Header() {
         <div className={`hidden lg:flex text-[#A0AEC0] text-xs py-2 w-full transition-colors duration-300 ${scrolled ? 'bg-[#0B0D12]/95 backdrop-blur-md' : 'bg-[#0B0D12]'}`}>
           <div className="max-w-[1440px] mx-auto px-6 md:px-12 w-full flex justify-between items-center">
             <div className="flex items-center gap-6">
-              <a href="mailto:hello@infronix.in" className="flex items-center gap-2 hover:text-white transition-colors">
-                <Envelope size={14} weight="bold" /> hello@infronix.in
+              <a href="mailto:support@infronixweb.in" className="flex items-center gap-2 hover:text-white transition-colors">
+                <Envelope size={14} weight="bold" /> support@infronixweb.in
               </a>
               <a href="tel:+916355792936" className="flex items-center gap-2 hover:text-white transition-colors">
                 <Phone size={14} weight="bold" /> +91 6355 792 936
+              </a>
+              <a href="tel:+919106291540" className="flex items-center gap-2 hover:text-white transition-colors">
+                <Phone size={14} weight="bold" /> +91 91062 91540
               </a>
               <span className="flex items-center gap-2">
                 <MapPin size={14} weight="bold" /> Ahmedabad, Gujarat
               </span>
             </div>
             <div className="flex items-center gap-4">
-              <span className="flex items-center gap-2 font-medium">
-                <Clock size={14} weight="bold" /> Mon - Fri: 10:00 AM - 7:00 PM
+              <span className="flex items-center gap-2 font-medium text-white/90">
+                <Clock size={14} weight="bold" className="text-primary" /> Mon - Sat: 9:00 AM - 8:00 PM
               </span>
             </div>
           </div>

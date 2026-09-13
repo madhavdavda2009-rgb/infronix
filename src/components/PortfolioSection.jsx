@@ -7,9 +7,8 @@ const projects = [
   {
     id: 1,
     title: "Toyon Industry Pvt Ltd",
-    category: "Ongoing Project",
-    desc: "Developing 3D interaction and digital solutions for their industrial operations.",
-    tech: ["Next.js", "Three.js", "TailwindCSS"],
+    desc: "Developing interactive 3D visual showcases and modern digital solutions for their industrial operations.",
+    tech: ["Interactive 3D", "Custom Web Platform", "Fast Loading"],
     image: "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&w=1200&q=80",
     link: "#"
   }

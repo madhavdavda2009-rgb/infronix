@@ -10,7 +10,7 @@ export default function TrustSection() {
             <h2 id="trust-title" className="font-headline-lg text-2xl sm:text-3xl md:text-4xl text-surface font-bold">Professionalism & Client Support</h2>
           </div>
           <p className="font-body-md text-sm sm:text-base text-slate-200 leading-relaxed font-medium">
-            We deliver more than just code. What we offer is unparalleled client support, professional-grade development, and comprehensive technical documentation. We partner with you transparently to ensure absolute project success.
+            We deliver more than just code. What we offer is dedicated client support, professional execution, and clear communication. We partner with you transparently every step of the way to ensure your project&apos;s success.
           </p>
 
           <div className="flex flex-col gap-6 mt-2">
@@ -21,7 +21,7 @@ export default function TrustSection() {
               <div>
                 <h3 className="font-headline-md text-lg sm:text-xl text-surface font-bold">Dedicated Client Support</h3>
                 <p className="font-body-md text-xs sm:text-sm text-slate-200 mt-1 leading-relaxed font-medium">
-                  Responsive communication and proactive maintenance to ensure your platform operates flawlessly around the clock.
+                  Quick communication and ongoing assistance so your website and digital tools always run smoothly.
                 </p>
               </div>
             </div>
@@ -31,9 +31,9 @@ export default function TrustSection() {
                 <Books className="text-accent text-2xl" weight="bold" />
               </div>
               <div>
-                <h3 className="font-headline-md text-lg sm:text-xl text-surface font-bold">Detailed Documentation</h3>
+                <h3 className="font-headline-md text-lg sm:text-xl text-surface font-bold">Clear Guides &amp; Walkthroughs</h3>
                 <p className="font-body-md text-xs sm:text-sm text-slate-200 mt-1 leading-relaxed font-medium">
-                  Clean, scalable codebases accompanied by comprehensive technical guides for seamless onboarding and future growth.
+                  Easy-to-understand guides and training so you and your team can easily manage your website without technical hassle.
                 </p>
               </div>
             </div>
@@ -45,7 +45,7 @@ export default function TrustSection() {
               <div>
                 <h3 className="font-headline-md text-lg sm:text-xl text-surface font-bold">Transparent Workflow</h3>
                 <p className="font-body-md text-xs sm:text-sm text-slate-200 mt-1 leading-relaxed font-medium">
-                  Clear milestones, predictable timelines, and absolute transparency throughout the entire development lifecycle.
+                  Clear project milestones, reliable timelines, and honest updates from our first call to final launch.
                 </p>
               </div>
             </div>
@@ -56,7 +56,7 @@ export default function TrustSection() {
           <img
             src="/trust_bg.webp"
             alt="Creative team reviewing high fidelity wireframes on a tablet, modern minimalist office, dark aesthetic."
-            className="absolute inset-0 w-full h-full object-cover object-center grayscale opacity-80"
+            className="absolute inset-0 w-full h-full object-cover object-center"
             width="640"
             height="500"
             loading="lazy"

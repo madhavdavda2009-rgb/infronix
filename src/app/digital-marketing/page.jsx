@@ -63,10 +63,10 @@ export default function DigitalMarketingPage() {
                 <span className="w-8 sm:w-12 h-[2px] bg-primary" /> Digital Marketing
               </span>
               <h1 className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-heading font-bold text-on-surface leading-tight tracking-tight">
-                Data-Driven Digital Marketing Agency
+                Results-Driven Digital Marketing Agency
               </h1>
               <p className="text-base sm:text-lg md:text-xl text-main-text font-medium max-w-2xl leading-relaxed">
-                We craft targeted social media marketing campaigns and high-converting paid advertising across Google and Meta to scale modern businesses.
+                We create targeted social media content and focused advertising campaigns on Google, Instagram, and Facebook to help your business reach more paying customers.
               </p>
             </div>
 
@@ -75,7 +75,7 @@ export default function DigitalMarketingPage() {
                 href="/start-project"
                 className="bg-primary text-white font-bold text-xs sm:text-sm px-6 py-3.5 sm:px-8 sm:py-4 rounded-md hover:bg-primary-dark transition-all hover:scale-[1.02] active:scale-[0.98] shadow-[0_0_15px_rgba(139, 92, 246,0.3)] text-center flex items-center justify-center gap-2 w-full sm:w-auto"
               >
-                Scale Your Marketing <ArrowRight size={16} weight="bold" />
+                Grow Your Business <ArrowRight size={16} weight="bold" />
               </Link>
             </div>
           </div>
@@ -86,7 +86,7 @@ export default function DigitalMarketingPage() {
           <div className="max-w-[1280px] mx-auto px-4 sm:px-6 md:px-12">
             <div className="mb-10 sm:mb-16 max-w-2xl">
               <h2 className="text-xs sm:text-sm font-bold tracking-widest uppercase text-primary mb-2 sm:mb-3 flex items-center gap-3">
-                <span className="w-8 sm:w-12 h-[2px] bg-primary" /> Core Pillars
+                <span className="w-8 sm:w-12 h-[2px] bg-primary" /> What We Do
               </h2>
               <h3 className="text-2xl sm:text-4xl md:text-5xl font-heading font-bold text-on-surface leading-tight">
                 Our Digital Marketing Solutions
@@ -146,18 +146,18 @@ export default function DigitalMarketingPage() {
         <section className="w-full py-16 md:py-24 bg-surface-container-lowest border-b border-outline-variant/30">
           <div className="max-w-[1280px] mx-auto px-6 md:px-12">
             <h2 className="text-2xl sm:text-3xl md:text-4xl font-heading font-bold text-on-surface mb-8">
-              Engineered for High ROI &amp; Sustainable Growth
+              Marketing Designed to Bring Real Customer Inquiries
             </h2>
             <div className="prose max-w-4xl text-main-text space-y-6">
               <p>
-                In today&apos;s digital ecosystem, random posting and disconnected ads waste your marketing budget. At Infronix Web Agency, our <strong className="text-on-surface">Digital Marketing</strong> services align creative social storytelling with performance-focused Google and Meta ad campaigns.
+                Random posting and untargeted ads waste your marketing budget. At Infronix Web Agency, our <strong className="text-on-surface">Digital Marketing</strong> services combine attractive social media content with focused ad campaigns to generate real business inquiries.
               </p>
               <h3 className="font-bold text-xl text-on-surface mt-8 mb-4">Why Choose Infronix for Digital Marketing?</h3>
               <ul className="list-disc pl-6 space-y-2">
-                <li><strong className="text-on-surface">Performance-First Strategy:</strong> Target high-intent searchers on Google and engage ideal customers on Instagram &amp; Facebook.</li>
-                <li><strong className="text-on-surface">High-Converting Creatives:</strong> Professional short-form video editing, carousel designs, and ad copy crafted to convert.</li>
-                <li><strong className="text-on-surface">Transparent Tracking:</strong> Conversion API, Meta Pixel, and Google Analytics configured to monitor every lead.</li>
-                <li><strong className="text-on-surface">Integrated Growth:</strong> Seamlessly connected with your Website Development, SEO, and AI Automation stack.</li>
+                <li><strong className="text-on-surface">Targeted Strategy:</strong> Reach people actively searching for your services on Google and interest your ideal buyers on Instagram and Facebook.</li>
+                <li><strong className="text-on-surface">Eye-Catching Content:</strong> High-quality Reels, graphic posts, and clear messages designed to engage audiences and build trust.</li>
+                <li><strong className="text-on-surface">Clear Reporting:</strong> Simple, easy-to-read reports showing exactly how many clicks, calls, and inquiries your campaigns produce.</li>
+                <li><strong className="text-on-surface">All-In-One Service:</strong> Seamlessly connected with your website, local search setup, and customer follow-up systems.</li>
               </ul>
             </div>
           </div>

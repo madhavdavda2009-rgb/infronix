@@ -4,8 +4,8 @@ import Breadcrumb from '@/components/Breadcrumb';
 import Link from 'next/link';
 
 export const metadata = {
-  title: 'AI Automation Agency in Ahmedabad | Workflow Automation',
-  description: 'Transform your business with intelligent AI automation, chatbots, lead management, and custom LLM workflows from Infronix Web Agency.',
+  title: 'AI & Business Automation Agency in Ahmedabad',
+  description: 'Transform your business with intelligent automations, 24/7 customer chat assistants, automatic lead follow-ups, and time-saving solutions from Infronix Web Agency.',
   alternates: {
     canonical: 'https://www.infronixweb.in/ai-automation'
   }
@@ -26,13 +26,13 @@ export default function AIAutomationPage() {
             <Breadcrumb />
             <div className="flex flex-col gap-3 sm:gap-4 max-w-3xl">
               <span className="flex items-center gap-2 text-xs font-bold tracking-widest uppercase text-primary">
-                <span className="w-8 sm:w-12 h-[2px] bg-primary" /> AI Automation
+                <span className="w-8 sm:w-12 h-[2px] bg-primary" /> Smart Automation
               </span>
               <h1 className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-heading font-bold text-on-surface leading-tight tracking-tight">
-                AI Automation Agency
+                AI &amp; Business Automation
               </h1>
               <p className="text-base sm:text-lg md:text-xl text-main-text font-medium max-w-xl leading-relaxed">
-                Streamline operations, scale customer support, and optimize business workflows with custom Artificial Intelligence integrations.
+                Save time, answer customer inquiries 24/7, and automatically follow up with leads so your team can focus on growing your business.
               </p>
             </div>
 
@@ -41,7 +41,7 @@ export default function AIAutomationPage() {
                 href="/start-project"
                 className="bg-primary text-white font-bold text-xs sm:text-sm px-6 py-3.5 sm:px-8 sm:py-4 rounded-md hover:bg-primary-dark transition-all hover:scale-[1.02] active:scale-[0.98] shadow-[0_0_15px_rgba(139, 92, 246,0.3)] text-center w-full sm:w-auto"
               >
-                Automate Your Workflow
+                Start Automating
               </Link>
             </div>
           </div>
@@ -49,23 +49,23 @@ export default function AIAutomationPage() {
 
         <section className="w-full py-12 sm:py-16 md:py-24 bg-surface border-b border-outline-variant/30">
           <div className="max-w-[1280px] mx-auto px-4 sm:px-6 md:px-12">
-            <h2 className="text-2xl sm:text-3xl md:text-4xl font-heading font-bold text-on-surface mb-6 sm:mb-8">Intelligent Business Automation</h2>
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-heading font-bold text-on-surface mb-6 sm:mb-8">Smart Automations for Modern Businesses</h2>
             <div className="prose max-w-4xl text-main-text space-y-6">
               <p>
-                In a rapidly evolving digital landscape, repetitive manual tasks are the biggest bottleneck to growth. As an expert <strong className="text-on-surface">AI Automation Agency</strong>, we build intelligent systems that work 24/7 to capture leads, process data, and assist customers automatically.
+                Repetitive manual tasks often slow down business growth. At Infronix Web Agency, we set up reliable automated solutions that work around the clock to capture new customer inquiries, answer questions, and keep your business running smoothly.
               </p>
 
-              <h3 className="font-bold text-xl text-on-surface mt-8 mb-4">Our AI Automation Solutions</h3>
+              <h3 className="font-bold text-xl text-on-surface mt-8 mb-4">Our Business Automation Solutions</h3>
               <ul className="list-disc pl-6 space-y-2">
-                <li><strong className="text-on-surface">AI Assistants & Chatbots:</strong> Provide instantaneous, accurate customer support and lead qualification directly on your website.</li>
-                <li><strong className="text-on-surface">Lead & Email Automation:</strong> Automatically capture inquiries, sync them to your CRM, and deploy personalized follow-up sequences without human intervention.</li>
-                <li><strong className="text-on-surface">Workflow Integrations:</strong> Connect disjointed software tools via custom API integrations to ensure seamless data flow across your organization.</li>
-                <li><strong className="text-on-surface">Custom LLM Integration:</strong> Utilize modern Large Language Models to summarize reports, draft content, and process natural language requests internally.</li>
+                <li><strong className="text-on-surface">24/7 Website Assistants:</strong> Answer common customer questions instantly and collect inquiry details even when your team is away.</li>
+                <li><strong className="text-on-surface">Instant Lead &amp; Email Follow-Ups:</strong> Automatically organize incoming customer leads and send immediate confirmation emails.</li>
+                <li><strong className="text-on-surface">Connecting Your Daily Tools:</strong> Connect your website with your email, spreadsheets, WhatsApp, and existing business software so information syncs automatically.</li>
+                <li><strong className="text-on-surface">Smart Task Assistance:</strong> Speed up routine paperwork, drafting customer messages, and organizing records.</li>
               </ul>
 
               <h3 className="font-bold text-xl text-on-surface mt-8 mb-4">The Benefit for Your Business</h3>
               <p>
-                By automating routine workflows, your team is freed up to focus on high-level strategy and relationship building. Our bespoke AI solutions reduce operational overhead while drastically improving response times and customer satisfaction.
+                By automating repetitive tasks, you and your team save valuable hours every single week. Instant responses give customers a great impression, helping you close more deals without increasing your workload.
               </p>
             </div>
           </div>

@@ -1,7 +1,7 @@
 "use client";
 import { motion } from "framer-motion";
-import { LinkedinLogo, TwitterLogo } from "@phosphor-icons/react";
-import myImage from "@/assets/my-image.png";
+import { InstagramLogo } from "@phosphor-icons/react";
+import myImage from "@/assets/my-image.jpeg";
 
 const team = [
   {
@@ -43,27 +43,28 @@ export default function TeamSection() {
                 <img 
                   src={member.image} 
                   alt={member.name} 
-                  className="w-full h-full object-cover grayscale transition-all duration-700 group-hover:grayscale-0 group-hover:scale-105"
+                  className="w-full h-full object-cover"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                
-                {/* Socials on hover */}
-                <div className="absolute bottom-4 left-4 right-4 flex gap-3 opacity-0 translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300">
-                  <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className="w-9 h-9 rounded-full bg-surface-container-lowest text-on-surface flex items-center justify-center hover:bg-primary hover:text-white transition-colors">
-                    <LinkedinLogo size={18} weight="fill" />
-                  </a>
-                  <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" className="w-9 h-9 rounded-full bg-surface-container-lowest text-on-surface flex items-center justify-center hover:bg-primary hover:text-white transition-colors">
-                    <TwitterLogo size={18} weight="fill" />
-                  </a>
-                </div>
               </div>
               
               <h4 className="text-xl sm:text-2xl font-heading font-bold text-on-surface mb-1">
                 {member.name}
               </h4>
-              <p className="text-xs sm:text-sm font-bold tracking-wider uppercase text-primary">
-                {member.role}
-              </p>
+              <div className="flex items-center justify-between">
+                <p className="text-xs sm:text-sm font-bold tracking-wider uppercase text-primary">
+                  {member.role}
+                </p>
+                <a
+                  href="https://www.instagram.com/madhavdavda09"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1.5 text-xs font-semibold text-text-light hover:text-primary transition-colors"
+                  aria-label="Madhav Davda Instagram"
+                >
+                  <InstagramLogo size={16} weight="fill" />
+                  <span>@madhavdavda09</span>
+                </a>
+              </div>
             </motion.div>
           ))}
         </div>

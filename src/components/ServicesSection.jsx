@@ -8,9 +8,9 @@ const services = [
   {
     id: "01",
     title: "Website Development",
-    short: "High-performance Next.js architectures.",
-    desc: "We build modern, fast, and scalable websites that look premium and perform flawlessly. From corporate sites to complex web applications, we engineer digital experiences that drive conversions.",
-    features: ["Next.js & React", "Custom UI/UX Design", "Performance Optimized", "E-commerce Ready"],
+    short: "Custom websites designed to win customers.",
+    desc: "We build modern, fast, and easy-to-use websites that showcase your brand and turn visitors into real paying customers.",
+    features: ["Modern Brand Design", "Mobile & Fast Loading", "Easy Navigation", "Online Stores & Inquiries"],
     icon: Globe,
     link: "/web-development",
     color: "var(--color-primary)"
@@ -18,9 +18,9 @@ const services = [
   {
     id: "02",
     title: "SEO Optimization",
-    short: "Data-driven organic growth.",
-    desc: "Achieve sustainable growth with our technical SEO strategies. We go beyond basic keywords to optimize architecture, speed, and content, ensuring you dominate search results.",
-    features: ["Technical SEO", "Local SEO & GMB", "Content Strategy", "Performance Audits"],
+    short: "Help local customers find you on Google.",
+    desc: "Get your business found on Google search and maps. We improve your visibility and rankings so potential clients find you before your competitors.",
+    features: ["Google Search Ranking", "Google Maps & Local Setup", "Content & Keywords", "Speed & Search Fixes"],
     icon: MagnifyingGlass,
     link: "/seo",
     color: "var(--color-accent)"
@@ -28,9 +28,9 @@ const services = [
   {
     id: "03",
     title: "AI Automation",
-    short: "Intelligent workflows for scale.",
-    desc: "Automate repetitive tasks and supercharge your customer support. We integrate custom AI chatbots and automated workflows directly into your business processes.",
-    features: ["Custom Chatbots", "WhatsApp AI Agents", "Workflow Automation", "CRM Integration"],
+    short: "Automate daily tasks & save team hours.",
+    desc: "Save hours every week by automating routine inquiries and customer communication with smart, 24/7 instant response tools.",
+    features: ["24/7 Chat Assistants", "WhatsApp Auto-Replies", "Lead Notifications", "Tool & App Connections"],
     icon: Robot,
     link: "/ai-automation",
     color: "var(--color-primary-dark)"
@@ -38,9 +38,9 @@ const services = [
   {
     id: "04",
     title: "Digital Marketing",
-    short: "Social media & high-converting paid ads.",
-    desc: "Scale brand awareness and customer acquisition with strategic social media management, Reels production, and targeted Meta & Google advertising campaigns.",
-    features: ["Social Media Marketing", "Meta & Google Ads", "Reels & Video Editing", "Conversion Tracking"],
+    short: "Reach targeted buyers on social media & Google.",
+    desc: "Reach more targeted customers with attractive social media content and high-converting advertisements that bring real inquiries.",
+    features: ["Social Media Growth", "Google & Instagram Ads", "Engaging Video & Reels", "Inquiry & Sales Tracking"],
     icon: Megaphone,
     link: "/digital-marketing",
     color: "var(--color-primary)"

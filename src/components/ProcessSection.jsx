@@ -3,11 +3,11 @@ import { motion, useScroll, useTransform } from "framer-motion";
 import { useRef } from "react";
 
 const steps = [
-  { id: "01", title: "Discover", desc: "We analyze your business, target audience, and competition to uncover unique opportunities for digital growth." },
-  { id: "02", title: "Plan", desc: "Architecting the solution. We create wireframes, define technical requirements, and map out the SEO strategy." },
-  { id: "03", title: "Build", desc: "Our engineering team develops high-performance systems using Next.js, React, and modern backend technologies." },
-  { id: "04", title: "Launch", desc: "Rigorous QA testing, performance optimization, and seamless deployment to production environments." },
-  { id: "05", title: "Grow", desc: "Post-launch SEO execution, AI automation implementation, and continuous performance scaling." }
+  { id: "01", title: "Discover", desc: "We learn about your business, your ideal customers, and your goals to create a clear plan for online growth." },
+  { id: "02", title: "Plan", desc: "We design clean visual layouts, organize your page content, and plan your Google search strategy." },
+  { id: "03", title: "Build", desc: "We build your custom website with clean, fast-loading code, easy navigation, and modern security." },
+  { id: "04", title: "Launch", desc: "Thorough testing on mobile phones, tablets, and desktop screens to ensure everything works smoothly before launch." },
+  { id: "05", title: "Grow", desc: "Ongoing Google ranking support, smart automation setup, and continuous improvements to help you win more customers." }
 ];
 
 export default function ProcessSection() {

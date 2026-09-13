@@ -32,7 +32,7 @@ export default function AboutSection() {
               </p>
               
               <p className="text-sm sm:text-base md:text-lg text-main-text leading-relaxed mb-6 sm:mb-10 font-medium">
-                Infronix was founded by a close-knit, highly technical team to stop this cycle. We bridge the gap between premium design, organic search growth, and cutting-edge AI integrations—delivering a unified digital ecosystem for small and growing businesses.
+                Infronix was founded to stop this hassle. We bring together modern website design, Google search growth, and smart time-saving automations—giving you everything your business needs under one roof.
               </p>
               
               <Link 
@@ -53,12 +53,12 @@ export default function AboutSection() {
               transition={{ duration: 0.8, delay: 0.2 }}
               className="relative aspect-square md:aspect-[4/5] w-full max-w-sm sm:max-w-lg mx-auto"
             >
-              {/* Main Image placeholder */}
+              {/* Main Image */}
               <div className="absolute inset-0 bg-surface-container-lowest rounded-xl overflow-hidden border border-outline-variant/60 shadow-lg">
                 <img 
                   src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=800&q=80" 
                   alt="Infronix Team Collaboration" 
-                  className="w-full h-full object-cover grayscale opacity-90 hover:grayscale-0 transition-all duration-700"
+                  className="w-full h-full object-cover"
                 />
               </div>
               

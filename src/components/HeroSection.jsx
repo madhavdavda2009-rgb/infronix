@@ -86,7 +86,7 @@ export default function HeroSection() {
               variants={itemVariants}
               className="text-base sm:text-lg md:text-xl text-main-text max-w-2xl mb-7 sm:mb-9 font-medium leading-relaxed"
             >
-              We engineer high-converting Next.js applications, execute data-driven SEO campaigns, and implement intelligent AI workflows to scale modern brands.
+              We build custom, fast-loading websites, help more customers find you on Google, and automate repetitive tasks to grow your business.
             </motion.p>
 
             {/* CTAs */}
@@ -109,16 +109,16 @@ export default function HeroSection() {
               </Link>
             </motion.div>
 
-            {/* Tech indicators */}
+            {/* Key Service Highlights */}
             <motion.div variants={itemVariants} className="mt-8 sm:mt-12 md:mt-14 pt-5 sm:pt-7 border-t border-outline-variant flex flex-wrap items-center gap-4 sm:gap-6 md:gap-10 opacity-80">
               <div className="flex items-center gap-2 text-xs sm:text-sm font-bold text-on-surface tracking-wider uppercase">
-                <Code size={18} weight="bold" className="text-primary shrink-0" /> Next.js & React
+                <Code size={18} weight="bold" className="text-primary shrink-0" /> Custom Websites
               </div>
               <div className="flex items-center gap-2 text-xs sm:text-sm font-bold text-on-surface tracking-wider uppercase">
-                <ChartLineUp size={18} weight="bold" className="text-primary shrink-0" /> Technical SEO
+                <ChartLineUp size={18} weight="bold" className="text-primary shrink-0" /> Google Search Growth
               </div>
               <div className="flex items-center gap-2 text-xs sm:text-sm font-bold text-on-surface tracking-wider uppercase">
-                <Robot size={18} weight="bold" className="text-primary shrink-0" /> AI Workflows
+                <Robot size={18} weight="bold" className="text-primary shrink-0" /> Smart Automations
               </div>
             </motion.div>
 
@@ -141,7 +141,7 @@ export default function HeroSection() {
                 <Image
                   src={heroImg}
                   alt="Infronix Web Agency Hero"
-                  className="w-full h-auto max-h-[420px] sm:max-h-[500px] lg:max-h-[540px] object-contain drop-shadow-2xl transition-transform duration-700 hover:scale-[1.02]"
+                  className="w-full h-auto max-h-[420px] sm:max-h-[500px] lg:max-h-[540px] object-contain drop-shadow-2xl"
                   priority
                 />
               </div>

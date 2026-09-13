@@ -99,7 +99,7 @@ export default function ContactSection() {
             <img
               src={id6.src || id6}
               alt="Infronix Web Agency digital strategy, web development, and AI automation consultation in Ahmedabad"
-              className="absolute inset-0 w-full h-full object-cover grayscale transition-transform duration-1000 hover:scale-105"
+              className="absolute inset-0 w-full h-full object-cover"
               width="800"
               height="800"
               loading="lazy"
