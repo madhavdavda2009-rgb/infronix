@@ -3,8 +3,8 @@ import FAQSection from '@/components/FAQSection';
 import Breadcrumb from '@/components/Breadcrumb';
 
 export const metadata = {
-  title: 'Contact Infronix | Web Agency in Ahmedabad',
-  description: 'Contact Infronix Web Agency. We serve clients in Ahmedabad, Gujarat, and globally with premium web development and SEO services.',
+  title: 'Contact InfronixWeb | Web Agency in Ahmedabad',
+  description: 'Contact InfronixWeb Digital Marketing. We serve clients in Ahmedabad, Gujarat, and globally with premium web development and SEO services.',
   alternates: {
     canonical: 'https://www.infronixweb.in/contact'
   }

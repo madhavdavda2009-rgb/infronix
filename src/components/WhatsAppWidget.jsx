@@ -5,10 +5,11 @@ import { useState } from 'react';
 const WHATSAPP_NUMBER = '919106291540';
 
 const quickTopics = [
-  { label: '🌐 Website Development', text: 'Hi Infronix! I would like to inquire about Website Development for my business.' },
-  { label: '📈 SEO Optimization', text: 'Hi Infronix! I want to boost my search rankings and organic traffic with SEO.' },
-  { label: '🤖 AI Automation', text: 'Hi Infronix! I am interested in custom AI Automation and smart business workflows.' },
-  { label: '💬 General Inquiry', text: 'Hi Infronix Team! I would like to schedule a strategy consultation.' }
+  { label: '🌐 Website Development', text: 'Hi InfronixWeb! I would like to inquire about Website Development for my business.' },
+  { label: '📈 SEO Optimization', text: 'Hi InfronixWeb! I want to boost my search rankings and organic traffic with SEO.' },
+  { label: '🚀 Digital Marketing & Ads', text: 'Hi InfronixWeb! I am interested in Social Media Marketing and Paid Ads (Google & Meta).' },
+  { label: '🤖 AI Automation', text: 'Hi InfronixWeb! I am interested in custom AI Automation and smart business workflows.' },
+  { label: '💬 Strategy Consultation', text: 'Hi InfronixWeb Team! I would like to schedule a strategy consultation for my business.' }
 ];
 
 export default function WhatsAppWidget() {
@@ -33,7 +34,7 @@ export default function WhatsAppWidget() {
                 </svg>
               </div>
               <div>
-                <h4 className="font-bold text-on-surface text-sm">Infronix Support</h4>
+                <h4 className="font-bold text-on-surface text-sm">InfronixWeb Support</h4>
                 <p className="text-[11px] text-[#25D366] font-medium mt-0.5">Typically replies instantly</p>
               </div>
             </div>

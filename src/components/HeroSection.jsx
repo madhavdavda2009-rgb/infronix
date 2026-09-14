@@ -140,7 +140,7 @@ export default function HeroSection() {
               <div className="relative w-full flex items-center justify-center">
                 <Image
                   src={heroImg}
-                  alt="Infronix Web Agency Hero"
+                  alt="InfronixWeb Digital Marketing Hero"
                   className="w-full h-auto max-h-[420px] sm:max-h-[500px] lg:max-h-[540px] object-contain drop-shadow-2xl"
                   priority
                 />

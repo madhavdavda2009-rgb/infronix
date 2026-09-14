@@ -56,7 +56,7 @@ export default function InvoiceModal({ client, onClose }) {
   // UPI Payment Details & QR Code
   const [enableUpi, setEnableUpi] = useState(true);
   const [upiId, setUpiId] = useState('infronixweb@oksbi');
-  const [upiPayeeName, setUpiPayeeName] = useState('Infronix Web Agency');
+  const [upiPayeeName, setUpiPayeeName] = useState('InfronixWeb Digital Marketing');
   const [upiNote, setUpiNote] = useState('');
   const [copiedUpi, setCopiedUpi] = useState(false);
 
@@ -68,7 +68,7 @@ export default function InvoiceModal({ client, onClose }) {
   const [copiedNotification, setCopiedNotification] = useState(false);
 
   useEffect(() => {
-    // Generate standard Infronix invoice ID
+    // Generate standard InfronixWeb invoice ID
     const today = new Date();
     const dateStr = today.toISOString().split('T')[0].replace(/-/g, '');
     const clientNum = (client?.id || Math.floor(Math.random() * 9000 + 1000)).toString().padStart(4, '0');
@@ -151,7 +151,7 @@ export default function InvoiceModal({ client, onClose }) {
 
       const opt = {
         margin: 0,
-        filename: `${invoiceId}-Infronix-Invoice.pdf`,
+        filename: `${invoiceId}-InfronixWeb-Invoice.pdf`,
         image: { type: 'jpeg', quality: 0.98 },
         html2canvas: { scale: 2, useCORS: true, letterRendering: true },
         jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
@@ -175,7 +175,7 @@ export default function InvoiceModal({ client, onClose }) {
 
   // Copy Summary text for WhatsApp/Message
   const handleCopySummary = () => {
-    const summary = `*INFRONIX WEB AGENCY — INVOICE ${invoiceId}*
+    const summary = `*INFRONIXWEB DIGITAL MARKETING — INVOICE ${invoiceId}*
 Client: ${client?.firstName} ${client?.lastName}
 Total Amount: ₹${total.toLocaleString('en-IN', { minimumFractionDigits: 2 })}
 Amount Paid: ₹${paidVal.toLocaleString('en-IN', { minimumFractionDigits: 2 })}
@@ -300,13 +300,13 @@ ${enableUpi && upiId ? `Pay via UPI VPA: ${upiId}\n` : ''}Online Invoice & Terms
               <div className="w-14 h-14 bg-[#1C2541] flex items-center justify-center p-2 rounded shrink-0">
                 <img 
                   src="/web-log-removebg-preview.png" 
-                  alt="Infronix" 
+                  alt="InfronixWeb" 
                   className="w-full h-full object-contain"
                 />
               </div>
               <div>
                 <h1 className="text-2xl font-bold text-slate-900 tracking-tight font-serif">
-                  INFRONIX WEB AGENCY
+                  INFRONIXWEB DIGITAL MARKETING
                 </h1>
                 <p className="text-xs text-text-light font-semibold tracking-wider uppercase mt-0.5">
                   Web Development &middot; SEO &middot; AI Automation
@@ -348,7 +348,7 @@ ${enableUpi && upiId ? `Pay via UPI VPA: ${upiId}\n` : ''}Online Invoice & Terms
               <span className="font-bold uppercase tracking-wider text-text-light block mb-1 text-[10px]">
                 Issued By
               </span>
-              <p className="font-bold text-sm text-slate-900">Infronix Web Agency</p>
+              <p className="font-bold text-sm text-slate-900">InfronixWeb Digital Marketing</p>
               <p className="text-slate-600 mt-0.5">support@infronixweb.in</p>
               <p className="text-slate-600">Sanand, Ahmedabad, Gujarat, India</p>
               <p className="text-slate-600 font-medium">GST / Registered Agency</p>
@@ -494,7 +494,7 @@ ${enableUpi && upiId ? `Pay via UPI VPA: ${upiId}\n` : ''}Online Invoice & Terms
 
           {/* Footer */}
           <div className="pt-6 mt-6 border-t border-slate-200 flex justify-between items-center text-[10px] text-text-light">
-            <div>Infronix Web Agency &middot; Thank you for your business.</div>
+            <div>InfronixWeb Digital Marketing &middot; Thank you for your business.</div>
             <div>Page 1 of 1</div>
           </div>
 
@@ -770,7 +770,7 @@ ${enableUpi && upiId ? `Pay via UPI VPA: ${upiId}\n` : ''}Online Invoice & Terms
                           type="text"
                           value={upiPayeeName}
                           onChange={(e) => setUpiPayeeName(e.target.value)}
-                          placeholder="Infronix Web Agency"
+                          placeholder="InfronixWeb Digital Marketing"
                           className="w-full bg-surface-container-lowest text-on-surface p-2 text-xs border border-outline focus:outline-none focus:border-primary font-medium"
                         />
                       </div>
@@ -887,13 +887,13 @@ ${enableUpi && upiId ? `Pay via UPI VPA: ${upiId}\n` : ''}Online Invoice & Terms
                     <div className="w-10 h-10 md:w-12 md:h-12 bg-[#1C2541] rounded flex items-center justify-center p-1.5 md:p-2 shrink-0 shadow-sm">
                       <img 
                         src="/web-log-removebg-preview.png" 
-                        alt="Infronix Logo" 
+                        alt="InfronixWeb Logo" 
                         className="w-full h-full object-contain"
                       />
                     </div>
                     <div>
                       <h3 className="text-base md:text-xl font-bold text-slate-950 font-serif tracking-tight leading-none">
-                        INFRONIX WEB AGENCY
+                        INFRONIXWEB DIGITAL MARKETING
                       </h3>
                       <p className="text-[10px] md:text-[11px] text-text-light font-semibold tracking-wider uppercase mt-1">
                         Web Development &middot; SEO &middot; AI Automation
@@ -933,7 +933,7 @@ ${enableUpi && upiId ? `Pay via UPI VPA: ${upiId}\n` : ''}Online Invoice & Terms
                     <span className="font-bold uppercase tracking-wider text-text-light block mb-1 text-[10px]">
                       Issued By
                     </span>
-                    <p className="font-bold text-slate-900">Infronix Web Agency</p>
+                    <p className="font-bold text-slate-900">InfronixWeb Digital Marketing</p>
                     <p className="text-slate-600 mt-0.5">support@infronixweb.in</p>
                     <p className="text-slate-600">Sanand, Ahmedabad, Gujarat, India</p>
                   </div>
@@ -1088,7 +1088,7 @@ ${enableUpi && upiId ? `Pay via UPI VPA: ${upiId}\n` : ''}Online Invoice & Terms
 
                 {/* Footer */}
                 <div className="pt-4 mt-4 border-t border-slate-200 flex justify-between items-center text-[10px] text-text-light">
-                  <div>Infronix Web Agency &middot; Thank you for your business.</div>
+                  <div>InfronixWeb Digital Marketing &middot; Thank you for your business.</div>
                   <div>Page 1 of 1</div>
                 </div>
 
@@ -1152,7 +1152,7 @@ ${enableUpi && upiId ? `Pay via UPI VPA: ${upiId}\n` : ''}Online Invoice & Terms
                 </div>
                 <div>
                   <span className="text-text-light font-label-caps uppercase tracking-wider block text-[10px]">Subject:</span>
-                  <span className="text-primary font-medium">Invoice {invoiceId} — Infronix Web Agency</span>
+                  <span className="text-primary font-medium">Invoice {invoiceId} — InfronixWeb Digital Marketing</span>
                 </div>
               </div>
 
@@ -1164,7 +1164,7 @@ ${enableUpi && upiId ? `Pay via UPI VPA: ${upiId}\n` : ''}Online Invoice & Terms
                   rows={3}
                   value={emailNote}
                   onChange={(e) => setEmailNote(e.target.value)}
-                  placeholder="e.g. Hi, thanks for getting in touch with Infronix. Attached is the initial invoice for our sprint..."
+                  placeholder="e.g. Hi, thanks for getting in touch with InfronixWeb. Attached is the initial invoice for our sprint..."
                   className="w-full bg-surface text-on-surface p-3 text-xs border border-outline focus:outline-none focus:border-primary font-medium"
                 />
               </div>

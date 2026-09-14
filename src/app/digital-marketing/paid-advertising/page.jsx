@@ -28,7 +28,7 @@ import {
 } from '@phosphor-icons/react/dist/ssr';
 
 export const metadata = {
-  title: 'Paid Advertising Agency in Ahmedabad | Google & Meta Ads | Infronix',
+  title: 'Paid Advertising Agency in Ahmedabad | Google & Meta Ads | InfronixWeb',
   description: 'Turn your ad budget into business opportunities. Expert Google Ads, Meta Ads (Facebook & Instagram), YouTube Ads, lead generation funnels, and remarketing.',
   alternates: {
     canonical: 'https://www.infronixweb.in/digital-marketing/paid-advertising'
@@ -230,7 +230,7 @@ const whyChooseUs = [
   },
   {
     title: 'Connected Digital Solutions',
-    desc: 'With Website Development, SEO Optimization, Social Media Marketing, and AI Automation, Infronix can support different parts of your digital marketing journey.'
+    desc: 'With Website Development, SEO Optimization, Social Media Marketing, and AI Automation, InfronixWeb can support different parts of your digital marketing journey.'
   }
 ];
 
@@ -303,7 +303,7 @@ const faqs = [
   },
   {
     question: 'Is the advertising budget included in your service?',
-    answer: 'Advertising spend paid to Google, Meta, or other platforms is separate from Infronix\'s service charges. Your advertising budget and management scope will be discussed before the campaign begins.'
+    answer: 'Advertising spend paid to Google, Meta, or other platforms is separate from InfronixWeb\'s service charges. Your advertising budget and management scope will be discussed before the campaign begins.'
   },
   {
     question: 'Can you guarantee leads or sales?',
@@ -315,7 +315,7 @@ const faqs = [
   },
   {
     question: 'Can you manage our ads along with our website and SEO?',
-    answer: 'Yes. Infronix offers Website Development, SEO Optimization, Social Media Marketing, and AI Automation to support your wider digital marketing requirements.'
+    answer: 'Yes. InfronixWeb offers Website Development, SEO Optimization, Social Media Marketing, and AI Automation to support your wider digital marketing requirements.'
   }
 ];
 
@@ -345,7 +345,7 @@ export default function PaidAdvertisingPage() {
                 Reach the right audience, promote your business, and create meaningful opportunities with strategic paid advertising.
               </p>
               <p className="text-sm sm:text-base md:text-lg text-text-light font-medium leading-relaxed">
-                At Infronix, we help businesses plan, launch, and manage digital advertising campaigns across Google and Meta. From increasing brand visibility to generating customer enquiries, we build campaigns designed around your business goals.
+                At InfronixWeb, we help businesses plan, launch, and manage digital advertising campaigns across Google and Meta. From increasing brand visibility to generating customer enquiries, we build campaigns designed around your business goals.
               </p>
             </div>
 
@@ -384,7 +384,7 @@ export default function PaidAdvertisingPage() {
                   Paid advertising helps your business reach potential customers when they are searching for a solution or discovering new products and services. With the right strategy, creative messaging, and campaign management, digital ads can become a valuable part of your marketing efforts.
                 </p>
                 <p>
-                  At Infronix, we combine audience research, campaign planning, creative content, and performance tracking to help businesses make better use of their advertising budget.
+                  At InfronixWeb, we combine audience research, campaign planning, creative content, and performance tracking to help businesses make better use of their advertising budget.
                 </p>
                 <p>
                   Whether you are launching a new product, promoting a service, or looking to increase customer enquiries, we help you build a paid advertising strategy that fits your business.
@@ -557,12 +557,12 @@ export default function PaidAdvertisingPage() {
           </div>
         </section>
 
-        {/* ═══ 6. WHY INFRONIX? ═══ */}
+        {/* ═══ 6. WHY INFRONIXWEB? ═══ */}
         <section className="w-full py-20 md:py-28 bg-surface border-b border-outline-variant/30">
           <div className="max-w-[1280px] mx-auto px-6 md:px-12">
             <div className="max-w-3xl mb-16">
               <span className="text-xs font-bold tracking-widest uppercase text-primary mb-3 block">
-                The Infronix Advantage
+                The InfronixWeb Advantage
               </span>
               <h2 className="text-3xl sm:text-4xl md:text-5xl font-heading font-bold text-on-surface mb-4">
                 Advertising With a Business-First Mindset.

@@ -2,8 +2,8 @@
 
 const FAQS = [
   {
-    question: "Why choose Infronix for my business website?",
-    answer: "Infronix creates custom, fast-loading, and modern websites designed to turn visitors into real customers. We focus on clean design, effortless customer navigation, and strong Google search visibility to help your business grow and stand out from competitors."
+    question: "Why choose InfronixWeb for my business website?",
+    answer: "InfronixWeb creates custom, fast-loading, and modern websites designed to turn visitors into real customers. We focus on clean design, effortless customer navigation, and strong Google search visibility to help your business grow and stand out from competitors."
   },
   {
     question: "How long does it take to build and launch a website?",
@@ -52,7 +52,7 @@ export default function FAQSection() {
             Web Development &amp; SEO FAQs
           </h2>
           <p className="font-body-md text-xs sm:text-sm md:text-base text-main-text max-w-xl mx-auto mt-2 leading-relaxed font-medium">
-            Everything you need to know about partnering with Infronix Web Agency for your website, SEO, and AI automation needs.
+            Everything you need to know about partnering with InfronixWeb Digital Marketing for your website, SEO, and AI automation needs.
           </p>
         </div>
 

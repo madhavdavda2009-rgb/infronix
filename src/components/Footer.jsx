@@ -13,7 +13,7 @@ export default function Footer() {
           {/* Brand */}
           <div className="sm:col-span-2">
             <Link href="/" className="inline-block mb-4 sm:mb-6">
-              <img src="/dark-web-logo.png" alt="Infronix Web Agency" className="h-8 sm:h-10 md:h-12 w-auto object-contain hover:opacity-90 transition-opacity" />
+              <img src="/dark-web-logo.png" alt="InfronixWeb Digital Marketing" className="h-8 sm:h-10 md:h-12 w-auto object-contain hover:opacity-90 transition-opacity" />
             </Link>
             <p className="text-[#9CA3AF] max-w-sm mb-6 sm:mb-8 leading-relaxed text-sm sm:text-base">
               Ahmedabad&apos;s premium digital agency. We build high-converting websites, execute technical SEO, and implement AI automation.
@@ -24,7 +24,7 @@ export default function Footer() {
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-2.5 px-3.5 py-2 rounded-lg bg-white/5 border border-white/10 hover:border-primary/50 text-slate-200 hover:text-primary transition-all group"
-                aria-label="Follow Infronix Web Agency on Instagram"
+                aria-label="Follow InfronixWeb Digital Marketing on Instagram"
               >
                 <InstagramLogo size={20} weight="fill" className="text-white group-hover:text-primary transition-colors shrink-0" />
                 <span className="text-xs sm:text-sm font-medium">@infronixwebagency2026</span>
@@ -101,7 +101,7 @@ export default function Footer() {
 
         {/* Bottom */}
         <div className="pt-6 sm:pt-8 border-t border-[#1A1E26] flex flex-col sm:flex-row items-center justify-between gap-4 text-xs sm:text-sm">
-          <p className="text-slate-300 font-medium">&copy; {currentYear} Infronix Web Agency. All rights reserved.</p>
+          <p className="text-slate-300 font-medium">&copy; {currentYear} InfronixWeb Digital Marketing. All rights reserved.</p>
           <div className="flex items-center gap-4 sm:gap-6 text-slate-400">
             <Link href="/privacy-policy" className="hover:text-white transition-colors">Privacy Policy</Link>
             <Link href="/terms-and-conditions" className="hover:text-white transition-colors">Terms of Service</Link>

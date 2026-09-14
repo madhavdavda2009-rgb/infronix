@@ -21,7 +21,7 @@ export function generateInvoiceEmailHtml({ client, invoice }) {
     paymentDate = '',
     enableUpi = false,
     upiId = '',
-    upiPayeeName = 'Infronix Web Agency',
+    upiPayeeName = 'InfronixWeb Digital Marketing',
     upiAmount = 0,
     notes = ''
   } = invoice;
@@ -69,7 +69,7 @@ export function generateInvoiceEmailHtml({ client, invoice }) {
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Invoice ${invoiceId} — Infronix Web Agency</title>
+  <title>Invoice ${invoiceId} — InfronixWeb Digital Marketing</title>
 </head>
 <body style="margin: 0; padding: 24px 12px; background-color: #f1f5f9; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; color: #1e293b; -webkit-font-smoothing: antialiased;">
   <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
@@ -85,7 +85,7 @@ export function generateInvoiceEmailHtml({ client, invoice }) {
                 <tr>
                   <td style="vertical-align: top;">
                     <div style="font-size: 26px; font-weight: 700; color: #ffffff; letter-spacing: 0.5px; margin: 0; font-family: 'Georgia', 'Playfair Display', serif;">
-                      INFRONIX
+                      INFRONIXWEB
                     </div>
                     <div style="font-size: 11px; font-weight: 600; color: #E5D4B1; text-transform: uppercase; letter-spacing: 2px; margin-top: 4px;">
                       Web Agency
@@ -133,7 +133,7 @@ export function generateInvoiceEmailHtml({ client, invoice }) {
                       ISSUED BY
                     </div>
                     <div style="font-size: 15px; font-weight: 700; color: #0f172a; margin-bottom: 4px;">
-                      Infronix Web Agency
+                      InfronixWeb Digital Marketing
                     </div>
                     <div style="font-size: 13px; color: #475569; margin-bottom: 4px;">
                       support@infronixweb.in
@@ -273,7 +273,7 @@ export function generateInvoiceEmailHtml({ client, invoice }) {
           <tr>
             <td style="background-color: #1C2541; padding: 20px 28px; text-align: center; color: #94a3b8; font-size: 11px; border-top: 2px solid #E5D4B1;">
               <div style="color: #ffffff; font-weight: 600; font-size: 12px; margin-bottom: 4px;">
-                Thank you for choosing Infronix Web Agency.
+                Thank you for choosing InfronixWeb Digital Marketing.
               </div>
               <div>
                 <a href="https://www.infronixweb.in" style="color: #E5D4B1; text-decoration: none;">www.infronixweb.in</a> &middot; 
@@ -307,7 +307,7 @@ export async function sendInvoiceMail({ client, invoice, customMessage = '' }) {
   const plainTextBody = `
 Hi ${clientName},
 
-Please find your official invoice (${invoiceId}) for ${serviceName} from Infronix Web Agency below.
+Please find your official invoice (${invoiceId}) for ${serviceName} from InfronixWeb Digital Marketing below.
 
 Invoice Details:
 - Invoice ID: ${invoiceId}
@@ -318,12 +318,12 @@ Invoice Details:
 
 ${customMessage ? `\nNote from Agency:\n${customMessage}\n` : ''}
 
-Thank you for choosing Infronix Web Agency.
+Thank you for choosing InfronixWeb Digital Marketing.
 Website: https://www.infronixweb.in
 Support: support@infronixweb.in
   `.trim();
 
-  const subject = `Invoice ${invoiceId} — Infronix Web Agency`;
+  const subject = `Invoice ${invoiceId} — InfronixWeb Digital Marketing`;
 
   return sendOutreachEmail({
     leadId: null,

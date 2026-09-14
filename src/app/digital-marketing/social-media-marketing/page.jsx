@@ -23,7 +23,7 @@ import {
 } from '@phosphor-icons/react/dist/ssr';
 
 export const metadata = {
-  title: 'Social Media Marketing Services | Infronix Web Agency',
+  title: 'Social Media Marketing Services | InfronixWeb Digital Marketing',
   description: 'Build your brand and grow your audience with strategic social media marketing. Instagram, Facebook & LinkedIn management, Reels editing, content planning, and brand awareness.',
   alternates: {
     canonical: 'https://www.infronixweb.in/digital-marketing/social-media-marketing'
@@ -176,7 +176,7 @@ const whyChooseUs = [
   },
   {
     title: 'One Agency. Multiple Solutions.',
-    desc: 'From websites and SEO to social media marketing and AI automation, Infronix brings your digital needs together.'
+    desc: 'From websites and SEO to social media marketing and AI automation, InfronixWeb brings your digital needs together.'
   }
 ];
 
@@ -224,7 +224,7 @@ const faqs = [
   },
   {
     question: 'Can you manage social media along with our website?',
-    answer: 'Yes. Infronix also offers Website Development, SEO Optimization, and AI Automation, allowing us to support multiple parts of your digital presence.'
+    answer: 'Yes. InfronixWeb also offers Website Development, SEO Optimization, and AI Automation, allowing us to support multiple parts of your digital presence.'
   }
 ];
 
@@ -252,7 +252,7 @@ export default function SocialMediaMarketingPage() {
                 Grow Your Audience.
               </h1>
               <p className="text-base sm:text-lg md:text-xl text-main-text font-medium leading-relaxed">
-                Your brand deserves more than just a social media presence. At Infronix, we help businesses build meaningful connections, create engaging content, and grow their digital presence through strategic social media marketing.
+                Your brand deserves more than just a social media presence. At InfronixWeb, we help businesses build meaningful connections, create engaging content, and grow their digital presence through strategic social media marketing.
               </p>
               <p className="text-sm sm:text-base md:text-lg text-text-light font-medium leading-relaxed">
                 From creative content to consistent management, we bring your brand closer to the people who matter most.
@@ -448,12 +448,12 @@ export default function SocialMediaMarketingPage() {
           </div>
         </section>
 
-        {/* ═══ 6. WHY INFRONIX? ═══ */}
+        {/* ═══ 6. WHY INFRONIXWEB? ═══ */}
         <section className="w-full py-20 md:py-28 bg-surface border-b border-outline-variant/30">
           <div className="max-w-[1280px] mx-auto px-6 md:px-12">
             <div className="max-w-3xl mb-16">
               <span className="text-xs font-bold tracking-widest uppercase text-primary mb-3 block">
-                The Infronix Advantage
+                The InfronixWeb Advantage
               </span>
               <h2 className="text-3xl sm:text-4xl md:text-5xl font-heading font-bold text-on-surface mb-4">
                 More Than Content. A Digital Growth Partner.

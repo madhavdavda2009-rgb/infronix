@@ -113,7 +113,7 @@ ${additionalNotes ? additionalNotes.trim() : 'None'}
             'Content-Type': 'application/json'
           },
           body: JSON.stringify({
-            from: 'Infronix <support@infronixweb.in>',
+            from: 'InfronixWeb <support@infronixweb.in>',
             to: 'support@infronixweb.in',
             subject: `New Project Inquiry from ${fullName.trim()}`,
             html: `
@@ -135,16 +135,16 @@ ${additionalNotes ? additionalNotes.trim() : 'None'}
             'Content-Type': 'application/json'
           },
           body: JSON.stringify({
-            from: 'Infronix <support@infronixweb.in>',
+            from: 'InfronixWeb <support@infronixweb.in>',
             to: email.trim().toLowerCase(),
-            subject: `We've received your project request - Infronix`,
+            subject: `We've received your project request - InfronixWeb`,
             html: `
               <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; line-height: 1.6;">
                 <h2>Hello ${firstName},</h2>
-                <p>Thank you for reaching out to Infronix.</p>
+                <p>Thank you for reaching out to InfronixWeb.</p>
                 <p>We've successfully received your project details. Our team will review your requirements for <strong>${projectName}</strong> and get back to you with the next steps.</p>
                 <br />
-                <p>Best regards,<br/><strong>The Infronix Team</strong></p>
+                <p>Best regards,<br/><strong>The InfronixWeb Team</strong></p>
                 <a href="https://infronixweb.in">infronixweb.in</a>
               </div>
             `

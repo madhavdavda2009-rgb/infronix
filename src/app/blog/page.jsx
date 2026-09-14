@@ -2,7 +2,7 @@ import CTASection from '@/components/CTASection';
 import Breadcrumb from '@/components/Breadcrumb';
 
 export const metadata = {
-  title: 'Blog | Web Development & SEO Insights | Infronix',
+  title: 'Blog | Web Development & SEO Insights | InfronixWeb',
   description: 'Read the latest insights on web development, technical SEO, and AI automation for businesses in Ahmedabad and across India.',
   alternates: {
     canonical: 'https://www.infronixweb.in/blog'
@@ -20,7 +20,7 @@ export default function BlogPage() {
             <span className="flex items-center justify-center gap-2 text-xs font-bold tracking-widest uppercase text-primary mb-3 sm:mb-4">
               <span className="w-6 sm:w-8 h-[2px] bg-primary" /> Insights <span className="w-6 sm:w-8 h-[2px] bg-primary" />
             </span>
-            <h1 className="text-2xl sm:text-4xl md:text-5xl font-heading font-bold text-on-surface mb-4 sm:mb-6">Infronix Digital Insights</h1>
+            <h1 className="text-2xl sm:text-4xl md:text-5xl font-heading font-bold text-on-surface mb-4 sm:mb-6">InfronixWeb Digital Insights</h1>
             <p className="text-sm sm:text-base text-main-text max-w-2xl mx-auto leading-relaxed">
               Actionable articles, guides, and practical insights on custom website creation, local Google search growth, and smart business automations.
             </p>

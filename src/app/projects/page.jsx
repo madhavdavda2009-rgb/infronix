@@ -4,7 +4,7 @@ import FAQSection from '@/components/FAQSection';
 import Breadcrumb from '@/components/Breadcrumb';
 
 export const metadata = {
-  title: 'Client Projects & Portfolio | Infronix Web Agency',
+  title: 'Client Projects & Portfolio | InfronixWeb Digital Marketing',
   description: 'View our featured projects. We partner with forward-thinking brands in Ahmedabad and across India to create stunning, high-performance digital experiences.',
   alternates: {
     canonical: 'https://www.infronixweb.in/projects'

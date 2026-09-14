@@ -9,7 +9,7 @@ export default function Preloader() {
   const containerRef = useRef(null);
   const counterRef = useRef(null);
   const progressBarRef = useRef(null);
-  const text1Ref = useRef(null); // INFRONIX
+  const text1Ref = useRef(null); // INFRONIXWEB
   const text2Ref = useRef(null); // INTRODUCING...
   const text3Ref = useRef(null); // LOADING...
 
@@ -145,7 +145,7 @@ export default function Preloader() {
         <div ref={text1Ref} className="mb-6 flex justify-center">
           <img
             src="/dark-web-logo.png"
-            alt="Infronix Logo"
+            alt="InfronixWeb Logo"
             className="h-24 sm:h-32 md:h-40 lg:h-48 w-auto object-contain drop-shadow-lg"
           />
         </div>
@@ -153,7 +153,7 @@ export default function Preloader() {
           ref={text2Ref}
           className="font-label-caps text-xs sm:text-sm text-accent tracking-[0.3em] uppercase font-bold"
         >
-          Introducing the Infronix Web Agency
+          Introducing the InfronixWeb Digital Marketing
         </p>
       </div>
 

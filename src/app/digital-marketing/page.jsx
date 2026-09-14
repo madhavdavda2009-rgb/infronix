@@ -6,7 +6,7 @@ import { ArrowRight, CheckCircle, UsersThree, Target } from '@phosphor-icons/rea
 
 export const metadata = {
   title: 'Digital Marketing Agency in Ahmedabad | Social Media & Paid Ads',
-  description: 'Drive high-ROI growth with Infronix Web Agency. We deliver expert Social Media Marketing, Meta & Google Ads, Reels creation, and targeted performance marketing.',
+  description: 'Drive high-ROI growth with InfronixWeb Digital Marketing. We deliver expert Social Media Marketing, Meta & Google Ads, Reels creation, and targeted performance marketing.',
   alternates: {
     canonical: 'https://www.infronixweb.in/digital-marketing'
   }
@@ -150,9 +150,9 @@ export default function DigitalMarketingPage() {
             </h2>
             <div className="prose max-w-4xl text-main-text space-y-6">
               <p>
-                Random posting and untargeted ads waste your marketing budget. At Infronix Web Agency, our <strong className="text-on-surface">Digital Marketing</strong> services combine attractive social media content with focused ad campaigns to generate real business inquiries.
+                Random posting and untargeted ads waste your marketing budget. At InfronixWeb Digital Marketing, our <strong className="text-on-surface">Digital Marketing</strong> services combine attractive social media content with focused ad campaigns to generate real business inquiries.
               </p>
-              <h3 className="font-bold text-xl text-on-surface mt-8 mb-4">Why Choose Infronix for Digital Marketing?</h3>
+              <h3 className="font-bold text-xl text-on-surface mt-8 mb-4">Why Choose InfronixWeb for Digital Marketing?</h3>
               <ul className="list-disc pl-6 space-y-2">
                 <li><strong className="text-on-surface">Targeted Strategy:</strong> Reach people actively searching for your services on Google and interest your ideal buyers on Instagram and Facebook.</li>
                 <li><strong className="text-on-surface">Eye-Catching Content:</strong> High-quality Reels, graphic posts, and clear messages designed to engage audiences and build trust.</li>

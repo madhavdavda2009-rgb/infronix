@@ -108,8 +108,8 @@ export default function Header() {
           <div className="h-16 sm:h-20 max-w-[1440px] mx-auto px-4 sm:px-6 md:px-12 flex items-center justify-between">
 
             {/* Logo + Brand Title */}
-            <Link href="/" className="flex items-center gap-3 group shrink-0" aria-label="Infronix Home">
-              <img src="/dark-web-logo.png" alt="Infronix Web Agency" className="h-8 sm:h-10 md:h-12 w-auto object-contain" />
+            <Link href="/" className="flex items-center gap-3 group shrink-0" aria-label="InfronixWeb Home">
+              <img src="/dark-web-logo.png" alt="InfronixWeb Digital Marketing" className="h-8 sm:h-10 md:h-12 w-auto object-contain" />
             </Link>
 
             {/* Right side: CTA + Hamburger */}
@@ -163,7 +163,7 @@ export default function Header() {
           >
             {/* Drawer Header */}
             <div className="flex items-center justify-between mb-6 pb-4 border-b border-[#1A1E26]">
-              <img src="/dark-web-logo.png" alt="Infronix Web Agency" className="h-7 sm:h-8 w-auto object-contain" />
+              <img src="/dark-web-logo.png" alt="InfronixWeb Digital Marketing" className="h-7 sm:h-8 w-auto object-contain" />
               <button
                 onClick={() => setMenuOpen(false)}
                 className="text-text-light hover:text-white p-2 rounded-lg transition-colors"

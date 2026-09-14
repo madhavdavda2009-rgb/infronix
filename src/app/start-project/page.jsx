@@ -4,7 +4,7 @@ import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
 import {
   ArrowRight, CheckCircle, WarningCircle, X, Star,
-  Globe, MagnifyingGlass, Robot, PaperPlaneTilt, Phone,
+  Globe, MagnifyingGlass, Robot, Megaphone, PaperPlaneTilt, Phone,
   EnvelopeSimple, WhatsappLogo, Clock
 } from "@phosphor-icons/react";
 import Breadcrumb from '@/components/Breadcrumb';
@@ -21,6 +21,7 @@ export default function StartProjectPage() {
   const [success, setSuccess] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
 
+  const [selectedServices, setSelectedServices] = useState(['Website Development']);
   const [formData, setFormData] = useState({
     fullName: '',
     email: '',
@@ -36,7 +37,7 @@ export default function StartProjectPage() {
   const formRef = useRef(null);
 
   useEffect(() => {
-    if (localStorage.getItem('infronix_project_submitted')) {
+    if (localStorage.getItem('infronixweb_project_submitted')) {
       setSuccess(true);
     }
   }, []);
@@ -47,6 +48,16 @@ export default function StartProjectPage() {
       { opacity: 1, y: 0, duration: 0.8, stagger: 0.1, ease: "power3.out" }
     );
   }, { scope: containerRef });
+
+  const toggleService = (service) => {
+    if (selectedServices.includes(service)) {
+      if (selectedServices.length > 1) {
+        setSelectedServices(selectedServices.filter(s => s !== service));
+      }
+    } else {
+      setSelectedServices([...selectedServices, service]);
+    }
+  };
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -79,7 +90,7 @@ export default function StartProjectPage() {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          selectedServices: ['custom'],
+          selectedServices: selectedServices.length ? selectedServices : ['Website Development'],
           projectName: formData.companyName || formData.fullName,
           hasExistingWebsite: formData.websiteUrl ? 'Yes' : 'No',
           websiteUrl: formData.websiteUrl,
@@ -118,7 +129,7 @@ export default function StartProjectPage() {
           </div>
           <h1 className="font-headline-lg text-2xl sm:text-4xl md:text-5xl text-on-surface font-bold mb-4 sm:mb-6">Quote request received.</h1>
           <p className="font-body-md text-main-text text-sm sm:text-base md:text-lg mb-8 sm:mb-10 max-w-lg mx-auto">
-            Thanks for reaching out to Infronix. We&apos;ve received your project details and will review them before getting back to you within 24 hours.
+            Thanks for reaching out to InfronixWeb. We&apos;ve received your project details and will review them before getting back to you within 24 hours.
           </p>
           <a href="/" className="inline-block bg-primary text-white font-label-caps uppercase tracking-widest px-6 py-3.5 sm:px-8 sm:py-4 hover:bg-primary-dark transition-all border border-primary font-bold shadow-md rounded-lg text-xs sm:text-sm">
             Back to Home
@@ -151,10 +162,53 @@ export default function StartProjectPage() {
             </div>
           )}
 
-          {/* ═══ SECTION 1: YOUR DETAILS ═══ */}
+          {/* ═══ SECTION 1: SERVICES REQUIRED ═══ */}
           <div className="bg-surface-container-lowest border border-outline-variant p-5 sm:p-8 md:p-10 shadow-md rounded-2xl">
             <div className="flex items-center gap-3 mb-6 border-b border-outline-variant pb-4">
               <span className="font-label-caps text-xs text-primary tracking-widest uppercase font-bold">01</span>
+              <h2 className="font-headline-md text-lg sm:text-xl text-on-surface font-bold">Select Services Required</h2>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
+              {[
+                { id: 'Website Development', label: 'Website Development', desc: 'Custom Next.js, Web Apps & E-Commerce', icon: Globe },
+                { id: 'SEO Optimization', label: 'SEO Optimization', desc: 'Google Search & Local Maps Ranking', icon: MagnifyingGlass },
+                { id: 'Digital Marketing', label: 'Digital Marketing & Ads', desc: 'Social Media, Meta & Google Paid Ads', icon: Megaphone },
+                { id: 'AI Automation', label: 'AI Automation', desc: '24/7 Chatbots & WhatsApp Automation', icon: Robot },
+              ].map((svc) => {
+                const Icon = svc.icon;
+                const isSelected = selectedServices.includes(svc.id);
+                return (
+                  <button
+                    key={svc.id}
+                    type="button"
+                    onClick={() => toggleService(svc.id)}
+                    className={`p-4 rounded-xl border text-left flex items-start gap-3.5 transition-all cursor-pointer ${
+                      isSelected
+                        ? 'bg-primary/10 border-primary text-on-surface shadow-sm ring-1 ring-primary'
+                        : 'bg-surface border-outline-variant hover:border-outline text-main-text hover:text-on-surface'
+                    }`}
+                  >
+                    <div className={`w-9 h-9 rounded-lg flex items-center justify-center shrink-0 mt-0.5 ${isSelected ? 'bg-primary text-white' : 'bg-surface-container-lowest text-text-light'}`}>
+                      <Icon size={20} weight="bold" />
+                    </div>
+                    <div className="flex-1">
+                      <div className="font-bold text-sm text-on-surface flex items-center justify-between">
+                        <span>{svc.label}</span>
+                        {isSelected && <CheckCircle size={18} className="text-primary" weight="fill" />}
+                      </div>
+                      <p className="text-xs text-text-light mt-0.5">{svc.desc}</p>
+                    </div>
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* ═══ SECTION 2: YOUR DETAILS ═══ */}
+          <div className="bg-surface-container-lowest border border-outline-variant p-5 sm:p-8 md:p-10 shadow-md rounded-2xl">
+            <div className="flex items-center gap-3 mb-6 border-b border-outline-variant pb-4">
+              <span className="font-label-caps text-xs text-primary tracking-widest uppercase font-bold">02</span>
               <h2 className="font-headline-md text-lg sm:text-xl text-on-surface font-bold">Your Details</h2>
             </div>
 
@@ -178,10 +232,10 @@ export default function StartProjectPage() {
             </div>
           </div>
 
-          {/* ═══ SECTION 2: PROJECT DETAILS ═══ */}
+          {/* ═══ SECTION 3: PROJECT DETAILS ═══ */}
           <div className="bg-surface-container-lowest border border-outline-variant p-5 sm:p-8 md:p-10 shadow-md rounded-2xl">
             <div className="flex items-center gap-3 mb-6 border-b border-outline-variant pb-4">
-              <span className="font-label-caps text-xs text-primary tracking-widest uppercase font-bold">02</span>
+              <span className="font-label-caps text-xs text-primary tracking-widest uppercase font-bold">03</span>
               <h2 className="font-headline-md text-lg sm:text-xl text-on-surface font-bold">Project Details</h2>
             </div>
 

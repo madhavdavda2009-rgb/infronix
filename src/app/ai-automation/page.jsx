@@ -5,7 +5,7 @@ import Link from 'next/link';
 
 export const metadata = {
   title: 'AI & Business Automation Agency in Ahmedabad',
-  description: 'Transform your business with intelligent automations, 24/7 customer chat assistants, automatic lead follow-ups, and time-saving solutions from Infronix Web Agency.',
+  description: 'Transform your business with intelligent automations, 24/7 customer chat assistants, automatic lead follow-ups, and time-saving solutions from InfronixWeb Digital Marketing.',
   alternates: {
     canonical: 'https://www.infronixweb.in/ai-automation'
   }
@@ -52,7 +52,7 @@ export default function AIAutomationPage() {
             <h2 className="text-2xl sm:text-3xl md:text-4xl font-heading font-bold text-on-surface mb-6 sm:mb-8">Smart Automations for Modern Businesses</h2>
             <div className="prose max-w-4xl text-main-text space-y-6">
               <p>
-                Repetitive manual tasks often slow down business growth. At Infronix Web Agency, we set up reliable automated solutions that work around the clock to capture new customer inquiries, answer questions, and keep your business running smoothly.
+                Repetitive manual tasks often slow down business growth. At InfronixWeb Digital Marketing, we set up reliable automated solutions that work around the clock to capture new customer inquiries, answer questions, and keep your business running smoothly.
               </p>
 
               <h3 className="font-bold text-xl text-on-surface mt-8 mb-4">Our Business Automation Solutions</h3>

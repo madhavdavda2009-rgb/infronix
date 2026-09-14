@@ -6,8 +6,8 @@ export default function PrivacyPolicy() {
   return (
     <>
       <SEO
-        title="Privacy Policy | Infronix"
-        description="Comprehensive Privacy Policy for Infronix Web Agency. Understand how we collect, use, store, process, disclose, and protect your personal information."
+        title="Privacy Policy | InfronixWeb"
+        description="Comprehensive Privacy Policy for InfronixWeb Digital Marketing. Understand how we collect, use, store, process, disclose, and protect your personal information."
       />
       <main className="w-full pt-20 sm:pt-28 md:pt-32 pb-16 sm:pb-24 bg-surface text-on-surface" id="main-content">
         <div className="max-w-[900px] mx-auto px-4 sm:px-6 md:px-8">

@@ -98,7 +98,7 @@ export default function ContactSection() {
             <div className="absolute inset-0 bg-gradient-to-tr from-deep-space to-transparent z-10 opacity-80 mix-blend-multiply"></div>
             <img
               src={id6.src || id6}
-              alt="Infronix Web Agency digital strategy, web development, and AI automation consultation in Ahmedabad"
+              alt="InfronixWeb Digital Marketing digital strategy, web development, and AI automation consultation in Ahmedabad"
               className="absolute inset-0 w-full h-full object-cover"
               width="800"
               height="800"
@@ -116,7 +116,7 @@ export default function ContactSection() {
         {/* CTA Form Side */}
         <div id="contact" className="py-8 sm:py-12 lg:py-20 lg:pl-12 flex flex-col justify-center relative z-10">
           <span className="font-label-caps text-xs text-accent tracking-widest uppercase mb-2 block font-bold">Get in Touch</span>
-          <h2 className="font-headline-lg text-2xl sm:text-3xl md:text-4xl text-on-surface font-bold mb-3 sm:mb-4 leading-tight">Ready to Elevate Your Brand with Infronix?</h2>
+          <h2 className="font-headline-lg text-2xl sm:text-3xl md:text-4xl text-on-surface font-bold mb-3 sm:mb-4 leading-tight">Ready to Elevate Your Brand with InfronixWeb?</h2>
           <p className="font-body-md text-xs sm:text-sm md:text-base text-main-text font-medium mb-6 max-w-md leading-relaxed">
             Schedule a complimentary digital strategy session with our technical directors in Ahmedabad to identify growth opportunities for your business.
           </p>

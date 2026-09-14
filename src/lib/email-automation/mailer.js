@@ -181,7 +181,7 @@ export async function sendOutreachEmail({ leadId, recipient, subject, body, draf
 
   const apiToken = process.env.HOSTINGER_API_TOKEN;
   const mailboxIdHint = process.env.HOSTINGER_MAILBOX_ID;
-  const fromName = process.env.HOSTINGER_FROM_NAME || 'Infronix Web Agency';
+  const fromName = process.env.HOSTINGER_FROM_NAME || 'InfronixWeb Digital Marketing';
   const htmlContent = htmlOverride || formatHtmlEmail(body.trim());
   let messageId = null;
 

@@ -256,7 +256,7 @@ export default function ConsultationForm() {
               </button>
 
               <a
-                href="https://wa.me/919106291540?text=Hi%20Infronix!%20I'm%20on%20your%20website%20and%20would%20like%20to%20chat%20about%20a%20project."
+                href="https://wa.me/919106291540?text=Hi%20InfronixWeb!%20I'm%20on%20your%20website%20and%20would%20like%20to%20chat%20about%20a%20project."
                 target="_blank"
                 rel="noopener noreferrer"
                 className="bg-surface-container-lowest hover:bg-surface text-on-surface font-label-caps uppercase tracking-widest px-6 py-3.5 sm:px-8 sm:py-4 transition-all border border-outline-variant flex items-center justify-center gap-2 font-bold shadow-sm cursor-pointer rounded-lg text-xs sm:text-sm w-full sm:w-auto"

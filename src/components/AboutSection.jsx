@@ -17,7 +17,7 @@ export default function AboutSection() {
               viewport={{ once: true, margin: "-100px" }}
               transition={{ duration: 0.8 }}
             >
-              <h2 className="text-xs sm:text-sm font-bold tracking-widest uppercase text-text-light mb-3 sm:mb-6">Why Infronix</h2>
+              <h2 className="text-xs sm:text-sm font-bold tracking-widest uppercase text-text-light mb-3 sm:mb-6">Why InfronixWeb</h2>
               
               <h3 className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-heading font-bold text-on-surface leading-[1.15] sm:leading-[1.1] mb-6 sm:mb-8">
                 Built to solve the <br className="hidden md:block" />
@@ -32,7 +32,7 @@ export default function AboutSection() {
               </p>
               
               <p className="text-sm sm:text-base md:text-lg text-main-text leading-relaxed mb-6 sm:mb-10 font-medium">
-                Infronix was founded to stop this hassle. We bring together modern website design, Google search growth, and smart time-saving automations—giving you everything your business needs under one roof.
+                InfronixWeb was founded to stop this hassle. We bring together modern website design, Google search growth, and smart time-saving automations—giving you everything your business needs under one roof.
               </p>
               
               <Link 
@@ -57,7 +57,7 @@ export default function AboutSection() {
               <div className="absolute inset-0 bg-surface-container-lowest rounded-xl overflow-hidden border border-outline-variant/60 shadow-lg">
                 <img 
                   src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=800&q=80" 
-                  alt="Infronix Team Collaboration" 
+                  alt="InfronixWeb Team Collaboration" 
                   className="w-full h-full object-cover"
                 />
               </div>

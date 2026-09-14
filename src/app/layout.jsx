@@ -22,13 +22,17 @@ export const viewport = {
 export const metadata = {
   metadataBase: new URL('https://www.infronixweb.in/'),
   title: {
-    default: 'Infronix Web Agency | Best Web Development, SEO & AI Automation in Ahmedabad',
-    template: '%s | Infronix Web Agency'
+    default: 'InfronixWeb Digital Marketing | Web Development, SEO, Digital Marketing & AI Automation',
+    template: '%s | InfronixWeb Digital Marketing'
   },
-  description: 'Infronix is a premier web agency in Ahmedabad, Gujarat. We engineer high-converting websites, Next.js web applications, technical SEO, and custom AI automations for modern brands across India.',
+  description: 'InfronixWeb Digital Marketing is Ahmedabad\'s premier agency. We engineer high-converting websites, Next.js web applications, Google #1 SEO, Social Media Marketing, Paid Ads (Meta & Google), and custom AI Automations across India.',
   keywords: [
+    'InfronixWeb Digital Marketing',
     'Best Web Agency in Ahmedabad',
     'Web Development Company in Ahmedabad',
+    'Digital Marketing Agency Ahmedabad',
+    'Social Media Marketing Ahmedabad',
+    'Paid Advertising Agency Google Meta Ads',
     'Best Web Design Agency in Ahmedabad',
     'Website Development Services in Gujarat',
     'Top Digital Agency Ahmedabad',
@@ -38,8 +42,7 @@ export const metadata = {
     'AI Automation Agency India',
     'Next.js Web Development Agency',
     'E-commerce Website Development Ahmedabad',
-    'Full-Stack Web Engineering Agency',
-    'Infronix Web Agency'
+    'Performance Marketing Agency India'
   ],
   alternates: {
     canonical: 'https://www.infronixweb.in/',
@@ -48,23 +51,24 @@ export const metadata = {
     type: 'website',
     locale: 'en_IN',
     url: 'https://www.infronixweb.in/',
-    siteName: 'Infronix Web Agency',
-    title: 'Infronix Web Agency | Best Web Development, SEO & AI Automation in Ahmedabad',
-    description: 'Infronix is a premier web agency in Ahmedabad, Gujarat. We engineer high-converting websites, Next.js web applications, technical SEO, and custom AI automations for modern brands across India.',
+    siteName: 'InfronixWeb Digital Marketing',
+    title: 'InfronixWeb Digital Marketing | Web Development, SEO, Digital Marketing & AI Automation',
+    description: 'Premier Digital Agency in Ahmedabad. We specialize in custom Website Development, Technical SEO, Social Media Marketing, Meta & Google Paid Ads, and AI Automation.',
     images: [
       {
-        url: 'https://www.infronixweb.in/web-logo.png',
+        url: 'https://www.infronixweb.in/og-image.png',
         width: 1200,
         height: 630,
-        alt: 'Infronix Web Agency - Best Web Development & SEO in Ahmedabad',
+        alt: 'InfronixWeb Digital Marketing - Websites, SEO, Digital Marketing & AI Automation',
+        type: 'image/png'
       }
     ],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Infronix Web Agency | Best Web Development, SEO & AI Automation in Ahmedabad',
-    description: 'Infronix is a premier web agency in Ahmedabad, Gujarat. We engineer high-converting websites, Next.js web applications, technical SEO, and custom AI automations for modern brands across India.',
-    images: ['https://www.infronixweb.in/web-logo.png'],
+    title: 'InfronixWeb Digital Marketing | Web Development, SEO, Digital Marketing & AI Automation',
+    description: 'Premier Digital Agency in Ahmedabad. Custom Website Development, Technical SEO, Social Media & Paid Ads, and AI Automation.',
+    images: ['https://www.infronixweb.in/og-image.png'],
   },
   robots: {
     index: true,
@@ -79,10 +83,16 @@ export const metadata = {
   },
   icons: {
     icon: [
-      { url: '/title-logo.png', type: 'image/png' },
+      { url: '/favicon.ico', sizes: 'any' },
+      { url: '/favicon-48x48.png', sizes: '48x48', type: 'image/png' },
+      { url: '/favicon-96x96.png', sizes: '96x96', type: 'image/png' },
+      { url: '/favicon-192x192.png', sizes: '192x192', type: 'image/png' },
+      { url: '/favicon-512x512.png', sizes: '512x512', type: 'image/png' },
     ],
-    shortcut: '/title-logo.png',
-    apple: '/title-logo.png',
+    shortcut: '/favicon.ico',
+    apple: [
+      { url: '/apple-touch-icon.png', sizes: '180x180', type: 'image/png' },
+    ],
   },
 };
 
@@ -122,12 +132,12 @@ export default function RootLayout({ children }) {
                 {
                   "@type": ["LocalBusiness", "ProfessionalService", "Organization"],
                   "@id": "https://www.infronixweb.in/#organization",
-                  "name": "Infronix Web Agency",
-                  "alternateName": "Infronix Digital & Web Development Agency",
+                  "name": "InfronixWeb Digital Marketing",
+                  "alternateName": "InfronixWeb Digital & Web Development Agency",
                   "url": "https://www.infronixweb.in/",
                   "logo": "https://www.infronixweb.in/web-logo.png",
-                  "image": "https://www.infronixweb.in/web-logo.png",
-                  "description": "Infronix is a premier web agency based in Ahmedabad, Gujarat, offering custom web development, technical SEO, and AI workflow automation across India.",
+                  "image": "https://www.infronixweb.in/og-image.png",
+                  "description": "InfronixWeb Digital Marketing is a premier agency based in Ahmedabad, Gujarat, offering custom web development, technical SEO, social media marketing, paid advertising, and AI workflow automation across India.",
                   "telephone": "+91-6355792936",
                   "email": "support@infronixweb.in",
                   "priceRange": "$$",
@@ -185,6 +195,14 @@ export default function RootLayout({ children }) {
                         "@type": "Offer",
                         "itemOffered": {
                           "@type": "Service",
+                          "name": "Digital Marketing & Paid Ads",
+                          "description": "Targeted Social Media Marketing, Meta Ads (Facebook & Instagram), Google Search & Display Ads, and ROI performance campaigns."
+                        }
+                      },
+                      {
+                        "@type": "Offer",
+                        "itemOffered": {
+                          "@type": "Service",
                           "name": "AI Automation & Chatbots",
                           "description": "Intelligent workflow automation, AI assistants, WhatsApp integrations, and automated lead capture."
                         }
@@ -196,7 +214,7 @@ export default function RootLayout({ children }) {
                   "@type": "WebSite",
                   "@id": "https://www.infronixweb.in/#website",
                   "url": "https://www.infronixweb.in/",
-                  "name": "Infronix Web Agency",
+                  "name": "InfronixWeb Digital Marketing",
                   "publisher": {
                     "@id": "https://www.infronixweb.in/#organization"
                   }

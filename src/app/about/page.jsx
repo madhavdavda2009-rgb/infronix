@@ -3,8 +3,8 @@ import CTASection from '@/components/CTASection';
 import Breadcrumb from '@/components/Breadcrumb';
 
 export const metadata = {
-  title: 'About Us | Infronix Web Agency',
-  description: 'Learn about Infronix Web Agency. Based in Sanand, Ahmedabad, we are a collective of engineers dedicated to technical excellence and digital brilliance.',
+  title: 'About Us | InfronixWeb Digital Marketing',
+  description: 'Learn about InfronixWeb Digital Marketing. Based in Sanand, Ahmedabad, we are a collective of engineers dedicated to technical excellence and digital brilliance.',
   alternates: {
     canonical: 'https://www.infronixweb.in/about'
   }
@@ -25,7 +25,7 @@ export default function AboutPage() {
             <h2 className="text-xl sm:text-2xl md:text-3xl font-heading font-bold text-on-surface mb-4 sm:mb-6">Our Roots in Ahmedabad</h2>
             <div className="prose max-w-4xl text-main-text space-y-4 text-sm sm:text-base leading-relaxed">
               <p>
-                Operating out of Sanand, Ahmedabad, Infronix Web Agency partners with forward-thinking businesses across Gujarat and India. While we operate a modern, remote-first workflow to ensure maximum efficiency, our roots in the thriving tech ecosystem of Ahmedabad drive our commitment to quality, innovation, and local business growth.
+                Operating out of Sanand, Ahmedabad, InfronixWeb Digital Marketing partners with forward-thinking businesses across Gujarat and India. While we operate a modern, remote-first workflow to ensure maximum efficiency, our roots in the thriving tech ecosystem of Ahmedabad drive our commitment to quality, innovation, and local business growth.
               </p>
             </div>
           </div>

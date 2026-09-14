@@ -1,10 +1,10 @@
-# Infronix Web Agency
+# InfronixWeb Digital Marketing
 
-Welcome to the official repository for **Infronix**, a premium digital web agency. We specialize in crafting state-of-the-art, high-performance web applications with a focus on modern aesthetics, security, and scalability.
+Welcome to the official repository for **InfronixWeb**, a premium digital web agency. We specialize in crafting state-of-the-art, high-performance web applications with a focus on modern aesthetics, security, and scalability.
 
 ## Our Expertise
 
-At Infronix, we don't just build websites; we engineer digital experiences. Our core capabilities include:
+At InfronixWeb, we don't just build websites; we engineer digital experiences. Our core capabilities include:
 
 - **Custom Web Development:** Building scalable, secure, and lightning-fast web applications tailored to our clients' needs.
 - **UI/UX Design:** Delivering premium, modern aesthetics with consistent typography, smooth micro-animations, and mobile-first responsive layouts.
@@ -22,7 +22,7 @@ This project is built using modern web technologies to ensure a robust and flexi
 
 ## Development Setup
 
-To run the Infronix platform locally:
+To run the InfronixWeb platform locally:
 
 1. Clone the repository:
    ```bash

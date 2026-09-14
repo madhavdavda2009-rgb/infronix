@@ -5,7 +5,7 @@ import Link from 'next/link';
 
 export const metadata = {
   title: 'SEO Agency & Technical SEO Services in Ahmedabad',
-  description: 'Infronix Web Agency provides expert Technical SEO, Local SEO, and performance optimization services to help businesses in Ahmedabad and India rank higher organically.',
+  description: 'InfronixWeb Digital Marketing provides expert Technical SEO, Local SEO, and performance optimization services to help businesses in Ahmedabad and India rank higher organically.',
   alternates: {
     canonical: 'https://www.infronixweb.in/seo'
   }

@@ -48,7 +48,7 @@ export default function AdminLogin() {
 
   return (
     <>
-      <SEO title="Admin Login" description="Secure Administrator Authentication Portal for Infronix Web Agency." />
+      <SEO title="Admin Login" description="Secure Administrator Authentication Portal for InfronixWeb Digital Marketing." />
       <main className="min-h-screen w-full bg-surface flex items-center justify-center px-margin-mobile py-24 relative overflow-hidden">
         {/* Subtle background glow */}
         <div className="absolute inset-0 bg-gradient-to-tr from-surface via-surface/90 to-surface/60"></div>
@@ -57,7 +57,7 @@ export default function AdminLogin() {
         <div className="relative z-10 w-full max-w-md bg-surface-container-lowest p-8 md:p-10 border border-primary/40 shadow-2xl">
           <div className="text-center mb-8 border-b border-outline-variant/60 pb-6">
             <div className="flex justify-center mb-6">
-              <img src="/light-web-logo.png" alt="Infronix Icon" className="h-10 md:h-12 w-auto object-contain" />
+              <img src="/light-web-logo.png" alt="InfronixWeb Icon" className="h-10 md:h-12 w-auto object-contain" />
             </div>
             <span className="font-label-caps text-xs text-primary uppercase tracking-widest block mb-2 font-bold">Restricted Portal</span>
             <h1 className="font-headline-lg text-2xl md:text-3xl text-on-surface font-bold">Admin Portal</h1>
@@ -130,7 +130,7 @@ export default function AdminLogin() {
           </form>
 
           <div className="mt-8 text-center text-xs text-text-light font-semibold">
-            <span>Infronix Admin Panel</span>
+            <span>InfronixWeb Admin Panel</span>
           </div>
         </div>
       </main>

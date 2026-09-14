@@ -6,8 +6,8 @@ export default function TermsAndConditions() {
   return (
     <>
       <SEO
-        title="Terms and Conditions | Infronix"
-        description="Comprehensive Terms and Conditions governing the use of Infronix Web Agency services, web development, SEO, AI automation, and digital solutions."
+        title="Terms and Conditions | InfronixWeb"
+        description="Comprehensive Terms and Conditions governing the use of InfronixWeb Digital Marketing services, web development, SEO, AI automation, and digital solutions."
       />
       <main className="w-full pt-20 sm:pt-28 md:pt-32 pb-16 sm:pb-24 bg-surface text-on-surface" id="main-content">
         <div className="max-w-[900px] mx-auto px-4 sm:px-6 md:px-8">

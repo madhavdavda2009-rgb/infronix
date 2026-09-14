@@ -1,5 +1,5 @@
 /**
- * Infronix Cold Email Generation Engine
+ * InfronixWeb Cold Email Generation Engine
  * Produces hyper-personalized, concise, human, non-spam cold outreach emails.
  * Avoids fabricated claims, generic fluff, and exaggerated guarantees.
  */
@@ -7,7 +7,7 @@
 const SENDER_SIGNATURE = `Best regards,
 
 Madhav Davda
-Founder & Technical Director | Infronix Web Agency
+Founder & Technical Director | InfronixWeb Digital Marketing
 https://www.infronixweb.in/
 contact@infronixweb.in`;
 
@@ -196,7 +196,7 @@ export function generatePersonalizedEmail(lead, options = {}) {
     '',
     obsSentence,
     '',
-    `${valueProp} At Infronix Web Agency, we partner with growing businesses to engineer modern digital platforms and automated systems that convert visitors into revenue.`,
+    `${valueProp} At InfronixWeb Digital Marketing, we partner with growing businesses to engineer modern digital platforms and automated systems that convert visitors into revenue.`,
     '',
     cta,
     '',

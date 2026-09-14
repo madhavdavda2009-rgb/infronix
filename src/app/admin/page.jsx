@@ -250,12 +250,12 @@ export default function AdminDashboard() {
       <>
         <SEO title="Admin Portal Authentication" description="Restricted administrator portal." />
         <div className="min-h-screen bg-surface flex flex-col items-center justify-center p-6 text-center">
-          <img src="/title-logo.png" alt="Infronix Icon" className="h-10 w-10 mb-4 animate-pulse opacity-80" />
+          <img src="/title-logo.png" alt="InfronixWeb Icon" className="h-10 w-10 mb-4 animate-pulse opacity-80" />
           <span className="font-label-caps text-xs text-primary uppercase tracking-widest block font-bold">
             Verifying Admin Session...
           </span>
           <p className="font-body-md text-xs text-text-light mt-1 font-medium">
-            Restricted access. Infronix Agency Portal.
+            Restricted access. InfronixWeb Agency Portal.
           </p>
         </div>
       </>
@@ -264,15 +264,15 @@ export default function AdminDashboard() {
 
   return (
     <>
-      <SEO title="Admin Dashboard" description="Infronix Web Agency Client Consultations Management Dashboard." />
+      <SEO title="Admin Dashboard" description="InfronixWeb Digital Marketing Client Consultations Management Dashboard." />
       <div className="min-h-screen bg-surface text-surface flex flex-col pt-24 pb-16">
 
         {/* Dashboard Header */}
         <header className="border-b border-outline-variant/30 bg-surface/90 backdrop-blur-md py-6 mb-8">
           <div className="max-w-[1280px] mx-auto px-margin-mobile md:px-margin-desktop flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
             <div className="flex flex-col gap-2">
-              <img src="/light-web-logo.png" alt="Infronix Web Agency" className="h-8 w-auto object-contain self-start mb-2" />
-              <span className="font-label-caps text-xs text-primary uppercase tracking-widest block font-bold">Infronix Portal</span>
+              <img src="/light-web-logo.png" alt="InfronixWeb Digital Marketing" className="h-8 w-auto object-contain self-start mb-2" />
+              <span className="font-label-caps text-xs text-primary uppercase tracking-widest block font-bold">InfronixWeb Portal</span>
               <h1 className="font-headline-lg text-2xl md:text-3xl text-on-surface font-bold mt-1">
                 {activeTab === 'consultations' ? 'Client Consultations' : 'Email Automation Studio'}
               </h1>

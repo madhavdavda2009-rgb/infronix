@@ -5,7 +5,7 @@ import Link from 'next/link';
 
 export const metadata = {
   title: 'Custom Web Development Agency in Ahmedabad',
-  description: 'Infronix Web Agency provides premium, responsive, and high-performance custom website development services for modern businesses in Ahmedabad, Gujarat, and across India.',
+  description: 'InfronixWeb Digital Marketing provides premium, responsive, and high-performance custom website development services for modern businesses in Ahmedabad, Gujarat, and across India.',
   alternates: {
     canonical: 'https://www.infronixweb.in/web-development'
   }
@@ -53,7 +53,7 @@ export default function WebDevelopmentPage() {
             <h2 className="text-2xl sm:text-3xl md:text-4xl font-heading font-bold text-on-surface mb-6 sm:mb-8">Custom Websites Built for Business Growth</h2>
             <div className="prose max-w-4xl text-main-text space-y-6">
               <p>
-                In today&apos;s digital-first economy, a generic template is no longer enough. Your website is the core of your brand&apos;s digital identity. At Infronix Web Agency, we specialize in <strong className="text-on-surface">custom website development</strong> that combines clean design with fast loading and reliable performance.
+                In today&apos;s digital-first economy, a generic template is no longer enough. Your website is the core of your brand&apos;s digital identity. At InfronixWeb Digital Marketing, we specialize in <strong className="text-on-surface">custom website development</strong> that combines clean design with fast loading and reliable performance.
               </p>
               <h3 className="font-bold text-xl text-on-surface mt-8 mb-4">Why Choose a Custom Website?</h3>
               <p>
