@@ -255,9 +255,9 @@ ${enableUpi && upiId ? `Pay via UPI VPA: ${upiId}\n` : ''}Online Invoice & Terms
   const getStatusBadge = (status) => {
     switch (status) {
       case 'PAID':
-        return 'bg-cyan-50 text-violet-700 border-cyan-300';
+        return 'bg-emerald-50 text-emerald-700 border-emerald-300';
       case 'PARTIALLY PAID':
-        return 'bg-blue-50 text-blue-700 border-blue-300';
+        return 'bg-sky-50 text-sky-700 border-sky-300';
       case 'PENDING':
       default:
         return 'bg-amber-50 text-amber-800 border-amber-300';
@@ -269,7 +269,7 @@ ${enableUpi && upiId ? `Pay via UPI VPA: ${upiId}\n` : ''}Online Invoice & Terms
       {/* 
         A4 PRINT / PDF CONTAINER (Targeted when triggering PDF save)
       */}
-      <div className="hidden print:block fixed inset-0 z-[99999] bg-surface-container-lowest text-slate-900 p-0 m-0 print-invoice-root">
+      <div className="hidden print:block fixed inset-0 z-[99999] bg-white text-slate-900 p-0 m-0 print-invoice-root">
         <style dangerouslySetInnerHTML={{ __html: `
           @media print {
             @page {
@@ -292,14 +292,13 @@ ${enableUpi && upiId ? `Pay via UPI VPA: ${upiId}\n` : ''}Online Invoice & Terms
           }
         `}} />
 
-        <div className="w-full max-w-[21cm] mx-auto bg-surface-container-lowest text-slate-900 font-sans leading-normal">
-          
+        <div className="w-full max-w-[21cm] mx-auto bg-white text-slate-900 font-sans leading-normal">
           {/* Header */}
           <div className="flex justify-between items-start pb-6 border-b-2 border-slate-900">
             <div className="flex items-start gap-4">
-              <div className="w-14 h-14 bg-[#1C2541] flex items-center justify-center p-2 rounded shrink-0">
+              <div className="w-14 h-14 bg-slate-100 flex items-center justify-center p-2 rounded shrink-0 border border-slate-200">
                 <img 
-                  src="/web-log-removebg-preview.png" 
+                  src="/light-web-logo.png" 
                   alt="InfronixWeb" 
                   className="w-full h-full object-contain"
                 />
@@ -308,7 +307,7 @@ ${enableUpi && upiId ? `Pay via UPI VPA: ${upiId}\n` : ''}Online Invoice & Terms
                 <h1 className="text-2xl font-bold text-slate-900 tracking-tight font-serif">
                   INFRONIXWEB DIGITAL MARKETING
                 </h1>
-                <p className="text-xs text-text-light font-semibold tracking-wider uppercase mt-0.5">
+                <p className="text-xs text-slate-500 font-semibold tracking-wider uppercase mt-0.5">
                   Web Development &middot; SEO &middot; AI Automation
                 </p>
                 <p className="text-xs text-slate-600 mt-1">
@@ -318,7 +317,7 @@ ${enableUpi && upiId ? `Pay via UPI VPA: ${upiId}\n` : ''}Online Invoice & Terms
             </div>
 
             <div className="text-right">
-              <h2 className="text-2xl font-bold uppercase tracking-widest text-[#1C2541] font-serif">
+              <h2 className="text-2xl font-bold uppercase tracking-widest text-slate-900 font-serif">
                 INVOICE
               </h2>
               <p className="text-sm font-mono font-bold text-slate-900 mt-0.5">{invoiceId}</p>
@@ -334,7 +333,7 @@ ${enableUpi && upiId ? `Pay via UPI VPA: ${upiId}\n` : ''}Online Invoice & Terms
           <div className="grid grid-cols-3 gap-6 py-6 border-b border-slate-200 text-xs">
             {/* Bill To */}
             <div>
-              <span className="font-bold uppercase tracking-wider text-text-light block mb-1 text-[10px]">
+              <span className="font-bold uppercase tracking-wider text-slate-500 block mb-1 text-[10px]">
                 Billed To
               </span>
               <p className="font-bold text-sm text-slate-900">{client?.firstName} {client?.lastName}</p>
@@ -345,7 +344,7 @@ ${enableUpi && upiId ? `Pay via UPI VPA: ${upiId}\n` : ''}Online Invoice & Terms
 
             {/* Issued By */}
             <div>
-              <span className="font-bold uppercase tracking-wider text-text-light block mb-1 text-[10px]">
+              <span className="font-bold uppercase tracking-wider text-slate-500 block mb-1 text-[10px]">
                 Issued By
               </span>
               <p className="font-bold text-sm text-slate-900">InfronixWeb Digital Marketing</p>
@@ -357,16 +356,16 @@ ${enableUpi && upiId ? `Pay via UPI VPA: ${upiId}\n` : ''}Online Invoice & Terms
             {/* Dates & Reference */}
             <div className="bg-slate-50 p-3 border border-slate-200 rounded space-y-1">
               <div className="flex justify-between">
-                <span className="text-text-light font-semibold">Issue Date:</span>
+                <span className="text-slate-500 font-semibold">Issue Date:</span>
                 <span className="font-medium text-slate-800">{issueDate}</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-text-light font-semibold">Due Date:</span>
+                <span className="text-slate-500 font-semibold">Due Date:</span>
                 <span className="font-medium text-slate-800">{dueDate}</span>
               </div>
               {client?.service && (
                 <div className="flex justify-between border-t border-slate-200 pt-1 mt-1">
-                  <span className="text-text-light font-semibold">Service:</span>
+                  <span className="text-slate-500 font-semibold">Service:</span>
                   <span className="font-semibold text-slate-900 truncate max-w-[120px]">{client.service}</span>
                 </div>
               )}
@@ -377,7 +376,7 @@ ${enableUpi && upiId ? `Pay via UPI VPA: ${upiId}\n` : ''}Online Invoice & Terms
           <div className="py-6">
             <table className="w-full text-left border-collapse">
               <thead>
-                <tr className="bg-[#1C2541] text-on-surface text-[11px] uppercase tracking-wider font-bold">
+                <tr className="bg-slate-900 text-white text-[11px] uppercase tracking-wider font-bold">
                   <th className="py-2.5 px-3 w-1/2">Description</th>
                   <th className="py-2.5 px-3 text-center w-16">Qty</th>
                   <th className="py-2.5 px-3 text-right w-28">Rate (₹)</th>
@@ -386,7 +385,7 @@ ${enableUpi && upiId ? `Pay via UPI VPA: ${upiId}\n` : ''}Online Invoice & Terms
               </thead>
               <tbody className="text-xs divide-y divide-slate-200">
                 {items.map((item, idx) => (
-                  <tr key={idx} className={idx % 2 === 0 ? 'bg-surface-container-lowest' : 'bg-slate-50/50'}>
+                  <tr key={idx} className={idx % 2 === 0 ? 'bg-white' : 'bg-slate-50/50'}>
                     <td className="py-3 px-3 font-medium text-slate-800">{item.description || 'Deliverable'}</td>
                     <td className="py-3 px-3 text-center text-slate-600">{item.qty || 1}</td>
                     <td className="py-3 px-3 text-right font-mono text-slate-700">
@@ -405,7 +404,7 @@ ${enableUpi && upiId ? `Pay via UPI VPA: ${upiId}\n` : ''}Online Invoice & Terms
           <div className="grid grid-cols-2 gap-8 pt-2 pb-6 border-b border-slate-200">
             {/* Payment Details & UPI QR Code */}
             <div className="text-xs space-y-2">
-              <span className="font-bold uppercase tracking-wider text-text-light block text-[10px]">
+              <span className="font-bold uppercase tracking-wider text-slate-500 block text-[10px]">
                 Payment Instructions
               </span>
               <div className="bg-slate-50 p-3 border border-slate-200 rounded space-y-1.5">
@@ -413,7 +412,7 @@ ${enableUpi && upiId ? `Pay via UPI VPA: ${upiId}\n` : ''}Online Invoice & Terms
                 {paymentMethod && <p className="text-slate-600"><span className="font-semibold">Method:</span> {paymentMethod}</p>}
                 {transactionId && <p className="text-slate-600"><span className="font-semibold">Transaction ID:</span> {transactionId}</p>}
                 {paymentDate && <p className="text-slate-600"><span className="font-semibold">Payment Date:</span> {paymentDate}</p>}
-                <p className="text-text-light text-[11px] pt-1 border-t border-slate-200">
+                <p className="text-slate-500 text-[11px] pt-1 border-t border-slate-200">
                   {clientNotes}
                 </p>
               </div>
@@ -421,7 +420,7 @@ ${enableUpi && upiId ? `Pay via UPI VPA: ${upiId}\n` : ''}Online Invoice & Terms
               {/* Printable High-Resolution UPI QR Code */}
               {enableUpi && upiId && (
                 <div className="bg-slate-50 p-3 border border-slate-200 rounded flex items-center gap-3.5 mt-2">
-                  <div className="bg-surface-container-lowest p-1.5 border border-slate-200 rounded shrink-0">
+                  <div className="bg-white p-1.5 border border-slate-200 rounded shrink-0">
                     <QRCodeSVG
                       value={upiString}
                       size={74}
@@ -431,10 +430,10 @@ ${enableUpi && upiId ? `Pay via UPI VPA: ${upiId}\n` : ''}Online Invoice & Terms
                   </div>
                   <div className="text-[10px] text-slate-700 space-y-0.5 leading-tight">
                     <p className="font-bold text-slate-900 text-[11px]">Instant UPI QR Payment</p>
-                    <p className="font-mono text-[10px] text-slate-800 font-bold bg-surface-container-lowest px-1.5 py-0.5 rounded border border-slate-200 inline-block mt-0.5">
+                    <p className="font-mono text-[10px] text-slate-800 font-bold bg-white px-1.5 py-0.5 rounded border border-slate-200 inline-block mt-0.5">
                       {upiId}
                     </p>
-                    <p className="text-text-light text-[9px] pt-0.5">
+                    <p className="text-slate-500 text-[9px] pt-0.5">
                       Scan with GPay, PhonePe, Paytm or any UPI App
                     </p>
                     {upiPayAmount > 0 && (
@@ -468,7 +467,7 @@ ${enableUpi && upiId ? `Pay via UPI VPA: ${upiId}\n` : ''}Online Invoice & Terms
                 </span>
               </div>
               {paidVal > 0 && (
-                <div className="flex justify-between py-1 text-violet-700 font-semibold">
+                <div className="flex justify-between py-1 text-emerald-700 font-semibold">
                   <span>Amount Paid:</span>
                   <span className="font-mono">- ₹{paidVal.toLocaleString('en-IN', { minimumFractionDigits: 2 })}</span>
                 </div>
@@ -483,7 +482,7 @@ ${enableUpi && upiId ? `Pay via UPI VPA: ${upiId}\n` : ''}Online Invoice & Terms
           </div>
 
           {/* Terms & Conditions */}
-          <div className="pt-4 text-[10px] text-text-light leading-relaxed space-y-1">
+          <div className="pt-4 text-[10px] text-slate-500 leading-relaxed space-y-1">
             <h4 className="font-bold uppercase tracking-wider text-slate-800 text-[11px] mb-1">
               Terms & Conditions
             </h4>
@@ -493,11 +492,10 @@ ${enableUpi && upiId ? `Pay via UPI VPA: ${upiId}\n` : ''}Online Invoice & Terms
           </div>
 
           {/* Footer */}
-          <div className="pt-6 mt-6 border-t border-slate-200 flex justify-between items-center text-[10px] text-text-light">
+          <div className="pt-6 mt-6 border-t border-slate-200 flex justify-between items-center text-[10px] text-slate-500">
             <div>InfronixWeb Digital Marketing &middot; Thank you for your business.</div>
             <div>Page 1 of 1</div>
           </div>
-
         </div>
       </div>
 
@@ -505,51 +503,50 @@ ${enableUpi && upiId ? `Pay via UPI VPA: ${upiId}\n` : ''}Online Invoice & Terms
         INTERACTIVE ADMIN MODAL STUDIO (Screen view with independent smooth scrolling panes)
       */}
       <div 
-        className="fixed inset-0 z-50 bg-black/90 backdrop-blur-md flex items-center justify-center p-0 md:p-6 print:hidden animate-fadeIn overflow-y-auto"
+        className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-0 md:p-6 print:hidden animate-fadeIn overflow-y-auto"
         data-lenis-prevent="true"
         onWheel={(e) => e.stopPropagation()}
       >
         <div 
-          className="bg-surface-container-lowest border-0 md:border border-primary/40 w-full max-w-7xl h-full md:h-[92vh] md:max-h-[92vh] shadow-2xl flex flex-col overflow-hidden my-auto rounded-none"
+          className="bg-white border border-slate-200 w-full max-w-7xl h-full md:h-[92vh] md:max-h-[92vh] shadow-2xl flex flex-col overflow-hidden my-auto rounded-none md:rounded-2xl"
           data-lenis-prevent="true"
         >
-          
           {/* Top Bar Header */}
-          <div className="bg-surface/95 border-b border-primary/20 px-3 md:px-6 py-2.5 md:py-4 flex flex-wrap justify-between items-center gap-2 md:gap-3 shrink-0 z-10">
-            <div className="flex items-center gap-2 md:gap-3 min-w-0">
-              <div className="w-8 h-8 md:w-9 md:h-9 bg-surface border border-primary/30 rounded flex items-center justify-center p-1 shrink-0">
-                <Receipt className="text-primary text-lg md:text-xl" weight="bold" />
+          <div className="bg-white border-b border-slate-200 px-4 md:px-6 py-3.5 flex flex-wrap justify-between items-center gap-3 shrink-0 z-10">
+            <div className="flex items-center gap-3 min-w-0">
+              <div className="w-9 h-9 bg-violet-50 border border-violet-200 rounded-xl flex items-center justify-center p-1.5 shrink-0 text-violet-700">
+                <Receipt className="text-xl" weight="bold" />
               </div>
               <div className="min-w-0">
-                <span className="font-label-caps text-[10px] md:text-xs text-primary uppercase tracking-widest block font-bold">
+                <span className="text-[11px] text-violet-600 uppercase tracking-widest block font-bold">
                   Invoice Studio
                 </span>
-                <h2 className="font-headline-lg text-sm md:text-lg text-on-surface font-bold truncate">
+                <h2 className="text-sm md:text-base text-slate-900 font-bold truncate font-outfit">
                   {client?.firstName} {client?.lastName} {client?.company ? `(${client.company})` : ''}
                 </h2>
               </div>
             </div>
 
             {/* Quick Actions */}
-            <div className="flex items-center gap-1.5 md:gap-2.5 flex-wrap">
+            <div className="flex items-center gap-2 flex-wrap">
               <button
                 type="button"
                 onClick={handleCopySummary}
-                className="p-2 md:px-3.5 md:py-2 bg-surface hover:bg-outline-variant border border-outline text-main-text text-xs font-label-caps uppercase tracking-wider font-bold transition-all flex items-center gap-2 cursor-pointer"
+                className="px-3.5 py-2 bg-white hover:bg-slate-50 border border-slate-300 text-slate-700 text-xs uppercase tracking-wider font-bold rounded-xl shadow-xs transition-colors flex items-center gap-2 cursor-pointer"
                 title="Copy Invoice text summary for WhatsApp or message"
               >
                 <Copy size={15} />
-                <span className="hidden md:inline">{copiedNotification ? 'Copied!' : 'Copy Summary'}</span>
+                <span className="hidden sm:inline">{copiedNotification ? 'Copied!' : 'Copy Summary'}</span>
               </button>
 
               <button
                 type="button"
                 onClick={() => setIsEmailModalOpen(true)}
-                className="p-2 md:px-4 md:py-2 bg-surface hover:bg-outline-variant border border-primary/50 hover:border-primary text-primary text-xs font-label-caps uppercase tracking-widest font-bold transition-all flex items-center gap-2 cursor-pointer shadow-sm"
+                className="px-4 py-2 bg-white hover:bg-slate-50 border border-violet-300 hover:border-violet-400 text-violet-700 text-xs uppercase tracking-wider font-bold rounded-xl shadow-xs transition-colors flex items-center gap-2 cursor-pointer"
                 title="Email Invoice"
               >
                 <PaperPlaneTilt size={15} weight="bold" />
-                <span className="hidden md:inline">Email Invoice</span>
+                <span className="hidden sm:inline">Email Invoice</span>
               </button>
 
               {/* Download PDF Option */}
@@ -557,81 +554,83 @@ ${enableUpi && upiId ? `Pay via UPI VPA: ${upiId}\n` : ''}Online Invoice & Terms
                 type="button"
                 onClick={handleDownloadPdf}
                 disabled={generatingPdf}
-                className={`p-2 md:px-4 md:py-2 font-bold text-xs font-label-caps uppercase tracking-widest transition-all flex items-center gap-2 shadow-md ${generatingPdf ? 'bg-slate-600 text-main-text cursor-wait' : 'bg-primary hover:bg-primary-dark text-white cursor-pointer'}`}
+                className={`px-4 py-2 font-bold text-xs uppercase tracking-wider rounded-xl transition-all flex items-center gap-2 shadow-xs ${
+                  generatingPdf 
+                    ? 'bg-slate-200 text-slate-500 cursor-wait' 
+                    : 'bg-violet-600 hover:bg-violet-700 text-white cursor-pointer'
+                }`}
                 title="Download or Save Invoice as PDF"
               >
                 <FilePdf size={16} weight="bold" />
-                <span className="hidden md:inline">{generatingPdf ? 'Generating...' : 'Download PDF'}</span>
+                <span className="hidden sm:inline">{generatingPdf ? 'Generating...' : 'Download PDF'}</span>
               </button>
 
               <button 
                 type="button"
                 onClick={onClose} 
-                className="text-text-light hover:text-on-surface p-2 transition-colors cursor-pointer ml-0.5 md:ml-1"
+                className="text-slate-400 hover:text-slate-700 p-2 hover:bg-slate-100 rounded-xl transition-colors cursor-pointer ml-1"
                 title="Close"
               >
-                <X size={20} weight="bold" className="md:w-[22px] md:h-[22px]" />
+                <X size={20} weight="bold" />
               </button>
             </div>
           </div>
 
-          {/* Main Dual-Pane Studio Body (Scrollable independently) */}
+          {/* Main Dual-Pane Studio Body */}
           <div 
             className="flex-1 min-h-0 h-[calc(100vh-56px)] md:h-[calc(92vh-70px)] grid grid-cols-1 lg:grid-cols-12 overflow-y-auto lg:overflow-hidden"
             data-lenis-prevent="true"
           >
-            
             {/* LEFT PANE: Invoice Configurator (5 cols) */}
             <div 
-              className="lg:col-span-5 border-r border-outline-variant/80 p-3 md:p-5 overflow-y-auto h-auto lg:h-full lg:max-h-[calc(92vh-70px)] space-y-4 md:space-y-5 bg-surface-container-lowest text-xs font-body-md text-main-text overscroll-contain"
+              className="lg:col-span-5 border-r border-slate-200 p-4 md:p-5 overflow-y-auto h-auto lg:h-full lg:max-h-[calc(92vh-70px)] space-y-4 md:space-y-5 bg-slate-50 text-xs text-slate-800 overscroll-contain"
               data-lenis-prevent="true"
               onWheel={(e) => e.stopPropagation()}
             >
-              
               {/* Metadata row */}
-              <div className="bg-surface/80 p-3 md:p-4 border border-outline-variant space-y-3">
-                <div className="flex items-center justify-between border-b border-outline-variant pb-2">
-                  <h4 className="font-label-caps text-xs text-primary uppercase tracking-wider font-bold">
+              <div className="bg-white p-4 rounded-xl border border-slate-200/80 shadow-xs space-y-3">
+                <div className="flex items-center justify-between border-b border-slate-100 pb-2">
+                  <h4 className="text-xs text-violet-700 uppercase tracking-wider font-bold">
                     Invoice Metadata
                   </h4>
-                  <span className="font-mono text-[11px] text-text-light">{invoiceId}</span>
+                  <span className="font-mono text-[11px] text-slate-500">{invoiceId}</span>
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   <div>
-                    <label className="font-label-caps text-[10px] text-text-light uppercase tracking-wider block mb-1">
+                    <label className="text-[10px] text-slate-500 uppercase tracking-wider block mb-1 font-semibold">
                       Issue Date
                     </label>
                     <input
                       type="text"
                       value={issueDate}
                       onChange={(e) => setIssueDate(e.target.value)}
-                      className="w-full bg-surface-container-lowest text-on-surface p-2 text-xs border border-outline focus:outline-none focus:border-primary font-medium"
+                      className="w-full bg-white text-slate-900 p-2 text-xs rounded-lg border border-slate-300 focus:outline-none focus:border-violet-600 focus:ring-2 focus:ring-violet-500/20 font-medium"
                     />
                   </div>
 
                   <div>
-                    <label className="font-label-caps text-[10px] text-text-light uppercase tracking-wider block mb-1">
+                    <label className="text-[10px] text-slate-500 uppercase tracking-wider block mb-1 font-semibold">
                       Due Date
                     </label>
                     <input
                       type="text"
                       value={dueDate}
                       onChange={(e) => setDueDate(e.target.value)}
-                      className="w-full bg-surface-container-lowest text-on-surface p-2 text-xs border border-outline focus:outline-none focus:border-primary font-medium"
+                      className="w-full bg-white text-slate-900 p-2 text-xs rounded-lg border border-slate-300 focus:outline-none focus:border-violet-600 focus:ring-2 focus:ring-violet-500/20 font-medium"
                     />
                   </div>
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
                   <div>
-                    <label className="font-label-caps text-[10px] text-text-light uppercase tracking-wider block mb-1">
+                    <label className="text-[10px] text-slate-500 uppercase tracking-wider block mb-1 font-semibold">
                       Payment Status
                     </label>
                     <select
                       value={manualStatus}
                       onChange={(e) => setManualStatus(e.target.value)}
-                      className="w-full bg-surface-container-lowest text-on-surface p-2 text-xs border border-outline focus:outline-none focus:border-primary font-bold cursor-pointer"
+                      className="w-full bg-white text-slate-900 p-2 text-xs rounded-lg border border-slate-300 focus:outline-none focus:border-violet-600 focus:ring-2 focus:ring-violet-500/20 font-bold cursor-pointer"
                     >
                       <option value="AUTO">Auto ({derivedStatus})</option>
                       <option value="PENDING">PENDING</option>
@@ -641,14 +640,14 @@ ${enableUpi && upiId ? `Pay via UPI VPA: ${upiId}\n` : ''}Online Invoice & Terms
                   </div>
 
                   <div>
-                    <label className="font-label-caps text-[10px] text-text-light uppercase tracking-wider block mb-1">
+                    <label className="text-[10px] text-slate-500 uppercase tracking-wider block mb-1 font-semibold">
                       GST / Tax Rate (%)
                     </label>
                     <input
                       type="number"
                       value={taxRate}
                       onChange={(e) => setTaxRate(parseFloat(e.target.value) || 0)}
-                      className="w-full bg-surface-container-lowest text-on-surface p-2 text-xs border border-outline focus:outline-none focus:border-primary font-medium"
+                      className="w-full bg-white text-slate-900 p-2 text-xs rounded-lg border border-slate-300 focus:outline-none focus:border-violet-600 focus:ring-2 focus:ring-violet-500/20 font-medium"
                       min="0"
                     />
                   </div>
@@ -656,15 +655,15 @@ ${enableUpi && upiId ? `Pay via UPI VPA: ${upiId}\n` : ''}Online Invoice & Terms
               </div>
 
               {/* Line Items Editor */}
-              <div className="bg-surface/80 p-3 md:p-4 border border-outline-variant space-y-3">
-                <div className="flex items-center justify-between border-b border-outline-variant pb-2">
-                  <h4 className="font-label-caps text-xs text-primary uppercase tracking-wider font-bold">
+              <div className="bg-white p-4 rounded-xl border border-slate-200/80 shadow-xs space-y-3">
+                <div className="flex items-center justify-between border-b border-slate-100 pb-2">
+                  <h4 className="text-xs text-violet-700 uppercase tracking-wider font-bold">
                     Line Items ({items.length})
                   </h4>
                   <button
                     type="button"
                     onClick={handleAddItem}
-                    className="text-xs text-primary hover:text-on-surface font-label-caps uppercase tracking-wider font-bold flex items-center gap-1 cursor-pointer"
+                    className="text-xs text-violet-600 hover:text-violet-700 uppercase tracking-wider font-bold flex items-center gap-1 cursor-pointer"
                   >
                     <Plus size={14} weight="bold" /> Add Item
                   </button>
@@ -672,20 +671,20 @@ ${enableUpi && upiId ? `Pay via UPI VPA: ${upiId}\n` : ''}Online Invoice & Terms
 
                 <div className="space-y-3">
                   {items.map((item, idx) => (
-                    <div key={idx} className="bg-surface-container-lowest p-3 border border-outline-variant space-y-2">
+                    <div key={idx} className="bg-slate-50 p-3 rounded-lg border border-slate-200 space-y-2">
                       <div className="flex items-start justify-between gap-2">
                         <input
                           type="text"
                           value={item.description}
                           onChange={(e) => handleItemChange(idx, 'description', e.target.value)}
                           placeholder="Deliverable description..."
-                          className="w-full bg-surface text-on-surface p-2 text-xs border border-outline focus:outline-none focus:border-primary font-medium"
+                          className="w-full bg-white text-slate-900 p-2 text-xs rounded border border-slate-300 focus:outline-none focus:border-violet-600 focus:ring-2 focus:ring-violet-500/20 font-medium"
                         />
                         {items.length > 1 && (
                           <button
                             type="button"
                             onClick={() => handleRemoveItem(idx)}
-                            className="p-2 text-red-400 hover:text-red-300 hover:bg-red-950/40 border border-red-900/50 cursor-pointer shrink-0"
+                            className="p-2 text-slate-400 hover:text-rose-600 hover:bg-rose-50 rounded border border-slate-200 cursor-pointer shrink-0 transition-colors"
                             title="Delete line item"
                           >
                             <Trash size={14} />
@@ -695,28 +694,28 @@ ${enableUpi && upiId ? `Pay via UPI VPA: ${upiId}\n` : ''}Online Invoice & Terms
 
                       <div className="grid grid-cols-3 gap-2 text-[11px]">
                         <div>
-                          <label className="text-text-light block mb-0.5">Qty</label>
+                          <label className="text-slate-500 block mb-0.5">Qty</label>
                           <input
                             type="number"
                             value={item.qty}
                             onChange={(e) => handleItemChange(idx, 'qty', e.target.value)}
-                            className="w-full bg-surface text-on-surface p-1.5 border border-outline text-center"
+                            className="w-full bg-white text-slate-900 p-1.5 rounded border border-slate-300 text-center"
                             min="1"
                           />
                         </div>
                         <div>
-                          <label className="text-text-light block mb-0.5">Rate (₹)</label>
+                          <label className="text-slate-500 block mb-0.5">Rate (₹)</label>
                           <input
                             type="number"
                             value={item.rate}
                             onChange={(e) => handleItemChange(idx, 'rate', e.target.value)}
-                            className="w-full bg-surface text-on-surface p-1.5 border border-outline text-right"
+                            className="w-full bg-white text-slate-900 p-1.5 rounded border border-slate-300 text-right font-mono"
                             min="0"
                           />
                         </div>
                         <div>
-                          <label className="text-text-light block mb-0.5">Amount (₹)</label>
-                          <div className="w-full bg-surface/60 p-1.5 border border-outline-variant text-right font-mono font-bold text-primary truncate">
+                          <label className="text-slate-500 block mb-0.5">Amount (₹)</label>
+                          <div className="w-full bg-slate-100 p-1.5 rounded border border-slate-200 text-right font-mono font-bold text-slate-900 truncate">
                             ₹{parseFloat(item.amount || 0).toLocaleString('en-IN')}
                           </div>
                         </div>
@@ -727,11 +726,11 @@ ${enableUpi && upiId ? `Pay via UPI VPA: ${upiId}\n` : ''}Online Invoice & Terms
               </div>
 
               {/* UPI Instant QR Code Generator Settings */}
-              <div className="bg-surface/80 p-3 md:p-4 border border-outline-variant space-y-3">
-                <div className="flex items-center justify-between border-b border-outline-variant pb-2">
+              <div className="bg-white p-4 rounded-xl border border-slate-200/80 shadow-xs space-y-3">
+                <div className="flex items-center justify-between border-b border-slate-100 pb-2">
                   <div className="flex items-center gap-2">
-                    <QrCode className="text-primary text-base" weight="bold" />
-                    <h4 className="font-label-caps text-xs text-primary uppercase tracking-wider font-bold">
+                    <QrCode className="text-violet-600 text-base" weight="bold" />
+                    <h4 className="text-xs text-violet-700 uppercase tracking-wider font-bold">
                       UPI QR Code Payment
                     </h4>
                   </div>
@@ -742,7 +741,7 @@ ${enableUpi && upiId ? `Pay via UPI VPA: ${upiId}\n` : ''}Online Invoice & Terms
                       onChange={(e) => setEnableUpi(e.target.checked)}
                       className="sr-only peer"
                     />
-                    <div className="w-9 h-5 bg-outline-variant peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-surface-container-lowest after:border-slate-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-primary"></div>
+                    <div className="w-9 h-5 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-violet-600"></div>
                   </label>
                 </div>
 
@@ -750,7 +749,7 @@ ${enableUpi && upiId ? `Pay via UPI VPA: ${upiId}\n` : ''}Online Invoice & Terms
                   <div className="space-y-3 pt-1">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                       <div>
-                        <label className="font-label-caps text-[10px] text-text-light uppercase tracking-wider block mb-1">
+                        <label className="text-[10px] text-slate-500 uppercase tracking-wider block mb-1 font-semibold">
                           UPI VPA ID *
                         </label>
                         <input
@@ -758,12 +757,12 @@ ${enableUpi && upiId ? `Pay via UPI VPA: ${upiId}\n` : ''}Online Invoice & Terms
                           value={upiId}
                           onChange={(e) => setUpiId(e.target.value)}
                           placeholder="e.g. name@oksbi"
-                          className="w-full bg-surface-container-lowest text-on-surface p-2 text-xs border border-outline focus:outline-none focus:border-primary font-mono font-medium"
+                          className="w-full bg-white text-slate-900 p-2 text-xs rounded-lg border border-slate-300 focus:outline-none focus:border-violet-600 focus:ring-2 focus:ring-violet-500/20 font-mono font-medium"
                         />
                       </div>
 
                       <div>
-                        <label className="font-label-caps text-[10px] text-text-light uppercase tracking-wider block mb-1">
+                        <label className="text-[10px] text-slate-500 uppercase tracking-wider block mb-1 font-semibold">
                           Payee Name
                         </label>
                         <input
@@ -771,19 +770,19 @@ ${enableUpi && upiId ? `Pay via UPI VPA: ${upiId}\n` : ''}Online Invoice & Terms
                           value={upiPayeeName}
                           onChange={(e) => setUpiPayeeName(e.target.value)}
                           placeholder="InfronixWeb Digital Marketing"
-                          className="w-full bg-surface-container-lowest text-on-surface p-2 text-xs border border-outline focus:outline-none focus:border-primary font-medium"
+                          className="w-full bg-white text-slate-900 p-2 text-xs rounded-lg border border-slate-300 focus:outline-none focus:border-violet-600 focus:ring-2 focus:ring-violet-500/20 font-medium"
                         />
                       </div>
                     </div>
 
-                    <div className="bg-surface-container-lowest p-2.5 border border-outline-variant rounded flex items-center justify-between text-[11px]">
+                    <div className="bg-slate-50 p-2.5 border border-slate-200 rounded-lg flex items-center justify-between text-[11px]">
                       <div>
-                        <span className="text-text-light block text-[10px] uppercase font-label-caps">QR Target Amount</span>
-                        <span className="font-mono text-primary font-bold text-xs">
+                        <span className="text-slate-500 block text-[10px] uppercase font-semibold">QR Target Amount</span>
+                        <span className="font-mono text-violet-700 font-bold text-xs">
                           ₹{upiPayAmount.toLocaleString('en-IN', { minimumFractionDigits: 2 })}
                         </span>
                       </div>
-                      <div className="text-[10px] text-text-light bg-surface px-2 py-1 rounded border border-outline-variant">
+                      <div className="text-[10px] text-slate-600 bg-white px-2 py-1 rounded border border-slate-200">
                         {balanceDue > 0 ? 'Syncing Balance Due' : 'Syncing Total'}
                       </div>
                     </div>
@@ -792,27 +791,27 @@ ${enableUpi && upiId ? `Pay via UPI VPA: ${upiId}\n` : ''}Online Invoice & Terms
               </div>
 
               {/* Payments & Deposits */}
-              <div className="bg-surface/80 p-3 md:p-4 border border-outline-variant space-y-3">
-                <h4 className="font-label-caps text-xs text-primary uppercase tracking-wider font-bold border-b border-outline-variant pb-2">
+              <div className="bg-white p-4 rounded-xl border border-slate-200/80 shadow-xs space-y-3">
+                <h4 className="text-xs text-violet-700 uppercase tracking-wider font-bold border-b border-slate-100 pb-2">
                   Payment Collection & Reconciliation
                 </h4>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   <div>
-                    <label className="font-label-caps text-[10px] text-text-light uppercase tracking-wider block mb-1">
+                    <label className="text-[10px] text-slate-500 uppercase tracking-wider block mb-1 font-semibold">
                       Amount Paid (₹)
                     </label>
                     <input
                       type="number"
                       value={amountPaid}
                       onChange={(e) => setAmountPaid(parseFloat(e.target.value) || 0)}
-                      className="w-full bg-surface-container-lowest text-cyan-300 font-mono font-bold p-2 text-xs border border-outline focus:outline-none focus:border-violet-500"
+                      className="w-full bg-white text-emerald-700 font-mono font-bold p-2 text-xs rounded-lg border border-slate-300 focus:outline-none focus:border-violet-600"
                       min="0"
                     />
                   </div>
 
                   <div>
-                    <label className="font-label-caps text-[10px] text-text-light uppercase tracking-wider block mb-1">
+                    <label className="text-[10px] text-slate-500 uppercase tracking-wider block mb-1 font-semibold">
                       Payment Method
                     </label>
                     <input
@@ -820,14 +819,14 @@ ${enableUpi && upiId ? `Pay via UPI VPA: ${upiId}\n` : ''}Online Invoice & Terms
                       value={paymentMethod}
                       onChange={(e) => setPaymentMethod(e.target.value)}
                       placeholder="UPI / NEFT / IMPS"
-                      className="w-full bg-surface-container-lowest text-on-surface p-2 text-xs border border-outline focus:outline-none focus:border-primary font-medium"
+                      className="w-full bg-white text-slate-900 p-2 text-xs rounded-lg border border-slate-300 focus:outline-none focus:border-violet-600 font-medium"
                     />
                   </div>
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   <div>
-                    <label className="font-label-caps text-[10px] text-text-light uppercase tracking-wider block mb-1">
+                    <label className="text-[10px] text-slate-500 uppercase tracking-wider block mb-1 font-semibold">
                       Transaction / Ref ID
                     </label>
                     <input
@@ -835,12 +834,12 @@ ${enableUpi && upiId ? `Pay via UPI VPA: ${upiId}\n` : ''}Online Invoice & Terms
                       value={transactionId}
                       onChange={(e) => setTransactionId(e.target.value)}
                       placeholder="TXN-XXXX"
-                      className="w-full bg-surface-container-lowest text-on-surface p-2 text-xs border border-outline focus:outline-none focus:border-primary font-medium"
+                      className="w-full bg-white text-slate-900 p-2 text-xs rounded-lg border border-slate-300 focus:outline-none focus:border-violet-600 font-medium"
                     />
                   </div>
 
                   <div>
-                    <label className="font-label-caps text-[10px] text-text-light uppercase tracking-wider block mb-1">
+                    <label className="text-[10px] text-slate-500 uppercase tracking-wider block mb-1 font-semibold">
                       Payment Date
                     </label>
                     <input
@@ -848,45 +847,42 @@ ${enableUpi && upiId ? `Pay via UPI VPA: ${upiId}\n` : ''}Online Invoice & Terms
                       value={paymentDate}
                       onChange={(e) => setPaymentDate(e.target.value)}
                       placeholder="e.g. 30 Aug 2026"
-                      className="w-full bg-surface-container-lowest text-on-surface p-2 text-xs border border-outline focus:outline-none focus:border-primary font-medium"
+                      className="w-full bg-white text-slate-900 p-2 text-xs rounded-lg border border-slate-300 focus:outline-none focus:border-violet-600 font-medium"
                     />
                   </div>
                 </div>
 
                 <div>
-                  <label className="font-label-caps text-[10px] text-text-light uppercase tracking-wider block mb-1">
+                  <label className="text-[10px] text-slate-500 uppercase tracking-wider block mb-1 font-semibold">
                     Invoice Notes
                   </label>
                   <textarea
                     rows={2}
                     value={clientNotes}
                     onChange={(e) => setClientNotes(e.target.value)}
-                    className="w-full bg-surface-container-lowest text-on-surface p-2 text-xs border border-outline focus:outline-none focus:border-primary font-medium"
+                    className="w-full bg-white text-slate-900 p-2 text-xs rounded-lg border border-slate-300 focus:outline-none focus:border-violet-600 font-medium"
                   />
                 </div>
               </div>
-
             </div>
 
             {/* RIGHT PANE: Live A4 Document Preview (7 cols - Scrollable) */}
             <div 
-              className="lg:col-span-7 bg-surface/50 p-2 md:p-8 overflow-y-auto h-auto lg:h-full lg:max-h-[calc(92vh-70px)] flex items-start justify-center overscroll-contain"
+              className="lg:col-span-7 bg-slate-100/70 p-4 md:p-8 overflow-y-auto h-auto lg:h-full lg:max-h-[calc(92vh-70px)] flex items-start justify-center overscroll-contain"
               data-lenis-prevent="true"
               onWheel={(e) => e.stopPropagation()}
             >
-              
               {/* Paper simulation */}
               <div 
-                className="w-full max-w-[760px] bg-surface-container-lowest text-slate-900 p-4 md:p-10 shadow-2xl rounded-sm border border-slate-300 font-sans my-auto"
+                className="w-full max-w-[760px] bg-white text-slate-900 p-5 md:p-10 shadow-lg rounded-xl border border-slate-200/80 font-sans my-auto"
                 data-lenis-prevent="true"
               >
-                
                 {/* Paper Header */}
-                <div className="flex flex-col sm:flex-row justify-between items-start pb-4 md:pb-6 border-b-2 border-slate-900 gap-3 md:gap-4">
-                  <div className="flex items-start gap-2.5 md:gap-3.5">
-                    <div className="w-10 h-10 md:w-12 md:h-12 bg-[#1C2541] rounded flex items-center justify-center p-1.5 md:p-2 shrink-0 shadow-sm">
+                <div className="flex flex-col sm:flex-row justify-between items-start pb-5 md:pb-6 border-b-2 border-slate-900 gap-3 md:gap-4">
+                  <div className="flex items-start gap-3">
+                    <div className="w-12 h-12 bg-slate-100 rounded-xl flex items-center justify-center p-2 shrink-0 border border-slate-200 shadow-xs">
                       <img 
-                        src="/web-log-removebg-preview.png" 
+                        src="/light-web-logo.png" 
                         alt="InfronixWeb Logo" 
                         className="w-full h-full object-contain"
                       />
@@ -895,7 +891,7 @@ ${enableUpi && upiId ? `Pay via UPI VPA: ${upiId}\n` : ''}Online Invoice & Terms
                       <h3 className="text-base md:text-xl font-bold text-slate-950 font-serif tracking-tight leading-none">
                         INFRONIXWEB DIGITAL MARKETING
                       </h3>
-                      <p className="text-[10px] md:text-[11px] text-text-light font-semibold tracking-wider uppercase mt-1">
+                      <p className="text-[10px] md:text-[11px] text-slate-500 font-semibold tracking-wider uppercase mt-1">
                         Web Development &middot; SEO &middot; AI Automation
                       </p>
                       <p className="text-[10px] md:text-[11px] text-slate-600 mt-0.5">
@@ -905,7 +901,7 @@ ${enableUpi && upiId ? `Pay via UPI VPA: ${upiId}\n` : ''}Online Invoice & Terms
                   </div>
 
                   <div className="text-left sm:text-right shrink-0">
-                    <h4 className="text-base md:text-xl font-bold uppercase tracking-widest text-[#1C2541] font-serif">
+                    <h4 className="text-base md:text-xl font-bold uppercase tracking-widest text-slate-900 font-serif">
                       INVOICE
                     </h4>
                     <p className="text-[11px] md:text-xs font-mono font-bold text-slate-800 mt-0.5">{invoiceId}</p>
@@ -920,7 +916,7 @@ ${enableUpi && upiId ? `Pay via UPI VPA: ${upiId}\n` : ''}Online Invoice & Terms
                 {/* Bill To & From Grid */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-4 py-4 md:py-5 border-b border-slate-200 text-xs">
                   <div>
-                    <span className="font-bold uppercase tracking-wider text-text-light block mb-1 text-[10px]">
+                    <span className="font-bold uppercase tracking-wider text-slate-500 block mb-1 text-[10px]">
                       Billed To
                     </span>
                     <p className="font-bold text-slate-900">{client?.firstName} {client?.lastName}</p>
@@ -930,7 +926,7 @@ ${enableUpi && upiId ? `Pay via UPI VPA: ${upiId}\n` : ''}Online Invoice & Terms
                   </div>
 
                   <div>
-                    <span className="font-bold uppercase tracking-wider text-text-light block mb-1 text-[10px]">
+                    <span className="font-bold uppercase tracking-wider text-slate-500 block mb-1 text-[10px]">
                       Issued By
                     </span>
                     <p className="font-bold text-slate-900">InfronixWeb Digital Marketing</p>
@@ -940,16 +936,16 @@ ${enableUpi && upiId ? `Pay via UPI VPA: ${upiId}\n` : ''}Online Invoice & Terms
 
                   <div className="bg-slate-50 p-2.5 border border-slate-200 rounded text-[11px] space-y-1">
                     <div className="flex justify-between">
-                      <span className="text-text-light font-semibold">Issue Date:</span>
+                      <span className="text-slate-500 font-semibold">Issue Date:</span>
                       <span className="font-medium text-slate-800">{issueDate}</span>
                     </div>
                     <div className="flex justify-between">
-                      <span className="text-text-light font-semibold">Due Date:</span>
+                      <span className="text-slate-500 font-semibold">Due Date:</span>
                       <span className="font-medium text-slate-800">{dueDate}</span>
                     </div>
                     {client?.service && (
                       <div className="flex justify-between border-t border-slate-200 pt-1 mt-1">
-                        <span className="text-text-light font-semibold">Service:</span>
+                        <span className="text-slate-500 font-semibold">Service:</span>
                         <span className="font-semibold text-slate-900 truncate max-w-[100px]">{client.service}</span>
                       </div>
                     )}
@@ -960,7 +956,7 @@ ${enableUpi && upiId ? `Pay via UPI VPA: ${upiId}\n` : ''}Online Invoice & Terms
                 <div className="py-4 md:py-5 overflow-x-auto -mx-4 px-4 md:mx-0 md:px-0">
                   <table className="w-full text-left border-collapse text-xs min-w-[400px]">
                     <thead>
-                      <tr className="bg-[#1C2541] text-on-surface text-[9px] md:text-[10px] uppercase tracking-wider font-bold">
+                      <tr className="bg-slate-900 text-white text-[9px] md:text-[10px] uppercase tracking-wider font-bold">
                         <th className="py-2 px-2 md:py-2.5 md:px-3">Description</th>
                         <th className="py-2 px-2 md:py-2.5 md:px-3 text-center w-12 md:w-14">Qty</th>
                         <th className="py-2 px-2 md:py-2.5 md:px-3 text-right w-20 md:w-24">Rate (₹)</th>
@@ -969,7 +965,7 @@ ${enableUpi && upiId ? `Pay via UPI VPA: ${upiId}\n` : ''}Online Invoice & Terms
                     </thead>
                     <tbody className="divide-y divide-slate-200">
                       {items.map((item, idx) => (
-                        <tr key={idx} className={idx % 2 === 0 ? 'bg-surface-container-lowest' : 'bg-slate-50/60'}>
+                        <tr key={idx} className={idx % 2 === 0 ? 'bg-white' : 'bg-slate-50/60'}>
                           <td className="py-2.5 px-3 font-medium text-slate-800">{item.description || 'Deliverable'}</td>
                           <td className="py-2.5 px-3 text-center text-slate-600">{item.qty || 1}</td>
                           <td className="py-2.5 px-3 text-right font-mono text-slate-700">
@@ -988,7 +984,7 @@ ${enableUpi && upiId ? `Pay via UPI VPA: ${upiId}\n` : ''}Online Invoice & Terms
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 pt-2 pb-5 border-b border-slate-200 text-xs">
                   {/* Left: Payment instruction & UPI QR */}
                   <div className="space-y-1.5">
-                    <span className="font-bold uppercase tracking-wider text-text-light block text-[10px]">
+                    <span className="font-bold uppercase tracking-wider text-slate-500 block text-[10px]">
                       Payment Information
                     </span>
                     <div className="bg-slate-50 p-2.5 border border-slate-200 rounded text-[11px] space-y-1">
@@ -996,7 +992,7 @@ ${enableUpi && upiId ? `Pay via UPI VPA: ${upiId}\n` : ''}Online Invoice & Terms
                       {paymentMethod && <p className="text-slate-600"><span className="font-semibold">Method:</span> {paymentMethod}</p>}
                       {transactionId && <p className="text-slate-600"><span className="font-semibold">Txn ID:</span> {transactionId}</p>}
                       {paymentDate && <p className="text-slate-600"><span className="font-semibold">Date:</span> {paymentDate}</p>}
-                      <p className="text-text-light text-[10px] pt-1 border-t border-slate-200">
+                      <p className="text-slate-500 text-[10px] pt-1 border-t border-slate-200">
                         {clientNotes}
                       </p>
                     </div>
@@ -1004,7 +1000,7 @@ ${enableUpi && upiId ? `Pay via UPI VPA: ${upiId}\n` : ''}Online Invoice & Terms
                     {/* Live UPI QR Code card */}
                     {enableUpi && upiId && (
                       <div className="bg-slate-50 p-2.5 border border-slate-200 rounded flex items-center gap-3 mt-2">
-                        <div className="bg-surface-container-lowest p-1.5 border border-slate-200 rounded shrink-0 shadow-xs">
+                        <div className="bg-white p-1.5 border border-slate-200 rounded shrink-0 shadow-xs">
                           <QRCodeSVG
                             value={upiString}
                             size={68}
@@ -1017,19 +1013,19 @@ ${enableUpi && upiId ? `Pay via UPI VPA: ${upiId}\n` : ''}Online Invoice & Terms
                             <span>Scan with UPI App</span>
                           </p>
                           <div className="flex items-center gap-1.5 mt-0.5">
-                            <span className="font-mono text-[10px] text-slate-800 font-bold bg-surface-container-lowest px-1.5 py-0.5 rounded border border-slate-200 truncate max-w-[150px]">
+                            <span className="font-mono text-[10px] text-slate-800 font-bold bg-white px-1.5 py-0.5 rounded border border-slate-200 truncate max-w-[150px]">
                               {upiId}
                             </span>
                             <button
                               type="button"
                               onClick={handleCopyUpi}
-                              className="text-text-light hover:text-slate-800 p-0.5 transition-colors cursor-pointer"
+                              className="text-slate-500 hover:text-slate-800 p-0.5 transition-colors cursor-pointer"
                               title="Copy UPI ID"
                             >
                               {copiedUpi ? <Check size={12} className="text-violet-600" /> : <Copy size={12} />}
                             </button>
                           </div>
-                          <p className="text-text-light text-[9px] pt-0.5">
+                          <p className="text-slate-500 text-[9px] pt-0.5">
                             GPay &middot; PhonePe &middot; Paytm &middot; BHIM
                           </p>
                           {upiPayAmount > 0 && (
@@ -1063,7 +1059,7 @@ ${enableUpi && upiId ? `Pay via UPI VPA: ${upiId}\n` : ''}Online Invoice & Terms
                       </span>
                     </div>
                     {paidVal > 0 && (
-                      <div className="flex justify-between py-0.5 text-violet-700 font-semibold">
+                      <div className="flex justify-between py-0.5 text-emerald-700 font-semibold">
                         <span>Amount Paid:</span>
                         <span className="font-mono">- ₹{paidVal.toLocaleString('en-IN', { minimumFractionDigits: 2 })}</span>
                       </div>
@@ -1078,7 +1074,7 @@ ${enableUpi && upiId ? `Pay via UPI VPA: ${upiId}\n` : ''}Online Invoice & Terms
                 </div>
 
                 {/* Terms Summary */}
-                <div className="pt-3 text-[10px] text-text-light leading-relaxed space-y-0.5">
+                <div className="pt-3 text-[10px] text-slate-500 leading-relaxed space-y-0.5">
                   <h5 className="font-bold uppercase tracking-wider text-slate-800 text-[10px] mb-0.5">
                     Terms & Conditions
                   </h5>
@@ -1087,14 +1083,12 @@ ${enableUpi && upiId ? `Pay via UPI VPA: ${upiId}\n` : ''}Online Invoice & Terms
                 </div>
 
                 {/* Footer */}
-                <div className="pt-4 mt-4 border-t border-slate-200 flex justify-between items-center text-[10px] text-text-light">
+                <div className="pt-4 mt-4 border-t border-slate-200 flex justify-between items-center text-[10px] text-slate-500">
                   <div>InfronixWeb Digital Marketing &middot; Thank you for your business.</div>
                   <div>Page 1 of 1</div>
                 </div>
-
               </div>
             </div>
-
           </div>
         </div>
       </div>
@@ -1104,60 +1098,59 @@ ${enableUpi && upiId ? `Pay via UPI VPA: ${upiId}\n` : ''}Online Invoice & Terms
       */}
       {isEmailModalOpen && (
         <div 
-          className="fixed inset-0 z-[60] bg-on-surface/40 backdrop-blur-sm flex items-center justify-center p-4 print:hidden animate-fadeIn overflow-y-auto"
+          className="fixed inset-0 z-[60] bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-4 print:hidden animate-fadeIn overflow-y-auto"
           data-lenis-prevent="true"
           onWheel={(e) => e.stopPropagation()}
         >
           <div 
-            className="bg-surface-container-lowest border border-primary/50 w-full max-w-lg shadow-2xl overflow-hidden flex flex-col my-auto max-h-[90vh]"
+            className="bg-white border border-slate-200 w-full max-w-lg shadow-2xl rounded-2xl overflow-hidden flex flex-col my-auto max-h-[90vh]"
             data-lenis-prevent="true"
           >
-            
-            <div className="bg-surface/90 border-b border-primary/20 p-5 flex justify-between items-center shrink-0">
+            <div className="bg-white border-b border-slate-200 p-5 flex justify-between items-center shrink-0">
               <div className="flex items-center gap-2">
-                <PaperPlaneTilt className="text-primary text-xl" weight="bold" />
-                <h3 className="font-headline-lg text-lg text-on-surface font-bold">
+                <PaperPlaneTilt className="text-violet-600 text-xl" weight="bold" />
+                <h3 className="text-base font-bold text-slate-900 font-outfit">
                   Send Invoice via Hostinger
                 </h3>
               </div>
               <button 
                 type="button"
                 onClick={() => setIsEmailModalOpen(false)}
-                className="text-text-light hover:text-on-surface transition-colors cursor-pointer"
+                className="text-slate-400 hover:text-slate-700 p-1 rounded-lg hover:bg-slate-100 transition-colors cursor-pointer"
               >
                 <X size={20} weight="bold" />
               </button>
             </div>
 
             <div 
-              className="p-6 space-y-4 text-xs text-main-text overflow-y-auto max-h-[calc(90vh-140px)]"
+              className="p-6 space-y-4 text-xs text-slate-800 overflow-y-auto max-h-[calc(90vh-140px)]"
               data-lenis-prevent="true"
               onWheel={(e) => e.stopPropagation()}
             >
               {emailStatusMessage.text && (
-                <div className={`p-3 border text-xs flex items-center gap-2 font-medium ${
+                <div className={`p-3 rounded-xl border text-xs flex items-center gap-2 font-medium ${
                   emailStatusMessage.type === 'success' 
-                    ? 'bg-violet-950/60 border-violet-500/50 text-cyan-200' 
-                    : 'bg-red-950/60 border-red-500/50 text-red-200'
+                    ? 'bg-emerald-50 border-emerald-200 text-emerald-800' 
+                    : 'bg-rose-50 border-rose-200 text-rose-800'
                 }`}>
                   {emailStatusMessage.type === 'success' ? <CheckCircle size={16} weight="bold" /> : <Info size={16} weight="bold" />}
                   <span>{emailStatusMessage.text}</span>
                 </div>
               )}
 
-              <div className="bg-surface p-3.5 border border-outline-variant space-y-1.5">
+              <div className="bg-slate-50 p-3.5 rounded-xl border border-slate-200 space-y-1.5">
                 <div>
-                  <span className="text-text-light font-label-caps uppercase tracking-wider block text-[10px]">Recipient (To):</span>
-                  <span className="text-on-surface font-bold text-sm">{client?.email}</span>
+                  <span className="text-slate-500 uppercase tracking-wider block text-[10px] font-bold">Recipient (To):</span>
+                  <span className="text-slate-900 font-bold text-sm">{client?.email}</span>
                 </div>
                 <div>
-                  <span className="text-text-light font-label-caps uppercase tracking-wider block text-[10px]">Subject:</span>
-                  <span className="text-primary font-medium">Invoice {invoiceId} — InfronixWeb Digital Marketing</span>
+                  <span className="text-slate-500 uppercase tracking-wider block text-[10px] font-bold">Subject:</span>
+                  <span className="text-violet-700 font-semibold">Invoice {invoiceId} — InfronixWeb Digital Marketing</span>
                 </div>
               </div>
 
               <div>
-                <label className="font-label-caps text-xs text-main-text uppercase tracking-wider block mb-1 font-semibold">
+                <label className="text-xs text-slate-700 uppercase tracking-wider block mb-1 font-semibold">
                   Personalized Agency Note (Optional)
                 </label>
                 <textarea
@@ -1165,28 +1158,28 @@ ${enableUpi && upiId ? `Pay via UPI VPA: ${upiId}\n` : ''}Online Invoice & Terms
                   value={emailNote}
                   onChange={(e) => setEmailNote(e.target.value)}
                   placeholder="e.g. Hi, thanks for getting in touch with InfronixWeb. Attached is the initial invoice for our sprint..."
-                  className="w-full bg-surface text-on-surface p-3 text-xs border border-outline focus:outline-none focus:border-primary font-medium"
+                  className="w-full bg-white text-slate-900 p-3 text-xs rounded-xl border border-slate-300 focus:outline-none focus:border-violet-600 focus:ring-2 focus:ring-violet-500/20 font-medium"
                 />
               </div>
 
               {enableUpi && upiId && (
-                <div className="bg-surface/90 border border-primary/30 p-3 text-[11px] text-main-text space-y-1">
-                  <span className="font-label-caps text-[10px] text-primary uppercase tracking-wider block font-bold">Included Payment Option</span>
-                  <p>UPI VPA: <span className="font-mono text-on-surface font-bold">{upiId}</span> ({upiPayeeName})</p>
+                <div className="bg-slate-50 border border-slate-200 p-3 rounded-xl text-[11px] text-slate-700 space-y-1">
+                  <span className="text-[10px] text-violet-700 uppercase tracking-wider block font-bold">Included Payment Option</span>
+                  <p>UPI VPA: <span className="font-mono text-slate-900 font-bold">{upiId}</span> ({upiPayeeName})</p>
                 </div>
               )}
 
-              <p className="text-[11px] text-text-light italic">
+              <p className="text-[11px] text-slate-500 italic">
                 The client will receive an email containing the itemized invoice table, bank details, and Terms & Conditions.
               </p>
             </div>
 
-            <div className="p-4 md:p-5 border-t border-outline-variant bg-surface/40 flex flex-col-reverse sm:flex-row justify-end gap-2 md:gap-3 shrink-0">
+            <div className="p-4 md:p-5 border-t border-slate-200 bg-slate-50/50 flex flex-col-reverse sm:flex-row justify-end gap-2 md:gap-3 shrink-0">
               <button
                 type="button"
                 onClick={() => setIsEmailModalOpen(false)}
                 disabled={sendingEmail}
-                className="px-4 py-2 border border-outline hover:border-slate-500 text-main-text text-xs uppercase font-label-caps tracking-widest transition-colors cursor-pointer"
+                className="px-4 py-2.5 bg-white border border-slate-300 hover:bg-slate-50 text-slate-700 text-xs uppercase tracking-wider font-bold rounded-xl transition-colors cursor-pointer"
               >
                 Cancel
               </button>
@@ -1194,13 +1187,12 @@ ${enableUpi && upiId ? `Pay via UPI VPA: ${upiId}\n` : ''}Online Invoice & Terms
                 type="button"
                 onClick={handleSendInvoiceEmail}
                 disabled={sendingEmail}
-                className="px-5 py-2.5 bg-primary hover:bg-primary-dark text-white text-xs uppercase font-label-caps tracking-widest font-bold transition-all shadow-md flex items-center gap-2 cursor-pointer disabled:opacity-50"
+                className="px-5 py-2.5 bg-violet-600 hover:bg-violet-700 text-white text-xs uppercase tracking-wider font-bold rounded-xl transition-all shadow-sm flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50"
               >
                 <PaperPlaneTilt size={16} weight="bold" />
                 <span>{sendingEmail ? 'Dispatching...' : 'Dispatch Invoice Email'}</span>
               </button>
             </div>
-
           </div>
         </div>
       )}

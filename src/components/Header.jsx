@@ -69,6 +69,10 @@ export default function Header() {
     { path: '/ai-automation', label: 'AI Automation', icon: Robot }
   ];
 
+  if (pathname?.startsWith('/admin') || pathname?.startsWith('/founder-os')) {
+    return null;
+  }
+
   return (
     <>
       <div className="fixed top-0 w-full z-50 flex flex-col">

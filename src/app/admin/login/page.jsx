@@ -1,5 +1,5 @@
 "use client";
-import { Warning, LockOpen } from "@phosphor-icons/react";
+import { Warning } from "@phosphor-icons/react";
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import SEO from '@/components/SEO';
@@ -30,15 +30,15 @@ export default function AdminLogin() {
       const data = await parseJsonResponse(response);
 
       if (response.ok && data.success) {
-        showToast('Authentication successful. Welcome to Admin Portal.', 'success');
+        showToast('Signed in successfully', 'success');
         router.push('/admin');
       } else {
-        const friendlyMsg = getFriendlyErrorMessage(data.error, 'Authentication failed. Please verify your credentials.');
+        const friendlyMsg = getFriendlyErrorMessage(data.error, 'Invalid ID or Password.');
         setError(friendlyMsg);
         showToast(friendlyMsg, 'error');
       }
     } catch (err) {
-      const friendlyMsg = getFriendlyErrorMessage(err, 'Connection failed. Please ensure network connectivity.');
+      const friendlyMsg = getFriendlyErrorMessage(err, 'Connection error. Please try again.');
       setError(friendlyMsg);
       showToast(friendlyMsg, 'error');
     } finally {
@@ -48,90 +48,78 @@ export default function AdminLogin() {
 
   return (
     <>
-      <SEO title="Admin Login" description="Secure Administrator Authentication Portal for InfronixWeb Digital Marketing." />
-      <main className="min-h-screen w-full bg-surface flex items-center justify-center px-margin-mobile py-24 relative overflow-hidden">
+      <SEO title="Sign In | InfronixWeb" description="Executive Portal Sign In" />
+      <main className="min-h-screen w-full bg-slate-50 flex items-center justify-center p-4 sm:p-6 relative overflow-hidden font-sans">
         {/* Subtle background glow */}
-        <div className="absolute inset-0 bg-gradient-to-tr from-surface via-surface/90 to-surface/60"></div>
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-primary/5 blur-[120px] rounded-full pointer-events-none"></div>
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-violet-500/10 blur-[120px] rounded-full pointer-events-none" />
 
-        <div className="relative z-10 w-full max-w-md bg-surface-container-lowest p-8 md:p-10 border border-primary/40 shadow-2xl">
-          <div className="text-center mb-8 border-b border-outline-variant/60 pb-6">
-            <div className="flex justify-center mb-6">
-              <img src="/light-web-logo.png" alt="InfronixWeb Icon" className="h-10 md:h-12 w-auto object-contain" />
-            </div>
-            <span className="font-label-caps text-xs text-primary uppercase tracking-widest block mb-2 font-bold">Restricted Portal</span>
-            <h1 className="font-headline-lg text-2xl md:text-3xl text-on-surface font-bold">Admin Portal</h1>
-            <p className="font-body-md text-xs text-main-text font-semibold mt-2">
-              Authorized personnel only. Credentials required.
-            </p>
+        <div className="relative z-10 w-full max-w-sm bg-white p-6 sm:p-8 border border-slate-200 rounded-2xl shadow-xl">
+          {/* Exact Logo for light background */}
+          <div className="flex justify-center mb-6">
+            <img
+              src="/light-web-logo.png"
+              alt="InfronixWeb"
+              className="h-9 w-auto object-contain"
+            />
+          </div>
+
+          <div className="text-center mb-6">
+            <h1 className="text-lg font-bold text-slate-900 font-outfit">Founder OS Portal</h1>
+            <p className="text-xs text-slate-500 mt-1">Sign in with executive credentials</p>
           </div>
 
           {error && (
-            <div className="mb-6 p-4 bg-red-950/40 border border-red-500/50 text-red-200 text-sm rounded-none flex items-center gap-3 font-medium">
-              <Warning className="text-red-400 text-lg shrink-0" weight="bold" />
-              <span>{error}</span>
+            <div className="mb-4 p-3 bg-rose-50 border border-rose-200 text-rose-700 text-xs rounded-xl flex items-center gap-2">
+              <Warning className="text-rose-500 text-sm shrink-0" weight="bold" />
+              <span className="font-medium">{error}</span>
             </div>
           )}
 
-          <form onSubmit={handleSubmit} className="flex flex-col gap-6" aria-label="Administrator login form">
-            <div className="flex flex-col gap-2">
-              <label htmlFor="admin-username" className="font-label-caps text-xs uppercase tracking-widest text-slate-800 font-bold">
-                Username
+          <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+            <div>
+              <label htmlFor="admin-id" className="block text-[11px] font-bold text-slate-700 uppercase tracking-wider mb-1.5">
+                ID / Username
               </label>
-              <div className="relative">
-                <input
-                  id="admin-username"
-                  type="text"
-                  value={username}
-                  onChange={(e) => setUsername(e.target.value)}
-                  className="w-full bg-surface text-on-surface font-body-md px-4 py-3 border border-outline focus:outline-none focus:border-primary transition-colors font-medium placeholder:text-text-light"
-                  placeholder="Enter username"
-                  required
-                  autoComplete="username"
-                />
-              </div>
+              <input
+                id="admin-id"
+                type="text"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+                className="w-full bg-white text-slate-900 text-xs sm:text-sm px-3.5 py-2.5 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-violet-500/20 focus:border-violet-600 transition-colors placeholder:text-slate-400"
+                placeholder="Enter ID"
+                required
+                autoComplete="username"
+              />
             </div>
 
-            <div className="flex flex-col gap-2">
-              <label htmlFor="admin-password" className="font-label-caps text-xs uppercase tracking-widest text-slate-800 font-bold">
+            <div>
+              <label htmlFor="admin-pass" className="block text-[11px] font-bold text-slate-700 uppercase tracking-wider mb-1.5">
                 Password
               </label>
-              <div className="relative">
-                <input
-                  id="admin-password"
-                  type="password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  className="w-full bg-surface text-on-surface font-body-md px-4 py-3 border border-outline focus:outline-none focus:border-primary transition-colors font-medium placeholder:text-text-light"
-                  placeholder="Enter password"
-                  required
-                  autoComplete="current-password"
-                />
-              </div>
+              <input
+                id="admin-pass"
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="w-full bg-white text-slate-900 text-xs sm:text-sm px-3.5 py-2.5 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-violet-500/20 focus:border-violet-600 transition-colors placeholder:text-slate-400"
+                placeholder="Enter Password"
+                required
+                autoComplete="current-password"
+              />
             </div>
 
             <button
               type="submit"
               disabled={loading}
-              className="mt-2 w-full bg-primary text-surface font-label-caps uppercase tracking-widest py-3.5 hover:bg-white transition-all shadow-md border border-primary flex items-center justify-center gap-2 font-bold disabled:opacity-50 cursor-pointer text-sm"
+              className="mt-2 w-full min-h-[44px] bg-violet-600 hover:bg-violet-700 text-white font-bold uppercase tracking-wider py-2.5 rounded-xl transition-all shadow-md shadow-violet-600/20 flex items-center justify-center gap-2 text-xs disabled:opacity-50 cursor-pointer active:scale-98"
             >
               {loading ? (
-                <>
-                  <div className="w-4 h-4 border-2 border-surface border-t-transparent rounded-full animate-spin"></div>
-                  <span>Authenticating...</span>
-                </>
+                <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
               ) : (
-                <>
-                  <LockOpen className="text-lg" weight="bold" />
-                  <span>Sign In</span>
-                </>
+                <span>Sign In to Founder OS</span>
               )}
             </button>
           </form>
-
-          <div className="mt-8 text-center text-xs text-text-light font-semibold">
-            <span>InfronixWeb Admin Panel</span>
-          </div>
         </div>
       </main>
     </>

@@ -1,9 +1,11 @@
 "use client";
 import { X, Cookie, Gear } from "@phosphor-icons/react";
 import { useState, useEffect } from 'react';
+import { usePathname } from 'next/navigation';
 import { getConsentPreferences, setConsentPreferences, getOrSetDeviceId } from '@/utils/cookieManager';
 
 export default function CookieBanner() {
+  const pathname = usePathname();
   const [consent, setConsent] = useState(getConsentPreferences());
   const [showBanner, setShowBanner] = useState(false);
   const [showModal, setShowModal] = useState(false);
@@ -11,6 +13,10 @@ export default function CookieBanner() {
   // Preference form states inside modal
   const [analyticsToggle, setAnalyticsToggle] = useState(false);
   const [marketingToggle, setMarketingToggle] = useState(false);
+
+  if (pathname?.startsWith('/admin') || pathname?.startsWith('/founder-os')) {
+    return null;
+  }
 
   useEffect(() => {
     // Ensure rate-limiting device ID cookie is set

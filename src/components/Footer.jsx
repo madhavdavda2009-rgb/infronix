@@ -1,9 +1,15 @@
 "use client";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { InstagramLogo, ArrowUpRight } from "@phosphor-icons/react";
 
 export default function Footer() {
+  const pathname = usePathname();
   const currentYear = new Date().getFullYear();
+
+  if (pathname?.startsWith('/admin') || pathname?.startsWith('/founder-os')) {
+    return null;
+  }
 
   return (
     <footer className="bg-ink-black text-white pt-16 sm:pt-20 md:pt-24 pb-12 sm:pb-16 border-t border-[#0B0D12] relative z-20">

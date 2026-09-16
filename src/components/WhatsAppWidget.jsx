@@ -1,6 +1,7 @@
 "use client";
 import { X, ArrowUpRight } from "@phosphor-icons/react";
 import { useState } from 'react';
+import { usePathname } from 'next/navigation';
 
 const WHATSAPP_NUMBER = '919106291540';
 
@@ -13,7 +14,12 @@ const quickTopics = [
 ];
 
 export default function WhatsAppWidget() {
+  const pathname = usePathname();
   const [isOpen, setIsOpen] = useState(false);
+
+  if (pathname?.startsWith('/admin') || pathname?.startsWith('/founder-os')) {
+    return null;
+  }
 
   function getWhatsAppUrl(message) {
     return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
