@@ -575,7 +575,7 @@ export default function PrivacyPolicy() {
                 21. Contact and Privacy Requests
               </h2>
               <p>
-                For privacy-related questions, requests, complaints, or concerns, contact us through the official contact information published on our website.
+                For privacy-related questions, requests, complaints, or concerns, contact our compliance team at InfronixWeb Digital Marketing, based in Ahmedabad, Gujarat, India, through the official contact information published on our website.
               </p>
               <p>
                 We may request reasonable information necessary to verify the identity of the requester and properly process the request.

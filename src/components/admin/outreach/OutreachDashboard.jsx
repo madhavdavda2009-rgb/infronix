@@ -1,24 +1,6 @@
 "use client";
 import { useState, useEffect } from 'react';
-import { 
-  User,
-  UserPlus, 
-  ArrowsClockwise, 
-  MagnifyingGlass, 
-  Sparkle, 
-  PaperPlaneTilt, 
-  Trash, 
-  Pencil, 
-  Globe, 
-  EnvelopeSimple, 
-  Buildings, 
-  ClockCounterClockwise,
-  CheckCircle,
-  Warning,
-  Tag,
-  MapPin,
-  X
-} from "@phosphor-icons/react";
+import { User, UserPlus, ArrowsClockwise, MagnifyingGlass, Sparkle, PaperPlaneTilt, Trash, Pencil, Globe, EnvelopeSimple, Buildings, ClockCounterClockwise, CheckCircle, Warning, Tag, MapPin } from "@phosphor-icons/react";
 import AddLeadModal from './AddLeadModal';
 import EmailStudioModal from './EmailStudioModal';
 import SentHistoryModal from './SentHistoryModal';

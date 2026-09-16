@@ -1,29 +1,11 @@
 "use client";
+import CreateTeamMember from './CreateTeamMember';
 import React, { useState, useEffect } from 'react';
-import {
-  Folder,
-  Plus,
-  MagnifyingGlass,
-  Funnel,
-  Pencil,
-  Trash,
-  CheckCircle,
-  Clock,
-  Calendar,
-  CurrencyInr,
-  X,
-  ListChecks,
-  ChatCircleText,
-  User,
-  CaretRight,
-  ArrowLeft,
-  CheckSquare,
-  Square,
-  Tag
-} from '@phosphor-icons/react';
+import { Folder, Plus, MagnifyingGlass, Pencil, Trash, CheckCircle, Calendar, X, ListChecks, ChatCircleText, ArrowLeft, CheckSquare, Square, CreditCard, HardDrives, Users, Warning, Check } from '@phosphor-icons/react';
 import EmptyState from './EmptyState';
 import { ConfirmModal } from './ConfirmModal';
 import { useToast } from '@/context/ToastContext';
+import ProjectWizardModal from './ProjectWizardModal';
 
 const PROJECT_STATUSES = [
   'Planning',
@@ -39,13 +21,11 @@ const PROJECT_STATUSES = [
 
 const PROJECT_PRIORITIES = ['Low', 'Medium', 'High', 'Urgent'];
 
-const TASK_STATUSES = ['Todo', 'In Progress', 'Review', 'Completed'];
-
-export default function DeliveryModule({ initialProjectId, settings = {}, onRefreshDashboard }) {
+export default function DeliveryModule({ initialProjectId, settings = {}, onRefreshDashboard, onNavigate }) {
   const [projects, setProjects] = useState([]);
   const [selectedProject, setSelectedProject] = useState(null);
   const [projectDetails, setProjectDetails] = useState(null);
-  const [activeDetailTab, setActiveDetailTab] = useState('overview'); // 'overview' | 'tasks' | 'feedback' | 'qa'
+  const [activeDetailTab, setActiveDetailTab] = useState('overview');
   const [loading, setLoading] = useState(true);
 
   // Filters
@@ -54,14 +34,55 @@ export default function DeliveryModule({ initialProjectId, settings = {}, onRefr
   const [priorityFilter, setPriorityFilter] = useState('ALL');
 
   // Modals
-  const [showProjectModal, setShowProjectModal] = useState(false);
-  const [editingProject, setEditingProject] = useState(null);
+  const [showWizardModal, setShowWizardModal] = useState(false);
+  const [wizardInitialData, setWizardInitialData] = useState(null);
 
+  const [showEditProjectModal, setShowEditProjectModal] = useState(false);
   const [showTaskModal, setShowTaskModal] = useState(false);
   const [editingTask, setEditingTask] = useState(null);
 
   const [showFeedbackModal, setShowFeedbackModal] = useState(false);
   const [showCustomQAModal, setShowCustomQAModal] = useState(false);
+
+  // Record Payment Modal
+  const [showPaymentModal, setShowPaymentModal] = useState(false);
+  const [paymentForm, setPaymentForm] = useState({
+    amount: '',
+    payment_date: new Date().toISOString().substring(0, 10),
+    payment_method: 'Bank Transfer',
+    invoice_number: '',
+    notes: '',
+    milestone_id: ''
+  });
+
+  // Convert Planned Cost Modal
+  const [showConvertCostModal, setShowConvertCostModal] = useState(false);
+  const [selectedCostToConvert, setSelectedCostToConvert] = useState(null);
+  const [convertCostForm, setConvertCostForm] = useState({
+    actual_amount: '',
+    expense_date: new Date().toISOString().substring(0, 10),
+    payment_method: 'UPI',
+    notes: ''
+  });
+
+  // Add Requirement Modal
+  const [showReqModal, setShowReqModal] = useState(false);
+  const [newReqName, setNewReqName] = useState('');
+
+  // Add Team Member Modal
+  const [showTeamModal, setShowTeamModal] = useState(false);
+  const [peopleList, setPeopleList] = useState([]);
+  const [selectedPersonId, setSelectedPersonId] = useState('');
+  const [selectedPersonRole, setSelectedPersonRole] = useState('Developer');
+
+  // Project Completion Warning Guard
+  const [completionWarning, setCompletionWarning] = useState({
+    isOpen: false,
+    outstanding: 0,
+    unpassedQA: 0,
+    pendingReqs: 0,
+    targetStatus: 'Completed'
+  });
 
   const [deleteConfirm, setDeleteConfirm] = useState({ isOpen: false, type: '', id: null, title: '' });
   const [actionLoading, setActionLoading] = useState(false);
@@ -76,6 +97,9 @@ export default function DeliveryModule({ initialProjectId, settings = {}, onRefr
   useEffect(() => {
     if (initialProjectId) {
       loadProjectDetail(initialProjectId);
+    } else {
+      setSelectedProject(null);
+      setProjectDetails(null);
     }
   }, [initialProjectId]);
 
@@ -107,56 +131,236 @@ export default function DeliveryModule({ initialProjectId, settings = {}, onRefr
     }
   }
 
-  // Handle Save Project
-  async function handleSaveProject(e) {
-    e.preventDefault();
-    setActionLoading(true);
-    const form = e.target;
-    const payload = {
-      project_name: form.project_name.value,
-      client_name: form.client_name.value,
-      project_value: form.project_value.value,
-      start_date: form.start_date.value || null,
-      deadline: form.deadline.value || null,
-      status: form.status.value,
-      priority: form.priority.value,
-      assigned_person: form.assigned_person.value,
-      notes: form.notes.value
-    };
-
+  async function loadPeople() {
     try {
-      let res;
-      if (editingProject) {
-        res = await fetch(`/api/founder-os/projects/${editingProject.id}`, {
-          method: 'PUT',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(payload)
-        });
-      } else {
-        res = await fetch('/api/founder-os/projects', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(payload)
-        });
-      }
+      const res = await fetch('/api/founder-os/people');
+      const data = await res.json();
+      if (data.success) setPeopleList((data.people || []).filter(person => person.status === 'Active'));
+    } catch (err) {
+      console.error('Error loading people list:', err);
+    }
+  }
 
+  // Handle Project Quick Status Change (with completion guard)
+  async function handleProjectStatusChange(newStatus) {
+    if (!selectedProject) return;
+
+    if (newStatus === 'Completed') {
+      const outstanding = projectDetails?.financials?.outstanding || 0;
+      const unpassedQA = projectDetails?.qaChecklist?.filter(q => !q.is_checked).length || 0;
+      const pendingReqs = projectDetails?.requirements?.filter(r => r.status === 'Pending').length || 0;
+
+      if (outstanding > 0 || unpassedQA > 0 || pendingReqs > 0) {
+        setCompletionWarning({
+          isOpen: true,
+          outstanding,
+          unpassedQA,
+          pendingReqs,
+          targetStatus: 'Completed'
+        });
+        return;
+      }
+    }
+
+    await executeStatusUpdate(newStatus);
+  }
+
+  async function executeStatusUpdate(newStatus) {
+    try {
+      const res = await fetch(`/api/founder-os/projects/${selectedProject.id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ status: newStatus })
+      });
       const data = await res.json();
       if (data.success) {
-        showToast(editingProject ? 'Project updated' : 'Project created with 11-point QA checklist', 'success');
-        setShowProjectModal(false);
-        setEditingProject(null);
+        showToast(`Project moved to ${newStatus}`, 'success');
+        loadProjectDetail(selectedProject.id);
         fetchProjects();
-        if (selectedProject?.id === (editingProject?.id || data.project?.id)) {
-          loadProjectDetail(editingProject?.id || data.project?.id);
-        }
         if (onRefreshDashboard) onRefreshDashboard();
-      } else {
-        showToast(data.error || 'Failed to save project', 'error');
       }
     } catch (err) {
-      showToast('Error saving project', 'error');
+      showToast('Failed to update project status', 'error');
+    }
+  }
+
+  // Handle Record Payment
+  async function handleRecordPayment(e) {
+    e.preventDefault();
+    if (!selectedProject) return;
+    setActionLoading(true);
+
+    try {
+      const res = await fetch(`/api/founder-os/projects/${selectedProject.id}/payment`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(paymentForm)
+      });
+      const data = await res.json();
+      if (data.success) {
+        showToast(`Payment of ${currency}${parseFloat(paymentForm.amount).toLocaleString('en-IN')} recorded`, 'success');
+        setShowPaymentModal(false);
+        setPaymentForm({
+          amount: '',
+          payment_date: new Date().toISOString().substring(0, 10),
+          payment_method: 'Bank Transfer',
+          invoice_number: '',
+          notes: '',
+          milestone_id: ''
+        });
+        loadProjectDetail(selectedProject.id);
+        fetchProjects();
+        if (onRefreshDashboard) onRefreshDashboard();
+      } else {
+        showToast(data.error || 'Failed to record payment', 'error');
+      }
+    } catch (err) {
+      showToast('Error recording payment', 'error');
     } finally {
       setActionLoading(false);
+    }
+  }
+
+  // Handle Convert Planned Cost to Actual Expense
+  async function handleConvertCostSubmit(e) {
+    e.preventDefault();
+    if (!selectedProject || !selectedCostToConvert) return;
+    setActionLoading(true);
+
+    try {
+      const res = await fetch(`/api/founder-os/projects/${selectedProject.id}/convert-cost`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          planned_cost_id: selectedCostToConvert.id,
+          ...convertCostForm
+        })
+      });
+      const data = await res.json();
+      if (data.success) {
+        showToast('Planned cost converted to actual Expense record', 'success');
+        setShowConvertCostModal(false);
+        setSelectedCostToConvert(null);
+        loadProjectDetail(selectedProject.id);
+        fetchProjects();
+        if (onRefreshDashboard) onRefreshDashboard();
+      } else {
+        showToast(data.error || 'Failed to convert cost', 'error');
+      }
+    } catch (err) {
+      showToast('Error converting cost', 'error');
+    } finally {
+      setActionLoading(false);
+    }
+  }
+
+  // Handle Toggle Stage
+  async function handleToggleStageStatus(stage) {
+    if (!selectedProject) return;
+    const nextStatus = stage.status === 'Completed' ? 'Pending' : 'Completed';
+    try {
+      const res = await fetch(`/api/founder-os/projects/${selectedProject.id}/stages`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ stage_id: stage.id, status: nextStatus })
+      });
+      const data = await res.json();
+      if (data.success) {
+        loadProjectDetail(selectedProject.id);
+      }
+    } catch (err) {
+      showToast('Failed to update stage status', 'error');
+    }
+  }
+
+  // Handle Requirement Status Toggle
+  async function handleRequirementStatusChange(reqId, nextStatus) {
+    if (!selectedProject) return;
+    try {
+      const res = await fetch(`/api/founder-os/projects/${selectedProject.id}/requirements`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ requirement_id: reqId, status: nextStatus })
+      });
+      const data = await res.json();
+      if (data.success) {
+        loadProjectDetail(selectedProject.id);
+      }
+    } catch (err) {
+      showToast('Failed to update requirement', 'error');
+    }
+  }
+
+  // Handle Add Requirement
+  async function handleAddRequirement(e) {
+    e.preventDefault();
+    if (!selectedProject || !newReqName.trim()) return;
+    setActionLoading(true);
+
+    try {
+      const res = await fetch(`/api/founder-os/projects/${selectedProject.id}/requirements`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ item_name: newReqName.trim() })
+      });
+      const data = await res.json();
+      if (data.success) {
+        showToast('Requirement added', 'success');
+        setNewReqName('');
+        setShowReqModal(false);
+        loadProjectDetail(selectedProject.id);
+      }
+    } catch (err) {
+      showToast('Error adding requirement', 'error');
+    } finally {
+      setActionLoading(false);
+    }
+  }
+
+  // Handle Add Team Member
+  async function handleAddTeamMember(e) {
+    e.preventDefault();
+    if (!selectedProject || !selectedPersonId) return;
+    const person = peopleList.find(p => String(p.id) === String(selectedPersonId));
+    if (!person) return;
+
+    setActionLoading(true);
+    try {
+      const res = await fetch(`/api/founder-os/projects/${selectedProject.id}/team`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          person_id: person.id,
+          person_name: person.name,
+          role: selectedPersonRole
+        })
+      });
+      const data = await res.json();
+      if (data.success) {
+        showToast('Team member assigned', 'success');
+        setShowTeamModal(false);
+        loadProjectDetail(selectedProject.id);
+      }
+    } catch (err) {
+      showToast('Error assigning team member', 'error');
+    } finally {
+      setActionLoading(false);
+    }
+  }
+
+  async function handleRemoveTeamMember(teamMemberId) {
+    if (!selectedProject) return;
+    try {
+      const res = await fetch(`/api/founder-os/projects/${selectedProject.id}/team?teamMemberId=${teamMemberId}`, {
+        method: 'DELETE'
+      });
+      const data = await res.json();
+      if (data.success) {
+        showToast('Member removed from project', 'success');
+        loadProjectDetail(selectedProject.id);
+      }
+    } catch (err) {
+      showToast('Failed to remove team member', 'error');
     }
   }
 
@@ -172,6 +376,7 @@ export default function DeliveryModule({ initialProjectId, settings = {}, onRefr
       assigned_to: form.assigned_to.value,
       priority: form.priority.value,
       status: form.status.value,
+      stage_name: form.stage_name?.value || null,
       deadline: form.deadline.value || null
     };
 
@@ -228,6 +433,26 @@ export default function DeliveryModule({ initialProjectId, settings = {}, onRefr
     }
   }
 
+  // Handle QA Toggle Check
+  async function handleToggleQA(qaItem) {
+    if (!selectedProject) return;
+    const newChecked = !qaItem.is_checked;
+    try {
+      const res = await fetch(`/api/founder-os/projects/${selectedProject.id}/qa`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ qaId: qaItem.id, is_checked: newChecked })
+      });
+      const data = await res.json();
+      if (data.success) {
+        loadProjectDetail(selectedProject.id);
+        fetchProjects();
+      }
+    } catch (err) {
+      showToast('Failed to update QA item', 'error');
+    }
+  }
+
   // Handle Save Feedback
   async function handleSaveFeedback(e) {
     e.preventDefault();
@@ -258,59 +483,6 @@ export default function DeliveryModule({ initialProjectId, settings = {}, onRefr
       }
     } catch (err) {
       showToast('Error logging feedback', 'error');
-    } finally {
-      setActionLoading(false);
-    }
-  }
-
-  // Handle QA Toggle Check
-  async function handleToggleQA(qaItem) {
-    if (!selectedProject) return;
-    const newChecked = !qaItem.is_checked;
-    try {
-      const res = await fetch(`/api/founder-os/projects/${selectedProject.id}/qa`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ qaId: qaItem.id, is_checked: newChecked })
-      });
-      const data = await res.json();
-      if (data.success) {
-        loadProjectDetail(selectedProject.id);
-        fetchProjects();
-      }
-    } catch (err) {
-      showToast('Failed to update QA item', 'error');
-    }
-  }
-
-  // Handle Add Custom QA Item
-  async function handleAddCustomQA(e) {
-    e.preventDefault();
-    if (!selectedProject) return;
-    setActionLoading(true);
-    const form = e.target;
-    const payload = {
-      item_label: form.item_label.value,
-      notes: form.notes.value
-    };
-
-    try {
-      const res = await fetch(`/api/founder-os/projects/${selectedProject.id}/qa`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload)
-      });
-      const data = await res.json();
-      if (data.success) {
-        showToast('Custom QA item added', 'success');
-        setShowCustomQAModal(false);
-        loadProjectDetail(selectedProject.id);
-        fetchProjects();
-      } else {
-        showToast(data.error || 'Failed to add QA item', 'error');
-      }
-    } catch (err) {
-      showToast('Error adding QA item', 'error');
     } finally {
       setActionLoading(false);
     }
@@ -348,12 +520,16 @@ export default function DeliveryModule({ initialProjectId, settings = {}, onRefr
     }
   }
 
+  const fin = projectDetails?.financials || {};
+  const setup = projectDetails?.setup || {};
+  const missingItems = setup.missingItems || [];
+
   return (
     <div className="space-y-6 pb-12">
-      {/* If a project is selected, render Project Detail View */}
+      {/* If a project is selected, render Project 360° Command Center */}
       {selectedProject ? (
         <div className="space-y-5 animate-fadeIn">
-          {/* Top Bar with Back Button */}
+          {/* Top Bar with Navigation & Actions */}
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4 border-b border-slate-200 pb-4">
             <div className="flex items-center gap-3">
               <button
@@ -369,30 +545,50 @@ export default function DeliveryModule({ initialProjectId, settings = {}, onRefr
                   <h2 className="text-base sm:text-lg font-bold text-slate-900 font-outfit">
                     {selectedProject.project_name}
                   </h2>
-                  <span className={`px-2 py-0.5 rounded text-[10px] font-bold uppercase ${
-                    selectedProject.status === 'Completed'
-                      ? 'bg-emerald-50 text-emerald-700 border border-emerald-200'
-                      : 'bg-violet-50 text-violet-700 border border-violet-200'
-                  }`}>
-                    {selectedProject.status}
+                  <select
+                    value={selectedProject.status}
+                    onChange={(e) => handleProjectStatusChange(e.target.value)}
+                    className="px-2.5 py-0.5 rounded text-[11px] font-bold uppercase bg-violet-50 text-violet-800 border border-violet-200 cursor-pointer focus:outline-none"
+                  >
+                    {PROJECT_STATUSES.map(s => <option key={s} value={s}>{s}</option>)}
+                  </select>
+                  <span className="px-2 py-0.5 rounded text-[10px] font-bold uppercase bg-slate-100 text-slate-700 border border-slate-200">
+                    {selectedProject.project_type || 'Website'}
                   </span>
                 </div>
-                <span className="text-xs text-slate-500">
-                  Client: <strong className="text-slate-800">{selectedProject.client_name}</strong>
-                  {selectedProject.assigned_person && ` • Assigned: ${selectedProject.assigned_person}`}
-                </span>
+                <div className="text-xs text-slate-500 flex items-center gap-2 mt-0.5 flex-wrap">
+                  <span>Client: <strong className="text-slate-800">{selectedProject.client_name}</strong></span>
+                  {selectedProject.deadline && (
+                    <span>• Due: <strong className="text-slate-700">{new Date(selectedProject.deadline).toLocaleDateString()}</strong></span>
+                  )}
+                  {selectedProject.assigned_person && <span>• Lead: {selectedProject.assigned_person}</span>}
+                </div>
               </div>
             </div>
 
             <div className="flex items-center gap-2">
               <button
-                onClick={() => { setEditingProject(selectedProject); setShowProjectModal(true); }}
-                className="px-3.5 py-2 rounded-xl bg-white hover:bg-slate-50 text-slate-700 border border-slate-200 text-xs font-bold uppercase tracking-wider shadow-2xs cursor-pointer min-h-[38px]"
+                onClick={() => {
+                  setPaymentForm({
+                    amount: fin.outstanding ? String(fin.outstanding) : '',
+                    payment_date: new Date().toISOString().substring(0, 10),
+                    payment_method: 'Bank Transfer',
+                    invoice_number: '',
+                    notes: '',
+                    milestone_id: ''
+                  });
+                  setShowPaymentModal(true);
+                }}
+                className="px-3.5 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold uppercase tracking-wider shadow-xs shadow-emerald-600/20 cursor-pointer min-h-[38px] flex items-center gap-1.5"
               >
-                Edit Project
+                <CreditCard size={15} weight="bold" />
+                <span>Record Payment</span>
               </button>
+
               <button
-                onClick={() => setDeleteConfirm({ isOpen: true, type: 'project', id: selectedProject.id, title: selectedProject.project_name })}
+                onClick={() => {
+                  setDeleteConfirm({ isOpen: true, type: 'project', id: selectedProject.id, title: selectedProject.project_name });
+                }}
                 className="p-2 rounded-xl bg-rose-50 hover:bg-rose-100 text-rose-600 border border-rose-200 cursor-pointer min-h-[38px] min-w-[38px] flex items-center justify-center"
                 title="Delete Project"
               >
@@ -401,89 +597,177 @@ export default function DeliveryModule({ initialProjectId, settings = {}, onRefr
             </div>
           </div>
 
+          {/* 360° Realized vs Projected Financial Command Center */}
+          <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-6 gap-2.5 text-xs">
+            <div className="p-3.5 rounded-2xl bg-white border border-slate-200 shadow-xs">
+              <span className="text-slate-400 text-[10px] uppercase font-bold block mb-1">Contract Value</span>
+              <span className="text-sm font-bold text-slate-900 font-mono">
+                {currency}{parseFloat(fin.contractValue || 0).toLocaleString('en-IN')}
+              </span>
+            </div>
+
+            <div className="p-3.5 rounded-2xl bg-emerald-50/70 border border-emerald-200 shadow-xs">
+              <span className="text-emerald-700 text-[10px] uppercase font-bold block mb-1">Cash Received</span>
+              <span className="text-sm font-bold text-emerald-800 font-mono">
+                {currency}{parseFloat(fin.cashReceived || 0).toLocaleString('en-IN')}
+              </span>
+            </div>
+
+            <div className="p-3.5 rounded-2xl bg-amber-50/70 border border-amber-200 shadow-xs">
+              <span className="text-amber-700 text-[10px] uppercase font-bold block mb-1">Outstanding</span>
+              <span className="text-sm font-bold text-amber-800 font-mono">
+                {currency}{parseFloat(fin.outstanding || 0).toLocaleString('en-IN')}
+              </span>
+            </div>
+
+            <div className="p-3.5 rounded-2xl bg-rose-50/70 border border-rose-200 shadow-xs">
+              <span className="text-rose-700 text-[10px] uppercase font-bold block mb-1">Actual Expenses</span>
+              <span className="text-sm font-bold text-rose-800 font-mono">
+                {currency}{parseFloat(fin.actualExpenses || 0).toLocaleString('en-IN')}
+              </span>
+            </div>
+
+            <div className="p-3.5 rounded-2xl bg-slate-50 border border-slate-200 shadow-xs">
+              <span className="text-slate-500 text-[10px] uppercase font-bold block mb-1">Planned Costs</span>
+              <span className="text-sm font-bold text-slate-800 font-mono">
+                {currency}{parseFloat(fin.plannedCosts || 0).toLocaleString('en-IN')}
+              </span>
+            </div>
+
+            <div className="p-3.5 rounded-2xl bg-violet-50/70 border border-violet-200 shadow-xs">
+              <span className="text-violet-700 text-[10px] uppercase font-bold block mb-1">Projected Profit</span>
+              <span className="text-sm font-bold text-violet-900 font-mono">
+                {currency}{parseFloat(fin.projectedProfit || 0).toLocaleString('en-IN')}
+              </span>
+            </div>
+          </div>
+
+          {/* Setup Completion Indicator & Missing Items Banner */}
+          <div className="p-4 rounded-2xl bg-white border border-slate-200 shadow-xs space-y-3">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+              <div className="flex items-center gap-3">
+                <span className="text-xs font-bold text-slate-900 uppercase tracking-wider font-outfit">
+                  Project Setup Progress:
+                </span>
+                <span className="text-xs font-mono font-bold text-violet-700">
+                  {setup.percentage || 0}% Complete
+                </span>
+              </div>
+
+              <div className="flex items-center gap-2 text-[11px] text-slate-600 flex-wrap">
+                <span className={setup.checklist?.client ? 'text-emerald-700 font-bold' : 'text-slate-400'}>Client ✓</span>
+                <span>•</span>
+                <span className={setup.checklist?.finance ? 'text-emerald-700 font-bold' : 'text-slate-400'}>Finance ✓</span>
+                <span>•</span>
+                <span className={setup.checklist?.paymentPlan ? 'text-emerald-700 font-bold' : 'text-slate-400'}>Payment Plan ✓</span>
+                <span>•</span>
+                <span className={setup.checklist?.delivery ? 'text-emerald-700 font-bold' : 'text-slate-400'}>Delivery Stages ✓</span>
+                <span>•</span>
+                <span className={setup.checklist?.team ? 'text-emerald-700 font-bold' : 'text-slate-400'}>Team Staffed {setup.checklist?.team ? '✓' : '—'}</span>
+                <span>•</span>
+                <span className={setup.checklist?.requirements ? 'text-emerald-700 font-bold' : 'text-slate-400'}>Requirements ✓</span>
+              </div>
+            </div>
+
+            {/* Progress Bar */}
+            <div className="w-full bg-slate-100 rounded-full h-2 overflow-hidden">
+              <div
+                className="bg-violet-600 h-2 rounded-full transition-all duration-500"
+                style={{ width: `${setup.percentage || 0}%` }}
+              />
+            </div>
+
+            {/* Smart Missing Setup Warning Banner */}
+            {missingItems.length > 0 && (
+              <div className="p-3 rounded-xl bg-amber-50 border border-amber-200 text-xs text-amber-900 space-y-1 animate-fadeIn">
+                <div className="flex items-center gap-1.5 font-bold">
+                  <Warning size={16} weight="bold" className="text-amber-600" />
+                  <span>{missingItems.length} setup item{missingItems.length > 1 ? 's' : ''} still need attention:</span>
+                </div>
+                <ul className="list-disc list-inside space-y-0.5 text-[11px] text-amber-800 pl-1">
+                  {missingItems.map(item => (
+                    <li key={item.key}>{item.text}</li>
+                  ))}
+                </ul>
+              </div>
+            )}
+          </div>
+
           {/* Project Detail Subtabs */}
-          <div className="flex items-center gap-1.5 p-1 rounded-xl bg-white border border-slate-200 shadow-xs overflow-x-auto no-scrollbar w-full sm:w-fit">
-            <button
-              onClick={() => setActiveDetailTab('overview')}
-              className={`px-3.5 py-2 rounded-lg text-xs font-bold uppercase tracking-wider transition-all whitespace-nowrap min-h-[36px] ${
-                activeDetailTab === 'overview' ? 'bg-violet-600 text-white shadow-xs' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
-              }`}
-            >
-              Overview
-            </button>
-            <button
-              onClick={() => setActiveDetailTab('tasks')}
-              className={`px-3.5 py-2 rounded-lg text-xs font-bold uppercase tracking-wider transition-all flex items-center gap-1.5 whitespace-nowrap min-h-[36px] ${
-                activeDetailTab === 'tasks' ? 'bg-violet-600 text-white shadow-xs' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
-              }`}
-            >
-              <span>Tasks</span>
-              <span className={`px-1.5 py-0.5 rounded-full text-[10px] font-bold ${
-                activeDetailTab === 'tasks' ? 'bg-violet-700 text-white' : 'bg-slate-100 text-slate-700'
-              }`}>
-                {projectDetails?.tasks?.length || 0}
-              </span>
-            </button>
-            <button
-              onClick={() => setActiveDetailTab('qa')}
-              className={`px-3.5 py-2 rounded-lg text-xs font-bold uppercase tracking-wider transition-all flex items-center gap-1.5 whitespace-nowrap min-h-[36px] ${
-                activeDetailTab === 'qa' ? 'bg-violet-600 text-white shadow-xs' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
-              }`}
-            >
-              <ListChecks size={15} weight="bold" />
-              <span>QA Checklist</span>
-              <span className={`px-1.5 py-0.5 rounded-full text-[10px] font-bold ${
-                activeDetailTab === 'qa' ? 'bg-violet-700 text-white' : 'bg-slate-100 text-slate-700'
-              }`}>
-                {projectDetails?.qaChecklist?.filter(q => q.is_checked).length || 0}/{projectDetails?.qaChecklist?.length || 0}
-              </span>
-            </button>
-            <button
-              onClick={() => setActiveDetailTab('feedback')}
-              className={`px-3.5 py-2 rounded-lg text-xs font-bold uppercase tracking-wider transition-all flex items-center gap-1.5 whitespace-nowrap min-h-[36px] ${
-                activeDetailTab === 'feedback' ? 'bg-violet-600 text-white shadow-xs' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
-              }`}
-            >
-              <ChatCircleText size={15} weight="bold" />
-              <span>Feedback</span>
-              <span className={`px-1.5 py-0.5 rounded-full text-[10px] font-bold ${
-                activeDetailTab === 'feedback' ? 'bg-violet-700 text-white' : 'bg-slate-100 text-slate-700'
-              }`}>
-                {projectDetails?.feedback?.length || 0}
-              </span>
-            </button>
+          <div className="flex items-center gap-1.5 p-1 rounded-xl bg-white border border-slate-200 shadow-xs overflow-x-auto no-scrollbar w-full">
+            {[
+              { id: 'overview', label: 'Overview' },
+              { id: 'tasks', label: 'Tasks', badge: projectDetails?.tasks?.length },
+              { id: 'stages', label: 'Delivery Stages', badge: projectDetails?.stages?.length },
+              { id: 'finance', label: 'Finance & Profitability' },
+              { id: 'payments', label: 'Payment Schedule', badge: projectDetails?.paymentSchedules?.length },
+              { id: 'requirements', label: 'Client Requirements', badge: projectDetails?.requirements?.length },
+              { id: 'team', label: 'Team', badge: projectDetails?.team?.length },
+              { id: 'qa', label: 'QA Checklist', badge: `${projectDetails?.qaChecklist?.filter(q => q.is_checked).length || 0}/${projectDetails?.qaChecklist?.length || 0}` },
+              { id: 'feedback', label: 'Feedback', badge: projectDetails?.feedback?.length },
+              { id: 'activity', label: 'Activity' }
+            ].map(tab => (
+              <button
+                key={tab.id}
+                onClick={() => setActiveDetailTab(tab.id)}
+                className={`px-3 py-2 rounded-lg text-xs font-bold uppercase tracking-wider transition-all whitespace-nowrap min-h-[36px] flex items-center gap-1.5 cursor-pointer ${
+                  activeDetailTab === tab.id ? 'bg-violet-600 text-white shadow-xs' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
+                }`}
+              >
+                <span>{tab.label}</span>
+                {tab.badge !== undefined && (
+                  <span className={`px-1.5 py-0.2 rounded-full text-[10px] font-bold ${
+                    activeDetailTab === tab.id ? 'bg-violet-700 text-white' : 'bg-slate-100 text-slate-700'
+                  }`}>
+                    {tab.badge}
+                  </span>
+                )}
+              </button>
+            ))}
           </div>
 
           {/* TAB 1: OVERVIEW */}
           {activeDetailTab === 'overview' && (
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-              <div className="lg:col-span-2 space-y-6">
+              <div className="lg:col-span-2 space-y-4">
                 <div className="p-5 rounded-2xl bg-white border border-slate-200 shadow-xs space-y-4">
                   <h3 className="text-sm font-bold text-slate-900 uppercase tracking-wider font-outfit">
-                    Project Summary
+                    Project & Client Scope
                   </h3>
-                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs">
-                    <div className="p-3.5 rounded-xl bg-slate-50 border border-slate-100">
-                      <span className="text-slate-500 block mb-1 font-medium">Project Value</span>
-                      <span className="text-sm font-bold text-slate-900 font-mono">{currency}{parseFloat(selectedProject.project_value || 0).toLocaleString('en-IN')}</span>
+
+                  <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 text-xs">
+                    <div className="p-3 rounded-xl bg-slate-50 border border-slate-100">
+                      <span className="text-slate-500 block mb-1">Client Name</span>
+                      <strong className="text-slate-900">{selectedProject.client_name}</strong>
                     </div>
-                    <div className="p-3.5 rounded-xl bg-slate-50 border border-slate-100">
-                      <span className="text-slate-500 block mb-1 font-medium">Priority</span>
-                      <span className="text-sm font-bold text-slate-900">{selectedProject.priority}</span>
+                    <div className="p-3 rounded-xl bg-slate-50 border border-slate-100">
+                      <span className="text-slate-500 block mb-1">Contact Email</span>
+                      <strong className="text-slate-900">{selectedProject.client_email || '—'}</strong>
                     </div>
-                    <div className="p-3.5 rounded-xl bg-slate-50 border border-slate-100">
-                      <span className="text-slate-500 block mb-1 font-medium">Start Date</span>
-                      <span className="text-sm font-bold text-slate-900">{selectedProject.start_date ? new Date(selectedProject.start_date).toLocaleDateString() : '—'}</span>
+                    <div className="p-3 rounded-xl bg-slate-50 border border-slate-100">
+                      <span className="text-slate-500 block mb-1">Contact Phone</span>
+                      <strong className="text-slate-900">{selectedProject.client_phone || '—'}</strong>
                     </div>
-                    <div className="p-3.5 rounded-xl bg-slate-50 border border-slate-100">
-                      <span className="text-slate-500 block mb-1 font-medium">Deadline</span>
-                      <span className="text-sm font-bold text-slate-900">{selectedProject.deadline ? new Date(selectedProject.deadline).toLocaleDateString() : '—'}</span>
+                  </div>
+
+                  <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 text-xs">
+                    <div className="p-3 rounded-xl bg-slate-50 border border-slate-100">
+                      <span className="text-slate-500 block mb-1">Domain Manager</span>
+                      <strong className="text-slate-900">{selectedProject.domain_manager || 'Not decided'}</strong>
+                    </div>
+                    <div className="p-3 rounded-xl bg-slate-50 border border-slate-100">
+                      <span className="text-slate-500 block mb-1">Hosting Manager</span>
+                      <strong className="text-slate-900">{selectedProject.hosting_manager || 'Not decided'}</strong>
+                    </div>
+                    <div className="p-3 rounded-xl bg-slate-50 border border-slate-100">
+                      <span className="text-slate-500 block mb-1">Hosting Provider</span>
+                      <strong className="text-slate-900">{selectedProject.hosting_provider || '—'}</strong>
                     </div>
                   </div>
 
                   {selectedProject.notes && (
                     <div className="pt-2">
-                      <span className="text-slate-700 block text-xs font-bold mb-1.5">Project Notes & Architecture</span>
+                      <span className="text-slate-700 block text-xs font-bold mb-1.5">Project Scope / Technical Notes</span>
                       <div className="p-3.5 rounded-xl bg-slate-50 border border-slate-100 text-xs text-slate-700 leading-relaxed font-mono">
                         {selectedProject.notes}
                       </div>
@@ -492,23 +776,31 @@ export default function DeliveryModule({ initialProjectId, settings = {}, onRefr
                 </div>
               </div>
 
-              {/* Progress & Quick Stats */}
+              {/* Quick Status Sidebar */}
               <div className="space-y-4">
-                <div className="p-5 rounded-2xl bg-white border border-slate-200 shadow-xs space-y-3">
+                <div className="p-5 rounded-2xl bg-white border border-slate-200 shadow-xs space-y-3 text-xs">
                   <h3 className="text-sm font-bold text-slate-900 uppercase tracking-wider font-outfit">
-                    Readiness & Quality
+                    Quality & Delivery Status
                   </h3>
-                  <div className="space-y-2.5 text-xs">
+                  <div className="space-y-2">
                     <div className="flex justify-between items-center p-2 rounded-xl bg-slate-50 border border-slate-100 text-slate-600">
                       <span className="font-semibold">Tasks Completed</span>
                       <span className="font-bold text-slate-900 font-mono">
                         {projectDetails?.tasks?.filter(t => t.status === 'Completed').length || 0} / {projectDetails?.tasks?.length || 0}
                       </span>
                     </div>
+
                     <div className="flex justify-between items-center p-2 rounded-xl bg-emerald-50 border border-emerald-100 text-emerald-800">
-                      <span className="font-semibold">QA Items Verified</span>
+                      <span className="font-semibold">QA Criteria Verified</span>
                       <span className="font-bold text-emerald-700 font-mono">
                         {projectDetails?.qaChecklist?.filter(q => q.is_checked).length || 0} / {projectDetails?.qaChecklist?.length || 0}
+                      </span>
+                    </div>
+
+                    <div className="flex justify-between items-center p-2 rounded-xl bg-slate-50 border border-slate-100 text-slate-600">
+                      <span className="font-semibold">Client Requirements Received</span>
+                      <span className="font-bold text-slate-900 font-mono">
+                        {projectDetails?.requirements?.filter(r => r.status === 'Received').length || 0} / {projectDetails?.requirements?.length || 0}
                       </span>
                     </div>
                   </div>
@@ -522,11 +814,11 @@ export default function DeliveryModule({ initialProjectId, settings = {}, onRefr
             <div className="space-y-4">
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
                 <h3 className="text-sm font-bold text-slate-900 uppercase tracking-wider font-outfit">
-                  Project Tasks ({projectDetails?.tasks?.length || 0})
+                  Project Deliverable Tasks ({projectDetails?.tasks?.length || 0})
                 </h3>
                 <button
                   onClick={() => { setEditingTask(null); setShowTaskModal(true); }}
-                  className="w-full sm:w-auto inline-flex items-center justify-center gap-1.5 px-3.5 py-2 rounded-xl bg-violet-600 hover:bg-violet-700 text-white font-bold text-xs uppercase tracking-wider shadow-sm shadow-violet-600/20 cursor-pointer min-h-[38px]"
+                  className="w-full sm:w-auto inline-flex items-center justify-center gap-1.5 px-3.5 py-2 rounded-xl bg-violet-600 hover:bg-violet-700 text-white font-bold text-xs uppercase tracking-wider shadow-xs shadow-violet-600/20 cursor-pointer min-h-[38px]"
                 >
                   <Plus size={14} weight="bold" />
                   <span>Add Task</span>
@@ -537,8 +829,8 @@ export default function DeliveryModule({ initialProjectId, settings = {}, onRefr
                 <EmptyState
                   icon={CheckSquare}
                   title="No tasks created for this project"
-                  description="Break the project into deliverables and assign them to team members."
-                  actionLabel="Add First Task"
+                  description="Add deliverable tasks and assign them to team members."
+                  actionLabel="Add Task"
                   onAction={() => { setEditingTask(null); setShowTaskModal(true); }}
                 />
               ) : (
@@ -548,7 +840,7 @@ export default function DeliveryModule({ initialProjectId, settings = {}, onRefr
                       <div className="flex items-start gap-3 min-w-0">
                         <button
                           onClick={() => handleToggleTaskStatus(task)}
-                          className="mt-0.5 text-emerald-600 hover:text-emerald-700 cursor-pointer"
+                          className="mt-0.5 text-emerald-600 hover:text-emerald-700 cursor-pointer shrink-0"
                         >
                           {task.status === 'Completed' ? (
                             <CheckSquare size={20} weight="fill" />
@@ -557,9 +849,16 @@ export default function DeliveryModule({ initialProjectId, settings = {}, onRefr
                           )}
                         </button>
                         <div className="min-w-0">
-                          <span className={`text-xs sm:text-sm font-bold ${task.status === 'Completed' ? 'line-through text-slate-400' : 'text-slate-900'}`}>
-                            {task.title}
-                          </span>
+                          <div className="flex items-center gap-2 flex-wrap">
+                            <span className={`text-xs sm:text-sm font-bold ${task.status === 'Completed' ? 'line-through text-slate-400' : 'text-slate-900'}`}>
+                              {task.title}
+                            </span>
+                            {task.stage_name && (
+                              <span className="px-1.5 py-0.2 rounded text-[9px] font-bold bg-violet-50 text-violet-700 border border-violet-200">
+                                {task.stage_name}
+                              </span>
+                            )}
+                          </div>
                           {task.description && (
                             <p className="text-xs text-slate-500 mt-0.5 truncate max-w-md">
                               {task.description}
@@ -596,7 +895,354 @@ export default function DeliveryModule({ initialProjectId, settings = {}, onRefr
             </div>
           )}
 
-          {/* TAB 3: QA CHECKLIST */}
+          {/* TAB 3: DELIVERY STAGES */}
+          {activeDetailTab === 'stages' && (
+            <div className="space-y-4">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                <div>
+                  <h3 className="text-sm font-bold text-slate-900 uppercase tracking-wider font-outfit">
+                    Delivery Workflow Stages Pipeline
+                  </h3>
+                  <p className="text-xs text-slate-500">Track delivery milestones from kickoff to final sign-off.</p>
+                </div>
+              </div>
+
+              {(!projectDetails?.stages || projectDetails.stages.length === 0) ? (
+                <EmptyState
+                  icon={ListChecks}
+                  title="No delivery stages configured"
+                  description="Stages help monitor each phase of project fulfillment."
+                />
+              ) : (
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+                  {projectDetails.stages.map((stage, idx) => {
+                    const isCompleted = stage.status === 'Completed';
+                    return (
+                      <div
+                        key={stage.id}
+                        onClick={() => handleToggleStageStatus(stage)}
+                        className={`p-4 rounded-2xl border transition-all cursor-pointer flex items-center justify-between shadow-xs ${
+                          isCompleted
+                            ? 'bg-emerald-50/70 border-emerald-300'
+                            : 'bg-white border-slate-200 hover:bg-slate-50'
+                        }`}
+                      >
+                        <div className="flex items-center gap-3 min-w-0">
+                          <div className={`w-7 h-7 rounded-xl flex items-center justify-center text-xs font-bold shrink-0 ${
+                            isCompleted ? 'bg-emerald-600 text-white' : 'bg-slate-100 text-slate-600 border border-slate-200'
+                          }`}>
+                            {isCompleted ? <Check size={14} weight="bold" /> : idx + 1}
+                          </div>
+                          <div className="min-w-0">
+                            <div className={`text-xs font-bold truncate ${isCompleted ? 'text-emerald-900 line-through' : 'text-slate-900'}`}>
+                              {stage.stage_name}
+                            </div>
+                            <div className="text-[10px] text-slate-400">
+                              {isCompleted ? `Completed ${stage.completed_at ? new Date(stage.completed_at).toLocaleDateString() : ''}` : 'Pending completion'}
+                            </div>
+                          </div>
+                        </div>
+
+                        <span className={`px-2 py-0.5 rounded text-[10px] font-bold uppercase ${
+                          isCompleted ? 'bg-emerald-100 text-emerald-800' : 'bg-slate-100 text-slate-600'
+                        }`}>
+                          {stage.status}
+                        </span>
+                      </div>
+                    );
+                  })}
+                </div>
+              )}
+            </div>
+          )}
+
+          {/* TAB 4: FINANCE & PROFITABILITY */}
+          {activeDetailTab === 'finance' && (
+            <div className="space-y-6">
+              {/* Planned Costs Matrix */}
+              <div className="p-5 rounded-2xl bg-white border border-slate-200 shadow-xs space-y-4">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <h3 className="text-sm font-bold text-slate-900 uppercase tracking-wider font-outfit">
+                      Planned & Budgeted Costs ({projectDetails?.plannedCosts?.length || 0})
+                    </h3>
+                    <p className="text-xs text-slate-500">Planned costs do not count as actual cash spent until converted.</p>
+                  </div>
+                </div>
+
+                {(!projectDetails?.plannedCosts || projectDetails.plannedCosts.length === 0) ? (
+                  <div className="p-4 rounded-xl bg-slate-50 text-center text-xs text-slate-500">
+                    No planned costs budgeted for this project.
+                  </div>
+                ) : (
+                  <div className="rounded-xl border border-slate-200 divide-y divide-slate-100 overflow-hidden text-xs">
+                    {projectDetails.plannedCosts.map(pc => {
+                      const isConverted = pc.status === 'Converted to Expense';
+                      return (
+                        <div key={pc.id} className="p-3.5 flex items-center justify-between gap-3 bg-white hover:bg-slate-50/70">
+                          <div>
+                            <div className="font-bold text-slate-900">{pc.description}</div>
+                            <div className="text-[11px] text-slate-500">
+                              Type: <span className="font-semibold text-slate-700">{pc.cost_type}</span>
+                            </div>
+                          </div>
+
+                          <div className="flex items-center gap-3 shrink-0">
+                            <span className="font-mono font-bold text-slate-900">
+                              {currency}{parseFloat(pc.expected_amount || 0).toLocaleString('en-IN')}
+                            </span>
+
+                            {isConverted ? (
+                              <span className="px-2.5 py-0.5 rounded-lg text-[10px] font-bold uppercase bg-emerald-50 text-emerald-700 border border-emerald-200">
+                                Converted to Expense ✓
+                              </span>
+                            ) : (
+                              <button
+                                onClick={() => {
+                                  setSelectedCostToConvert(pc);
+                                  setConvertCostForm({
+                                    actual_amount: String(pc.expected_amount),
+                                    expense_date: new Date().toISOString().substring(0, 10),
+                                    payment_method: 'UPI',
+                                    notes: ''
+                                  });
+                                  setShowConvertCostModal(true);
+                                }}
+                                className="px-3 py-1.5 rounded-lg bg-violet-600 hover:bg-violet-700 text-white font-bold text-[10px] uppercase tracking-wider cursor-pointer"
+                              >
+                                Convert to Expense
+                              </button>
+                            )}
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                )}
+              </div>
+
+              {/* Actual Project Expenses */}
+              <div className="p-5 rounded-2xl bg-white border border-slate-200 shadow-xs space-y-4">
+                <h3 className="text-sm font-bold text-slate-900 uppercase tracking-wider font-outfit">
+                  Actual Realized Expenses ({projectDetails?.expenses?.length || 0})
+                </h3>
+
+                {(!projectDetails?.expenses || projectDetails.expenses.length === 0) ? (
+                  <div className="p-4 rounded-xl bg-slate-50 text-center text-xs text-slate-500">
+                    No expenses attributed to this project yet.
+                  </div>
+                ) : (
+                  <div className="rounded-xl border border-slate-200 divide-y divide-slate-100 overflow-hidden text-xs">
+                    {projectDetails.expenses.map(exp => (
+                      <div key={exp.id} className="p-3.5 flex items-center justify-between gap-3 bg-white">
+                        <div>
+                          <div className="font-bold text-slate-900">{exp.description}</div>
+                          <div className="text-[11px] text-slate-500">
+                            {new Date(exp.expense_date).toLocaleDateString()} • {exp.category} • {exp.payment_method}
+                          </div>
+                        </div>
+                        <span className="font-mono font-bold text-rose-700">
+                          -{currency}{parseFloat(exp.amount || 0).toLocaleString('en-IN')}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            </div>
+          )}
+
+          {/* TAB 5: PAYMENT SCHEDULE */}
+          {activeDetailTab === 'payments' && (
+            <div className="space-y-4">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                <div>
+                  <h3 className="text-sm font-bold text-slate-900 uppercase tracking-wider font-outfit">
+                    Payment Schedule & Milestones
+                  </h3>
+                  <p className="text-xs text-slate-500">Monitor payment milestones and record client receipts.</p>
+                </div>
+                <button
+                  onClick={() => {
+                    setPaymentForm({
+                      amount: fin.outstanding ? String(fin.outstanding) : '',
+                      payment_date: new Date().toISOString().substring(0, 10),
+                      payment_method: 'Bank Transfer',
+                      invoice_number: '',
+                      notes: '',
+                      milestone_id: ''
+                    });
+                    setShowPaymentModal(true);
+                  }}
+                  className="w-full sm:w-auto inline-flex items-center justify-center gap-1.5 px-3.5 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs uppercase tracking-wider shadow-xs shadow-emerald-600/20 cursor-pointer min-h-[38px]"
+                >
+                  <CreditCard size={15} weight="bold" />
+                  <span>Record Payment</span>
+                </button>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+                {projectDetails?.paymentSchedules?.map(m => {
+                  const isPaid = m.status === 'Received';
+                  return (
+                    <div
+                      key={m.id}
+                      className={`p-4 rounded-2xl border transition-all shadow-xs space-y-2.5 ${
+                        isPaid ? 'bg-emerald-50/70 border-emerald-300' : 'bg-white border-slate-200'
+                      }`}
+                    >
+                      <div className="flex items-center justify-between">
+                        <span className="text-xs font-bold text-slate-900">{m.name}</span>
+                        <span className={`px-2 py-0.5 rounded text-[10px] font-bold uppercase ${
+                          isPaid ? 'bg-emerald-100 text-emerald-800' : 'bg-amber-100 text-amber-800'
+                        }`}>
+                          {m.status}
+                        </span>
+                      </div>
+
+                      <div className="text-base font-bold font-mono text-slate-900">
+                        {currency}{parseFloat(m.amount || 0).toLocaleString('en-IN')}
+                      </div>
+
+                      <div className="text-[11px] text-slate-500 pt-1 border-t border-slate-100">
+                        {isPaid ? (
+                          <span className="text-emerald-700 font-semibold">✓ Paid on {m.paid_date ? new Date(m.paid_date).toLocaleDateString() : 'Kickoff'}</span>
+                        ) : (
+                          <span>Due: {m.due_date ? new Date(m.due_date).toLocaleDateString() : 'Upon Delivery'}</span>
+                        )}
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          )}
+
+          {/* TAB 6: CLIENT REQUIREMENTS */}
+          {activeDetailTab === 'requirements' && (
+            <div className="space-y-4">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                <div>
+                  <h3 className="text-sm font-bold text-slate-900 uppercase tracking-wider font-outfit">
+                    Client Requirements & Access Tracker
+                  </h3>
+                  <p className="text-xs text-slate-500">Track pending assets, text copy, and credentials required from client.</p>
+                </div>
+                <button
+                  onClick={() => setShowReqModal(true)}
+                  className="w-full sm:w-auto inline-flex items-center justify-center gap-1.5 px-3.5 py-2 rounded-xl bg-white hover:bg-slate-50 border border-slate-200 text-xs font-bold text-slate-700 shadow-2xs min-h-[38px]"
+                >
+                  <Plus size={14} weight="bold" />
+                  <span>Add Requirement</span>
+                </button>
+              </div>
+
+              {(!projectDetails?.requirements || projectDetails.requirements.length === 0) ? (
+                <EmptyState
+                  icon={HardDrives}
+                  title="No client requirements recorded"
+                  description="Add items like logos, copywriting, product photos, or DNS access."
+                  actionLabel="Add Requirement"
+                  onAction={() => setShowReqModal(true)}
+                />
+              ) : (
+                <div className="rounded-2xl bg-white border border-slate-200 shadow-xs divide-y divide-slate-100 overflow-hidden">
+                  {projectDetails.requirements.map(req => {
+                    return (
+                      <div key={req.id} className="p-3.5 sm:p-4 flex items-center justify-between gap-3 text-xs">
+                        <div className="flex items-center gap-3 min-w-0">
+                          <div className={`w-3 h-3 rounded-full shrink-0 ${
+                            req.status === 'Received' ? 'bg-emerald-500' : req.status === 'Not Required' ? 'bg-slate-300' : 'bg-amber-500 animate-pulse'
+                          }`} />
+                          <div className="min-w-0">
+                            <span className={`font-bold ${req.status === 'Received' ? 'text-slate-900' : 'text-slate-800'}`}>
+                              {req.item_name}
+                            </span>
+                            {req.received_date && (
+                              <div className="text-[10px] text-emerald-700 mt-0.5">Received on {new Date(req.received_date).toLocaleDateString()}</div>
+                            )}
+                          </div>
+                        </div>
+
+                        <div className="flex items-center gap-1.5 shrink-0">
+                          {['Pending', 'Received', 'Not Required'].map(st => (
+                            <button
+                              key={st}
+                              onClick={() => handleRequirementStatusChange(req.id, st)}
+                              className={`px-2.5 py-1 rounded-lg text-[10px] font-bold uppercase transition-all cursor-pointer ${
+                                req.status === st
+                                  ? st === 'Received' ? 'bg-emerald-600 text-white' : st === 'Not Required' ? 'bg-slate-300 text-slate-700' : 'bg-amber-500 text-white'
+                                  : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+                              }`}
+                            >
+                              {st}
+                            </button>
+                          ))}
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              )}
+            </div>
+          )}
+
+          {/* TAB 7: TEAM */}
+          {activeDetailTab === 'team' && (
+            <div className="space-y-4">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                <div>
+                  <h3 className="text-sm font-bold text-slate-900 uppercase tracking-wider font-outfit">
+                    Assigned Project Team ({projectDetails?.team?.length || 0})
+                  </h3>
+                  <p className="text-xs text-slate-500">Staff members responsible for delivering this project.</p>
+                </div>
+                <button
+                  onClick={() => { loadPeople(); setShowTeamModal(true); }}
+                  className="w-full sm:w-auto inline-flex items-center justify-center gap-1.5 px-3.5 py-2 rounded-xl bg-violet-600 hover:bg-violet-700 text-white font-bold text-xs uppercase tracking-wider shadow-xs shadow-violet-600/20 cursor-pointer min-h-[38px]"
+                >
+                  <Plus size={14} weight="bold" />
+                  <span>Assign Member</span>
+                </button>
+              </div>
+
+              {(!projectDetails?.team || projectDetails.team.length === 0) ? (
+                <EmptyState
+                  icon={Users}
+                  title="No team members assigned"
+                  description="Assign developers, designers, or QA staff from the People module."
+                  actionLabel="Assign Team Member"
+                  onAction={() => { loadPeople(); setShowTeamModal(true); }}
+                />
+              ) : (
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+                  {projectDetails.team.map(m => (
+                    <div key={m.id} className="p-4 rounded-2xl bg-white border border-slate-200 shadow-xs flex items-center justify-between gap-3 text-xs">
+                      <div className="flex items-center gap-3 min-w-0">
+                        <div className="w-8 h-8 rounded-full bg-violet-100 text-violet-700 font-bold flex items-center justify-center text-xs shrink-0">
+                          {m.person_name?.charAt(0) || 'M'}
+                        </div>
+                        <div className="min-w-0">
+                          <div className="font-bold text-slate-900 truncate">{m.person_name}</div>
+                          <div className="text-[10px] text-slate-500 font-semibold">{m.role}</div>
+                        </div>
+                      </div>
+
+                      <button
+                        onClick={() => handleRemoveTeamMember(m.id)}
+                        className="text-slate-400 hover:text-rose-600 p-1.5 rounded-lg hover:bg-rose-50"
+                        title="Remove member"
+                      >
+                        <Trash size={15} />
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          )}
+
+          {/* TAB 8: QA CHECKLIST */}
           {activeDetailTab === 'qa' && (
             <div className="space-y-4">
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
@@ -608,13 +1254,6 @@ export default function DeliveryModule({ initialProjectId, settings = {}, onRefr
                     Verify all 11 standard quality criteria before client delivery.
                   </p>
                 </div>
-                <button
-                  onClick={() => setShowCustomQAModal(true)}
-                  className="w-full sm:w-auto inline-flex items-center justify-center gap-1.5 px-3.5 py-2 rounded-xl bg-white hover:bg-slate-50 border border-slate-200 text-xs font-bold text-slate-700 shadow-2xs min-h-[38px]"
-                >
-                  <Plus size={14} weight="bold" />
-                  <span>Add Custom QA Item</span>
-                </button>
               </div>
 
               <div className="rounded-2xl bg-white border border-slate-200 shadow-xs divide-y divide-slate-100 overflow-hidden">
@@ -636,9 +1275,6 @@ export default function DeliveryModule({ initialProjectId, settings = {}, onRefr
                         }`}>
                           {qa.item_label}
                         </span>
-                        {qa.notes && (
-                          <div className="text-[11px] text-slate-400 mt-0.5">{qa.notes}</div>
-                        )}
                       </div>
                     </div>
 
@@ -655,7 +1291,7 @@ export default function DeliveryModule({ initialProjectId, settings = {}, onRefr
             </div>
           )}
 
-          {/* TAB 4: CLIENT FEEDBACK */}
+          {/* TAB 9: FEEDBACK */}
           {activeDetailTab === 'feedback' && (
             <div className="space-y-4">
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
@@ -664,7 +1300,7 @@ export default function DeliveryModule({ initialProjectId, settings = {}, onRefr
                 </h3>
                 <button
                   onClick={() => setShowFeedbackModal(true)}
-                  className="w-full sm:w-auto inline-flex items-center justify-center gap-1.5 px-3.5 py-2 rounded-xl bg-violet-600 hover:bg-violet-700 text-white font-bold text-xs uppercase tracking-wider shadow-sm shadow-violet-600/20 min-h-[38px]"
+                  className="w-full sm:w-auto inline-flex items-center justify-center gap-1.5 px-3.5 py-2 rounded-xl bg-violet-600 hover:bg-violet-700 text-white font-bold text-xs uppercase tracking-wider shadow-xs shadow-violet-600/20 min-h-[38px]"
                 >
                   <Plus size={14} weight="bold" />
                   <span>Log Feedback</span>
@@ -690,28 +1326,45 @@ export default function DeliveryModule({ initialProjectId, settings = {}, onRefr
                             {new Date(fb.feedback_date).toLocaleDateString()}
                           </span>
                         </div>
-                        <div className="flex items-center gap-2">
-                          <span className="px-2 py-0.5 rounded text-[10px] font-bold uppercase bg-violet-50 text-violet-700 border border-violet-200">
-                            {fb.status}
-                          </span>
-                          <button
-                            onClick={() => setDeleteConfirm({ isOpen: true, type: 'feedback', id: fb.id, title: `Feedback from ${fb.author}` })}
-                            className="p-1 text-slate-400 hover:text-rose-600 hover:bg-rose-50 rounded"
-                          >
-                            <Trash size={15} />
-                          </button>
-                        </div>
+                        <button
+                          onClick={() => setDeleteConfirm({ isOpen: true, type: 'feedback', id: fb.id, title: `Feedback from ${fb.author}` })}
+                          className="p-1 text-slate-400 hover:text-rose-600 hover:bg-rose-50 rounded"
+                        >
+                          <Trash size={15} />
+                        </button>
                       </div>
 
                       <p className="text-slate-700 leading-relaxed bg-slate-50 p-3 rounded-xl border border-slate-100">
                         {fb.feedback_text}
                       </p>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          )}
 
-                      {fb.action_plan && (
-                        <div className="text-[11px] text-slate-600 pt-1">
-                          <strong className="text-slate-800">Action Plan: </strong> {fb.action_plan}
-                        </div>
-                      )}
+          {/* TAB 10: ACTIVITY */}
+          {activeDetailTab === 'activity' && (
+            <div className="space-y-4">
+              <h3 className="text-sm font-bold text-slate-900 uppercase tracking-wider font-outfit">
+                Project Audit Trail
+              </h3>
+              {(!projectDetails?.activity || projectDetails.activity.length === 0) ? (
+                <div className="p-6 rounded-2xl bg-white border border-slate-200 text-center text-xs text-slate-500">
+                  No activity logs recorded for this project.
+                </div>
+              ) : (
+                <div className="rounded-2xl bg-white border border-slate-200 divide-y divide-slate-100 overflow-hidden text-xs">
+                  {projectDetails.activity.map(act => (
+                    <div key={act.id} className="p-3.5 flex items-center justify-between gap-3">
+                      <div>
+                        <div className="font-bold text-slate-900">{act.action}</div>
+                        <p className="text-slate-600 mt-0.5">{act.details}</p>
+                      </div>
+                      <span className="text-[10px] text-slate-400 font-mono shrink-0">
+                        {new Date(act.created_at).toLocaleString()}
+                      </span>
                     </div>
                   ))}
                 </div>
@@ -755,11 +1408,11 @@ export default function DeliveryModule({ initialProjectId, settings = {}, onRefr
               </select>
 
               <button
-                onClick={() => { setEditingProject(null); setShowProjectModal(true); }}
-                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-violet-600 hover:bg-violet-700 text-white font-bold text-xs uppercase tracking-wider shadow-sm shadow-violet-600/20 cursor-pointer min-h-[40px] active:scale-98"
+                onClick={() => { setWizardInitialData(null); setShowWizardModal(true); }}
+                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-violet-600 hover:bg-violet-700 text-white font-bold text-xs uppercase tracking-wider shadow-xs shadow-violet-600/20 cursor-pointer min-h-[40px] active:scale-98"
               >
                 <Plus size={16} weight="bold" />
-                <span>New Project</span>
+                <span>Add Project</span>
               </button>
             </div>
           </div>
@@ -768,9 +1421,9 @@ export default function DeliveryModule({ initialProjectId, settings = {}, onRefr
             <EmptyState
               icon={Folder}
               title="No projects found"
-              description="Create your first website or web application client project."
-              actionLabel="Create Project"
-              onAction={() => { setEditingProject(null); setShowProjectModal(true); }}
+              description="Launch the Smart Project Setup Wizard to configure a complete client delivery."
+              actionLabel="Launch Project Wizard"
+              onAction={() => { setWizardInitialData(null); setShowWizardModal(true); }}
             />
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -796,7 +1449,7 @@ export default function DeliveryModule({ initialProjectId, settings = {}, onRefr
                       </span>
                     </div>
 
-                    <h3 className="text-base font-bold text-slate-900 font-outfit group-hover:text-violet-700 transition-colors mb-1">
+                    <h3 className="text-base font-bold text-slate-900 font-outfit group-hover:text-violet-700 transition-colors mb-1 truncate">
                       {proj.project_name}
                     </h3>
                     <p className="text-xs text-slate-500 mb-4">
@@ -806,7 +1459,7 @@ export default function DeliveryModule({ initialProjectId, settings = {}, onRefr
 
                   <div className="pt-4 border-t border-slate-100 space-y-3">
                     <div className="flex items-center justify-between text-xs font-mono">
-                      <span className="text-slate-500 font-sans font-medium">Value</span>
+                      <span className="text-slate-500 font-sans font-medium">Contract Value</span>
                       <span className="font-bold text-slate-900">{currency}{parseFloat(proj.project_value || 0).toLocaleString('en-IN')}</span>
                     </div>
 
@@ -829,131 +1482,107 @@ export default function DeliveryModule({ initialProjectId, settings = {}, onRefr
         </div>
       )}
 
-      {/* --- MODAL 1: ADD / EDIT PROJECT --- */}
-      {showProjectModal && (
+      {/* SMART PROJECT SETUP WIZARD MODAL */}
+      {showWizardModal && <ProjectWizardModal
+        isOpen={showWizardModal}
+        onClose={() => setShowWizardModal(false)}
+        initialData={wizardInitialData}
+        currency={currency}
+        onSuccess={(newProjectId) => {
+          fetchProjects();
+          if (newProjectId) loadProjectDetail(newProjectId);
+          if (onRefreshDashboard) onRefreshDashboard();
+        }}
+      />}
+
+      {/* RECORD PAYMENT MODAL */}
+      {showPaymentModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-slate-900/40 backdrop-blur-sm animate-fadeIn">
-          <div className="w-full max-w-lg bg-white border border-slate-200 rounded-2xl shadow-2xl p-5 sm:p-6 max-h-[90vh] overflow-y-auto">
+          <div className="w-full max-w-md bg-white border border-slate-200 rounded-2xl shadow-2xl p-5 sm:p-6 max-h-[90vh] overflow-y-auto">
             <div className="flex items-center justify-between border-b border-slate-100 pb-3 mb-4">
               <h3 className="text-base font-bold text-slate-900 font-outfit">
-                {editingProject ? 'Edit Project' : 'New Project'}
+                Record Project Payment
               </h3>
-              <button onClick={() => setShowProjectModal(false)} className="text-slate-400 hover:text-slate-600 p-1">
+              <button onClick={() => setShowPaymentModal(false)} className="text-slate-400 hover:text-slate-600 p-1">
                 <X size={18} />
               </button>
             </div>
 
-            <form onSubmit={handleSaveProject} className="space-y-4 text-xs">
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                <div>
-                  <label className="block text-slate-700 font-bold mb-1">Project Name *</label>
-                  <input
-                    name="project_name"
-                    defaultValue={editingProject?.project_name || ''}
-                    required
-                    placeholder="e.g. Apex Hospital 3D Portal"
-                    className="w-full bg-white border border-slate-300 rounded-xl px-3.5 py-2.5 text-slate-900 focus:outline-none focus:ring-2 focus:ring-violet-500/20 focus:border-violet-600"
-                  />
-                </div>
-                <div>
-                  <label className="block text-slate-700 font-bold mb-1">Client Name *</label>
-                  <input
-                    name="client_name"
-                    defaultValue={editingProject?.client_name || ''}
-                    required
-                    placeholder="e.g. Dr. Rajesh Patel"
-                    className="w-full bg-white border border-slate-300 rounded-xl px-3.5 py-2.5 text-slate-900 focus:outline-none focus:ring-2 focus:ring-violet-500/20 focus:border-violet-600"
-                  />
-                </div>
-              </div>
-
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                <div>
-                  <label className="block text-slate-700 font-bold mb-1">Project Value ({currency})</label>
-                  <input
-                    name="project_value"
-                    type="number"
-                    defaultValue={editingProject?.project_value || 0}
-                    className="w-full bg-white border border-slate-300 rounded-xl px-3.5 py-2.5 text-slate-900 font-mono font-bold focus:outline-none focus:ring-2 focus:ring-violet-500/20 focus:border-violet-600"
-                  />
-                </div>
-                <div>
-                  <label className="block text-slate-700 font-bold mb-1">Status</label>
-                  <select
-                    name="status"
-                    defaultValue={editingProject?.status || 'Planning'}
-                    className="w-full bg-white border border-slate-300 rounded-xl px-3 py-2.5 text-slate-900 focus:outline-none focus:ring-2 focus:ring-violet-500/20 focus:border-violet-600 font-medium"
-                  >
-                    {PROJECT_STATUSES.map(s => <option key={s} value={s}>{s}</option>)}
-                  </select>
-                </div>
-                <div>
-                  <label className="block text-slate-700 font-bold mb-1">Priority</label>
-                  <select
-                    name="priority"
-                    defaultValue={editingProject?.priority || 'Medium'}
-                    className="w-full bg-white border border-slate-300 rounded-xl px-3 py-2.5 text-slate-900 focus:outline-none focus:ring-2 focus:ring-violet-500/20 focus:border-violet-600 font-medium"
-                  >
-                    {PROJECT_PRIORITIES.map(p => <option key={p} value={p}>{p}</option>)}
-                  </select>
-                </div>
-              </div>
-
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                <div>
-                  <label className="block text-slate-700 font-bold mb-1">Start Date</label>
-                  <input
-                    name="start_date"
-                    type="date"
-                    defaultValue={editingProject?.start_date ? String(editingProject.start_date).substring(0, 10) : ''}
-                    className="w-full bg-white border border-slate-300 rounded-xl px-3.5 py-2.5 text-slate-900 focus:outline-none focus:ring-2 focus:ring-violet-500/20 focus:border-violet-600 font-medium"
-                  />
-                </div>
-                <div>
-                  <label className="block text-slate-700 font-bold mb-1">Deadline Date</label>
-                  <input
-                    name="deadline"
-                    type="date"
-                    defaultValue={editingProject?.deadline ? String(editingProject.deadline).substring(0, 10) : ''}
-                    className="w-full bg-white border border-slate-300 rounded-xl px-3.5 py-2.5 text-slate-900 focus:outline-none focus:ring-2 focus:ring-violet-500/20 focus:border-violet-600 font-medium"
-                  />
-                </div>
-              </div>
-
+            <form onSubmit={handleRecordPayment} className="space-y-4 text-xs">
               <div>
-                <label className="block text-slate-700 font-bold mb-1">Assigned Lead / Person</label>
+                <label className="block text-slate-700 font-bold mb-1">Amount Received ({currency}) *</label>
                 <input
-                  name="assigned_person"
-                  defaultValue={editingProject?.assigned_person || ''}
-                  placeholder="e.g. Lead Developer / Madhav"
-                  className="w-full bg-white border border-slate-300 rounded-xl px-3.5 py-2.5 text-slate-900 focus:outline-none focus:ring-2 focus:ring-violet-500/20 focus:border-violet-600"
+                  type="number"
+                  required
+                  value={paymentForm.amount}
+                  onChange={(e) => setPaymentForm({ ...paymentForm, amount: e.target.value })}
+                  placeholder="e.g. 15000"
+                  className="w-full bg-white border border-slate-300 rounded-xl px-3.5 py-2.5 text-slate-900 font-mono font-bold text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-600"
+                />
+              </div>
+
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <label className="block text-slate-700 font-bold mb-1">Payment Date</label>
+                  <input
+                    type="date"
+                    value={paymentForm.payment_date}
+                    onChange={(e) => setPaymentForm({ ...paymentForm, payment_date: e.target.value })}
+                    className="w-full bg-white border border-slate-300 rounded-xl px-3 py-2 text-slate-900"
+                  />
+                </div>
+                <div>
+                  <label className="block text-slate-700 font-bold mb-1">Payment Method</label>
+                  <select
+                    value={paymentForm.payment_method}
+                    onChange={(e) => setPaymentForm({ ...paymentForm, payment_method: e.target.value })}
+                    className="w-full bg-white border border-slate-300 rounded-xl px-3 py-2 text-slate-900 font-medium"
+                  >
+                    {['Bank Transfer', 'UPI', 'Cash', 'Card', 'Other'].map(m => <option key={m} value={m}>{m}</option>)}
+                  </select>
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-slate-700 font-bold mb-1">Invoice / Reference Number</label>
+                <input
+                  type="text"
+                  value={paymentForm.invoice_number}
+                  onChange={(e) => setPaymentForm({ ...paymentForm, invoice_number: e.target.value })}
+                  placeholder="e.g. INV-2026-008"
+                  className="w-full bg-white border border-slate-300 rounded-xl px-3.5 py-2 text-slate-900"
                 />
               </div>
 
               <div>
-                <label className="block text-slate-700 font-bold mb-1">Project Notes / Tech Stack</label>
-                <textarea
-                  name="notes"
-                  rows={3}
-                  defaultValue={editingProject?.notes || ''}
-                  placeholder="Tech stack, repo links, Figma design URLs..."
-                  className="w-full bg-white border border-slate-300 rounded-xl px-3.5 py-2.5 text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-violet-500/20 focus:border-violet-600"
+                <label className="block text-slate-700 font-bold mb-1">Notes</label>
+                <input
+                  type="text"
+                  value={paymentForm.notes}
+                  onChange={(e) => setPaymentForm({ ...paymentForm, notes: e.target.value })}
+                  placeholder="Final milestone payment, UPI ref ID..."
+                  className="w-full bg-white border border-slate-300 rounded-xl px-3.5 py-2 text-slate-900"
                 />
               </div>
 
-              <div className="flex flex-col-reverse sm:flex-row items-stretch sm:items-center justify-end gap-2.5 sm:gap-3 pt-3 border-t border-slate-100">
+              <div className="p-3 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-900 text-[11px]">
+                ✓ Automatically updates Finance Ledger, Payment Schedule, and clears project outstanding balance.
+              </div>
+
+              <div className="flex items-center justify-end gap-2.5 pt-3 border-t border-slate-100">
                 <button
                   type="button"
-                  onClick={() => setShowProjectModal(false)}
-                  className="px-4 py-2.5 text-xs font-bold uppercase tracking-wider text-slate-700 hover:text-slate-900 bg-slate-100 hover:bg-slate-200 rounded-xl transition-colors text-center"
+                  onClick={() => setShowPaymentModal(false)}
+                  className="px-4 py-2 text-xs font-bold uppercase text-slate-700 bg-slate-100 rounded-xl"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
                   disabled={actionLoading}
-                  className="px-5 py-2.5 rounded-xl bg-violet-600 hover:bg-violet-700 text-white font-bold text-xs uppercase tracking-wider shadow-sm shadow-violet-600/20 cursor-pointer disabled:opacity-50 min-h-[42px] text-center"
+                  className="px-5 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs uppercase shadow-xs cursor-pointer disabled:opacity-50"
                 >
-                  {actionLoading ? 'Saving...' : editingProject ? 'Update Project' : 'Create Project'}
+                  {actionLoading ? 'Saving...' : 'Confirm Payment'}
                 </button>
               </div>
             </form>
@@ -961,7 +1590,154 @@ export default function DeliveryModule({ initialProjectId, settings = {}, onRefr
         </div>
       )}
 
-      {/* --- MODAL 2: ADD / EDIT TASK --- */}
+      {/* CONVERT PLANNED COST TO EXPENSE MODAL */}
+      {showConvertCostModal && selectedCostToConvert && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-slate-900/40 backdrop-blur-sm animate-fadeIn">
+          <div className="w-full max-w-md bg-white border border-slate-200 rounded-2xl shadow-2xl p-5 sm:p-6 max-h-[90vh] overflow-y-auto">
+            <div className="flex items-center justify-between border-b border-slate-100 pb-3 mb-4">
+              <h3 className="text-base font-bold text-slate-900 font-outfit">
+                Convert Planned Cost to Expense
+              </h3>
+              <button onClick={() => setShowConvertCostModal(false)} className="text-slate-400 hover:text-slate-600 p-1">
+                <X size={18} />
+              </button>
+            </div>
+
+            <form onSubmit={handleConvertCostSubmit} className="space-y-4 text-xs">
+              <div className="p-3 bg-slate-50 border border-slate-200 rounded-xl space-y-1">
+                <div className="font-bold text-slate-900">{selectedCostToConvert.description}</div>
+                <div className="text-slate-600 text-[11px]">Category: {selectedCostToConvert.cost_type}</div>
+              </div>
+
+              <div>
+                <label className="block text-slate-700 font-bold mb-1">Actual Amount Paid ({currency}) *</label>
+                <input
+                  type="number"
+                  required
+                  value={convertCostForm.actual_amount}
+                  onChange={(e) => setConvertCostForm({ ...convertCostForm, actual_amount: e.target.value })}
+                  className="w-full bg-white border border-slate-300 rounded-xl px-3.5 py-2 text-slate-900 font-mono font-bold"
+                />
+              </div>
+
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <label className="block text-slate-700 font-bold mb-1">Expense Date</label>
+                  <input
+                    type="date"
+                    value={convertCostForm.expense_date}
+                    onChange={(e) => setConvertCostForm({ ...convertCostForm, expense_date: e.target.value })}
+                    className="w-full bg-white border border-slate-300 rounded-xl px-3 py-2 text-slate-900"
+                  />
+                </div>
+                <div>
+                  <label className="block text-slate-700 font-bold mb-1">Payment Method</label>
+                  <select
+                    value={convertCostForm.payment_method}
+                    onChange={(e) => setConvertCostForm({ ...convertCostForm, payment_method: e.target.value })}
+                    className="w-full bg-white border border-slate-300 rounded-xl px-3 py-2 text-slate-900 font-medium"
+                  >
+                    {['UPI', 'Bank Transfer', 'Cash', 'Card'].map(m => <option key={m} value={m}>{m}</option>)}
+                  </select>
+                </div>
+              </div>
+
+              <div className="flex items-center justify-end gap-2.5 pt-3 border-t border-slate-100">
+                <button
+                  type="button"
+                  onClick={() => setShowConvertCostModal(false)}
+                  className="px-4 py-2 text-xs font-bold uppercase text-slate-700 bg-slate-100 rounded-xl"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  disabled={actionLoading}
+                  className="px-5 py-2.5 rounded-xl bg-violet-600 hover:bg-violet-700 text-white font-bold text-xs uppercase shadow-xs cursor-pointer disabled:opacity-50"
+                >
+                  {actionLoading ? 'Converting...' : 'Record Actual Expense'}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* ADD REQUIREMENT MODAL */}
+      {showReqModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-slate-900/40 backdrop-blur-sm animate-fadeIn">
+          <div className="w-full max-w-sm bg-white border border-slate-200 rounded-2xl shadow-2xl p-5 sm:p-6">
+            <h3 className="text-sm font-bold text-slate-900 font-outfit mb-3">Add Client Requirement</h3>
+            <form onSubmit={handleAddRequirement} className="space-y-3 text-xs">
+              <input
+                type="text"
+                required
+                value={newReqName}
+                onChange={(e) => setNewReqName(e.target.value)}
+                placeholder="e.g. High-res SVG Logo files"
+                className="w-full bg-white border border-slate-300 rounded-xl px-3.5 py-2 text-slate-900 focus:outline-none focus:ring-2 focus:ring-violet-500/20"
+              />
+              <div className="flex justify-end gap-2 pt-2">
+                <button type="button" onClick={() => setShowReqModal(false)} className="px-3 py-1.5 bg-slate-100 rounded-lg text-slate-700 font-semibold">Cancel</button>
+                <button type="submit" disabled={actionLoading} className="px-4 py-1.5 bg-violet-600 text-white rounded-lg font-bold">Add Item</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* ASSIGN TEAM MEMBER MODAL */}
+      {showTeamModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-slate-900/40 backdrop-blur-sm animate-fadeIn">
+          <div className="w-full max-w-md bg-white border border-slate-200 rounded-2xl shadow-2xl p-5 sm:p-6">
+            <h3 className="text-sm font-bold text-slate-900 font-outfit mb-3">Assign Team Member</h3>
+            <CreateTeamMember onCreated={person => {
+              setPeopleList(previous => [...previous, person]);
+              setSelectedPersonId(String(person.id));
+              setSelectedPersonRole(person.role);
+            }} />
+            <form onSubmit={handleAddTeamMember} className="space-y-3 text-xs">
+              <div>
+                <label className="block text-slate-700 font-bold mb-1">Select Person from People Module</label>
+                <select
+                  value={selectedPersonId}
+                  onChange={(e) => setSelectedPersonId(e.target.value)}
+                  required
+                  className="w-full bg-white border border-slate-300 rounded-xl px-3 py-2 text-slate-900"
+                >
+                  <option value="">-- Choose Member --</option>
+                  {peopleList.map(p => (
+                    <option key={p.id} value={p.id}>{p.name} ({p.role})</option>
+                  ))}
+                </select>
+              </div>
+
+              <div>
+                <label className="block text-slate-700 font-bold mb-1">Role for this Project</label>
+                <select
+                  value={selectedPersonRole}
+                  onChange={(e) => setSelectedPersonRole(e.target.value)}
+                  className="w-full bg-white border border-slate-300 rounded-xl px-3 py-2 text-slate-900"
+                >
+                  <option value="Project Manager">Project Manager</option>
+                  <option value="Developer">Developer</option>
+                  <option value="Designer">Designer</option>
+                  <option value="QA">QA</option>
+                  <option value="Content">Content</option>
+                  <option value="Other">Other</option>
+                </select>
+              </div>
+
+              <div className="flex justify-end gap-2 pt-2">
+                <button type="button" onClick={() => setShowTeamModal(false)} className="px-3 py-1.5 bg-slate-100 rounded-lg text-slate-700 font-semibold">Cancel</button>
+                <button type="submit" disabled={actionLoading} className="px-4 py-1.5 bg-violet-600 text-white rounded-lg font-bold">Assign Member</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* ADD / EDIT TASK MODAL */}
       {showTaskModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-slate-900/40 backdrop-blur-sm animate-fadeIn">
           <div className="w-full max-w-md bg-white border border-slate-200 rounded-2xl shadow-2xl p-5 sm:p-6 max-h-[90vh] overflow-y-auto">
@@ -981,9 +1757,23 @@ export default function DeliveryModule({ initialProjectId, settings = {}, onRefr
                   name="title"
                   defaultValue={editingTask?.title || ''}
                   required
-                  placeholder="e.g. Build 3D Hero canvas"
-                  className="w-full bg-white border border-slate-300 rounded-xl px-3.5 py-2.5 text-slate-900 focus:outline-none focus:ring-2 focus:ring-violet-500/20 focus:border-violet-600"
+                  placeholder="e.g. Build interactive pricing calculator"
+                  className="w-full bg-white border border-slate-300 rounded-xl px-3.5 py-2.5 text-slate-900 focus:outline-none focus:ring-2 focus:ring-violet-500/20"
                 />
+              </div>
+
+              <div>
+                <label className="block text-slate-700 font-bold mb-1">Stage (Optional)</label>
+                <select
+                  name="stage_name"
+                  defaultValue={editingTask?.stage_name || ''}
+                  className="w-full bg-white border border-slate-300 rounded-xl px-3 py-2 text-slate-900"
+                >
+                  <option value="">-- General Task (No stage) --</option>
+                  {projectDetails?.stages?.map(s => (
+                    <option key={s.id} value={s.stage_name}>{s.stage_name}</option>
+                  ))}
+                </select>
               </div>
 
               <div>
@@ -992,69 +1782,75 @@ export default function DeliveryModule({ initialProjectId, settings = {}, onRefr
                   name="description"
                   rows={2}
                   defaultValue={editingTask?.description || ''}
-                  placeholder="Task scope details..."
-                  className="w-full bg-white border border-slate-300 rounded-xl px-3.5 py-2.5 text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-violet-500/20 focus:border-violet-600"
+                  placeholder="Technical details, acceptance criteria..."
+                  className="w-full bg-white border border-slate-300 rounded-xl px-3.5 py-2 text-slate-900 placeholder:text-slate-400"
                 />
               </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                <div>
-                  <label className="block text-slate-700 font-bold mb-1">Status</label>
-                  <select
-                    name="status"
-                    defaultValue={editingTask?.status || 'Todo'}
-                    className="w-full bg-white border border-slate-300 rounded-xl px-3 py-2.5 text-slate-900 focus:outline-none focus:ring-2 focus:ring-violet-500/20 focus:border-violet-600 font-medium"
-                  >
-                    {TASK_STATUSES.map(s => <option key={s} value={s}>{s}</option>)}
-                  </select>
-                </div>
+              <div className="grid grid-cols-2 gap-3">
                 <div>
                   <label className="block text-slate-700 font-bold mb-1">Priority</label>
                   <select
                     name="priority"
                     defaultValue={editingTask?.priority || 'Medium'}
-                    className="w-full bg-white border border-slate-300 rounded-xl px-3 py-2.5 text-slate-900 focus:outline-none focus:ring-2 focus:ring-violet-500/20 focus:border-violet-600 font-medium"
+                    className="w-full bg-white border border-slate-300 rounded-xl px-3 py-2 text-slate-900"
                   >
-                    {PROJECT_PRIORITIES.map(p => <option key={p} value={p}>{p}</option>)}
+                    <option value="Low">Low</option>
+                    <option value="Medium">Medium</option>
+                    <option value="High">High</option>
+                    <option value="Urgent">Urgent</option>
+                  </select>
+                </div>
+                <div>
+                  <label className="block text-slate-700 font-bold mb-1">Status</label>
+                  <select
+                    name="status"
+                    defaultValue={editingTask?.status || 'Todo'}
+                    className="w-full bg-white border border-slate-300 rounded-xl px-3 py-2 text-slate-900"
+                  >
+                    <option value="Todo">Todo</option>
+                    <option value="In Progress">In Progress</option>
+                    <option value="Review">Review</option>
+                    <option value="Completed">Completed</option>
                   </select>
                 </div>
               </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-slate-700 font-bold mb-1">Assigned Person</label>
+                  <label className="block text-slate-700 font-bold mb-1">Assigned To</label>
                   <input
                     name="assigned_to"
                     defaultValue={editingTask?.assigned_to || ''}
-                    placeholder="Team member"
-                    className="w-full bg-white border border-slate-300 rounded-xl px-3.5 py-2.5 text-slate-900 focus:outline-none focus:ring-2 focus:ring-violet-500/20 focus:border-violet-600"
+                    placeholder="e.g. Lead Developer"
+                    className="w-full bg-white border border-slate-300 rounded-xl px-3.5 py-2 text-slate-900"
                   />
                 </div>
                 <div>
-                  <label className="block text-slate-700 font-bold mb-1">Deadline</label>
+                  <label className="block text-slate-700 font-bold mb-1">Deadline Date</label>
                   <input
                     name="deadline"
                     type="date"
                     defaultValue={editingTask?.deadline ? String(editingTask.deadline).substring(0, 10) : ''}
-                    className="w-full bg-white border border-slate-300 rounded-xl px-3.5 py-2.5 text-slate-900 focus:outline-none focus:ring-2 focus:ring-violet-500/20 focus:border-violet-600 font-medium"
+                    className="w-full bg-white border border-slate-300 rounded-xl px-3.5 py-2 text-slate-900"
                   />
                 </div>
               </div>
 
-              <div className="flex flex-col-reverse sm:flex-row items-stretch sm:items-center justify-end gap-2.5 sm:gap-3 pt-3 border-t border-slate-100">
+              <div className="flex justify-end gap-2.5 pt-3 border-t border-slate-100">
                 <button
                   type="button"
                   onClick={() => setShowTaskModal(false)}
-                  className="px-4 py-2.5 text-xs font-bold uppercase tracking-wider text-slate-700 hover:text-slate-900 bg-slate-100 hover:bg-slate-200 rounded-xl transition-colors text-center"
+                  className="px-4 py-2 text-xs font-bold uppercase text-slate-700 bg-slate-100 rounded-xl"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
                   disabled={actionLoading}
-                  className="px-5 py-2.5 rounded-xl bg-violet-600 hover:bg-violet-700 text-white font-bold text-xs uppercase tracking-wider shadow-sm shadow-violet-600/20 cursor-pointer disabled:opacity-50 min-h-[42px] text-center"
+                  className="px-5 py-2.5 rounded-xl bg-violet-600 hover:bg-violet-700 text-white font-bold text-xs uppercase shadow-xs cursor-pointer disabled:opacity-50"
                 >
-                  {actionLoading ? 'Saving...' : editingTask ? 'Update Task' : 'Add Task'}
+                  {actionLoading ? 'Saving...' : editingTask ? 'Update Task' : 'Create Task'}
                 </button>
               </div>
             </form>
@@ -1062,158 +1858,146 @@ export default function DeliveryModule({ initialProjectId, settings = {}, onRefr
         </div>
       )}
 
-      {/* --- MODAL 3: LOG CLIENT FEEDBACK --- */}
+      {/* LOG FEEDBACK MODAL */}
       {showFeedbackModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-slate-900/40 backdrop-blur-sm animate-fadeIn">
-          <div className="w-full max-w-md bg-white border border-slate-200 rounded-2xl shadow-2xl p-5 sm:p-6 max-h-[90vh] overflow-y-auto">
+          <div className="w-full max-w-md bg-white border border-slate-200 rounded-2xl shadow-2xl p-5 sm:p-6">
             <div className="flex items-center justify-between border-b border-slate-100 pb-3 mb-4">
-              <h3 className="text-base font-bold text-slate-900 font-outfit">
-                Log Client Feedback
-              </h3>
+              <h3 className="text-base font-bold text-slate-900 font-outfit">Log Client Feedback</h3>
               <button onClick={() => setShowFeedbackModal(false)} className="text-slate-400 hover:text-slate-600 p-1">
                 <X size={18} />
               </button>
             </div>
 
-            <form onSubmit={handleSaveFeedback} className="space-y-4 text-xs">
-              <div>
-                <label className="block text-slate-700 font-bold mb-1">Author / Feedback Giver *</label>
-                <input
-                  name="author"
-                  defaultValue={selectedProject?.client_name || ''}
-                  required
-                  placeholder="e.g. Client Lead"
-                  className="w-full bg-white border border-slate-300 rounded-xl px-3.5 py-2.5 text-slate-900 focus:outline-none focus:ring-2 focus:ring-violet-500/20 focus:border-violet-600"
-                />
-              </div>
-
-              <div>
-                <label className="block text-slate-700 font-bold mb-1">Feedback Date</label>
-                <input
-                  name="feedback_date"
-                  type="date"
-                  defaultValue={new Date().toISOString().substring(0, 10)}
-                  className="w-full bg-white border border-slate-300 rounded-xl px-3.5 py-2.5 text-slate-900 focus:outline-none focus:ring-2 focus:ring-violet-500/20 focus:border-violet-600 font-medium"
-                />
-              </div>
-
-              <div>
-                <label className="block text-slate-700 font-bold mb-1">Feedback Comments *</label>
-                <textarea
-                  name="feedback_text"
-                  required
-                  rows={3}
-                  placeholder="Client feedback, revisions requested..."
-                  className="w-full bg-white border border-slate-300 rounded-xl px-3.5 py-2.5 text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-violet-500/20 focus:border-violet-600"
-                />
-              </div>
-
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <form onSubmit={handleSaveFeedback} className="space-y-3 text-xs">
+              <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-slate-700 font-bold mb-1">Status</label>
-                  <select
-                    name="status"
-                    defaultValue="Open"
-                    className="w-full bg-white border border-slate-300 rounded-xl px-3 py-2.5 text-slate-900 focus:outline-none focus:ring-2 focus:ring-violet-500/20 focus:border-violet-600 font-medium"
-                  >
-                    <option value="Open">Open</option>
-                    <option value="Addressed">Addressed</option>
-                    <option value="Deferred">Deferred</option>
-                  </select>
+                  <label className="block text-slate-700 font-bold mb-1">Author / Client Contact *</label>
+                  <input
+                    name="author"
+                    defaultValue={selectedProject?.client_name || ''}
+                    required
+                    className="w-full bg-white border border-slate-300 rounded-xl px-3 py-2 text-slate-900"
+                  />
                 </div>
                 <div>
-                  <label className="block text-slate-700 font-bold mb-1">Action Plan</label>
+                  <label className="block text-slate-700 font-bold mb-1">Date</label>
                   <input
-                    name="action_plan"
-                    placeholder="e.g. Redesign mobile navbar"
-                    className="w-full bg-white border border-slate-300 rounded-xl px-3.5 py-2.5 text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-violet-500/20 focus:border-violet-600"
+                    name="feedback_date"
+                    type="date"
+                    defaultValue={new Date().toISOString().substring(0, 10)}
+                    className="w-full bg-white border border-slate-300 rounded-xl px-3 py-2 text-slate-900"
                   />
                 </div>
               </div>
 
-              <div className="flex flex-col-reverse sm:flex-row items-stretch sm:items-center justify-end gap-2.5 sm:gap-3 pt-3 border-t border-slate-100">
-                <button
-                  type="button"
-                  onClick={() => setShowFeedbackModal(false)}
-                  className="px-4 py-2.5 text-xs font-bold uppercase tracking-wider text-slate-700 hover:text-slate-900 bg-slate-100 hover:bg-slate-200 rounded-xl transition-colors text-center"
-                >
-                  Cancel
-                </button>
-                <button
-                  type="submit"
-                  disabled={actionLoading}
-                  className="px-5 py-2.5 rounded-xl bg-violet-600 hover:bg-violet-700 text-white font-bold text-xs uppercase tracking-wider shadow-sm shadow-violet-600/20 cursor-pointer disabled:opacity-50 min-h-[42px] text-center"
-                >
-                  {actionLoading ? 'Logging...' : 'Save Feedback'}
-                </button>
+              <div>
+                <label className="block text-slate-700 font-bold mb-1">Feedback / Revision Details *</label>
+                <textarea
+                  name="feedback_text"
+                  rows={3}
+                  required
+                  placeholder="Client feedback notes..."
+                  className="w-full bg-white border border-slate-300 rounded-xl px-3.5 py-2 text-slate-900"
+                />
+              </div>
+
+              <div>
+                <label className="block text-slate-700 font-bold mb-1">Status</label>
+                <select name="status" defaultValue="Open" className="w-full bg-white border border-slate-300 rounded-xl px-3 py-2 text-slate-900">
+                  <option value="Open">Open</option>
+                  <option value="In Progress">In Progress</option>
+                  <option value="Resolved">Resolved</option>
+                </select>
+              </div>
+
+              <div>
+                <label className="block text-slate-700 font-bold mb-1">Action Plan</label>
+                <input
+                  name="action_plan"
+                  placeholder="Steps to address feedback..."
+                  className="w-full bg-white border border-slate-300 rounded-xl px-3.5 py-2 text-slate-900"
+                />
+              </div>
+
+              <div className="flex justify-end gap-2.5 pt-3 border-t border-slate-100">
+                <button type="button" onClick={() => setShowFeedbackModal(false)} className="px-4 py-2 text-xs font-bold uppercase text-slate-700 bg-slate-100 rounded-xl">Cancel</button>
+                <button type="submit" disabled={actionLoading} className="px-5 py-2.5 rounded-xl bg-violet-600 hover:bg-violet-700 text-white font-bold text-xs uppercase shadow-xs">Log Feedback</button>
               </div>
             </form>
           </div>
         </div>
       )}
 
-      {/* --- MODAL 4: ADD CUSTOM QA ITEM --- */}
-      {showCustomQAModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-slate-900/40 backdrop-blur-sm animate-fadeIn">
-          <div className="w-full max-w-md bg-white border border-slate-200 rounded-2xl shadow-2xl p-5 sm:p-6 max-h-[90vh] overflow-y-auto">
-            <div className="flex items-center justify-between border-b border-slate-100 pb-3 mb-4">
-              <h3 className="text-base font-bold text-slate-900 font-outfit">
-                Add Custom QA Checklist Item
-              </h3>
-              <button onClick={() => setShowCustomQAModal(false)} className="text-slate-400 hover:text-slate-600 p-1">
-                <X size={18} />
-              </button>
+      {/* PROJECT COMPLETION WARNING GUARD MODAL */}
+      {completionWarning.isOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-slate-900/60 backdrop-blur-sm animate-fadeIn">
+          <div className="w-full max-w-md bg-white border border-amber-300 rounded-2xl shadow-2xl p-5 sm:p-6 space-y-4">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-2xl bg-amber-100 text-amber-700 flex items-center justify-center shrink-0">
+                <Warning size={24} weight="bold" />
+              </div>
+              <div>
+                <h3 className="text-base font-bold text-slate-900 font-outfit">
+                  Outstanding Items Before Completion
+                </h3>
+                <p className="text-xs text-slate-500">
+                  Are you sure you want to mark this project as Completed?
+                </p>
+              </div>
             </div>
 
-            <form onSubmit={handleAddCustomQA} className="space-y-4 text-xs">
-              <div>
-                <label className="block text-slate-700 font-bold mb-1">Verification Label *</label>
-                <input
-                  name="item_label"
-                  required
-                  placeholder="e.g. Razorpay webhook verified in production"
-                  className="w-full bg-white border border-slate-300 rounded-xl px-3.5 py-2.5 text-slate-900 focus:outline-none focus:ring-2 focus:ring-violet-500/20 focus:border-violet-600"
-                />
-              </div>
+            <div className="p-3.5 rounded-xl bg-amber-50 border border-amber-200 text-xs text-amber-900 space-y-2">
+              <div className="font-bold">Detected incomplete items:</div>
+              <ul className="list-disc list-inside space-y-1 text-[11px] text-amber-800">
+                {completionWarning.outstanding > 0 && (
+                  <li>
+                    <strong>Outstanding balance:</strong> {currency}{completionWarning.outstanding.toLocaleString('en-IN')} has not been recorded as paid.
+                  </li>
+                )}
+                {completionWarning.unpassedQA > 0 && (
+                  <li>
+                    <strong>Incomplete QA:</strong> {completionWarning.unpassedQA} checklist item{completionWarning.unpassedQA > 1 ? 's are' : ' is'} not verified.
+                  </li>
+                )}
+                {completionWarning.pendingReqs > 0 && (
+                  <li>
+                    <strong>Pending Client Requirements:</strong> {completionWarning.pendingReqs} item{completionWarning.pendingReqs > 1 ? 's are' : ' is'} still marked pending.
+                  </li>
+                )}
+              </ul>
+            </div>
 
-              <div>
-                <label className="block text-slate-700 font-bold mb-1">Notes / Instructions</label>
-                <textarea
-                  name="notes"
-                  rows={2}
-                  placeholder="Verification steps..."
-                  className="w-full bg-white border border-slate-300 rounded-xl px-3.5 py-2.5 text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-violet-500/20 focus:border-violet-600"
-                />
-              </div>
-
-              <div className="flex flex-col-reverse sm:flex-row items-stretch sm:items-center justify-end gap-2.5 sm:gap-3 pt-3 border-t border-slate-100">
-                <button
-                  type="button"
-                  onClick={() => setShowCustomQAModal(false)}
-                  className="px-4 py-2.5 text-xs font-bold uppercase tracking-wider text-slate-700 hover:text-slate-900 bg-slate-100 hover:bg-slate-200 rounded-xl transition-colors text-center"
-                >
-                  Cancel
-                </button>
-                <button
-                  type="submit"
-                  disabled={actionLoading}
-                  className="px-5 py-2.5 rounded-xl bg-violet-600 hover:bg-violet-700 text-white font-bold text-xs uppercase tracking-wider shadow-sm shadow-violet-600/20 cursor-pointer disabled:opacity-50 min-h-[42px] text-center"
-                >
-                  {actionLoading ? 'Adding...' : 'Add Checklist Item'}
-                </button>
-              </div>
-            </form>
+            <div className="flex items-center justify-end gap-2.5 pt-2">
+              <button
+                type="button"
+                onClick={() => setCompletionWarning({ isOpen: false, outstanding: 0, unpassedQA: 0, pendingReqs: 0, targetStatus: 'Completed' })}
+                className="px-4 py-2 text-xs font-bold text-slate-700 bg-slate-100 hover:bg-slate-200 rounded-xl"
+              >
+                Review Items First
+              </button>
+              <button
+                type="button"
+                onClick={async () => {
+                  setCompletionWarning({ isOpen: false, outstanding: 0, unpassedQA: 0, pendingReqs: 0, targetStatus: 'Completed' });
+                  await executeStatusUpdate('Completed');
+                }}
+                className="px-5 py-2.5 rounded-xl bg-amber-600 hover:bg-amber-700 text-white font-bold text-xs uppercase tracking-wider shadow-xs cursor-pointer"
+              >
+                Proceed & Mark Completed
+              </button>
+            </div>
           </div>
         </div>
       )}
 
-      {/* Confirmation Dialog */}
+      {/* CONFIRM DELETE MODAL */}
       <ConfirmModal
         isOpen={deleteConfirm.isOpen}
-        isDestructive={true}
-        title={`Delete ${deleteConfirm.type}`}
-        message={`Are you sure you want to delete "${deleteConfirm.title}"?`}
-        confirmLabel="Delete"
+        title={`Delete ${deleteConfirm.title}?`}
+        description="This action cannot be undone."
+        confirmLabel="Confirm Delete"
+        isDanger={true}
         loading={actionLoading}
         onConfirm={handleDeleteConfirm}
         onCancel={() => setDeleteConfirm({ isOpen: false, type: '', id: null, title: '' })}

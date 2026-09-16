@@ -1,27 +1,6 @@
 "use client";
 import React, { useState, useEffect } from 'react';
-import { 
-  X, 
-  Plus, 
-  Trash, 
-  PaperPlaneTilt, 
-  Sparkle, 
-  CheckCircle, 
-  Clock, 
-  CreditCard, 
-  Receipt, 
-  Copy, 
-  FileText,
-  FilePdf,
-  QrCode,
-  Building,
-  User,
-  Envelope,
-  Phone,
-  Globe,
-  Info,
-  Check
-} from '@phosphor-icons/react';
+import { X, Plus, Trash, PaperPlaneTilt, CheckCircle, Receipt, Copy, FilePdf, QrCode, Info, Check } from '@phosphor-icons/react';
 import { QRCodeSVG } from 'qrcode.react';
 
 export default function InvoiceModal({ client, onClose }) {

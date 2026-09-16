@@ -56,8 +56,8 @@ export default function AboutSection() {
               {/* Main Image */}
               <div className="absolute inset-0 bg-surface-container-lowest rounded-xl overflow-hidden border border-outline-variant/60 shadow-lg">
                 <img 
-                  src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=800&q=80" 
-                  alt="InfronixWeb Team Collaboration" 
+                  src="/img-1.avif" 
+                  alt="InfronixWeb Digital Marketing Team" 
                   className="w-full h-full object-cover"
                 />
               </div>

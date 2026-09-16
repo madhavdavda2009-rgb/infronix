@@ -9,7 +9,7 @@ const projects = [
     title: "Toyon Industry Pvt Ltd",
     desc: "Developing interactive 3D visual showcases and modern digital solutions for their industrial operations.",
     tech: ["Interactive 3D", "Custom Web Platform", "Fast Loading"],
-    image: "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&w=1200&q=80",
+    image: "/img-2.avif",
     link: "#"
   }
 ];
@@ -27,6 +27,9 @@ export default function PortfolioSection() {
               Digital products that <br className="hidden md:block" />
               perform and inspire.
             </h3>
+            <p className="text-sm sm:text-base text-main-text font-medium mt-3 max-w-xl">
+              Engineered for ambitious businesses across Ahmedabad, Gujarat, and nationwide.
+            </p>
           </div>
           <Link 
             href="/projects" 

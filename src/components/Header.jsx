@@ -1,19 +1,5 @@
 "use client";
-import { 
-  X, 
-  List, 
-  CaretDown, 
-  CaretRight, 
-  Envelope, 
-  Phone, 
-  MapPin, 
-  Clock, 
-  Globe, 
-  MagnifyingGlass, 
-  Robot, 
-  Megaphone,
-  ArrowRight
-} from "@phosphor-icons/react";
+import { X, List, CaretDown, Envelope, Phone, MapPin, Clock, Globe, MagnifyingGlass, Robot, Megaphone, ArrowRight } from "@phosphor-icons/react";
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';

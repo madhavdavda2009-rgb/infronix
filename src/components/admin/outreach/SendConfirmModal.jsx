@@ -1,5 +1,5 @@
 "use client";
-import { Warning, PaperPlaneTilt, X, CheckCircle } from "@phosphor-icons/react";
+import { Warning, PaperPlaneTilt, X } from "@phosphor-icons/react";
 
 export default function SendConfirmModal({ isOpen, onClose, onConfirm, emailData, loading }) {
   if (!isOpen || !emailData) return null;

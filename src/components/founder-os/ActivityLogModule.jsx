@@ -1,14 +1,6 @@
 "use client";
 import React, { useState, useEffect } from 'react';
-import {
-  ClockCounterClockwise,
-  MagnifyingGlass,
-  Funnel,
-  ArrowsClockwise,
-  CheckCircle,
-  Tag,
-  User
-} from '@phosphor-icons/react';
+import { ClockCounterClockwise, ArrowsClockwise } from '@phosphor-icons/react';
 import EmptyState from './EmptyState';
 import { useToast } from '@/context/ToastContext';
 

@@ -7,6 +7,7 @@ import {
   BookOpen,
   CurrencyInr,
   Users,
+  UserCheck,
   ShieldCheck,
   ClockCounterClockwise,
   Gear,
@@ -17,6 +18,7 @@ import {
 const NAV_ITEMS = [
   { id: 'dashboard', label: 'Dashboard', icon: ChartBar, badgeKey: null },
   { id: 'sales', label: 'Sales CRM', icon: Briefcase, badgeKey: 'openLeads' },
+  { id: 'clients', label: 'Client 360°', icon: UserCheck, badgeKey: null },
   { id: 'delivery', label: 'Delivery', icon: Folder, badgeKey: 'activeProjects' },
   { id: 'sops', label: 'SOP Library', icon: BookOpen, badgeKey: null },
   { id: 'finance', label: 'Finance', icon: CurrencyInr, badgeKey: null },

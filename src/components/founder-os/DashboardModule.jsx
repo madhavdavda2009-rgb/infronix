@@ -1,21 +1,6 @@
 "use client";
 import React from 'react';
-import {
-  CurrencyInr,
-  Briefcase,
-  Folder,
-  FileText,
-  TrendUp,
-  TrendDown,
-  Clock,
-  Warning,
-  Plus,
-  ArrowRight,
-  ShieldCheck,
-  CheckCircle,
-  ChartLineUp,
-  CreditCard
-} from '@phosphor-icons/react';
+import { CurrencyInr, Briefcase, Folder, FileText, TrendUp, TrendDown, Clock, Warning, ArrowRight, CheckCircle, ChartLineUp, CreditCard } from '@phosphor-icons/react';
 import EmptyState from './EmptyState';
 
 export default function DashboardModule({

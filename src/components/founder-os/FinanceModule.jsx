@@ -1,22 +1,6 @@
 "use client";
 import React, { useState, useEffect } from 'react';
-import {
-  CurrencyInr,
-  Plus,
-  MagnifyingGlass,
-  Funnel,
-  Pencil,
-  Trash,
-  X,
-  CreditCard,
-  Receipt,
-  TrendUp,
-  TrendDown,
-  Clock,
-  CheckCircle,
-  Calendar,
-  ArrowsClockwise
-} from '@phosphor-icons/react';
+import { Plus, MagnifyingGlass, Trash, X, CreditCard, Receipt, ArrowsClockwise } from '@phosphor-icons/react';
 import EmptyState from './EmptyState';
 import { ConfirmModal } from './ConfirmModal';
 import { useToast } from '@/context/ToastContext';
@@ -55,6 +39,7 @@ export default function FinanceModule({ initialSub = 'overview', settings = {}, 
     projectProfitability: []
   });
   const [loading, setLoading] = useState(true);
+  const [linkedProjectId, setLinkedProjectId] = useState('');
 
   // Modals
   const [showRevenueModal, setShowRevenueModal] = useState(false);
@@ -94,8 +79,8 @@ export default function FinanceModule({ initialSub = 'overview', settings = {}, 
     const form = e.target;
     const payload = {
       type: 'revenue',
-      client_name: form.client_name.value,
-      project_name: form.project_name.value,
+      client_name: financeData.projectProfitability.find(project => String(project.id) === linkedProjectId)?.client_name || form.client_name.value,
+      project_id: linkedProjectId || null,
       amount: form.amount.value,
       payment_date: form.payment_date.value,
       payment_status: form.payment_status.value,
@@ -133,6 +118,7 @@ export default function FinanceModule({ initialSub = 'overview', settings = {}, 
     const form = e.target;
     const payload = {
       type: 'expense',
+      project_id: form.elements.namedItem('project_id').value || null,
       category: form.category.value,
       description: form.description.value,
       amount: form.amount.value,
@@ -271,7 +257,7 @@ export default function FinanceModule({ initialSub = 'overview', settings = {}, 
               <span className="text-[11px] font-bold uppercase tracking-wider text-slate-500 block mb-1">
                 Realized Revenue (Paid)
               </span>
-              <div className="text-2xl font-bold text-slate-900 font-outfit">
+              <div className="text-2xl font-bold text-slate-900 font-outfit font-mono">
                 {currency}{paidRevenue.toLocaleString('en-IN')}
               </div>
             </div>
@@ -280,16 +266,16 @@ export default function FinanceModule({ initialSub = 'overview', settings = {}, 
               <span className="text-[11px] font-bold uppercase tracking-wider text-slate-500 block mb-1">
                 Total Expenses
               </span>
-              <div className="text-2xl font-bold text-slate-900 font-outfit">
+              <div className="text-2xl font-bold text-slate-900 font-outfit font-mono">
                 {currency}{totalExpenses.toLocaleString('en-IN')}
               </div>
             </div>
 
             <div className="p-4 sm:p-5 rounded-2xl bg-white border border-slate-200/80 shadow-xs">
               <span className="text-[11px] font-bold uppercase tracking-wider text-slate-500 block mb-1">
-                Net Profit
+                Realized Net Profit
               </span>
-              <div className={`text-2xl font-bold font-outfit ${netProfit >= 0 ? 'text-emerald-600' : 'text-rose-600'}`}>
+              <div className={`text-2xl font-bold font-outfit font-mono ${netProfit >= 0 ? 'text-emerald-600' : 'text-rose-600'}`}>
                 {currency}{netProfit.toLocaleString('en-IN')}
               </div>
             </div>
@@ -298,10 +284,59 @@ export default function FinanceModule({ initialSub = 'overview', settings = {}, 
               <span className="text-[11px] font-bold uppercase tracking-wider text-slate-500 block mb-1">
                 Pending Receivables
               </span>
-              <div className="text-2xl font-bold text-amber-600 font-outfit">
+              <div className="text-2xl font-bold text-amber-600 font-outfit font-mono">
                 {currency}{pendingRevenue.toLocaleString('en-IN')}
               </div>
             </div>
+          </div>
+
+          {/* Project Profitability & Realized Cash Matrix */}
+          <div className="p-4 sm:p-5 rounded-2xl bg-white border border-slate-200/80 shadow-xs space-y-3">
+            <h3 className="text-sm font-bold text-slate-900 uppercase tracking-wider font-outfit">
+              Project Profitability & Cash Position
+            </h3>
+
+            {(!financeData.projectProfitability || financeData.projectProfitability.length === 0) ? (
+              <div className="p-8 text-center text-xs text-slate-500 bg-slate-50 rounded-xl border border-slate-200/60">
+                No projects recorded yet.
+              </div>
+            ) : (
+              <div className="overflow-x-auto">
+                <table className="w-full min-w-[700px] text-left text-xs">
+                  <thead className="border-b border-slate-200 text-slate-500 text-[10px] uppercase font-bold bg-slate-50/50">
+                    <tr>
+                      <th className="py-2.5 px-3">Project & Client</th>
+                      <th className="py-2.5 px-3">Contract Value</th>
+                      <th className="py-2.5 px-3">Cash Received</th>
+                      <th className="py-2.5 px-3">Outstanding</th>
+                      <th className="py-2.5 px-3">Actual Expenses</th>
+                      <th className="py-2.5 px-3">Realized Profit</th>
+                      <th className="py-2.5 px-3">Projected Profit</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-slate-100 font-mono">
+                    {financeData.projectProfitability.map((p) => (
+                      <tr key={p.projectId} className="hover:bg-slate-50/80 transition-colors">
+                        <td className="py-3 px-3">
+                          <div className="font-bold text-slate-900 font-sans">{p.projectName}</div>
+                          <span className="text-[10px] text-slate-500 font-sans">{p.clientName}</span>
+                        </td>
+                        <td className="py-3 px-3 font-bold text-slate-900">{currency}{p.contractValue.toLocaleString('en-IN')}</td>
+                        <td className="py-3 px-3 font-bold text-emerald-600">{currency}{p.cashReceived.toLocaleString('en-IN')}</td>
+                        <td className="py-3 px-3 font-bold text-amber-600">{currency}{p.outstanding.toLocaleString('en-IN')}</td>
+                        <td className="py-3 px-3 font-bold text-rose-600">{currency}{p.actualExpenses.toLocaleString('en-IN')}</td>
+                        <td className={`py-3 px-3 font-bold ${p.realizedProfit >= 0 ? 'text-emerald-700' : 'text-rose-600'}`}>
+                          {currency}{p.realizedProfit.toLocaleString('en-IN')}
+                        </td>
+                        <td className="py-3 px-3 font-bold text-violet-700">
+                          {currency}{p.projectedProfit.toLocaleString('en-IN')}
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            )}
           </div>
 
           {/* Monthly Breakdown Table */}
@@ -331,7 +366,7 @@ export default function FinanceModule({ initialSub = 'overview', settings = {}, 
                       const margin = m.revenue > 0 ? Math.round(((m.revenue - m.expenses) / m.revenue) * 100) : 0;
                       return (
                         <tr key={m.month} className="hover:bg-slate-50/80 transition-colors">
-                          <td className="py-3 px-3 font-semibold text-slate-900">{m.month}</td>
+                          <td className="py-3 px-3 font-semibold text-slate-900 font-sans">{m.month}</td>
                           <td className="py-3 px-3 text-emerald-600 font-bold">{currency}{m.revenue.toLocaleString('en-IN')}</td>
                           <td className="py-3 px-3 text-rose-600 font-bold">{currency}{m.expenses.toLocaleString('en-IN')}</td>
                           <td className={`py-3 px-3 font-bold ${m.profit >= 0 ? 'text-slate-900' : 'text-rose-600'}`}>
@@ -341,46 +376,6 @@ export default function FinanceModule({ initialSub = 'overview', settings = {}, 
                         </tr>
                       );
                     })}
-                  </tbody>
-                </table>
-              </div>
-            )}
-          </div>
-
-          {/* Project Profitability Table */}
-          <div className="p-4 sm:p-5 rounded-2xl bg-white border border-slate-200/80 shadow-xs space-y-3">
-            <h3 className="text-sm font-bold text-slate-900 uppercase tracking-wider font-outfit">
-              Project Profitability
-            </h3>
-
-            {(!financeData.projectProfitability || financeData.projectProfitability.length === 0) ? (
-              <div className="p-8 text-center text-xs text-slate-500 bg-slate-50 rounded-xl border border-slate-200/60">
-                No project-attributed revenue or expenses recorded yet.
-              </div>
-            ) : (
-              <div className="overflow-x-auto">
-                <table className="w-full min-w-[550px] text-left text-xs">
-                  <thead className="border-b border-slate-200 text-slate-500 text-[11px] uppercase font-bold bg-slate-50/50">
-                    <tr>
-                      <th className="py-2.5 px-3">Project</th>
-                      <th className="py-2.5 px-3">Client</th>
-                      <th className="py-2.5 px-3">Revenue</th>
-                      <th className="py-2.5 px-3">Direct Costs</th>
-                      <th className="py-2.5 px-3">Profit</th>
-                      <th className="py-2.5 px-3">Margin</th>
-                    </tr>
-                  </thead>
-                  <tbody className="divide-y divide-slate-100">
-                    {financeData.projectProfitability.map((p) => (
-                      <tr key={p.projectId} className="hover:bg-slate-50/80 transition-colors">
-                        <td className="py-3 px-3 font-bold text-slate-900">{p.projectName}</td>
-                        <td className="py-3 px-3 text-slate-600">{p.clientName}</td>
-                        <td className="py-3 px-3 font-mono font-bold text-emerald-600">{currency}{p.revenue.toLocaleString('en-IN')}</td>
-                        <td className="py-3 px-3 font-mono font-bold text-rose-600">{currency}{p.expenses.toLocaleString('en-IN')}</td>
-                        <td className="py-3 px-3 font-mono font-bold text-slate-900">{currency}{p.profit.toLocaleString('en-IN')}</td>
-                        <td className="py-3 px-3 font-bold text-slate-700">{p.marginPercent}%</td>
-                      </tr>
-                    ))}
                   </tbody>
                 </table>
               </div>
@@ -452,18 +447,14 @@ export default function FinanceModule({ initialSub = 'overview', settings = {}, 
                             {rev.payment_status}
                           </span>
                         </td>
-                        <td className="px-4 py-3 text-slate-600">
-                          {rev.payment_method}
-                        </td>
-                        <td className="px-4 py-3 text-slate-600 font-mono">
-                          {rev.invoice_number || '—'}
-                        </td>
+                        <td className="px-4 py-3 text-slate-600">{rev.payment_method}</td>
+                        <td className="px-4 py-3 text-slate-600 font-mono">{rev.invoice_number || '—'}</td>
                         <td className="px-4 py-3 text-right">
                           <button
-                            onClick={() => setDeleteConfirm({ isOpen: true, type: 'revenue', id: rev.id, title: `Revenue from ${rev.client_name}` })}
-                            className="p-1.5 text-slate-400 hover:text-rose-600 hover:bg-rose-50 rounded-lg transition-colors cursor-pointer"
+                            onClick={() => setDeleteConfirm({ isOpen: true, type: 'revenue', id: rev.id, title: `Revenue record #${rev.id}` })}
+                            className="p-1.5 rounded-lg text-slate-400 hover:text-rose-600 hover:bg-rose-50 transition-colors"
                           >
-                            <Trash size={15} />
+                            <Trash size={16} />
                           </button>
                         </td>
                       </tr>
@@ -486,7 +477,7 @@ export default function FinanceModule({ initialSub = 'overview', settings = {}, 
                 type="text"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                placeholder="Search expenses by category or description..."
+                placeholder="Search by description or category..."
                 className="w-full pl-9 pr-3 py-1.5 rounded-xl bg-slate-50 border border-slate-200 text-xs text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-violet-600 focus:ring-2 focus:ring-violet-500/20"
               />
             </div>
@@ -495,8 +486,8 @@ export default function FinanceModule({ initialSub = 'overview', settings = {}, 
           {filteredExpenses.length === 0 && !loading ? (
             <EmptyState
               icon={CreditCard}
-              title="No expenses recorded"
-              description="Track software subscriptions, hosting fees, salaries, and freelancer payments."
+              title="No expenses recorded yet"
+              description="Record operational costs, contractor payments, software, and hosting."
               actionLabel="Add Expense"
               onAction={() => setShowExpenseModal(true)}
             />
@@ -506,12 +497,12 @@ export default function FinanceModule({ initialSub = 'overview', settings = {}, 
                 <table className="w-full min-w-[650px] text-left text-xs">
                   <thead className="bg-slate-50/80 border-b border-slate-200 text-slate-500 uppercase tracking-wider text-[10px] font-bold">
                     <tr>
-                      <th className="px-4 py-3">Category</th>
                       <th className="px-4 py-3">Description</th>
+                      <th className="px-4 py-3">Category</th>
                       <th className="px-4 py-3">Amount</th>
                       <th className="px-4 py-3">Date</th>
                       <th className="px-4 py-3">Method</th>
-                      <th className="px-4 py-3">Type</th>
+                      <th className="px-4 py-3">Recurring</th>
                       <th className="px-4 py-3 text-right">Delete</th>
                     </tr>
                   </thead>
@@ -519,33 +510,35 @@ export default function FinanceModule({ initialSub = 'overview', settings = {}, 
                     {filteredExpenses.map((exp) => (
                       <tr key={exp.id} className="hover:bg-slate-50/80 transition-colors">
                         <td className="px-4 py-3 font-semibold text-slate-900">
-                          <span className="inline-flex px-2 py-0.5 rounded-md text-[10px] font-bold uppercase bg-slate-100 text-slate-700 border border-slate-200">
+                          {exp.description}
+                          {exp.linked_project_name && <span className="block text-[10px] text-slate-500 font-normal">Project: {exp.linked_project_name}</span>}
+                        </td>
+                        <td className="px-4 py-3 text-slate-600">
+                          <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-slate-100 text-slate-700 border border-slate-200">
                             {exp.category}
                           </span>
                         </td>
-                        <td className="px-4 py-3 text-slate-700">
-                          {exp.description}
-                        </td>
                         <td className="px-4 py-3 font-mono font-bold text-rose-600">
-                          {currency}{parseFloat(exp.amount || 0).toLocaleString('en-IN')}
+                          -{currency}{parseFloat(exp.amount || 0).toLocaleString('en-IN')}
                         </td>
                         <td className="px-4 py-3 text-slate-600">
                           {new Date(exp.expense_date).toLocaleDateString()}
                         </td>
-                        <td className="px-4 py-3 text-slate-600">
-                          {exp.payment_method}
-                        </td>
+                        <td className="px-4 py-3 text-slate-600">{exp.payment_method}</td>
                         <td className="px-4 py-3 text-slate-600">
                           {exp.is_recurring ? (
-                            <span className="text-violet-700 font-semibold">Recurring ({exp.recurring_frequency || 'Monthly'})</span>
-                          ) : 'One-time'}
+                            <span className="inline-flex items-center gap-1 text-[10px] text-violet-700 font-semibold bg-violet-50 px-2 py-0.5 rounded-md border border-violet-200">
+                              <ArrowsClockwise size={12} weight="bold" />
+                              {exp.recurring_frequency || 'Recurring'}
+                            </span>
+                          ) : '—'}
                         </td>
                         <td className="px-4 py-3 text-right">
                           <button
-                            onClick={() => setDeleteConfirm({ isOpen: true, type: 'expense', id: exp.id, title: exp.description })}
-                            className="p-1.5 text-slate-400 hover:text-rose-600 hover:bg-rose-50 rounded-lg transition-colors cursor-pointer"
+                            onClick={() => setDeleteConfirm({ isOpen: true, type: 'expense', id: exp.id, title: `Expense record #${exp.id}` })}
+                            className="p-1.5 rounded-lg text-slate-400 hover:text-rose-600 hover:bg-rose-50 transition-colors"
                           >
-                            <Trash size={15} />
+                            <Trash size={16} />
                           </button>
                         </td>
                       </tr>
@@ -560,81 +553,75 @@ export default function FinanceModule({ initialSub = 'overview', settings = {}, 
 
       {/* --- MODAL 1: RECORD REVENUE --- */}
       {showRevenueModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-xs animate-fadeIn">
-          <div className="w-full max-w-md bg-white border border-slate-200 rounded-2xl shadow-xl p-5 sm:p-6 max-h-[90vh] overflow-y-auto">
-            <div className="flex items-center justify-between border-b border-slate-200 pb-4 mb-4">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-slate-900/40 backdrop-blur-sm animate-fadeIn">
+          <div className="w-full max-w-md bg-white border border-slate-200 rounded-2xl shadow-2xl p-5 sm:p-6 max-h-[90vh] overflow-y-auto">
+            <div className="flex items-center justify-between border-b border-slate-100 pb-3 mb-4">
               <h3 className="text-base font-bold text-slate-900 font-outfit">
-                Record Revenue / Payment Receipt
+                Record Revenue
               </h3>
-              <button 
-                onClick={() => setShowRevenueModal(false)} 
-                className="text-slate-400 hover:text-slate-700 p-1 rounded-lg hover:bg-slate-100 transition-colors"
-              >
+              <button onClick={() => setShowRevenueModal(false)} className="text-slate-400 hover:text-slate-600 p-1">
                 <X size={18} />
               </button>
             </div>
 
             <form onSubmit={handleSaveRevenue} className="space-y-4 text-xs">
               <div>
-                <label className="block text-slate-700 font-semibold mb-1">Client Name *</label>
+                <label className="block text-slate-700 font-bold mb-1">Client Name *</label>
                 <input
                   name="client_name"
-                  required
-                  placeholder="e.g. Acme Tech Solutions"
-                  className="w-full bg-white border border-slate-300 rounded-xl px-3 py-2 text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-violet-600 focus:ring-2 focus:ring-violet-500/20"
+                  required={!linkedProjectId}
+                  placeholder="e.g. Apex Hospital"
+                  className="w-full bg-white border border-slate-300 rounded-xl px-3.5 py-2.5 text-slate-900 focus:outline-none focus:ring-2 focus:ring-violet-500/20 focus:border-violet-600"
                 />
               </div>
 
               <div>
-                <label className="block text-slate-700 font-semibold mb-1">Project Name (Optional)</label>
-                <input
-                  name="project_name"
-                  placeholder="e.g. Website Redesign Project"
-                  className="w-full bg-white border border-slate-300 rounded-xl px-3 py-2 text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-violet-600 focus:ring-2 focus:ring-violet-500/20"
-                />
+                <label className="block text-slate-700 font-bold mb-1">Linked Project (Optional)</label>
+                <select aria-label="Linked Project" value={linkedProjectId} onChange={event => setLinkedProjectId(event.target.value)} className="w-full bg-white border border-slate-300 rounded-xl px-3.5 py-2.5 text-slate-900">
+                  <option value="">No linked project</option>
+                  {financeData.projectProfitability.map(project => <option key={project.id} value={project.id}>{project.project_name} — {project.client_name}</option>)}
+                </select>
               </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-slate-700 font-semibold mb-1">Amount ({currency}) *</label>
+                  <label className="block text-slate-700 font-bold mb-1">Amount ({currency}) *</label>
                   <input
                     name="amount"
                     type="number"
                     required
-                    step="100"
-                    placeholder="50000"
-                    className="w-full bg-white border border-slate-300 rounded-xl px-3 py-2 text-slate-900 font-mono placeholder:text-slate-400 focus:outline-none focus:border-violet-600 focus:ring-2 focus:ring-violet-500/20"
+                    placeholder="25000"
+                    className="w-full bg-white border border-slate-300 rounded-xl px-3.5 py-2.5 text-slate-900 font-mono font-bold focus:outline-none focus:ring-2 focus:ring-violet-500/20 focus:border-violet-600"
                   />
                 </div>
                 <div>
-                  <label className="block text-slate-700 font-semibold mb-1">Payment Date *</label>
+                  <label className="block text-slate-700 font-bold mb-1">Payment Date</label>
                   <input
                     name="payment_date"
                     type="date"
-                    required
                     defaultValue={new Date().toISOString().substring(0, 10)}
-                    className="w-full bg-white border border-slate-300 rounded-xl px-3 py-2 text-slate-900 focus:outline-none focus:border-violet-600 focus:ring-2 focus:ring-violet-500/20"
+                    className="w-full bg-white border border-slate-300 rounded-xl px-3.5 py-2.5 text-slate-900 focus:outline-none focus:ring-2 focus:ring-violet-500/20 focus:border-violet-600 font-medium"
                   />
                 </div>
               </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-slate-700 font-semibold mb-1">Payment Status</label>
+                  <label className="block text-slate-700 font-bold mb-1">Payment Status</label>
                   <select
                     name="payment_status"
                     defaultValue="Paid"
-                    className="w-full bg-white border border-slate-300 rounded-xl px-3 py-2 text-slate-900 focus:outline-none focus:border-violet-600 focus:ring-2 focus:ring-violet-500/20"
+                    className="w-full bg-white border border-slate-300 rounded-xl px-3 py-2.5 text-slate-900 focus:outline-none focus:ring-2 focus:ring-violet-500/20 focus:border-violet-600 font-medium"
                   >
                     {REVENUE_STATUSES.map(s => <option key={s} value={s}>{s}</option>)}
                   </select>
                 </div>
                 <div>
-                  <label className="block text-slate-700 font-semibold mb-1">Payment Method</label>
+                  <label className="block text-slate-700 font-bold mb-1">Payment Method</label>
                   <select
                     name="payment_method"
                     defaultValue="Bank Transfer"
-                    className="w-full bg-white border border-slate-300 rounded-xl px-3 py-2 text-slate-900 focus:outline-none focus:border-violet-600 focus:ring-2 focus:ring-violet-500/20"
+                    className="w-full bg-white border border-slate-300 rounded-xl px-3 py-2.5 text-slate-900 focus:outline-none focus:ring-2 focus:ring-violet-500/20 focus:border-violet-600 font-medium"
                   >
                     {PAYMENT_METHODS.map(m => <option key={m} value={m}>{m}</option>)}
                   </select>
@@ -642,36 +629,36 @@ export default function FinanceModule({ initialSub = 'overview', settings = {}, 
               </div>
 
               <div>
-                <label className="block text-slate-700 font-semibold mb-1">Invoice / Reference Number</label>
+                <label className="block text-slate-700 font-bold mb-1">Invoice Number (Optional)</label>
                 <input
                   name="invoice_number"
                   placeholder="e.g. INV-2026-001"
-                  className="w-full bg-white border border-slate-300 rounded-xl px-3 py-2 text-slate-900 font-mono placeholder:text-slate-400 focus:outline-none focus:border-violet-600 focus:ring-2 focus:ring-violet-500/20"
+                  className="w-full bg-white border border-slate-300 rounded-xl px-3.5 py-2.5 text-slate-900 focus:outline-none focus:ring-2 focus:ring-violet-500/20 focus:border-violet-600"
                 />
               </div>
 
               <div>
-                <label className="block text-slate-700 font-semibold mb-1">Notes</label>
+                <label className="block text-slate-700 font-bold mb-1">Notes</label>
                 <textarea
                   name="notes"
                   rows={2}
-                  placeholder="Milestone 1 payment..."
-                  className="w-full bg-white border border-slate-300 rounded-xl px-3 py-2 text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-violet-600 focus:ring-2 focus:ring-violet-500/20"
+                  placeholder="Payment reference, bank details, tax notes..."
+                  className="w-full bg-white border border-slate-300 rounded-xl px-3.5 py-2.5 text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-violet-500/20 focus:border-violet-600"
                 />
               </div>
 
-              <div className="flex flex-col-reverse sm:flex-row items-center justify-end gap-3 pt-4 border-t border-slate-200">
+              <div className="flex items-center justify-end gap-2.5 pt-3 border-t border-slate-100">
                 <button
                   type="button"
                   onClick={() => setShowRevenueModal(false)}
-                  className="w-full sm:w-auto px-4 py-2.5 text-xs font-semibold text-slate-700 bg-white border border-slate-300 hover:bg-slate-50 rounded-xl transition-colors cursor-pointer"
+                  className="px-4 py-2.5 text-xs font-bold uppercase tracking-wider text-slate-700 hover:text-slate-900 bg-slate-100 hover:bg-slate-200 rounded-xl transition-colors"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
                   disabled={actionLoading}
-                  className="w-full sm:w-auto px-5 py-2.5 rounded-xl bg-violet-600 hover:bg-violet-700 text-white font-bold text-xs uppercase tracking-wider shadow-sm transition-colors cursor-pointer disabled:opacity-50"
+                  className="px-5 py-2.5 rounded-xl bg-violet-600 hover:bg-violet-700 text-white font-bold text-xs uppercase tracking-wider shadow-sm shadow-violet-600/20 cursor-pointer disabled:opacity-50"
                 >
                   {actionLoading ? 'Recording...' : 'Record Revenue'}
                 </button>
@@ -683,114 +670,122 @@ export default function FinanceModule({ initialSub = 'overview', settings = {}, 
 
       {/* --- MODAL 2: ADD EXPENSE --- */}
       {showExpenseModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-xs animate-fadeIn">
-          <div className="w-full max-w-md bg-white border border-slate-200 rounded-2xl shadow-xl p-5 sm:p-6 max-h-[90vh] overflow-y-auto">
-            <div className="flex items-center justify-between border-b border-slate-200 pb-4 mb-4">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-slate-900/40 backdrop-blur-sm animate-fadeIn">
+          <div className="w-full max-w-md bg-white border border-slate-200 rounded-2xl shadow-2xl p-5 sm:p-6 max-h-[90vh] overflow-y-auto">
+            <div className="flex items-center justify-between border-b border-slate-100 pb-3 mb-4">
               <h3 className="text-base font-bold text-slate-900 font-outfit">
-                Add Agency Expense
+                Add Expense
               </h3>
-              <button 
-                onClick={() => setShowExpenseModal(false)} 
-                className="text-slate-400 hover:text-slate-700 p-1 rounded-lg hover:bg-slate-100 transition-colors"
-              >
+              <button onClick={() => setShowExpenseModal(false)} className="text-slate-400 hover:text-slate-600 p-1">
                 <X size={18} />
               </button>
             </div>
 
             <form onSubmit={handleSaveExpense} className="space-y-4 text-xs">
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <label className="block text-slate-700 font-bold">Linked Project (Optional)
+                <select name="project_id" className="mt-1 w-full bg-white border border-slate-300 rounded-xl px-3 py-2 text-slate-900">
+                  <option value="">No linked project</option>
+                  {financeData.projectProfitability.map(project => <option key={project.id} value={project.id}>{project.project_name}</option>)}
+                </select>
+              </label>
+
+              <div>
+                <label className="block text-slate-700 font-bold mb-1">Expense Description *</label>
+                <input
+                  name="description"
+                  required
+                  placeholder="e.g. Figma Pro subscription"
+                  className="w-full bg-white border border-slate-300 rounded-xl px-3.5 py-2.5 text-slate-900 focus:outline-none focus:ring-2 focus:ring-violet-500/20 focus:border-violet-600"
+                />
+              </div>
+
+              <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-slate-700 font-semibold mb-1">Category *</label>
+                  <label className="block text-slate-700 font-bold mb-1">Category *</label>
                   <select
                     name="category"
                     defaultValue="Software"
-                    className="w-full bg-white border border-slate-300 rounded-xl px-3 py-2 text-slate-900 focus:outline-none focus:border-violet-600 focus:ring-2 focus:ring-violet-500/20"
+                    className="w-full bg-white border border-slate-300 rounded-xl px-3 py-2.5 text-slate-900 focus:outline-none focus:ring-2 focus:ring-violet-500/20 focus:border-violet-600 font-medium"
                   >
                     {EXPENSE_CATEGORIES.map(c => <option key={c} value={c}>{c}</option>)}
                   </select>
                 </div>
                 <div>
-                  <label className="block text-slate-700 font-semibold mb-1">Amount ({currency}) *</label>
+                  <label className="block text-slate-700 font-bold mb-1">Amount ({currency}) *</label>
                   <input
                     name="amount"
                     type="number"
                     required
-                    step="50"
-                    placeholder="4500"
-                    className="w-full bg-white border border-slate-300 rounded-xl px-3 py-2 text-slate-900 font-mono placeholder:text-slate-400 focus:outline-none focus:border-violet-600 focus:ring-2 focus:ring-violet-500/20"
+                    placeholder="1200"
+                    className="w-full bg-white border border-slate-300 rounded-xl px-3.5 py-2.5 text-slate-900 font-mono font-bold focus:outline-none focus:ring-2 focus:ring-violet-500/20 focus:border-violet-600"
                   />
                 </div>
               </div>
 
-              <div>
-                <label className="block text-slate-700 font-semibold mb-1">Description *</label>
-                <input
-                  name="description"
-                  required
-                  placeholder="e.g. Vercel Pro & Domain renewal"
-                  className="w-full bg-white border border-slate-300 rounded-xl px-3 py-2 text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-violet-600 focus:ring-2 focus:ring-violet-500/20"
-                />
-              </div>
-
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-slate-700 font-semibold mb-1">Expense Date *</label>
+                  <label className="block text-slate-700 font-bold mb-1">Expense Date</label>
                   <input
                     name="expense_date"
                     type="date"
-                    required
                     defaultValue={new Date().toISOString().substring(0, 10)}
-                    className="w-full bg-white border border-slate-300 rounded-xl px-3 py-2 text-slate-900 focus:outline-none focus:border-violet-600 focus:ring-2 focus:ring-violet-500/20"
+                    className="w-full bg-white border border-slate-300 rounded-xl px-3.5 py-2.5 text-slate-900 focus:outline-none focus:ring-2 focus:ring-violet-500/20 focus:border-violet-600 font-medium"
                   />
                 </div>
                 <div>
-                  <label className="block text-slate-700 font-semibold mb-1">Payment Method</label>
+                  <label className="block text-slate-700 font-bold mb-1">Payment Method</label>
                   <select
                     name="payment_method"
                     defaultValue="UPI"
-                    className="w-full bg-white border border-slate-300 rounded-xl px-3 py-2 text-slate-900 focus:outline-none focus:border-violet-600 focus:ring-2 focus:ring-violet-500/20"
+                    className="w-full bg-white border border-slate-300 rounded-xl px-3 py-2.5 text-slate-900 focus:outline-none focus:ring-2 focus:ring-violet-500/20 focus:border-violet-600 font-medium"
                   >
                     {PAYMENT_METHODS.map(m => <option key={m} value={m}>{m}</option>)}
                   </select>
                 </div>
               </div>
 
-              <div className="flex items-center gap-2 pt-1">
-                <input
-                  type="checkbox"
-                  id="is_recurring"
-                  name="is_recurring"
-                  className="rounded border-slate-300 text-violet-600 focus:ring-violet-500"
-                />
-                <label htmlFor="is_recurring" className="text-slate-700 font-semibold">
-                  Recurring monthly subscription
+              <div className="p-3 rounded-xl bg-slate-50 border border-slate-200 space-y-2">
+                <label className="flex items-center gap-2 cursor-pointer">
+                  <input type="checkbox" name="is_recurring" className="rounded text-violet-600" />
+                  <span className="text-slate-800 font-bold">This is a Recurring Expense</span>
                 </label>
+                <div className="pl-6">
+                  <select
+                    name="recurring_frequency"
+                    defaultValue="Monthly"
+                    className="w-full bg-white border border-slate-300 rounded-xl px-3 py-1.5 text-slate-900 text-[11px]"
+                  >
+                    <option value="Monthly">Monthly</option>
+                    <option value="Quarterly">Quarterly</option>
+                    <option value="Annually">Annually</option>
+                  </select>
+                </div>
               </div>
 
               <div>
-                <label className="block text-slate-700 font-semibold mb-1">Notes</label>
+                <label className="block text-slate-700 font-bold mb-1">Notes / Vendor Details</label>
                 <textarea
                   name="notes"
                   rows={2}
-                  placeholder="Invoice link or billing details..."
-                  className="w-full bg-white border border-slate-300 rounded-xl px-3 py-2 text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-violet-600 focus:ring-2 focus:ring-violet-500/20"
+                  placeholder="Receipt reference, vendor invoice URL..."
+                  className="w-full bg-white border border-slate-300 rounded-xl px-3.5 py-2.5 text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-violet-500/20 focus:border-violet-600"
                 />
               </div>
 
-              <div className="flex flex-col-reverse sm:flex-row items-center justify-end gap-3 pt-4 border-t border-slate-200">
+              <div className="flex items-center justify-end gap-2.5 pt-3 border-t border-slate-100">
                 <button
                   type="button"
                   onClick={() => setShowExpenseModal(false)}
-                  className="w-full sm:w-auto px-4 py-2.5 text-xs font-semibold text-slate-700 bg-white border border-slate-300 hover:bg-slate-50 rounded-xl transition-colors cursor-pointer"
+                  className="px-4 py-2.5 text-xs font-bold uppercase tracking-wider text-slate-700 hover:text-slate-900 bg-slate-100 hover:bg-slate-200 rounded-xl transition-colors"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
                   disabled={actionLoading}
-                  className="w-full sm:w-auto px-5 py-2.5 rounded-xl bg-violet-600 hover:bg-violet-700 text-white font-bold text-xs uppercase tracking-wider shadow-sm transition-colors cursor-pointer disabled:opacity-50"
+                  className="px-5 py-2.5 rounded-xl bg-violet-600 hover:bg-violet-700 text-white font-bold text-xs uppercase tracking-wider shadow-sm shadow-violet-600/20 cursor-pointer disabled:opacity-50"
                 >
-                  {actionLoading ? 'Saving...' : 'Add Expense'}
+                  {actionLoading ? 'Recording...' : 'Add Expense'}
                 </button>
               </div>
             </form>
@@ -798,13 +793,13 @@ export default function FinanceModule({ initialSub = 'overview', settings = {}, 
         </div>
       )}
 
-      {/* Delete Confirmation */}
+      {/* CONFIRM DELETE MODAL */}
       <ConfirmModal
         isOpen={deleteConfirm.isOpen}
-        isDestructive={true}
-        title={`Delete ${deleteConfirm.type}`}
-        message={`Are you sure you want to delete "${deleteConfirm.title}"?`}
-        confirmLabel="Delete"
+        title={`Delete ${deleteConfirm.title}?`}
+        description="This action cannot be undone."
+        confirmLabel="Confirm Delete"
+        isDanger={true}
         loading={actionLoading}
         onConfirm={handleDeleteConfirm}
         onCancel={() => setDeleteConfirm({ isOpen: false, type: '', id: null, title: '' })}

@@ -1,6 +1,6 @@
 "use client";
 import { useState, useEffect } from 'react';
-import { X, CheckCircle, Warning, Clock, EnvelopeOpen, MagnifyingGlass, ArrowsClockwise } from "@phosphor-icons/react";
+import { X, CheckCircle, Warning, Clock, MagnifyingGlass, ArrowsClockwise } from "@phosphor-icons/react";
 
 export default function SentHistoryModal({ isOpen, onClose, showToast }) {
   const [sentList, setSentList] = useState([]);

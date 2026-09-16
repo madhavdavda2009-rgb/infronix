@@ -11,8 +11,6 @@ export async function GET(request) {
 
   try {
     await initFounderOSDb();
-    const { searchParams } = new URL(request.url);
-    const view = searchParams.get('view') || 'overview'; // 'overview' | 'revenue' | 'expenses'
 
     // Fetch Revenue Records
     const revenueRes = await query(`
@@ -29,6 +27,25 @@ export async function GET(request) {
       LEFT JOIN founder_os_projects p ON p.id = e.project_id
       ORDER BY e.expense_date DESC, e.created_at DESC
     `);
+
+    // Fetch Projects for Profitability Matrix
+    const projectsRes = await query(`
+      SELECT p.id, p.project_name, p.client_name, p.project_value, p.status
+      FROM founder_os_projects p
+      ORDER BY p.created_at DESC
+    `);
+
+    // Fetch Planned Costs
+    const plannedCostsRes = await query(`
+      SELECT project_id, SUM(expected_amount) as total_planned
+      FROM founder_os_planned_costs
+      WHERE status = 'Planned'
+      GROUP BY project_id
+    `);
+    const plannedCostMap = {};
+    for (const pc of plannedCostsRes.rows) {
+      plannedCostMap[pc.project_id] = parseFloat(pc.total_planned || 0);
+    }
 
     // Calculate Summary Metrics
     let totalRevenue = 0;
@@ -72,43 +89,53 @@ export async function GET(request) {
       }))
       .sort((a, b) => b.month.localeCompare(a.month));
 
-    // Project Profitability (Calculated by revenue earned per project minus attributed expenses)
-    const projectProfitMap = {};
+    // Project Profitability & Realized Cash Matrix
+    const projectRevenueMap = {};
     for (const r of revenueRes.rows) {
       if (r.project_id && r.payment_status === 'Paid') {
         const pid = r.project_id;
-        if (!projectProfitMap[pid]) {
-          projectProfitMap[pid] = {
-            projectId: pid,
-            projectName: r.project_name || r.linked_project_name || `Project #${pid}`,
-            clientName: r.client_name,
-            revenue: 0,
-            expenses: 0
-          };
-        }
-        projectProfitMap[pid].revenue += parseFloat(r.amount || 0);
+        projectRevenueMap[pid] = (projectRevenueMap[pid] || 0) + parseFloat(r.amount || 0);
       }
     }
+
+    const projectExpensesMap = {};
     for (const e of expensesRes.rows) {
       if (e.project_id) {
         const pid = e.project_id;
-        if (!projectProfitMap[pid]) {
-          projectProfitMap[pid] = {
-            projectId: pid,
-            projectName: e.linked_project_name || `Project #${pid}`,
-            clientName: 'Client Project',
-            revenue: 0,
-            expenses: 0
-          };
-        }
-        projectProfitMap[pid].expenses += parseFloat(e.amount || 0);
+        projectExpensesMap[pid] = (projectExpensesMap[pid] || 0) + parseFloat(e.amount || 0);
       }
     }
-    const projectProfitability = Object.values(projectProfitMap).map(p => ({
-      ...p,
-      profit: p.revenue - p.expenses,
-      marginPercent: p.revenue > 0 ? Math.round(((p.revenue - p.expenses) / p.revenue) * 100) : 0
-    }));
+
+    const projectProfitability = projectsRes.rows.map(p => {
+      const contractValue = parseFloat(p.project_value || 0);
+      const cashReceived = projectRevenueMap[p.id] || 0;
+      const outstanding = Math.max(0, contractValue - cashReceived);
+      const actualExpenses = projectExpensesMap[p.id] || 0;
+      const plannedCosts = plannedCostMap[p.id] || 0;
+      const realizedProfit = cashReceived - actualExpenses;
+      const projectedProfit = contractValue - (actualExpenses + plannedCosts);
+
+      return {
+        id: p.id,
+        project_name: p.project_name,
+        client_name: p.client_name,
+        projectId: p.id,
+        projectName: p.project_name,
+        clientName: p.client_name,
+        status: p.status,
+        contractValue,
+        cashReceived,
+        outstanding,
+        actualExpenses,
+        plannedCosts,
+        realizedProfit,
+        projectedProfit,
+        revenue: cashReceived,
+        expenses: actualExpenses,
+        profit: realizedProfit,
+        marginPercent: cashReceived > 0 ? Math.round((realizedProfit / cashReceived) * 100) : 0
+      };
+    });
 
     return NextResponse.json({
       success: true,
@@ -142,19 +169,28 @@ export async function POST(request) {
     const body = await request.json();
     const { type } = body; // 'revenue' | 'expense'
 
+    if (!Number.isFinite(Number(body.amount)) || Number(body.amount) <= 0) {
+      return NextResponse.json({ success: false, error: 'Enter a positive amount' }, { status: 400 });
+    }
+    if (body.project_id) {
+      const project = await query('SELECT project_name, client_name, client_id FROM founder_os_projects WHERE id = $1', [body.project_id]);
+      if (!project.rows[0]) return NextResponse.json({ success: false, error: 'Project not found' }, { status: 404 });
+      Object.assign(body, project.rows[0]);
+    }
     if (type === 'revenue') {
-      const { client_name, project_id, project_name, amount, payment_date, payment_status, payment_method, invoice_number, notes } = body;
+      const { client_name, client_id, project_id, project_name, amount, payment_date, payment_status, payment_method, invoice_number, notes } = body;
       if (!client_name || amount === undefined) {
         return NextResponse.json({ success: false, error: 'Client name and amount are required' }, { status: 400 });
       }
 
       const insertRes = await query(`
         INSERT INTO founder_os_revenue
-          (client_name, project_id, project_name, amount, payment_date, payment_status, payment_method, invoice_number, notes, created_at, updated_at)
-        VALUES ($1, $2, $3, $4, COALESCE($5, CURRENT_DATE), $6, $7, $8, $9, NOW(), NOW())
+          (client_name, client_id, project_id, project_name, amount, payment_date, payment_status, payment_method, invoice_number, notes, created_at, updated_at)
+        VALUES ($1, $2, $3, $4, $5, COALESCE($6, CURRENT_DATE), $7, $8, $9, $10, NOW(), NOW())
         RETURNING *
       `, [
         client_name.trim(),
+        client_id || null,
         project_id || null,
         project_name || null,
         parseFloat(amount || 0),

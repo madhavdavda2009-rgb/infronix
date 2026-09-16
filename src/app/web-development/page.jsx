@@ -2,20 +2,61 @@ import FAQSection from '@/components/FAQSection';
 import CTASection from '@/components/CTASection';
 import Breadcrumb from '@/components/Breadcrumb';
 import Link from 'next/link';
+import { Globe, Buildings, Crosshair, ShoppingBag, Code } from '@phosphor-icons/react/dist/ssr';
 
 export const metadata = {
-  title: 'Custom Web Development Agency in Ahmedabad',
-  description: 'InfronixWeb Digital Marketing provides premium, responsive, and high-performance custom website development services for modern businesses in Ahmedabad, Gujarat, and across India.',
+  title: 'Website Development Agency in Ahmedabad | InfronixWeb',
+  description: 'InfronixWeb builds modern, responsive websites for businesses in Ahmedabad, Gujarat, and across India. Business websites, landing pages, e-commerce stores, and custom web applications.',
+  keywords: [
+    'Website Development Agency',
+    'Website Development Company',
+    'Web Design Agency',
+    'Business Website Development',
+    'Website Design Services',
+    'Responsive Website Design',
+    'Custom Website Development',
+    'E-commerce Website Development',
+    'Website Development in Ahmedabad',
+    'Web Development Company in Gujarat'
+  ],
   alternates: {
     canonical: 'https://www.infronixweb.in/web-development'
   }
 };
 
+const services = [
+  {
+    icon: Globe,
+    title: 'Business Website Development',
+    desc: 'Professional websites that showcase your business, services, and brand.'
+  },
+  {
+    icon: Buildings,
+    title: 'Corporate Website Development',
+    desc: 'Modern corporate websites designed to build credibility and communicate your business value.'
+  },
+  {
+    icon: Crosshair,
+    title: 'Landing Page Design',
+    desc: 'High-converting landing pages for marketing campaigns, products, and lead generation.'
+  },
+  {
+    icon: ShoppingBag,
+    title: 'E-commerce Website Development',
+    desc: 'User-friendly online stores designed to showcase products and support business growth.'
+  },
+  {
+    icon: Code,
+    title: 'Custom Web Development',
+    desc: 'Tailored web applications and digital solutions built around your business requirements.'
+  }
+];
+
 export default function WebDevelopmentPage() {
   return (
     <>
       <main className="w-full pt-20 sm:pt-28 md:pt-32" id="main-content">
-        {/* Hero — matches Home page light design */}
+        {/* Hero */}
         <section className="relative w-full min-h-[480px] sm:min-h-[560px] md:min-h-[640px] flex items-center bg-surface-container-lowest overflow-hidden pt-16 sm:pt-20 pb-12 sm:pb-16" aria-label="Web Development Services">
           <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
             <div className="absolute top-1/4 right-1/4 w-[300px] sm:w-[500px] h-[300px] sm:h-[500px] bg-soft-violet rounded-full blur-[80px] sm:blur-[120px] opacity-30 mix-blend-multiply" />
@@ -29,17 +70,20 @@ export default function WebDevelopmentPage() {
                 <span className="w-8 sm:w-12 h-[2px] bg-primary" /> Web Development
               </span>
               <h1 className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-heading font-bold text-on-surface leading-tight tracking-tight">
-                Custom Web Development Agency
+                Websites That Make Your Business Stand Out.
               </h1>
-              <p className="text-base sm:text-lg md:text-xl text-main-text font-medium max-w-xl leading-relaxed">
-                We build fast, elegant, and mobile-friendly websites designed to attract visitors and turn them into paying customers for businesses in Ahmedabad and beyond.
+              <p className="text-base sm:text-lg md:text-xl text-main-text font-medium max-w-2xl leading-relaxed">
+                At InfronixWeb, we build modern, responsive websites that help businesses establish a strong digital presence, attract customers, and grow online.
+              </p>
+              <p className="text-sm sm:text-base text-text-light font-medium max-w-2xl leading-relaxed">
+                From business websites and landing pages to e-commerce stores and custom web applications, our website development services combine creative design, smooth user experiences, and reliable technology.
               </p>
             </div>
 
             <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 mt-2 w-full sm:w-auto">
               <Link
                 href="/start-project"
-                className="bg-primary text-white font-bold text-xs sm:text-sm px-6 py-3.5 sm:px-8 sm:py-4 rounded-md hover:bg-primary-dark transition-all hover:scale-[1.02] active:scale-[0.98] shadow-[0_0_15px_rgba(139, 92, 246,0.3)] text-center w-full sm:w-auto"
+                className="bg-primary text-white font-bold text-xs sm:text-sm px-6 py-3.5 sm:px-8 sm:py-4 rounded-md hover:bg-primary-dark transition-all hover:scale-[1.02] active:scale-[0.98] shadow-[0_0_15px_rgba(139,92,246,0.3)] text-center w-full sm:w-auto"
               >
                 Get a Quote
               </Link>
@@ -47,26 +91,71 @@ export default function WebDevelopmentPage() {
           </div>
         </section>
 
-        {/* Content Section */}
+        {/* What We Build — Services Grid */}
         <section className="w-full py-12 sm:py-16 md:py-24 bg-surface border-b border-outline-variant/30">
           <div className="max-w-[1280px] mx-auto px-4 sm:px-6 md:px-12">
-            <h2 className="text-2xl sm:text-3xl md:text-4xl font-heading font-bold text-on-surface mb-6 sm:mb-8">Custom Websites Built for Business Growth</h2>
+            <div className="mb-10 sm:mb-14 max-w-2xl">
+              <span className="text-xs sm:text-sm font-bold tracking-widest uppercase text-primary mb-2 sm:mb-3 flex items-center gap-3">
+                <span className="w-8 sm:w-12 h-[2px] bg-primary" /> What We Build
+              </span>
+              <h2 className="text-2xl sm:text-4xl md:text-5xl font-heading font-bold text-on-surface leading-tight">
+                Our Website Development Services
+              </h2>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6">
+              {services.map((service, idx) => {
+                const IconComponent = service.icon;
+                return (
+                  <div
+                    key={idx}
+                    className="group bg-surface-container-lowest border border-outline-variant/60 hover:border-primary/50 rounded-2xl p-6 sm:p-8 transition-all duration-300 hover:shadow-xl flex flex-col gap-4"
+                  >
+                    <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-surface border border-outline-variant flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-white transition-colors">
+                      <IconComponent size={24} weight="duotone" />
+                    </div>
+                    <h3 className="text-lg sm:text-xl font-heading font-bold text-on-surface group-hover:text-primary transition-colors">
+                      {service.title}
+                    </h3>
+                    <p className="text-sm sm:text-base text-main-text leading-relaxed">
+                      {service.desc}
+                    </p>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        </section>
+
+        {/* Why Your Website Matters */}
+        <section className="w-full py-12 sm:py-16 md:py-24 bg-surface-container-lowest border-b border-outline-variant/30">
+          <div className="max-w-[1280px] mx-auto px-4 sm:px-6 md:px-12">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-heading font-bold text-on-surface mb-6 sm:mb-8">
+              Why Your Website Matters
+            </h2>
             <div className="prose max-w-4xl text-main-text space-y-6">
               <p>
-                In today&apos;s digital-first economy, a generic template is no longer enough. Your website is the core of your brand&apos;s digital identity. At InfronixWeb Digital Marketing, we specialize in <strong className="text-on-surface">custom website development</strong> that combines clean design with fast loading and reliable performance.
+                A professionally designed website helps your business build trust, reach more customers, and create a strong foundation for digital marketing. Whether you are a local business in Ahmedabad or serving clients across India, your website is the first impression that drives growth.
               </p>
-              <h3 className="font-bold text-xl text-on-surface mt-8 mb-4">Why Choose a Custom Website?</h3>
-              <p>
-                We build fast, modern websites tailored specifically to your business goals. Your website will load instantly on all mobile phones, tablets, and computers, giving your visitors a smooth experience that builds trust and drives more inquiries.
-              </p>
-              <h3 className="font-bold text-xl text-on-surface mt-8 mb-4">Our Website Creation Process</h3>
-              <ul className="list-disc pl-6 space-y-2">
-                <li><strong className="text-on-surface">Discovery &amp; Planning:</strong> We learn about your business goals, target customers, and essential features.</li>
-                <li><strong className="text-on-surface">Custom Design:</strong> Creating a modern, premium look that reflects your brand identity.</li>
-                <li><strong className="text-on-surface">Clean Development:</strong> Building a fast, secure, and reliable website that works smoothly on every screen.</li>
-                <li><strong className="text-on-surface">Testing &amp; Launch:</strong> Thoroughly checking every page and setting up your site to be easily found on Google.</li>
-              </ul>
             </div>
+          </div>
+        </section>
+
+        {/* Final CTA */}
+        <section className="w-full py-12 sm:py-16 md:py-24 bg-surface border-b border-outline-variant/30">
+          <div className="max-w-[1280px] mx-auto px-4 sm:px-6 md:px-12 text-center">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-heading font-bold text-on-surface mb-4 sm:mb-6">
+              Ready to Build Your Digital Presence?
+            </h2>
+            <p className="text-base sm:text-lg text-main-text font-medium max-w-2xl mx-auto mb-6 sm:mb-8 leading-relaxed">
+              Let&apos;s create a website that represents your business and supports your growth.
+            </p>
+            <Link
+              href="/start-project"
+              className="inline-block bg-primary text-white font-bold text-xs sm:text-sm px-8 py-4 rounded-md hover:bg-primary-dark transition-all hover:scale-[1.02] active:scale-[0.98] shadow-[0_0_15px_rgba(139,92,246,0.3)]"
+            >
+              Get a Quote
+            </Link>
           </div>
         </section>
 

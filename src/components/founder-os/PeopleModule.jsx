@@ -1,20 +1,6 @@
 "use client";
 import React, { useState, useEffect } from 'react';
-import {
-  Users,
-  Plus,
-  MagnifyingGlass,
-  Pencil,
-  Trash,
-  X,
-  Envelope,
-  Phone,
-  Calendar,
-  CheckCircle,
-  Briefcase,
-  ListBullets,
-  Tag
-} from '@phosphor-icons/react';
+import { Users, Plus, Pencil, Trash, X, Envelope, Phone, Briefcase } from '@phosphor-icons/react';
 import EmptyState from './EmptyState';
 import { ConfirmModal } from './ConfirmModal';
 import { useToast } from '@/context/ToastContext';
@@ -96,7 +82,7 @@ export default function PeopleModule({ settings = {}, onRefreshDashboard }) {
     setActionLoading(true);
     const form = e.target;
     const payload = {
-      name: form.name.value,
+      name: form.elements.namedItem('name').value,
       role: form.role.value,
       email: form.email.value,
       phone: form.phone.value,

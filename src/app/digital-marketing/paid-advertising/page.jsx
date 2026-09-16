@@ -1,31 +1,6 @@
 import Breadcrumb from '@/components/Breadcrumb';
 import Link from 'next/link';
-import { 
-  GoogleLogo, 
-  MetaLogo, 
-  YoutubeLogo, 
-  CheckCircle, 
-  ArrowRight, 
-  Sparkle, 
-  Target, 
-  Users, 
-  ChartLineUp, 
-  ShieldCheck, 
-  Lightning,
-  Buildings,
-  Storefront,
-  RocketLaunch,
-  Briefcase,
-  User,
-  ShoppingBag,
-  Globe,
-  MagnifyingGlass,
-  Robot,
-  Megaphone,
-  ArrowsClockwise,
-  PencilSimple,
-  ChartBar
-} from '@phosphor-icons/react/dist/ssr';
+import { GoogleLogo, MetaLogo, YoutubeLogo, CheckCircle, ArrowRight, Sparkle, ShieldCheck, Lightning, Buildings, Storefront, RocketLaunch, Briefcase, ShoppingBag, Globe, MagnifyingGlass, Robot, Megaphone } from '@phosphor-icons/react/dist/ssr';
 
 export const metadata = {
   title: 'Paid Advertising Agency in Ahmedabad | Google & Meta Ads | InfronixWeb',
@@ -345,7 +320,7 @@ export default function PaidAdvertisingPage() {
                 Reach the right audience, promote your business, and create meaningful opportunities with strategic paid advertising.
               </p>
               <p className="text-sm sm:text-base md:text-lg text-text-light font-medium leading-relaxed">
-                At InfronixWeb, we help businesses plan, launch, and manage digital advertising campaigns across Google and Meta. From increasing brand visibility to generating customer enquiries, we build campaigns designed around your business goals.
+                At InfronixWeb, based in Ahmedabad, we help businesses plan, launch, and manage digital advertising campaigns across Google and Meta. From increasing brand visibility to generating customer enquiries, we build campaigns designed around your business goals.
               </p>
             </div>
 

@@ -2,11 +2,7 @@
 import { useState, useRef, useEffect } from 'react';
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
-import {
-  ArrowRight, CheckCircle, WarningCircle, X, Star,
-  Globe, MagnifyingGlass, Robot, Megaphone, PaperPlaneTilt, Phone,
-  EnvelopeSimple, WhatsappLogo, Clock
-} from "@phosphor-icons/react";
+import { ArrowRight, CheckCircle, WarningCircle, Globe, MagnifyingGlass, Robot, Megaphone } from "@phosphor-icons/react";
 import Breadcrumb from '@/components/Breadcrumb';
 import { getFriendlyErrorMessage, parseJsonResponse } from '@/utils/errorHandler';
 import { formatTitleCase, formatEmail, isValidEmail } from '@/utils/formFormatters';
@@ -149,7 +145,7 @@ export default function StartProjectPage() {
           <span className="font-label-caps text-xs text-primary tracking-widest uppercase mb-2 block font-bold">Get a Quote</span>
           <h1 className="font-headline-lg text-2xl sm:text-3xl md:text-4xl text-on-surface font-bold mb-3 sm:mb-4">Let&apos;s build something that matters.</h1>
           <p className="font-body-md text-main-text text-xs sm:text-sm md:text-base max-w-2xl mx-auto leading-relaxed font-medium">
-            Tell us what you need — we&apos;ll get back to you with a tailored proposal within 24 hours.
+            Tell us what you need — we&apos;ll get back to you with a tailored proposal within 24 hours. Proudly serving clients in Ahmedabad, Gujarat, and across India.
           </p>
         </div>
 

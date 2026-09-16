@@ -1,6 +1,6 @@
 "use client";
 import React, { useRef, useEffect } from 'react';
-import { Bell, Warning, Info, CheckCircle, CaretRight, X } from '@phosphor-icons/react';
+import { Bell, Warning, Info, CheckCircle, X } from '@phosphor-icons/react';
 
 export default function NotificationsPopover({
   isOpen,

@@ -20,10 +20,10 @@ export default function HeroSection() {
 
   const itemVariants = {
     hidden: { opacity: 0, y: 30 },
-    visible: { 
-      opacity: 1, 
-      y: 0, 
-      transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] } 
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] }
     }
   };
 
@@ -47,9 +47,9 @@ export default function HeroSection() {
 
       <div className="max-w-[1440px] w-full mx-auto px-4 sm:px-6 md:px-12 relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-8 xl:gap-12 items-center">
-          
+
           {/* Left Column: Text & Content (7 Cols) */}
-          <motion.div 
+          <motion.div
             className="lg:col-span-7 xl:col-span-7"
             variants={containerVariants}
             initial="hidden"
@@ -57,16 +57,8 @@ export default function HeroSection() {
           >
             <Breadcrumb />
 
-            {/* Trust indicator */}
-            <motion.div variants={itemVariants} className="flex items-center gap-3 mb-5 sm:mb-7">
-              <span className="flex items-center gap-1.5 text-[10px] sm:text-xs font-bold tracking-wider sm:tracking-widest uppercase text-main-text bg-soft-violet/50 px-2.5 sm:px-3 py-1 rounded-sm">
-                <span className="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-primary animate-pulse" />
-                Ahmedabad&apos;s Premium Digital Agency
-              </span>
-            </motion.div>
-
             {/* Headline */}
-            <motion.h1 
+            <motion.h1
               variants={itemVariants}
               className="text-3xl sm:text-5xl md:text-6xl lg:text-6xl xl:text-7xl leading-[1.1] sm:leading-[1.05] font-heading font-bold text-on-surface tracking-tight mb-5 sm:mb-7"
             >
@@ -82,7 +74,7 @@ export default function HeroSection() {
             </motion.h1>
 
             {/* Subtitle */}
-            <motion.p 
+            <motion.p
               variants={itemVariants}
               className="text-base sm:text-lg md:text-xl text-main-text max-w-2xl mb-7 sm:mb-9 font-medium leading-relaxed"
             >
@@ -91,8 +83,8 @@ export default function HeroSection() {
 
             {/* CTAs */}
             <motion.div variants={itemVariants} className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 sm:gap-6 w-full sm:w-auto">
-              <Link 
-                href="/start-project" 
+              <Link
+                href="/start-project"
                 className="group relative flex items-center justify-center gap-2 bg-primary text-white font-bold text-sm sm:text-base md:text-lg px-6 py-3.5 sm:px-8 sm:py-4 rounded-md overflow-hidden transition-transform hover:scale-[1.02] active:scale-[0.98] shadow-[0_0_20px_rgba(139, 92, 246,0.2)] text-center"
               >
                 <span className="relative z-10 flex items-center justify-center gap-2">
@@ -100,9 +92,9 @@ export default function HeroSection() {
                 </span>
                 <div className="absolute inset-0 bg-primary-dark transform scale-x-0 group-hover:scale-x-100 origin-left transition-transform duration-500 ease-out" />
               </Link>
-              
-              <Link 
-                href="#services" 
+
+              <Link
+                href="#services"
                 className="flex items-center justify-center gap-2 bg-transparent border border-outline-variant text-on-surface font-medium text-sm sm:text-base md:text-lg px-6 py-3.5 sm:px-8 sm:py-4 rounded-md hover:border-primary hover:bg-soft-violet/20 transition-colors text-center"
               >
                 Explore Services
@@ -132,10 +124,10 @@ export default function HeroSection() {
             animate="visible"
           >
             <div className="relative w-full max-w-[320px] sm:max-w-[420px] lg:max-w-[480px] mx-auto flex items-center justify-center">
-              
+
               {/* Background gradient decorative glow */}
               <div className="absolute inset-0 bg-gradient-to-tr from-primary/25 via-soft-violet/40 to-[#00F5D4]/20 rounded-full blur-3xl transform scale-90 opacity-60 pointer-events-none" />
-              
+
               {/* Clean Hero Person Image without overlays or borders */}
               <div className="relative w-full flex items-center justify-center">
                 <Image

@@ -20,7 +20,24 @@ export async function GET(request) {
     const pattern = `%${q}%`;
     const results = [];
 
-    // 1. Search Leads
+    // 1. Search Clients
+    const clientsRes = await query(`
+      SELECT id, name, company, email, phone, '/admin?tab=clients' as url
+      FROM founder_os_clients
+      WHERE LOWER(name) LIKE $1 OR LOWER(COALESCE(company, '')) LIKE $1 OR LOWER(COALESCE(email, '')) LIKE $1
+      LIMIT 5
+    `, [pattern]);
+    for (const r of clientsRes.rows) {
+      results.push({
+        id: `client-${r.id}`,
+        title: r.name,
+        subtitle: `${r.company ? r.company + ' • ' : ''}${r.email || r.phone || 'Client'}`,
+        category: 'Clients',
+        url: r.url
+      });
+    }
+
+    // 2. Search Leads
     const leadsRes = await query(`
       SELECT id, name, company, email, status, 'Lead' as entity_type, '/admin?tab=sales&sub=leads&leadId=' || id as url
       FROM founder_os_leads
@@ -37,7 +54,7 @@ export async function GET(request) {
       });
     }
 
-    // 2. Search Projects
+    // 3. Search Projects
     const projectsRes = await query(`
       SELECT id, project_name, client_name, status, 'Project' as entity_type, '/admin?tab=delivery&projectId=' || id as url
       FROM founder_os_projects
@@ -54,7 +71,7 @@ export async function GET(request) {
       });
     }
 
-    // 3. Search Tasks
+    // 4. Search Tasks
     const tasksRes = await query(`
       SELECT t.id, t.title, t.status, p.project_name, '/admin?tab=delivery&projectId=' || t.project_id as url
       FROM founder_os_tasks t
@@ -72,7 +89,7 @@ export async function GET(request) {
       });
     }
 
-    // 4. Search SOPs
+    // 5. Search SOPs
     const sopsRes = await query(`
       SELECT id, name, category, version, '/admin?tab=sops&sopId=' || id as url
       FROM founder_os_sops
@@ -89,7 +106,7 @@ export async function GET(request) {
       });
     }
 
-    // 5. Search People
+    // 6. Search People
     const peopleRes = await query(`
       SELECT id, name, role, email, status, '/admin?tab=people' as url
       FROM founder_os_people
@@ -106,7 +123,7 @@ export async function GET(request) {
       });
     }
 
-    // 6. Search Security Accounts
+    // 7. Search Security Accounts
     const secRes = await query(`
       SELECT id, service_name, category, owner, '/admin?tab=security&sub=accounts' as url
       FROM founder_os_security_accounts

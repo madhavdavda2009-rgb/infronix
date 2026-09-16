@@ -150,7 +150,7 @@ export default function DigitalMarketingPage() {
             </h2>
             <div className="prose max-w-4xl text-main-text space-y-6">
               <p>
-                Random posting and untargeted ads waste your marketing budget. At InfronixWeb Digital Marketing, our <strong className="text-on-surface">Digital Marketing</strong> services combine attractive social media content with focused ad campaigns to generate real business inquiries.
+                Random posting and untargeted ads waste your marketing budget. At InfronixWeb Digital Marketing, based in Ahmedabad, our <strong className="text-on-surface">Digital Marketing</strong> services combine attractive social media content with focused ad campaigns to generate real business inquiries.
               </p>
               <h3 className="font-bold text-xl text-on-surface mt-8 mb-4">Why Choose InfronixWeb for Digital Marketing?</h3>
               <ul className="list-disc pl-6 space-y-2">

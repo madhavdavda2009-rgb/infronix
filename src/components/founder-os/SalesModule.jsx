@@ -1,29 +1,10 @@
 "use client";
 import React, { useState, useEffect } from 'react';
-import {
-  Briefcase,
-  Plus,
-  MagnifyingGlass,
-  Funnel,
-  Pencil,
-  Trash,
-  PhoneCall,
-  FileText,
-  Clock,
-  Calendar,
-  CurrencyInr,
-  X,
-  CheckCircle,
-  Eye,
-  ArrowRight,
-  ArrowsDownUp,
-  Envelope,
-  Phone,
-  Buildings
-} from '@phosphor-icons/react';
+import { Briefcase, Plus, MagnifyingGlass, Pencil, Trash, PhoneCall, FileText, Calendar, X, FolderPlus } from '@phosphor-icons/react';
 import EmptyState from './EmptyState';
 import { ConfirmModal } from './ConfirmModal';
 import { useToast } from '@/context/ToastContext';
+import ProjectWizardModal from './ProjectWizardModal';
 
 const LEAD_STATUSES = [
   'New',
@@ -73,7 +54,7 @@ const PROPOSAL_STATUSES = [
   'Expired'
 ];
 
-export default function SalesModule({ initialSub = 'leads', settings = {}, onRefreshDashboard }) {
+export default function SalesModule({ initialSub = 'leads', settings = {}, onRefreshDashboard, onNavigate }) {
   const [subTab, setSubTab] = useState(initialSub); // 'leads' | 'pipeline' | 'calls' | 'proposals'
   const [leads, setLeads] = useState([]);
   const [calls, setCalls] = useState([]);
@@ -97,6 +78,10 @@ export default function SalesModule({ initialSub = 'leads', settings = {}, onRef
 
   const [showProposalModal, setShowProposalModal] = useState(false);
   const [editingProposal, setEditingProposal] = useState(null);
+
+  // Project Setup Wizard Integration (Convert Lead / Proposal -> Project)
+  const [showWizardModal, setShowWizardModal] = useState(false);
+  const [wizardInitialData, setWizardInitialData] = useState(null);
 
   const [deleteConfirm, setDeleteConfirm] = useState({ isOpen: false, type: '', id: null, title: '' });
   const [actionLoading, setActionLoading] = useState(false);
@@ -138,7 +123,7 @@ export default function SalesModule({ initialSub = 'leads', settings = {}, onRef
     setActionLoading(true);
     const form = e.target;
     const payload = {
-      name: form.name.value,
+      name: form.elements.namedItem('name').value,
       company: form.company.value,
       phone: form.phone.value,
       email: form.email.value,
@@ -289,6 +274,18 @@ export default function SalesModule({ initialSub = 'leads', settings = {}, onRef
     }
   }
 
+  // Convert Lead to Project (Launch Wizard)
+  function handleConvertLeadToProject(lead) {
+    setWizardInitialData({ lead });
+    setShowWizardModal(true);
+  }
+
+  // Convert Proposal to Project (Launch Wizard)
+  function handleConvertProposalToProject(proposal) {
+    setWizardInitialData({ proposal });
+    setShowWizardModal(true);
+  }
+
   // Handle Delete Confirmation Execution
   async function handleDeleteConfirm() {
     setActionLoading(true);
@@ -395,7 +392,6 @@ export default function SalesModule({ initialSub = 'leads', settings = {}, onRef
         <div className="space-y-4">
           {/* Filters Bar */}
           <div className="flex flex-col sm:flex-row flex-wrap items-stretch sm:items-center gap-2.5 p-3 rounded-2xl bg-white border border-slate-200 shadow-xs">
-            {/* Search */}
             <div className="flex-1 min-w-[220px] relative">
               <MagnifyingGlass size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
               <input
@@ -407,7 +403,6 @@ export default function SalesModule({ initialSub = 'leads', settings = {}, onRef
               />
             </div>
 
-            {/* Status Filter */}
             <select
               value={statusFilter}
               onChange={(e) => setStatusFilter(e.target.value)}
@@ -417,7 +412,6 @@ export default function SalesModule({ initialSub = 'leads', settings = {}, onRef
               {LEAD_STATUSES.map(s => <option key={s} value={s}>{s}</option>)}
             </select>
 
-            {/* Source Filter */}
             <select
               value={sourceFilter}
               onChange={(e) => setSourceFilter(e.target.value)}
@@ -427,7 +421,6 @@ export default function SalesModule({ initialSub = 'leads', settings = {}, onRef
               {LEAD_SOURCES.map(s => <option key={s} value={s}>{s}</option>)}
             </select>
 
-            {/* Sort Filter */}
             <select
               value={sortBy}
               onChange={(e) => setSortBy(e.target.value)}
@@ -452,7 +445,7 @@ export default function SalesModule({ initialSub = 'leads', settings = {}, onRef
           ) : (
             <div className="rounded-2xl bg-white border border-slate-200 shadow-xs overflow-hidden">
               <div className="overflow-x-auto">
-                <table className="w-full text-left text-xs min-w-[700px]">
+                <table className="w-full text-left text-xs min-w-[750px]">
                   <thead className="bg-slate-50 border-b border-slate-200 text-slate-500 uppercase tracking-wider text-[10px] font-bold">
                     <tr>
                       <th className="px-4 py-3">Lead</th>
@@ -512,6 +505,16 @@ export default function SalesModule({ initialSub = 'leads', settings = {}, onRef
                         </td>
                         <td className="px-4 py-3 text-right">
                           <div className="flex items-center justify-end gap-1">
+                            {/* Convert to Project Button */}
+                            <button
+                              onClick={() => handleConvertLeadToProject(lead)}
+                              title="Convert to Project (Launch Wizard)"
+                              className="px-2.5 py-1 rounded-lg text-emerald-700 hover:text-emerald-800 hover:bg-emerald-50 border border-emerald-200 transition-colors font-bold text-[10px] uppercase flex items-center gap-1"
+                            >
+                              <FolderPlus size={14} weight="bold" />
+                              <span className="hidden sm:inline">Convert</span>
+                            </button>
+
                             <button
                               onClick={() => { setCallLeadContext(lead); setShowCallModal(true); }}
                               title="Log Call"
@@ -600,7 +603,14 @@ export default function SalesModule({ initialSub = 'leads', settings = {}, onRef
                         )}
 
                         <div className="flex items-center justify-between pt-2 border-t border-slate-100 text-[10px] text-slate-500 font-medium">
-                          <span>{lead.source}</span>
+                          <button
+                            onClick={() => handleConvertLeadToProject(lead)}
+                            className="text-emerald-700 hover:text-emerald-800 font-bold flex items-center gap-1 cursor-pointer"
+                          >
+                            <FolderPlus size={13} weight="bold" />
+                            <span>Convert</span>
+                          </button>
+
                           <div className="flex items-center gap-1">
                             <button
                               onClick={() => { setEditingLead(lead); setShowLeadModal(true); }}
@@ -716,7 +726,7 @@ export default function SalesModule({ initialSub = 'leads', settings = {}, onRef
           ) : (
             <div className="rounded-2xl bg-white border border-slate-200 shadow-xs overflow-hidden">
               <div className="overflow-x-auto">
-                <table className="w-full text-left text-xs min-w-[700px]">
+                <table className="w-full text-left text-xs min-w-[750px]">
                   <thead className="bg-slate-50 border-b border-slate-200 text-slate-500 uppercase tracking-wider text-[10px] font-bold">
                     <tr>
                       <th className="px-4 py-3">Client</th>
@@ -759,6 +769,16 @@ export default function SalesModule({ initialSub = 'leads', settings = {}, onRef
                         </td>
                         <td className="px-4 py-3 text-right">
                           <div className="flex items-center justify-end gap-1">
+                            {/* Create Project from Proposal Button */}
+                            <button
+                              onClick={() => handleConvertProposalToProject(prop)}
+                              title="Create Project from Proposal"
+                              className="px-2.5 py-1 rounded-lg text-violet-700 hover:text-violet-800 hover:bg-violet-50 border border-violet-200 transition-colors font-bold text-[10px] uppercase flex items-center gap-1"
+                            >
+                              <FolderPlus size={14} weight="bold" />
+                              <span className="hidden sm:inline">Project</span>
+                            </button>
+
                             <button
                               onClick={() => { setEditingProposal(prop); setShowProposalModal(true); }}
                               className="p-1.5 rounded-lg text-slate-500 hover:text-violet-600 hover:bg-violet-50 transition-colors"
@@ -799,34 +819,34 @@ export default function SalesModule({ initialSub = 'leads', settings = {}, onRef
             <form onSubmit={handleSaveLead} className="space-y-4 text-xs">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-slate-700 font-bold mb-1">Contact Name *</label>
+                  <label className="block text-slate-700 font-bold mb-1">Prospect / Contact Name *</label>
                   <input
                     name="name"
                     defaultValue={editingLead?.name || ''}
                     required
                     placeholder="e.g. Rahul Sharma"
-                    className="w-full bg-white border border-slate-300 rounded-xl px-3.5 py-2.5 text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-violet-500/20 focus:border-violet-600"
+                    className="w-full bg-white border border-slate-300 rounded-xl px-3.5 py-2.5 text-slate-900 focus:outline-none focus:ring-2 focus:ring-violet-500/20 focus:border-violet-600"
                   />
                 </div>
                 <div>
-                  <label className="block text-slate-700 font-bold mb-1">Company</label>
+                  <label className="block text-slate-700 font-bold mb-1">Company Name</label>
                   <input
                     name="company"
                     defaultValue={editingLead?.company || ''}
-                    placeholder="e.g. Acme Enterprises"
-                    className="w-full bg-white border border-slate-300 rounded-xl px-3.5 py-2.5 text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-violet-500/20 focus:border-violet-600"
+                    placeholder="e.g. Apex Hospital"
+                    className="w-full bg-white border border-slate-300 rounded-xl px-3.5 py-2.5 text-slate-900 focus:outline-none focus:ring-2 focus:ring-violet-500/20 focus:border-violet-600"
                   />
                 </div>
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-slate-700 font-bold mb-1">Phone</label>
+                  <label className="block text-slate-700 font-bold mb-1">Phone Number</label>
                   <input
                     name="phone"
                     defaultValue={editingLead?.phone || ''}
                     placeholder="+91 98765 43210"
-                    className="w-full bg-white border border-slate-300 rounded-xl px-3.5 py-2.5 text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-violet-500/20 focus:border-violet-600"
+                    className="w-full bg-white border border-slate-300 rounded-xl px-3.5 py-2.5 text-slate-900 focus:outline-none focus:ring-2 focus:ring-violet-500/20 focus:border-violet-600"
                   />
                 </div>
                 <div>
@@ -835,8 +855,8 @@ export default function SalesModule({ initialSub = 'leads', settings = {}, onRef
                     name="email"
                     type="email"
                     defaultValue={editingLead?.email || ''}
-                    placeholder="client@example.com"
-                    className="w-full bg-white border border-slate-300 rounded-xl px-3.5 py-2.5 text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-violet-500/20 focus:border-violet-600"
+                    placeholder="rahul@company.com"
+                    className="w-full bg-white border border-slate-300 rounded-xl px-3.5 py-2.5 text-slate-900 focus:outline-none focus:ring-2 focus:ring-violet-500/20 focus:border-violet-600"
                   />
                 </div>
               </div>
@@ -858,7 +878,7 @@ export default function SalesModule({ initialSub = 'leads', settings = {}, onRef
                     name="industry"
                     defaultValue={editingLead?.industry || ''}
                     placeholder="e.g. Healthcare"
-                    className="w-full bg-white border border-slate-300 rounded-xl px-3.5 py-2.5 text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-violet-500/20 focus:border-violet-600"
+                    className="w-full bg-white border border-slate-300 rounded-xl px-3.5 py-2.5 text-slate-900 focus:outline-none focus:ring-2 focus:ring-violet-500/20 focus:border-violet-600"
                   />
                 </div>
                 <div>
@@ -879,7 +899,6 @@ export default function SalesModule({ initialSub = 'leads', settings = {}, onRef
                   <input
                     name="estimated_value"
                     type="number"
-                    step="500"
                     defaultValue={editingLead?.estimated_value || 0}
                     className="w-full bg-white border border-slate-300 rounded-xl px-3.5 py-2.5 text-slate-900 font-mono font-bold focus:outline-none focus:ring-2 focus:ring-violet-500/20 focus:border-violet-600"
                   />
@@ -896,28 +915,28 @@ export default function SalesModule({ initialSub = 'leads', settings = {}, onRef
               </div>
 
               <div>
-                <label className="block text-slate-700 font-bold mb-1">Notes / Scope Details</label>
+                <label className="block text-slate-700 font-bold mb-1">Notes & Lead Context</label>
                 <textarea
                   name="notes"
                   rows={3}
                   defaultValue={editingLead?.notes || ''}
-                  placeholder="Key project requirements, budget discussions..."
+                  placeholder="Key prospect pain points, budget constraints..."
                   className="w-full bg-white border border-slate-300 rounded-xl px-3.5 py-2.5 text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-violet-500/20 focus:border-violet-600"
                 />
               </div>
 
-              <div className="flex flex-col-reverse sm:flex-row items-stretch sm:items-center justify-end gap-2.5 sm:gap-3 pt-3 border-t border-slate-100">
+              <div className="flex items-center justify-end gap-2.5 pt-3 border-t border-slate-100">
                 <button
                   type="button"
                   onClick={() => setShowLeadModal(false)}
-                  className="px-4 py-2.5 text-xs font-bold uppercase tracking-wider text-slate-700 hover:text-slate-900 bg-slate-100 hover:bg-slate-200 rounded-xl transition-colors text-center"
+                  className="px-4 py-2.5 text-xs font-bold uppercase tracking-wider text-slate-700 hover:text-slate-900 bg-slate-100 hover:bg-slate-200 rounded-xl"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
                   disabled={actionLoading}
-                  className="px-5 py-2.5 rounded-xl bg-violet-600 hover:bg-violet-700 text-white font-bold text-xs uppercase tracking-wider shadow-sm shadow-violet-600/20 cursor-pointer disabled:opacity-50 min-h-[42px] text-center"
+                  className="px-5 py-2.5 rounded-xl bg-violet-600 hover:bg-violet-700 text-white font-bold text-xs uppercase tracking-wider shadow-sm shadow-violet-600/20 cursor-pointer disabled:opacity-50"
                 >
                   {actionLoading ? 'Saving...' : editingLead ? 'Update Lead' : 'Create Lead'}
                 </button>
@@ -942,23 +961,23 @@ export default function SalesModule({ initialSub = 'leads', settings = {}, onRef
 
             <form onSubmit={handleSaveCall} className="space-y-4 text-xs">
               <div>
-                <label className="block text-slate-700 font-bold mb-1">Lead / Prospect Name *</label>
+                <label className="block text-slate-700 font-bold mb-1">Lead / Contact Name *</label>
                 <input
                   name="lead_name"
                   defaultValue={callLeadContext?.name || ''}
                   required
-                  placeholder="e.g. Rahul Sharma"
+                  placeholder="e.g. Dr. Rajesh Patel"
                   className="w-full bg-white border border-slate-300 rounded-xl px-3.5 py-2.5 text-slate-900 focus:outline-none focus:ring-2 focus:ring-violet-500/20 focus:border-violet-600"
                 />
               </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <div className="grid grid-cols-2 gap-3">
                 <div>
                   <label className="block text-slate-700 font-bold mb-1">Call Type</label>
                   <select
                     name="call_type"
                     defaultValue="Discovery"
-                    className="w-full bg-white border border-slate-300 rounded-xl px-3 py-2.5 text-slate-900 focus:outline-none focus:ring-2 focus:ring-violet-500/20 focus:border-violet-600 font-medium"
+                    className="w-full bg-white border border-slate-300 rounded-xl px-3 py-2.5 text-slate-900 font-medium"
                   >
                     {CALL_TYPES.map(t => <option key={t} value={t}>{t}</option>)}
                   </select>
@@ -968,7 +987,7 @@ export default function SalesModule({ initialSub = 'leads', settings = {}, onRef
                   <select
                     name="outcome"
                     defaultValue="Connected"
-                    className="w-full bg-white border border-slate-300 rounded-xl px-3 py-2.5 text-slate-900 focus:outline-none focus:ring-2 focus:ring-violet-500/20 focus:border-violet-600 font-medium"
+                    className="w-full bg-white border border-slate-300 rounded-xl px-3 py-2.5 text-slate-900 font-medium"
                   >
                     {CALL_OUTCOMES.map(o => <option key={o} value={o}>{o}</option>)}
                   </select>
@@ -976,58 +995,58 @@ export default function SalesModule({ initialSub = 'leads', settings = {}, onRef
               </div>
 
               <div>
-                <label className="block text-slate-700 font-bold mb-1">Call Date</label>
+                <label className="block text-slate-700 font-bold mb-1">Call Date & Time</label>
                 <input
                   name="call_date"
-                  type="date"
-                  defaultValue={new Date().toISOString().substring(0, 10)}
-                  className="w-full bg-white border border-slate-300 rounded-xl px-3.5 py-2.5 text-slate-900 focus:outline-none focus:ring-2 focus:ring-violet-500/20 focus:border-violet-600 font-medium"
+                  type="datetime-local"
+                  defaultValue={new Date().toISOString().substring(0, 16)}
+                  className="w-full bg-white border border-slate-300 rounded-xl px-3.5 py-2.5 text-slate-900 font-medium"
                 />
               </div>
 
               <div>
-                <label className="block text-slate-700 font-bold mb-1">Call Summary & Discussion</label>
+                <label className="block text-slate-700 font-bold mb-1">Call Discussion Notes</label>
                 <textarea
                   name="notes"
                   rows={3}
-                  placeholder="Key pain points, client reactions..."
-                  className="w-full bg-white border border-slate-300 rounded-xl px-3.5 py-2.5 text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-violet-500/20 focus:border-violet-600"
+                  placeholder="Discussion points, objections, budget range..."
+                  className="w-full bg-white border border-slate-300 rounded-xl px-3.5 py-2.5 text-slate-900 placeholder:text-slate-400"
                 />
               </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <div className="grid grid-cols-2 gap-3">
                 <div>
                   <label className="block text-slate-700 font-bold mb-1">Next Action</label>
                   <input
                     name="next_action"
-                    placeholder="e.g. Send 3D website proposal"
-                    className="w-full bg-white border border-slate-300 rounded-xl px-3.5 py-2.5 text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-violet-500/20 focus:border-violet-600"
+                    placeholder="e.g. Send 3D proposal"
+                    className="w-full bg-white border border-slate-300 rounded-xl px-3.5 py-2.5 text-slate-900"
                   />
                 </div>
                 <div>
-                  <label className="block text-slate-700 font-bold mb-1">Next Action Date</label>
+                  <label className="block text-slate-700 font-bold mb-1">Action Due Date</label>
                   <input
                     name="next_action_date"
                     type="date"
-                    className="w-full bg-white border border-slate-300 rounded-xl px-3.5 py-2.5 text-slate-900 focus:outline-none focus:ring-2 focus:ring-violet-500/20 focus:border-violet-600 font-medium"
+                    className="w-full bg-white border border-slate-300 rounded-xl px-3.5 py-2.5 text-slate-900 font-medium"
                   />
                 </div>
               </div>
 
-              <div className="flex flex-col-reverse sm:flex-row items-stretch sm:items-center justify-end gap-2.5 sm:gap-3 pt-3 border-t border-slate-100">
+              <div className="flex items-center justify-end gap-2.5 pt-3 border-t border-slate-100">
                 <button
                   type="button"
                   onClick={() => setShowCallModal(false)}
-                  className="px-4 py-2.5 text-xs font-bold uppercase tracking-wider text-slate-700 hover:text-slate-900 bg-slate-100 hover:bg-slate-200 rounded-xl transition-colors text-center"
+                  className="px-4 py-2.5 text-xs font-bold uppercase tracking-wider text-slate-700 hover:text-slate-900 bg-slate-100 rounded-xl"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
                   disabled={actionLoading}
-                  className="px-5 py-2.5 rounded-xl bg-violet-600 hover:bg-violet-700 text-white font-bold text-xs uppercase tracking-wider shadow-sm shadow-violet-600/20 cursor-pointer disabled:opacity-50 min-h-[42px] text-center"
+                  className="px-5 py-2.5 rounded-xl bg-violet-600 hover:bg-violet-700 text-white font-bold text-xs uppercase tracking-wider shadow-sm cursor-pointer disabled:opacity-50"
                 >
-                  {actionLoading ? 'Logging...' : 'Save Call Log'}
+                  {actionLoading ? 'Saving...' : 'Save Call Log'}
                 </button>
               </div>
             </form>
@@ -1056,31 +1075,31 @@ export default function SalesModule({ initialSub = 'leads', settings = {}, onRef
                     name="client_name"
                     defaultValue={editingProposal?.client_name || ''}
                     required
-                    placeholder="e.g. Apex Hospital"
-                    className="w-full bg-white border border-slate-300 rounded-xl px-3.5 py-2.5 text-slate-900 focus:outline-none focus:ring-2 focus:ring-violet-500/20 focus:border-violet-600"
+                    placeholder="e.g. Apex Hospital Pvt Ltd"
+                    className="w-full bg-white border border-slate-300 rounded-xl px-3.5 py-2.5 text-slate-900"
                   />
                 </div>
                 <div>
-                  <label className="block text-slate-700 font-bold mb-1">Project Title *</label>
+                  <label className="block text-slate-700 font-bold mb-1">Project Scope Title *</label>
                   <input
                     name="project_title"
                     defaultValue={editingProposal?.project_title || ''}
                     required
-                    placeholder="e.g. Full Stack Hospital Portal"
-                    className="w-full bg-white border border-slate-300 rounded-xl px-3.5 py-2.5 text-slate-900 focus:outline-none focus:ring-2 focus:ring-violet-500/20 focus:border-violet-600"
+                    placeholder="e.g. Next.js Portal & 3D Interactive Design"
+                    className="w-full bg-white border border-slate-300 rounded-xl px-3.5 py-2.5 text-slate-900"
                   />
                 </div>
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-slate-700 font-bold mb-1">Proposal Value ({currency}) *</label>
+                  <label className="block text-slate-700 font-bold mb-1">Quoted Value ({currency}) *</label>
                   <input
                     name="proposal_value"
                     type="number"
                     defaultValue={editingProposal?.proposal_value || 0}
                     required
-                    className="w-full bg-white border border-slate-300 rounded-xl px-3.5 py-2.5 text-slate-900 font-mono font-bold focus:outline-none focus:ring-2 focus:ring-violet-500/20 focus:border-violet-600"
+                    className="w-full bg-white border border-slate-300 rounded-xl px-3.5 py-2.5 text-slate-900 font-mono font-bold"
                   />
                 </div>
                 <div>
@@ -1088,7 +1107,7 @@ export default function SalesModule({ initialSub = 'leads', settings = {}, onRef
                   <select
                     name="status"
                     defaultValue={editingProposal?.status || 'Draft'}
-                    className="w-full bg-white border border-slate-300 rounded-xl px-3 py-2.5 text-slate-900 focus:outline-none focus:ring-2 focus:ring-violet-500/20 focus:border-violet-600 font-medium"
+                    className="w-full bg-white border border-slate-300 rounded-xl px-3 py-2.5 text-slate-900 font-medium"
                   >
                     {PROPOSAL_STATUSES.map(s => <option key={s} value={s}>{s}</option>)}
                   </select>
@@ -1097,12 +1116,12 @@ export default function SalesModule({ initialSub = 'leads', settings = {}, onRef
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-slate-700 font-bold mb-1">Sent Date</label>
+                  <label className="block text-slate-700 font-bold mb-1">Date Sent</label>
                   <input
                     name="sent_date"
                     type="date"
                     defaultValue={editingProposal?.sent_date ? String(editingProposal.sent_date).substring(0, 10) : ''}
-                    className="w-full bg-white border border-slate-300 rounded-xl px-3.5 py-2.5 text-slate-900 focus:outline-none focus:ring-2 focus:ring-violet-500/20 focus:border-violet-600 font-medium"
+                    className="w-full bg-white border border-slate-300 rounded-xl px-3.5 py-2.5 text-slate-900"
                   />
                 </div>
                 <div>
@@ -1111,45 +1130,34 @@ export default function SalesModule({ initialSub = 'leads', settings = {}, onRef
                     name="followup_date"
                     type="date"
                     defaultValue={editingProposal?.followup_date ? String(editingProposal.followup_date).substring(0, 10) : ''}
-                    className="w-full bg-white border border-slate-300 rounded-xl px-3.5 py-2.5 text-slate-900 focus:outline-none focus:ring-2 focus:ring-violet-500/20 focus:border-violet-600 font-medium"
+                    className="w-full bg-white border border-slate-300 rounded-xl px-3.5 py-2.5 text-slate-900"
                   />
                 </div>
               </div>
 
               <div>
-                <label className="block text-slate-700 font-bold mb-1">Scope & Deliverables</label>
+                <label className="block text-slate-700 font-bold mb-1">Scope & Deliverables Summary</label>
                 <textarea
                   name="scope_summary"
-                  rows={3}
-                  defaultValue={editingProposal?.scope_summary || ''}
-                  placeholder="Deliverables: Next.js website, SEO package, CMS integration..."
-                  className="w-full bg-white border border-slate-300 rounded-xl px-3.5 py-2.5 text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-violet-500/20 focus:border-violet-600"
-                />
-              </div>
-
-              <div>
-                <label className="block text-slate-700 font-bold mb-1">Internal Notes</label>
-                <textarea
-                  name="notes"
                   rows={2}
-                  defaultValue={editingProposal?.notes || ''}
-                  placeholder="Terms, payment milestone schedule..."
-                  className="w-full bg-white border border-slate-300 rounded-xl px-3.5 py-2.5 text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-violet-500/20 focus:border-violet-600"
+                  defaultValue={editingProposal?.scope_summary || ''}
+                  placeholder="Key features included in this quote..."
+                  className="w-full bg-white border border-slate-300 rounded-xl px-3.5 py-2.5 text-slate-900"
                 />
               </div>
 
-              <div className="flex flex-col-reverse sm:flex-row items-stretch sm:items-center justify-end gap-2.5 sm:gap-3 pt-3 border-t border-slate-100">
+              <div className="flex items-center justify-end gap-2.5 pt-3 border-t border-slate-100">
                 <button
                   type="button"
                   onClick={() => setShowProposalModal(false)}
-                  className="px-4 py-2.5 text-xs font-bold uppercase tracking-wider text-slate-700 hover:text-slate-900 bg-slate-100 hover:bg-slate-200 rounded-xl transition-colors text-center"
+                  className="px-4 py-2.5 text-xs font-bold uppercase tracking-wider text-slate-700 hover:text-slate-900 bg-slate-100 rounded-xl"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
                   disabled={actionLoading}
-                  className="px-5 py-2.5 rounded-xl bg-violet-600 hover:bg-violet-700 text-white font-bold text-xs uppercase tracking-wider shadow-sm shadow-violet-600/20 cursor-pointer disabled:opacity-50 min-h-[42px] text-center"
+                  className="px-5 py-2.5 rounded-xl bg-violet-600 hover:bg-violet-700 text-white font-bold text-xs uppercase tracking-wider shadow-sm cursor-pointer disabled:opacity-50"
                 >
                   {actionLoading ? 'Saving...' : editingProposal ? 'Update Proposal' : 'Save Proposal'}
                 </button>
@@ -1159,13 +1167,25 @@ export default function SalesModule({ initialSub = 'leads', settings = {}, onRef
         </div>
       )}
 
-      {/* Confirmation Dialog */}
+      {/* PROJECT SETUP WIZARD MODAL (Pre-filled from Lead / Proposal) */}
+      {showWizardModal && <ProjectWizardModal
+        isOpen={showWizardModal}
+        onClose={() => setShowWizardModal(false)}
+        initialData={wizardInitialData}
+        currency={currency}
+        onSuccess={() => {
+          fetchData();
+          if (onRefreshDashboard) onRefreshDashboard();
+        }}
+      />}
+
+      {/* CONFIRM DELETE MODAL */}
       <ConfirmModal
         isOpen={deleteConfirm.isOpen}
-        isDestructive={true}
-        title={`Delete ${deleteConfirm.type}`}
-        message={`Are you sure you want to delete "${deleteConfirm.title}"? This cannot be undone.`}
-        confirmLabel="Delete Record"
+        title={`Delete ${deleteConfirm.title}?`}
+        description="This action cannot be undone."
+        confirmLabel="Confirm Delete"
+        isDanger={true}
         loading={actionLoading}
         onConfirm={handleDeleteConfirm}
         onCancel={() => setDeleteConfirm({ isOpen: false, type: '', id: null, title: '' })}

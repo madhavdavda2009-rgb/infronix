@@ -6,6 +6,7 @@ import FounderHeader from './FounderHeader';
 import GlobalSearchModal from './GlobalSearchModal';
 import DashboardModule from './DashboardModule';
 import SalesModule from './SalesModule';
+import ClientsModule from './ClientsModule';
 import DeliveryModule from './DeliveryModule';
 import SOPModule from './SOPModule';
 import FinanceModule from './FinanceModule';
@@ -13,6 +14,7 @@ import PeopleModule from './PeopleModule';
 import SecurityModule from './SecurityModule';
 import ActivityLogModule from './ActivityLogModule';
 import SettingsModule from './SettingsModule';
+import ProjectWizardModal from './ProjectWizardModal';
 import { useToast } from '@/context/ToastContext';
 
 export default function FounderOSShell() {
@@ -36,8 +38,9 @@ export default function FounderOSShell() {
   const [isMobileOpen, setIsMobileOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
 
-  // Quick Action modal trigger states
-  const [quickActionState, setQuickActionState] = useState(null);
+  // Global Project Wizard Modal state
+  const [globalWizardOpen, setGlobalWizardOpen] = useState(false);
+  const [globalWizardData, setGlobalWizardData] = useState(null);
 
   const { showToast } = useToast();
 
@@ -58,6 +61,7 @@ export default function FounderOSShell() {
       // 2. Fetch Dashboard Analytics
       const dashRes = await fetch('/api/founder-os/dashboard');
       const dashData = await dashRes.json();
+      if (!dashRes.ok || !dashData.success) throw new Error(dashData.error || 'Dashboard could not load');
       if (dashData.success) {
         setMetrics(dashData.metrics || {});
         setCharts(dashData.charts || {});
@@ -69,6 +73,7 @@ export default function FounderOSShell() {
       }
     } catch (err) {
       console.error('Founder OS init error:', err);
+      showToast(err.message || 'Dashboard could not load', 'error');
     } finally {
       setLoading(false);
     }
@@ -80,21 +85,13 @@ export default function FounderOSShell() {
 
   // Sync tab with URL search params
   useEffect(() => {
-    const tabParam = searchParams.get('tab');
-    if (tabParam && tabParam !== activeTab) {
-      setActiveTab(tabParam);
-    }
-    const subParam = searchParams.get('sub');
-    if (subParam) setSubTab(subParam);
-
-    const leadParam = searchParams.get('leadId');
-    if (leadParam) setInitialLeadId(leadParam);
-
-    const projParam = searchParams.get('projectId');
-    if (projParam) setInitialProjectId(projParam);
-
-    const sopParam = searchParams.get('sopId');
-    if (sopParam) setInitialSopId(sopParam);
+    const tab = searchParams.get('tab') || 'dashboard';
+    const tabs = ['dashboard', 'sales', 'clients', 'delivery', 'sops', 'finance', 'people', 'security', 'activity', 'settings'];
+    setActiveTab(tabs.includes(tab) ? tab : 'dashboard');
+    setSubTab(searchParams.get('sub') || '');
+    setInitialLeadId(searchParams.get('leadId') || null);
+    setInitialProjectId(searchParams.get('projectId') || null);
+    setInitialSopId(searchParams.get('sopId') || null);
   }, [searchParams]);
 
   // Handle Tab Switch
@@ -133,6 +130,12 @@ export default function FounderOSShell() {
     router.push(url);
   };
 
+  // Open Project Wizard Handler
+  const handleOpenProjectWizard = (initialData = null) => {
+    setGlobalWizardData(initialData);
+    setGlobalWizardOpen(true);
+  };
+
   // Handle Quick Action Dispatcher
   const handleQuickAction = (action) => {
     if (action === 'new_lead' || action === 'log_call' || action === 'new_proposal') {
@@ -142,8 +145,7 @@ export default function FounderOSShell() {
       else if (action === 'new_proposal') setSubTab('proposals');
       router.push(`/admin?tab=sales&sub=${action === 'new_lead' ? 'leads' : action === 'log_call' ? 'calls' : 'proposals'}`, { scroll: false });
     } else if (action === 'new_project') {
-      setActiveTab('delivery');
-      router.push('/admin?tab=delivery', { scroll: false });
+      handleOpenProjectWizard();
     } else if (action === 'add_revenue' || action === 'add_expense') {
       setActiveTab('finance');
       setSubTab(action === 'add_revenue' ? 'revenue' : 'expenses');
@@ -200,9 +202,19 @@ export default function FounderOSShell() {
 
           {activeTab === 'sales' && (
             <SalesModule
+              key={subTab}
               initialSub={subTab || 'leads'}
               settings={settings}
               onRefreshDashboard={loadDashboardData}
+              onNavigate={handleNavigateUrl}
+            />
+          )}
+
+          {activeTab === 'clients' && (
+            <ClientsModule
+              settings={settings}
+              onOpenProjectWizard={handleOpenProjectWizard}
+              onNavigate={handleNavigateUrl}
             />
           )}
 
@@ -211,6 +223,7 @@ export default function FounderOSShell() {
               initialProjectId={initialProjectId}
               settings={settings}
               onRefreshDashboard={loadDashboardData}
+              onNavigate={handleNavigateUrl}
             />
           )}
 
@@ -224,6 +237,7 @@ export default function FounderOSShell() {
 
           {activeTab === 'finance' && (
             <FinanceModule
+              key={subTab}
               initialSub={subTab || 'overview'}
               settings={settings}
               onRefreshDashboard={loadDashboardData}
@@ -239,6 +253,7 @@ export default function FounderOSShell() {
 
           {activeTab === 'security' && (
             <SecurityModule
+              key={subTab}
               initialSub={subTab || 'accounts'}
               settings={settings}
               onRefreshDashboard={loadDashboardData}
@@ -267,6 +282,21 @@ export default function FounderOSShell() {
         onClose={() => setIsSearchOpen(false)}
         onNavigate={handleNavigateUrl}
       />
+
+      {/* Global Project Setup Wizard Modal */}
+      {globalWizardOpen && <ProjectWizardModal
+        isOpen={globalWizardOpen}
+        onClose={() => { setGlobalWizardOpen(false); setGlobalWizardData(null); }}
+        initialData={globalWizardData}
+        currency={settings.currency_symbol || '₹'}
+        onSuccess={(newProjectId) => {
+          loadDashboardData();
+          if (newProjectId) {
+            setActiveTab('delivery');
+            router.push(`/admin?tab=delivery&projectId=${newProjectId}`, { scroll: false });
+          }
+        }}
+      />}
     </div>
   );
 }

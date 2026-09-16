@@ -1,30 +1,10 @@
 import Breadcrumb from '@/components/Breadcrumb';
 import Link from 'next/link';
-import { 
-  InstagramLogo, 
-  FacebookLogo, 
-  LinkedinLogo, 
-  CheckCircle, 
-  ArrowRight, 
-  Sparkle, 
-  Target, 
-  Users, 
-  VideoCamera, 
-  CalendarBlank, 
-  ChartLineUp, 
-  ShieldCheck, 
-  Lightning,
-  Buildings,
-  Storefront,
-  RocketLaunch,
-  Briefcase,
-  User,
-  ShoppingBag
-} from '@phosphor-icons/react/dist/ssr';
+import { InstagramLogo, FacebookLogo, LinkedinLogo, CheckCircle, ArrowRight, Sparkle, ShieldCheck, Lightning, Buildings, Storefront, RocketLaunch, Briefcase, User, ShoppingBag } from '@phosphor-icons/react/dist/ssr';
 
 export const metadata = {
-  title: 'Social Media Marketing Services | InfronixWeb Digital Marketing',
-  description: 'Build your brand and grow your audience with strategic social media marketing. Instagram, Facebook & LinkedIn management, Reels editing, content planning, and brand awareness.',
+  title: 'Social Media Marketing Services in Ahmedabad | InfronixWeb',
+  description: 'Build your brand and grow your audience with strategic social media marketing for businesses in Ahmedabad and across India. Instagram, Facebook & LinkedIn management, Reels editing, content planning, and brand awareness.',
   alternates: {
     canonical: 'https://www.infronixweb.in/digital-marketing/social-media-marketing'
   }
@@ -252,7 +232,7 @@ export default function SocialMediaMarketingPage() {
                 Grow Your Audience.
               </h1>
               <p className="text-base sm:text-lg md:text-xl text-main-text font-medium leading-relaxed">
-                Your brand deserves more than just a social media presence. At InfronixWeb, we help businesses build meaningful connections, create engaging content, and grow their digital presence through strategic social media marketing.
+                Your brand deserves more than just a social media presence. At InfronixWeb, based in Ahmedabad, we help businesses build meaningful connections, create engaging content, and grow their digital presence through strategic social media marketing.
               </p>
               <p className="text-sm sm:text-base md:text-lg text-text-light font-medium leading-relaxed">
                 From creative content to consistent management, we bring your brand closer to the people who matter most.

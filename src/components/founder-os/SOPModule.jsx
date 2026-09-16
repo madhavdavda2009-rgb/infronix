@@ -1,19 +1,6 @@
 "use client";
 import React, { useState, useEffect } from 'react';
-import {
-  BookOpen,
-  Plus,
-  MagnifyingGlass,
-  Pencil,
-  Trash,
-  X,
-  ArrowLeft,
-  CheckCircle,
-  User,
-  Clock,
-  CaretRight,
-  ListNumbers
-} from '@phosphor-icons/react';
+import { BookOpen, Plus, MagnifyingGlass, Trash, X, ArrowLeft } from '@phosphor-icons/react';
 import EmptyState from './EmptyState';
 import { ConfirmModal } from './ConfirmModal';
 import { useToast } from '@/context/ToastContext';
@@ -119,7 +106,7 @@ export default function SOPModule({ initialSopId, settings = {}, onRefreshDashbo
     setActionLoading(true);
     const form = e.target;
     const payload = {
-      name: form.name.value,
+      name: form.elements.namedItem('name').value,
       category: form.category.value,
       description: form.description.value,
       owner: form.owner.value,

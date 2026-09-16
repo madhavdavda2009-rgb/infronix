@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { query, initFounderOSDb, DEFAULT_QA_CHECKLIST_TEMPLATES } from '@/lib/founder_os_db';
+import { query, initFounderOSDb } from '@/lib/founder_os_db';
 import { verifyAdminAuth } from '@/lib/auth';
 import { logActivity } from '@/lib/audit_logger';
 
@@ -77,7 +77,13 @@ export async function POST(request) {
           leads: (await query('SELECT * FROM founder_os_leads')).rows,
           calls: (await query('SELECT * FROM founder_os_calls')).rows,
           proposals: (await query('SELECT * FROM founder_os_proposals')).rows,
+          clients: (await query('SELECT * FROM founder_os_clients')).rows,
           projects: (await query('SELECT * FROM founder_os_projects')).rows,
+          stages: (await query('SELECT * FROM founder_os_project_stages')).rows,
+          paymentSchedules: (await query('SELECT * FROM founder_os_payment_schedules')).rows,
+          plannedCosts: (await query('SELECT * FROM founder_os_planned_costs')).rows,
+          requirements: (await query('SELECT * FROM founder_os_client_requirements')).rows,
+          projectTeam: (await query('SELECT * FROM founder_os_project_team')).rows,
           tasks: (await query('SELECT * FROM founder_os_tasks')).rows,
           feedback: (await query('SELECT * FROM founder_os_feedback')).rows,
           qaChecklist: (await query('SELECT * FROM founder_os_qa_checklist')).rows,

@@ -1,24 +1,6 @@
 "use client";
 import React, { useState, useEffect } from 'react';
-import {
-  ShieldCheck,
-  Plus,
-  MagnifyingGlass,
-  Pencil,
-  Trash,
-  X,
-  LockKey,
-  CheckCircle,
-  Warning,
-  Database,
-  DownloadSimple,
-  UploadSimple,
-  ArrowsClockwise,
-  ArrowRight,
-  Key,
-  FileCode,
-  Info
-} from '@phosphor-icons/react';
+import { ShieldCheck, Plus, Pencil, Trash, X, CheckCircle, Database, DownloadSimple, UploadSimple, Key, Info } from '@phosphor-icons/react';
 import EmptyState from './EmptyState';
 import { ConfirmModal, DangerConfirmModal } from './ConfirmModal';
 import { useToast } from '@/context/ToastContext';

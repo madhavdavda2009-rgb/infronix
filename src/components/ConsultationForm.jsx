@@ -1,5 +1,5 @@
 "use client";
-import { Clock, Timer, WarningCircle, ChatCircle, CheckCircle } from "@phosphor-icons/react";
+import { Clock, Timer, WarningCircle, ChatCircle } from "@phosphor-icons/react";
 import { useState, useEffect } from 'react';
 import { useToast } from '@/context/ToastContext';
 import { getFriendlyErrorMessage, parseJsonResponse } from '@/utils/errorHandler';

@@ -1,16 +1,6 @@
 "use client";
 import React, { useState } from 'react';
-import {
-  Gear,
-  Buildings,
-  LockKey,
-  Database,
-  CheckCircle,
-  Warning,
-  CurrencyInr,
-  Clock,
-  DownloadSimple
-} from '@phosphor-icons/react';
+import { Buildings, LockKey, Database } from '@phosphor-icons/react';
 import { useToast } from '@/context/ToastContext';
 
 export default function SettingsModule({ settings = {}, currentUser = {}, onRefreshDashboard }) {

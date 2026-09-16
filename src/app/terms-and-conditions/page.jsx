@@ -867,7 +867,7 @@ export default function TermsAndConditions() {
                 35. Contact
               </h2>
               <p>
-                For questions regarding these Terms and Conditions, contact us through the official contact information published on our website.
+                For questions regarding these Terms and Conditions, contact our team at InfronixWeb Digital Marketing, located in Ahmedabad, Gujarat, India, through the official contact information published on our website.
               </p>
             </section>
 

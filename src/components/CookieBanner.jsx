@@ -14,11 +14,8 @@ export default function CookieBanner() {
   const [analyticsToggle, setAnalyticsToggle] = useState(false);
   const [marketingToggle, setMarketingToggle] = useState(false);
 
-  if (pathname?.startsWith('/admin') || pathname?.startsWith('/founder-os')) {
-    return null;
-  }
-
   useEffect(() => {
+    if (pathname?.startsWith('/admin') || pathname?.startsWith('/founder-os')) return;
     // Ensure rate-limiting device ID cookie is set
     getOrSetDeviceId();
 
@@ -26,10 +23,9 @@ export default function CookieBanner() {
     setConsent(currentConsent);
 
     // Show banner if choice hasn't been made yet
-    if (!currentConsent.chosen) {
-      const timer = setTimeout(() => setShowBanner(true), 1000);
-      return () => clearTimeout(timer);
-    }
+    const timer = !currentConsent.chosen
+      ? setTimeout(() => setShowBanner(true), 1000)
+      : null;
 
     // Listen for custom event to open preferences anytime (e.g. from footer)
     function handleOpenEvent() {
@@ -40,8 +36,11 @@ export default function CookieBanner() {
     }
 
     window.addEventListener('open_cookie_preferences', handleOpenEvent);
-    return () => window.removeEventListener('open_cookie_preferences', handleOpenEvent);
-  }, []);
+    return () => {
+      if (timer) clearTimeout(timer);
+      window.removeEventListener('open_cookie_preferences', handleOpenEvent);
+    };
+  }, [pathname]);
 
   function handleAcceptAll() {
     const updated = setConsentPreferences({
@@ -82,6 +81,8 @@ export default function CookieBanner() {
     setMarketingToggle(current.marketing || false);
     setShowModal(true);
   }
+
+  if (pathname?.startsWith('/admin') || pathname?.startsWith('/founder-os')) return null;
 
   return (
     <>

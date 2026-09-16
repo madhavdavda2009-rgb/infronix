@@ -1,20 +1,6 @@
 "use client";
 import { useState, useEffect } from 'react';
-import { 
-  X, 
-  Sparkle, 
-  ArrowsClockwise, 
-  FloppyDisk, 
-  PaperPlaneTilt, 
-  Buildings, 
-  User, 
-  EnvelopeSimple, 
-  Globe, 
-  Tag, 
-  CheckCircle,
-  Warning,
-  Eye
-} from "@phosphor-icons/react";
+import { X, Sparkle, ArrowsClockwise, FloppyDisk, PaperPlaneTilt, Buildings, User, Globe, Tag, Eye } from "@phosphor-icons/react";
 import SendConfirmModal from './SendConfirmModal';
 
 const SERVICES = [
