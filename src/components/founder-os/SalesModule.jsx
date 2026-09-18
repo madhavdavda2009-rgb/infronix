@@ -1,6 +1,6 @@
 "use client";
 import React, { useState, useEffect } from 'react';
-import { Briefcase, Plus, MagnifyingGlass, Pencil, Trash, PhoneCall, FileText, Calendar, X, FolderPlus } from '@phosphor-icons/react';
+import { Briefcase, Plus, MagnifyingGlass, Pencil, Trash, PhoneCall, FileText, Calendar, X, FolderPlus, EnvelopeSimple, ArrowsClockwise, Eye, CheckCircle, Warning, ArrowUpRight } from '@phosphor-icons/react';
 import EmptyState from './EmptyState';
 import { ConfirmModal } from './ConfirmModal';
 import { useToast } from '@/context/ToastContext';
@@ -19,6 +19,9 @@ const LEAD_STATUSES = [
 
 const LEAD_SOURCES = [
   'Website',
+  'Website Contact Form',
+  'Start Project Form',
+  'Consultation Form',
   'Referral',
   'Cold Outreach',
   'Social Media',
@@ -55,8 +58,9 @@ const PROPOSAL_STATUSES = [
 ];
 
 export default function SalesModule({ initialSub = 'leads', settings = {}, onRefreshDashboard, onNavigate }) {
-  const [subTab, setSubTab] = useState(initialSub); // 'leads' | 'pipeline' | 'calls' | 'proposals'
+  const [subTab, setSubTab] = useState(initialSub); // 'leads' | 'enquiries' | 'pipeline' | 'calls' | 'proposals'
   const [leads, setLeads] = useState([]);
+  const [enquiries, setEnquiries] = useState([]);
   const [calls, setCalls] = useState([]);
   const [proposals, setProposals] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -65,6 +69,7 @@ export default function SalesModule({ initialSub = 'leads', settings = {}, onRef
   const [search, setSearch] = useState('');
   const [statusFilter, setStatusFilter] = useState('ALL');
   const [sourceFilter, setSourceFilter] = useState('ALL');
+  const [emailStatusFilter, setEmailStatusFilter] = useState('ALL');
   const [sortBy, setSortBy] = useState('created_at');
   const [sortOrder, setSortOrder] = useState('desc');
 
@@ -72,6 +77,7 @@ export default function SalesModule({ initialSub = 'leads', settings = {}, onRef
   const [showLeadModal, setShowLeadModal] = useState(false);
   const [editingLead, setEditingLead] = useState(null);
   const [selectedLeadDetail, setSelectedLeadDetail] = useState(null);
+  const [selectedEnquiryDetail, setSelectedEnquiryDetail] = useState(null);
 
   const [showCallModal, setShowCallModal] = useState(false);
   const [callLeadContext, setCallLeadContext] = useState(null);
@@ -85,13 +91,14 @@ export default function SalesModule({ initialSub = 'leads', settings = {}, onRef
 
   const [deleteConfirm, setDeleteConfirm] = useState({ isOpen: false, type: '', id: null, title: '' });
   const [actionLoading, setActionLoading] = useState(false);
+  const [retryLoading, setRetryLoading] = useState(false);
 
   const { showToast } = useToast();
   const currency = settings.currency_symbol || '₹';
 
   useEffect(() => {
     fetchData();
-  }, [subTab, search, statusFilter, sourceFilter, sortBy, sortOrder]);
+  }, [subTab, search, statusFilter, sourceFilter, emailStatusFilter, sortBy, sortOrder]);
 
   async function fetchData() {
     setLoading(true);
@@ -100,6 +107,10 @@ export default function SalesModule({ initialSub = 'leads', settings = {}, onRef
         const res = await fetch(`/api/founder-os/leads?search=${encodeURIComponent(search)}&status=${statusFilter}&source=${sourceFilter}&sortBy=${sortBy}&sortOrder=${sortOrder}`);
         const data = await res.json();
         if (data.success) setLeads(data.leads || []);
+      } else if (subTab === 'enquiries') {
+        const res = await fetch(`/api/founder-os/enquiries?search=${encodeURIComponent(search)}&status=${statusFilter}&emailStatus=${emailStatusFilter}&formType=${sourceFilter}&sortBy=${sortBy}&sortOrder=${sortOrder}`);
+        const data = await res.json();
+        if (data.success) setEnquiries(data.enquiries || []);
       } else if (subTab === 'calls') {
         const res = await fetch('/api/founder-os/calls');
         const data = await res.json();
@@ -114,6 +125,32 @@ export default function SalesModule({ initialSub = 'leads', settings = {}, onRef
       showToast('Error loading sales data', 'error');
     } finally {
       setLoading(false);
+    }
+  }
+
+  // Handle Retry Email on Website Enquiry
+  async function handleRetryEmail(enquiryId, emailType) {
+    setRetryLoading(true);
+    try {
+      const res = await fetch(`/api/founder-os/enquiries/${enquiryId}/retry-email`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ emailType })
+      });
+      const data = await res.json();
+      if (data.success) {
+        showToast(`Email (${emailType}) resent successfully.`, 'success');
+        fetchData();
+        if (selectedEnquiryDetail && selectedEnquiryDetail.id === enquiryId) {
+          setSelectedEnquiryDetail(data.enquiry);
+        }
+      } else {
+        showToast(data.error || 'Failed to resend email', 'error');
+      }
+    } catch (err) {
+      showToast('Network error retrying email', 'error');
+    } finally {
+      setRetryLoading(false);
     }
   }
 
@@ -294,6 +331,7 @@ export default function SalesModule({ initialSub = 'leads', settings = {}, onRef
       if (deleteConfirm.type === 'lead') endpoint = `/api/founder-os/leads/${deleteConfirm.id}`;
       else if (deleteConfirm.type === 'call') endpoint = `/api/founder-os/calls/${deleteConfirm.id}`;
       else if (deleteConfirm.type === 'proposal') endpoint = `/api/founder-os/proposals/${deleteConfirm.id}`;
+      else if (deleteConfirm.type === 'enquiry') endpoint = `/api/founder-os/enquiries/${deleteConfirm.id}`;
 
       const res = await fetch(endpoint, { method: 'DELETE' });
       const data = await res.json();
@@ -302,6 +340,7 @@ export default function SalesModule({ initialSub = 'leads', settings = {}, onRef
         setDeleteConfirm({ isOpen: false, type: '', id: null, title: '' });
         fetchData();
         if (selectedLeadDetail?.id === deleteConfirm.id) setSelectedLeadDetail(null);
+        if (selectedEnquiryDetail?.id === deleteConfirm.id) setSelectedEnquiryDetail(null);
         if (onRefreshDashboard) onRefreshDashboard();
       } else {
         showToast(data.error || 'Failed to delete record', 'error');
@@ -327,6 +366,21 @@ export default function SalesModule({ initialSub = 'leads', settings = {}, onRef
             }`}
           >
             Leads CRM
+          </button>
+          <button
+            type="button"
+            onClick={() => setSubTab('enquiries')}
+            className={`px-3.5 py-2 rounded-lg text-xs font-bold uppercase tracking-wider transition-all cursor-pointer whitespace-nowrap min-h-[36px] flex items-center gap-1.5 ${
+              subTab === 'enquiries' ? 'bg-violet-600 text-white shadow-xs' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
+            }`}
+          >
+            <EnvelopeSimple size={15} weight={subTab === 'enquiries' ? 'fill' : 'bold'} />
+            <span>Website Enquiries</span>
+            {enquiries.length > 0 && (
+              <span className={`px-1.5 py-0.2 rounded-full text-[10px] font-mono ${subTab === 'enquiries' ? 'bg-white/20 text-white' : 'bg-slate-100 text-slate-700'}`}>
+                {enquiries.length}
+              </span>
+            )}
           </button>
           <button
             type="button"
@@ -533,6 +587,239 @@ export default function SalesModule({ initialSub = 'leads', settings = {}, onRef
                               onClick={() => setDeleteConfirm({ isOpen: true, type: 'lead', id: lead.id, title: lead.name })}
                               title="Delete Lead"
                               className="p-1.5 rounded-lg text-slate-500 hover:text-rose-600 hover:bg-rose-50 transition-colors"
+                            >
+                              <Trash size={16} />
+                            </button>
+                          </div>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          )}
+        </div>
+      )}
+
+      {/* 1.5. WEBSITE ENQUIRIES VIEW */}
+      {subTab === 'enquiries' && (
+        <div className="space-y-4">
+          {/* Filters Bar */}
+          <div className="flex flex-col sm:flex-row flex-wrap items-stretch sm:items-center gap-2.5 p-3 rounded-2xl bg-white border border-slate-200 shadow-xs">
+            <div className="flex-1 min-w-[220px] relative">
+              <MagnifyingGlass size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
+              <input
+                type="text"
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+                placeholder="Search enquiries by reference ID, name, email, company, service..."
+                className="w-full pl-10 pr-4 py-2 rounded-xl bg-slate-50 border border-slate-200 text-xs text-slate-900 placeholder:text-slate-400 focus:bg-white focus:outline-none focus:ring-2 focus:ring-violet-500/20 focus:border-violet-600 transition-colors"
+              />
+            </div>
+
+            <select
+              value={statusFilter}
+              onChange={(e) => setStatusFilter(e.target.value)}
+              className="px-3 py-2 rounded-xl bg-slate-50 border border-slate-200 text-xs font-semibold text-slate-700 focus:bg-white focus:outline-none focus:ring-2 focus:ring-violet-500/20 focus:border-violet-600"
+            >
+              <option value="ALL">All Statuses</option>
+              <option value="New">New</option>
+              <option value="Contacted">Contacted</option>
+              <option value="Qualified">Qualified</option>
+              <option value="Won">Won</option>
+              <option value="Lost">Lost</option>
+            </select>
+
+            <select
+              value={emailStatusFilter}
+              onChange={(e) => setEmailStatusFilter(e.target.value)}
+              className="px-3 py-2 rounded-xl bg-slate-50 border border-slate-200 text-xs font-semibold text-slate-700 focus:bg-white focus:outline-none focus:ring-2 focus:ring-violet-500/20 focus:border-violet-600"
+            >
+              <option value="ALL">All Email Statuses</option>
+              <option value="Sent">Sent (Delivered)</option>
+              <option value="Failed">Failed (Needs Retry)</option>
+              <option value="Configuration Missing">Config Missing</option>
+              <option value="Pending">Pending</option>
+            </select>
+
+            <select
+              value={sourceFilter}
+              onChange={(e) => setSourceFilter(e.target.value)}
+              className="px-3 py-2 rounded-xl bg-slate-50 border border-slate-200 text-xs font-semibold text-slate-700 focus:bg-white focus:outline-none focus:ring-2 focus:ring-violet-500/20 focus:border-violet-600"
+            >
+              <option value="ALL">All Form Sources</option>
+              <option value="Start Project Form">Start Project Form</option>
+              <option value="Consultation Form">Consultation Form</option>
+              <option value="Website Contact Form">Website Contact Form</option>
+            </select>
+
+            <select
+              value={sortBy}
+              onChange={(e) => setSortBy(e.target.value)}
+              className="px-3 py-2 rounded-xl bg-slate-50 border border-slate-200 text-xs font-semibold text-slate-700 focus:bg-white focus:outline-none focus:ring-2 focus:ring-violet-500/20 focus:border-violet-600"
+            >
+              <option value="created_at">Sort by Date</option>
+              <option value="full_name">Sort by Name</option>
+              <option value="reference_id">Sort by Ref ID</option>
+            </select>
+          </div>
+
+          {/* Enquiries Table */}
+          {enquiries.length === 0 && !loading ? (
+            <EmptyState
+              icon={EnvelopeSimple}
+              title="No website enquiries yet"
+              description="New enquiries from website contact and quote forms will automatically show up here and sync with your Leads CRM."
+            />
+          ) : (
+            <div className="rounded-2xl bg-white border border-slate-200 shadow-xs overflow-hidden">
+              <div className="overflow-x-auto">
+                <table className="w-full text-left text-xs min-w-[850px]">
+                  <thead className="bg-slate-50 border-b border-slate-200 text-slate-500 uppercase tracking-wider text-[10px] font-bold">
+                    <tr>
+                      <th className="px-4 py-3">Reference ID</th>
+                      <th className="px-4 py-3">Client / Visitor</th>
+                      <th className="px-4 py-3">Service & Form</th>
+                      <th className="px-4 py-3">Customer Email</th>
+                      <th className="px-4 py-3">Admin Email</th>
+                      <th className="px-4 py-3">CRM Lead</th>
+                      <th className="px-4 py-3">Submitted</th>
+                      <th className="px-4 py-3 text-right">Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-slate-100">
+                    {enquiries.map((enq) => (
+                      <tr key={enq.id} className="hover:bg-slate-50/80 transition-colors">
+                        <td className="px-4 py-3 font-mono font-bold text-violet-700">
+                          {enq.reference_id}
+                        </td>
+                        <td className="px-4 py-3">
+                          <div className="font-bold text-slate-900 flex items-center gap-2">
+                            {enq.full_name}
+                            {enq.status === 'Pending Verification' && (
+                              <span className="px-1.5 py-0.5 bg-amber-100 text-amber-700 text-[9px] uppercase font-bold rounded">Pending Verify</span>
+                            )}
+                          </div>
+                          <div className="text-[11px] text-slate-500">
+                            {enq.status === 'Pending Verification' ? (enq.email || '').replace(/^(.)(.*)(@.*)$/, '$1***$3') : enq.email}
+                          </div>
+                          {enq.phone && <div className="text-[10px] text-slate-400">{enq.phone}</div>}
+                          {enq.company && <div className="text-[10px] text-slate-600 font-semibold mt-0.5">{enq.company}</div>}
+                        </td>
+                        <td className="px-4 py-3">
+                          <div className="font-semibold text-slate-800">{enq.selected_service || 'General Enquiry'}</div>
+                          <span className="inline-block mt-0.5 px-2 py-0.5 rounded text-[10px] bg-slate-100 text-slate-600 font-medium">
+                            {enq.form_type}
+                          </span>
+                        </td>
+                        <td className="px-4 py-3">
+                          <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-bold uppercase ${
+                            enq.customer_email_status === 'Sent'
+                              ? 'bg-emerald-50 text-emerald-700 border border-emerald-200'
+                              : enq.customer_email_status === 'Failed'
+                              ? 'bg-rose-50 text-rose-700 border border-rose-200'
+                              : enq.customer_email_status === 'Configuration Missing'
+                              ? 'bg-amber-50 text-amber-700 border border-amber-200'
+                              : 'bg-slate-100 text-slate-600'
+                          }`}>
+                            {enq.customer_email_status === 'Sent' && <CheckCircle size={12} weight="fill" />}
+                            {enq.customer_email_status === 'Failed' && <Warning size={12} weight="fill" />}
+                            {enq.customer_email_status}
+                          </span>
+                          {enq.customer_email_status === 'Failed' && (
+                            <button
+                              disabled={retryLoading}
+                              onClick={() => handleRetryEmail(enq.id, 'customer')}
+                              title="Retry Customer Confirmation Email"
+                              className="ml-1.5 p-1 rounded hover:bg-slate-200 text-slate-600 hover:text-slate-900 transition-colors"
+                            >
+                              <ArrowsClockwise size={12} className={retryLoading ? 'animate-spin' : ''} />
+                            </button>
+                          )}
+                        </td>
+                        <td className="px-4 py-3">
+                          <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-bold uppercase ${
+                            enq.admin_email_status === 'Sent'
+                              ? 'bg-emerald-50 text-emerald-700 border border-emerald-200'
+                              : enq.admin_email_status === 'Failed'
+                              ? 'bg-rose-50 text-rose-700 border border-rose-200'
+                              : enq.admin_email_status === 'Configuration Missing'
+                              ? 'bg-amber-50 text-amber-700 border border-amber-200'
+                              : 'bg-slate-100 text-slate-600'
+                          }`}>
+                            {enq.admin_email_status === 'Sent' && <CheckCircle size={12} weight="fill" />}
+                            {enq.admin_email_status === 'Failed' && <Warning size={12} weight="fill" />}
+                            {enq.admin_email_status}
+                          </span>
+                          {enq.admin_email_status === 'Failed' && (
+                            <button
+                              disabled={retryLoading}
+                              onClick={() => handleRetryEmail(enq.id, 'admin')}
+                              title="Retry Admin Notification Email"
+                              className="ml-1.5 p-1 rounded hover:bg-slate-200 text-slate-600 hover:text-slate-900 transition-colors"
+                            >
+                              <ArrowsClockwise size={12} className={retryLoading ? 'animate-spin' : ''} />
+                            </button>
+                          )}
+                        </td>
+                        <td className="px-4 py-3">
+                          {enq.crm_lead_code ? (
+                            <button
+                              onClick={() => {
+                                setSubTab('leads');
+                                setSearch(enq.crm_lead_code);
+                              }}
+                              className="font-mono font-bold text-[11px] text-violet-700 hover:underline flex items-center gap-1"
+                            >
+                              <span>{enq.crm_lead_code}</span>
+                              <ArrowUpRight size={12} />
+                            </button>
+                          ) : (
+                            <span className="text-slate-400">—</span>
+                          )}
+                        </td>
+                        <td className="px-4 py-3 text-slate-600">
+                          {enq.created_at ? new Date(enq.created_at).toLocaleDateString('en-IN', {
+                            day: 'numeric',
+                            month: 'short',
+                            hour: '2-digit',
+                            minute: '2-digit'
+                          }) : '—'}
+                        </td>
+                        <td className="px-4 py-3 text-right">
+                          <div className="flex items-center justify-end gap-1">
+                            <button
+                              onClick={() => setSelectedEnquiryDetail(enq)}
+                              title="View Full Enquiry Details"
+                              className="p-1.5 rounded-lg text-slate-600 hover:text-violet-600 hover:bg-violet-50 transition-colors cursor-pointer"
+                            >
+                              <Eye size={16} />
+                            </button>
+                            {enq.status !== 'Pending Verification' && (
+                              <button
+                                onClick={() => {
+                                  setWizardInitialData({
+                                    client_name: enq.company || enq.full_name,
+                                    project_name: enq.selected_service ? `${enq.selected_service} - ${enq.company || enq.full_name}` : `Project for ${enq.full_name}`,
+                                    lead_id: enq.lead_id || null,
+                                    project_value: 0,
+                                    project_type: 'Business Website',
+                                    notes: `Imported from Enquiry ${enq.reference_id}:\n${enq.project_description || enq.message || ''}`
+                                  });
+                                  setShowWizardModal(true);
+                                }}
+                                title="Start Project Setup Wizard"
+                                className="px-2 py-1 rounded-lg text-emerald-700 hover:text-emerald-800 hover:bg-emerald-50 border border-emerald-200 transition-colors font-bold text-[10px] uppercase flex items-center gap-1 cursor-pointer"
+                              >
+                                <FolderPlus size={14} weight="bold" />
+                                <span className="hidden sm:inline">Project</span>
+                              </button>
+                            )}
+                            <button
+                              onClick={() => setDeleteConfirm({ isOpen: true, type: 'enquiry', id: enq.id, title: `Enquiry ${enq.reference_id}` })}
+                              title="Delete Enquiry"
+                              className="p-1.5 rounded-lg text-slate-400 hover:text-rose-600 hover:bg-rose-50 transition-colors cursor-pointer"
                             >
                               <Trash size={16} />
                             </button>
@@ -1163,6 +1450,227 @@ export default function SalesModule({ initialSub = 'leads', settings = {}, onRef
                 </button>
               </div>
             </form>
+          </div>
+        </div>
+      )}
+
+      {/* --- MODAL 4: ENQUIRY DETAILS MODAL --- */}
+      {selectedEnquiryDetail && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-slate-900/40 backdrop-blur-sm animate-fadeIn">
+          <div className="w-full max-w-2xl bg-white border border-slate-200 rounded-2xl shadow-2xl p-5 sm:p-6 max-h-[90vh] overflow-y-auto">
+            <div className="flex items-center justify-between border-b border-slate-100 pb-3 mb-4">
+              <div>
+                <span className="text-[10px] font-mono font-bold text-violet-700 bg-violet-50 px-2 py-0.5 rounded border border-violet-200">
+                  {selectedEnquiryDetail.reference_id}
+                </span>
+                <h3 className="text-base font-bold text-slate-900 font-outfit mt-1">
+                  Enquiry: {selectedEnquiryDetail.full_name}
+                </h3>
+              </div>
+              <button onClick={() => setSelectedEnquiryDetail(null)} className="text-slate-400 hover:text-slate-600 p-1">
+                <X size={18} />
+              </button>
+            </div>
+
+            <div className="space-y-4 text-xs">
+              {/* Contact Info Grid */}
+              <div className="p-3.5 rounded-xl bg-slate-50 border border-slate-200 grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div>
+                  <span className="text-[10px] font-bold uppercase text-slate-500 block">Full Name</span>
+                  <span className="font-semibold text-slate-900">{selectedEnquiryDetail.full_name}</span>
+                </div>
+                <div>
+                  <span className="text-[10px] font-bold uppercase text-slate-500 block">Email Address</span>
+                  <a href={`mailto:${selectedEnquiryDetail.email}`} className="font-semibold text-violet-700 hover:underline">
+                    {selectedEnquiryDetail.status === 'Pending Verification' ? (selectedEnquiryDetail.email || '').replace(/^(.)(.*)(@.*)$/, '$1***$3') : selectedEnquiryDetail.email}
+                  </a>
+                </div>
+                <div>
+                  <span className="text-[10px] font-bold uppercase text-slate-500 block">Phone / WhatsApp</span>
+                  <span className="font-semibold text-slate-900">{selectedEnquiryDetail.phone || 'Not provided'}</span>
+                </div>
+                <div>
+                  <span className="text-[10px] font-bold uppercase text-slate-500 block">Company</span>
+                  <span className="font-semibold text-slate-900">{selectedEnquiryDetail.company || 'Not provided'}</span>
+                </div>
+              </div>
+
+              {/* Scope & Details */}
+              <div className="p-3.5 rounded-xl bg-slate-50 border border-slate-200 grid grid-cols-1 sm:grid-cols-3 gap-3">
+                <div>
+                  <span className="text-[10px] font-bold uppercase text-slate-500 block">Selected Service</span>
+                  <span className="font-semibold text-slate-900">{selectedEnquiryDetail.selected_service || 'General'}</span>
+                </div>
+                <div>
+                  <span className="text-[10px] font-bold uppercase text-slate-500 block">Target Budget</span>
+                  <span className="font-semibold text-slate-900">{selectedEnquiryDetail.budget || 'Not specified'}</span>
+                </div>
+                <div>
+                  <span className="text-[10px] font-bold uppercase text-slate-500 block">Preferred Timeline</span>
+                  <span className="font-semibold text-slate-900">{selectedEnquiryDetail.preferred_start_date || 'Not specified'}</span>
+                </div>
+                <div>
+                  <span className="text-[10px] font-bold uppercase text-slate-500 block">Source Form</span>
+                  <span className="font-semibold text-slate-900">{selectedEnquiryDetail.form_type}</span>
+                </div>
+                <div>
+                  <span className="text-[10px] font-bold uppercase text-slate-500 block">Source Page</span>
+                  <span className="font-semibold text-slate-900">{selectedEnquiryDetail.source_page || '/'}</span>
+                </div>
+                <div>
+                  <span className="text-[10px] font-bold uppercase text-slate-500 block">Submission Date</span>
+                  <span className="font-semibold text-slate-900">
+                    {selectedEnquiryDetail.created_at ? new Date(selectedEnquiryDetail.created_at).toLocaleString() : '—'}
+                  </span>
+                </div>
+              </div>
+
+              {/* Message / Requirements */}
+              <div>
+                <span className="text-[10px] font-bold uppercase text-slate-500 block mb-1">Project Description / Message</span>
+                <div className="p-3.5 rounded-xl bg-white border border-slate-200 text-slate-800 whitespace-pre-wrap leading-relaxed">
+                  {selectedEnquiryDetail.project_description || selectedEnquiryDetail.message || 'No description provided.'}
+                </div>
+              </div>
+
+              {/* Email Delivery Status Card */}
+              <div className="p-3.5 rounded-xl bg-violet-50/60 border border-violet-200">
+                <div className="flex items-center justify-between mb-2">
+                  <span className="font-bold text-slate-900 flex items-center gap-1.5">
+                    <EnvelopeSimple size={15} className="text-violet-600" />
+                    <span>Email Automated Delivery Status</span>
+                  </span>
+                  <span className="text-[10px] text-slate-500 font-mono">
+                    {selectedEnquiryDetail.status === 'Pending Verification' && `Verify Attempts: ${selectedEnquiryDetail.verification_attempts || 0} | `}
+                    Email Attempts: {selectedEnquiryDetail.email_attempt_count || 1}
+                  </span>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-2">
+                  <div className="p-2.5 rounded-lg bg-white border border-slate-200">
+                    <div className="flex items-center justify-between">
+                      <span className="text-[10px] uppercase font-bold text-slate-500">Customer Confirmation</span>
+                      <span className={`px-1.5 py-0.5 rounded text-[10px] font-bold uppercase ${
+                        selectedEnquiryDetail.customer_email_status === 'Sent'
+                          ? 'bg-emerald-100 text-emerald-800'
+                          : selectedEnquiryDetail.customer_email_status === 'Failed'
+                          ? 'bg-rose-100 text-rose-800'
+                          : 'bg-amber-100 text-amber-800'
+                      }`}>
+                        {selectedEnquiryDetail.customer_email_status}
+                      </span>
+                    </div>
+                    {selectedEnquiryDetail.customer_email_message_id && (
+                      <div className="text-[9px] font-mono text-slate-400 mt-1 truncate">
+                        ID: {selectedEnquiryDetail.customer_email_message_id}
+                      </div>
+                    )}
+                    <button
+                      disabled={retryLoading}
+                      onClick={() => handleRetryEmail(selectedEnquiryDetail.id, 'customer')}
+                      className="mt-2 w-full py-1 rounded bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-[10px] uppercase flex items-center justify-center gap-1 transition-colors cursor-pointer"
+                    >
+                      <ArrowsClockwise size={12} className={retryLoading ? 'animate-spin' : ''} />
+                      <span>Retry Customer Email</span>
+                    </button>
+                  </div>
+
+                  <div className="p-2.5 rounded-lg bg-white border border-slate-200">
+                    <div className="flex items-center justify-between">
+                      <span className="text-[10px] uppercase font-bold text-slate-500">Admin Notification</span>
+                      <span className={`px-1.5 py-0.5 rounded text-[10px] font-bold uppercase ${
+                        selectedEnquiryDetail.admin_email_status === 'Sent'
+                          ? 'bg-emerald-100 text-emerald-800'
+                          : selectedEnquiryDetail.admin_email_status === 'Failed'
+                          ? 'bg-rose-100 text-rose-800'
+                          : 'bg-amber-100 text-amber-800'
+                      }`}>
+                        {selectedEnquiryDetail.admin_email_status}
+                      </span>
+                    </div>
+                    {selectedEnquiryDetail.admin_email_message_id && (
+                      <div className="text-[9px] font-mono text-slate-400 mt-1 truncate">
+                        ID: {selectedEnquiryDetail.admin_email_message_id}
+                      </div>
+                    )}
+                    <button
+                      disabled={retryLoading}
+                      onClick={() => handleRetryEmail(selectedEnquiryDetail.id, 'admin')}
+                      className="mt-2 w-full py-1 rounded bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-[10px] uppercase flex items-center justify-center gap-1 transition-colors cursor-pointer"
+                    >
+                      <ArrowsClockwise size={12} className={retryLoading ? 'animate-spin' : ''} />
+                      <span>Retry Admin Notification</span>
+                    </button>
+                  </div>
+                </div>
+
+                {selectedEnquiryDetail.last_email_error && (
+                  <div className="mt-2 p-2 rounded bg-rose-50 border border-rose-200 text-[10px] text-rose-700 font-mono">
+                    Last Error: {selectedEnquiryDetail.last_email_error}
+                  </div>
+                )}
+              </div>
+
+              {/* Action Buttons */}
+              <div className="flex items-center justify-between gap-2.5 pt-3 border-t border-slate-100">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setDeleteConfirm({
+                      isOpen: true,
+                      type: 'enquiry',
+                      id: selectedEnquiryDetail.id,
+                      title: `Enquiry #${selectedEnquiryDetail.reference_id} (${selectedEnquiryDetail.full_name})`
+                    });
+                  }}
+                  className="px-3.5 py-2 text-xs font-bold uppercase tracking-wider text-rose-600 hover:text-rose-700 bg-rose-50 hover:bg-rose-100 border border-rose-200 rounded-xl transition-colors cursor-pointer flex items-center gap-1.5"
+                >
+                  <Trash size={14} />
+                  <span>Delete Enquiry</span>
+                </button>
+
+                <div className="flex items-center gap-2">
+                  {selectedEnquiryDetail.crm_lead_code && (
+                    <button
+                      type="button"
+                      onClick={() => {
+                        const code = selectedEnquiryDetail.crm_lead_code;
+                        setSelectedEnquiryDetail(null);
+                        setSubTab('leads');
+                        setSearch(code);
+                      }}
+                      className="px-4 py-2 text-xs font-bold uppercase tracking-wider text-violet-700 hover:text-violet-800 bg-violet-50 hover:bg-violet-100 border border-violet-200 rounded-xl transition-colors cursor-pointer flex items-center gap-1"
+                    >
+                      <span>View in Leads CRM ({selectedEnquiryDetail.crm_lead_code})</span>
+                      <ArrowUpRight size={14} />
+                    </button>
+                  )}
+
+                  {selectedEnquiryDetail.status !== 'Pending Verification' && (
+                    <button
+                      type="button"
+                      onClick={() => {
+                        const enq = selectedEnquiryDetail;
+                        setSelectedEnquiryDetail(null);
+                        setWizardInitialData({
+                          client_name: enq.company || enq.full_name,
+                          project_name: enq.selected_service ? `${enq.selected_service} - ${enq.company || enq.full_name}` : `Project for ${enq.full_name}`,
+                          lead_id: enq.lead_id || null,
+                          project_value: 0,
+                          project_type: 'Business Website',
+                          notes: `Imported from Enquiry ${enq.reference_id}:\n${enq.project_description || enq.message || ''}`
+                        });
+                        setShowWizardModal(true);
+                      }}
+                      className="px-5 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs uppercase tracking-wider shadow-sm cursor-pointer flex items-center gap-1.5"
+                    >
+                      <FolderPlus size={15} weight="bold" />
+                      <span>Start Project Wizard</span>
+                    </button>
+                  )}
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       )}

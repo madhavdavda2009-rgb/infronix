@@ -16,6 +16,9 @@ export default function StartProjectPage() {
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
+  const [referenceId, setReferenceId] = useState('');
+  const [honeypot, setHoneypot] = useState('');
+  const [idempotencyKey, setIdempotencyKey] = useState('');
 
   const [selectedServices, setSelectedServices] = useState(['Website Development']);
   const [formData, setFormData] = useState({
@@ -33,8 +36,12 @@ export default function StartProjectPage() {
   const formRef = useRef(null);
 
   useEffect(() => {
-    if (localStorage.getItem('infronixweb_project_submitted')) {
-      setSuccess(true);
+    const savedRef = localStorage.getItem('infronixweb_project_ref');
+    if (savedRef) {
+      setReferenceId(savedRef);
+    }
+    if (!idempotencyKey && typeof crypto !== 'undefined' && crypto.randomUUID) {
+      setIdempotencyKey(crypto.randomUUID());
     }
   }, []);
 
@@ -82,28 +89,34 @@ export default function StartProjectPage() {
 
     setLoading(true);
     try {
-      const response = await fetch('/api/start-project', {
+      const response = await fetch('/api/enquiries/submit', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           selectedServices: selectedServices.length ? selectedServices : ['Website Development'],
-          projectName: formData.companyName || formData.fullName,
-          hasExistingWebsite: formData.websiteUrl ? 'Yes' : 'No',
-          websiteUrl: formData.websiteUrl,
-          projectDescription: formData.projectDescription,
-          timeline: formData.timeline,
           fullName: formatTitleCase(fullName),
           email: formattedEmail,
           phone: formData.phone,
           companyName: formatTitleCase(formData.companyName),
-          additionalNotes: formData.additionalNotes
+          websiteUrl: formData.websiteUrl,
+          projectDescription: formData.projectDescription,
+          timeline: formData.timeline,
+          additionalNotes: formData.additionalNotes,
+          formType: 'Start Project Form',
+          sourcePage: '/start-project',
+          idempotencyKey: idempotencyKey || undefined,
+          website_hp_check: honeypot
         })
       });
 
       const data = await parseJsonResponse(response);
 
       if (response.ok && data.success) {
-        localStorage.setItem('infronix_project_submitted', 'true');
+        const ref = data.referenceId || '';
+        if (ref) {
+          localStorage.setItem('infronixweb_project_ref', ref);
+          setReferenceId(ref);
+        }
         setSuccess(true);
         window.scrollTo({ top: 0, behavior: 'smooth' });
       } else {
@@ -124,12 +137,44 @@ export default function StartProjectPage() {
             <CheckCircle className="text-primary text-3xl sm:text-4xl" weight="fill" />
           </div>
           <h1 className="font-headline-lg text-2xl sm:text-4xl md:text-5xl text-on-surface font-bold mb-4 sm:mb-6">Quote request received.</h1>
+          
+          {referenceId && (
+            <div className="inline-flex items-center gap-2 px-4 py-2 bg-surface-container-lowest border border-primary/30 rounded-xl mb-6 shadow-sm">
+              <span className="text-xs uppercase font-bold text-text-light tracking-wider">Reference ID:</span>
+              <span className="text-sm font-mono font-bold text-primary">{referenceId}</span>
+            </div>
+          )}
+
           <p className="font-body-md text-main-text text-sm sm:text-base md:text-lg mb-8 sm:mb-10 max-w-lg mx-auto">
-            Thanks for reaching out to InfronixWeb. We&apos;ve received your project details and will review them before getting back to you within 24 hours.
+            Thanks for reaching out to InfronixWeb. We&apos;ve received your project details and dispatched a confirmation email. Our team will review your requirements and get back to you within 24 hours.
           </p>
-          <a href="/" className="inline-block bg-primary text-white font-label-caps uppercase tracking-widest px-6 py-3.5 sm:px-8 sm:py-4 hover:bg-primary-dark transition-all border border-primary font-bold shadow-md rounded-lg text-xs sm:text-sm">
-            Back to Home
-          </a>
+          <div className="flex flex-wrap gap-4 justify-center items-center">
+            <a href="/" className="inline-block bg-primary text-white font-label-caps uppercase tracking-widest px-6 py-3.5 sm:px-8 sm:py-4 hover:bg-primary-dark transition-all border border-primary font-bold shadow-md rounded-lg text-xs sm:text-sm">
+              Back to Home
+            </a>
+            <button
+              type="button"
+              onClick={() => {
+                setSuccess(false);
+                setFormData({
+                  fullName: '',
+                  email: '',
+                  phone: '',
+                  companyName: '',
+                  projectDescription: '',
+                  websiteUrl: '',
+                  timeline: '',
+                  additionalNotes: ''
+                });
+                if (typeof crypto !== 'undefined' && crypto.randomUUID) {
+                  setIdempotencyKey(crypto.randomUUID());
+                }
+              }}
+              className="inline-block bg-surface-container-lowest text-on-surface font-label-caps uppercase tracking-widest px-6 py-3.5 sm:px-8 sm:py-4 hover:bg-surface border border-outline-variant font-bold shadow-sm rounded-lg text-xs sm:text-sm"
+            >
+              Submit Another Request
+            </button>
+          </div>
         </div>
       </section>
     );
@@ -150,6 +195,17 @@ export default function StartProjectPage() {
         </div>
 
         <form ref={formRef} onSubmit={handleSubmit} className="flex flex-col gap-6 sm:gap-8 fade-up">
+          {/* Honeypot field for bot protection */}
+          <div className="hidden" aria-hidden="true">
+            <input
+              type="text"
+              name="website_hp_check"
+              tabIndex={-1}
+              autoComplete="off"
+              value={honeypot}
+              onChange={(e) => setHoneypot(e.target.value)}
+            />
+          </div>
 
           {errorMsg && (
             <div className="p-4 bg-red-50 border border-red-200 text-red-700 text-xs sm:text-sm flex items-start gap-3 rounded-lg">

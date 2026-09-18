@@ -1,50 +1,46 @@
 import { NextResponse } from 'next/server';
-import { execute } from '@/lib/db';
-import { encrypt } from '@/lib/crypto';
+import { processEnquirySubmission } from '@/lib/enquiry_service';
 
 export async function POST(request) {
   try {
     const body = await request.json();
-    const { firstName, lastName, email, company, projectDetails } = body;
+    const { firstName, lastName, fullName, email, company, projectDetails, message, idempotencyKey, website_hp_check, honeypot } = body;
 
-    if (!firstName || !lastName || !email || !projectDetails) {
-      return NextResponse.json(
-        { success: false, error: 'Please fill in all required fields (First Name, Last Name, Email, Project Details).' },
-        { status: 400 }
-      );
-    }
+    const resolvedName = fullName || [firstName, lastName].filter(Boolean).join(' ');
 
-    // Basic email format validation
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email)) {
-      return NextResponse.json(
-        { success: false, error: 'Please provide a valid work email address.' },
-        { status: 400 }
-      );
-    }
+    const clientIp = request.headers.get('x-forwarded-for')?.split(',')[0]?.trim() ||
+                     request.headers.get('x-real-ip') ||
+                     '127.0.0.1';
 
-    // AES-256-GCM Encryption at rest
-    const encFirstName = encrypt(firstName.trim());
-    const encLastName = encrypt(lastName.trim());
-    const encEmail = encrypt(email.trim().toLowerCase());
-    const encCompany = encrypt(company ? company.trim() : '');
-    const encProjectDetails = encrypt(projectDetails.trim());
+    const origin = request.headers.get('origin');
+    const host = request.headers.get('host') || 'localhost:3000';
+    const proto = request.headers.get('x-forwarded-proto') || (host.includes('localhost') || host.includes('127.0.0.1') ? 'http' : 'https');
+    const baseUrl = origin || `${proto}://${host}`;
 
-    await execute(
-      `INSERT INTO consultations (first_name, last_name, email, company, project_details, service, package, package_price)
-       VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
-      [encFirstName, encLastName, encEmail, encCompany, encProjectDetails, null, null, null]
-    );
+    const result = await processEnquirySubmission({
+      fullName: resolvedName,
+      email: email || '',
+      company: company || '',
+      projectDescription: projectDetails || message || '',
+      formType: 'Consultation Form',
+      sourcePage: '/contact',
+      idempotencyKey,
+      honeypot: honeypot || website_hp_check || '',
+      clientIp,
+      baseUrl
+    });
 
-    return NextResponse.json(
-      { success: true, message: 'Thank you! Your consultation request has been securely submitted. Our team will contact you within 24 hours.' },
-      { status: 201 }
-    );
+    return NextResponse.json(result, { status: 201 });
   } catch (error) {
     console.error('Error submitting consultation:', error);
+    const isValidation =
+      error.message.includes('Please provide') ||
+      error.message.includes('valid') ||
+      error.message.includes('cannot receive') ||
+      error.message.includes('domain');
     return NextResponse.json(
-      { success: false, error: 'An internal server error occurred while processing your request.' },
-      { status: 500 }
+      { success: false, error: isValidation ? error.message : 'An internal server error occurred while processing your request.' },
+      { status: isValidation ? 400 : 500 }
     );
   }
 }

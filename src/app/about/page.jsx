@@ -1,4 +1,5 @@
 import AboutSection from '@/components/AboutSection';
+import AboutTeamSection from '@/components/AboutTeamSection';
 import CTASection from '@/components/CTASection';
 import Breadcrumb from '@/components/Breadcrumb';
 
@@ -18,6 +19,9 @@ export default function AboutPage() {
           <Breadcrumb />
         </div>
         <AboutSection asH1={true} />
+
+        {/* Leadership and Team Section */}
+        <AboutTeamSection />
 
         {/* Local Context */}
         <section className="w-full py-12 sm:py-16 bg-surface border-b border-outline-variant/30">

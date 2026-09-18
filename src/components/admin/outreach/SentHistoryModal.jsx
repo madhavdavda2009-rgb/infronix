@@ -6,7 +6,6 @@ export default function SentHistoryModal({ isOpen, onClose, showToast }) {
   const [sentList, setSentList] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
-  const [selectedEmail, setSelectedEmail] = useState(null);
 
   useEffect(() => {
     if (isOpen) {

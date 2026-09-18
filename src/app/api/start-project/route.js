@@ -1,6 +1,5 @@
 import { NextResponse } from 'next/server';
-import { execute } from '@/lib/db';
-import { encrypt } from '@/lib/crypto';
+import { processEnquirySubmission } from '@/lib/enquiry_service';
 
 export async function POST(request) {
   try {
@@ -28,147 +27,67 @@ export async function POST(request) {
       phone,
       companyName,
       preferredContactMethod,
-      additionalNotes
+      additionalNotes,
+      idempotencyKey,
+      website_hp_check,
+      honeypot
     } = body;
 
-    // Validate Required Fields
-    if (!fullName || !email || !phone || !projectDescription) {
-      return NextResponse.json(
-        { success: false, error: 'Please fill in all required fields.' },
-        { status: 400 }
-      );
-    }
+    const clientIp = request.headers.get('x-forwarded-for')?.split(',')[0]?.trim() ||
+                     request.headers.get('x-real-ip') ||
+                     '127.0.0.1';
 
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email)) {
-      return NextResponse.json(
-        { success: false, error: 'Please provide a valid email address.' },
-        { status: 400 }
-      );
-    }
+    const origin = request.headers.get('origin');
+    const host = request.headers.get('host') || 'localhost:3000';
+    const proto = request.headers.get('x-forwarded-proto') || (host.includes('localhost') || host.includes('127.0.0.1') ? 'http' : 'https');
+    const baseUrl = origin || `${proto}://${host}`;
 
-    // Split Full Name into First and Last for DB schema
-    const nameParts = fullName.trim().split(' ');
-    const firstName = nameParts[0];
-    const lastName = nameParts.length > 1 ? nameParts.slice(1).join(' ') : ' ';
+    const formattedDetails = [
+      projectDescription ? `Description: ${projectDescription}` : '',
+      projectName ? `Project: ${projectName}` : '',
+      websiteUrl ? `Current Website: ${websiteUrl}` : '',
+      websiteType ? `Website Type: ${websiteType}` : '',
+      pageRequirement ? `Pages: ${pageRequirement}` : '',
+      features && features.length > 0 ? `Features: ${features.join(', ')}` : '',
+      seoGoals && seoGoals.length > 0 ? `SEO Goals: ${seoGoals.join(', ')}` : '',
+      seoLocation ? `Target Location: ${seoLocation}` : '',
+      seoBusinessDetails ? `Business Info: ${seoBusinessDetails}` : '',
+      automationDescription ? `Automation Needed: ${automationDescription}` : '',
+      automationPlatforms && automationPlatforms.length > 0 ? `Platforms: ${automationPlatforms.join(', ')}` : '',
+      existingAutomationTools ? `Existing Tools: ${existingAutomationTools}` : '',
+      additionalNotes ? `Notes: ${additionalNotes}` : ''
+    ].filter(Boolean).join('\n\n');
 
-    // Format all extra form fields into a unified comprehensive block for the projectDetails column
-    const formattedDetails = `
-PROJECT NAME: ${projectName.trim()}
-SERVICES REQUESTED: ${selectedServices.join(', ')}
-BUDGET: ${budget}
-TIMELINE: ${timeline}
+    const result = await processEnquirySubmission({
+      fullName: fullName || '',
+      email: email || '',
+      phone: phone || '',
+      company: companyName || '',
+      service: Array.isArray(selectedServices) ? selectedServices.join(', ') : (selectedServices || 'Website Development'),
+      projectType: websiteType || 'Business Website',
+      budget: budget || '',
+      timeline: timeline || '',
+      projectDescription: formattedDetails || projectDescription,
+      preferredContactMethod: preferredContactMethod || 'Email',
+      formType: 'Start Project Form',
+      sourcePage: '/start-project',
+      idempotencyKey,
+      honeypot: honeypot || website_hp_check || '',
+      clientIp,
+      baseUrl
+    });
 
-[CONTACT PREFERENCES]
-Phone: ${phone.trim()}
-Preferred Method: ${preferredContactMethod || 'Email'}
-${companyName ? `Company: ${companyName.trim()}` : ''}
-${businessCategory ? `Category: ${businessCategory.trim()}` : ''}
-
-[PROJECT DESCRIPTION]
-${projectDescription.trim()}
-
-[WEBSITE DETAILS]
-Has Existing Website: ${hasExistingWebsite ? 'Yes' : 'No'}
-${websiteUrl ? `URL: ${websiteUrl.trim()}` : ''}
-${websiteType ? `Type: ${websiteType}` : ''}
-${pageRequirement ? `Pages: ${pageRequirement}` : ''}
-${features && features.length > 0 ? `Requested Features: ${features.join(', ')}` : ''}
-
-[SEO DETAILS]
-${seoGoals && seoGoals.length > 0 ? `SEO Goals: ${seoGoals.join(', ')}` : ''}
-${seoLocation ? `Target Location: ${seoLocation.trim()}` : ''}
-${seoBusinessDetails ? `Business Info: ${seoBusinessDetails.trim()}` : ''}
-
-[AUTOMATION DETAILS]
-${automationDescription ? `Automation Needed: ${automationDescription.trim()}` : ''}
-${automationPlatforms && automationPlatforms.length > 0 ? `Platforms: ${automationPlatforms.join(', ')}` : ''}
-${existingAutomationTools ? `Existing Tools: ${existingAutomationTools.trim()}` : ''}
-
-[ADDITIONAL NOTES]
-${additionalNotes ? additionalNotes.trim() : 'None'}
-    `.trim();
-
-    // Encrypt sensitive fields using existing agency security
-    const encFirstName = encrypt(firstName);
-    const encLastName = encrypt(lastName);
-    const encEmail = encrypt(email.trim().toLowerCase());
-    const encCompany = encrypt(companyName ? companyName.trim() : '');
-    const encProjectDetails = encrypt(formattedDetails);
-
-    // Insert into consultations table with 'new' status
-    await execute(
-      `INSERT INTO consultations (first_name, last_name, email, company, project_details, status, service, package, package_price)
-       VALUES ($1, $2, $3, $4, $5, 'new', $6, $7, $8)`,
-      [encFirstName, encLastName, encEmail, encCompany, encProjectDetails, null, null, null]
-    );
-
-    // Attempt to send email via Resend if API key is present
-    if (process.env.RESEND_API_KEY) {
-      try {
-        const agencyEmailRes = fetch('https://api.resend.com/emails', {
-          method: 'POST',
-          headers: {
-            'Authorization': `Bearer ${process.env.RESEND_API_KEY}`,
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({
-            from: 'InfronixWeb <support@infronixweb.in>',
-            to: 'support@infronixweb.in',
-            subject: `New Project Inquiry from ${fullName.trim()}`,
-            html: `
-              <h2>New Project Inquiry</h2>
-              <p><strong>Name:</strong> ${fullName}</p>
-              <p><strong>Email:</strong> ${email}</p>
-              <p><strong>Phone:</strong> ${phone}</p>
-              <p><strong>Budget:</strong> ${budget}</p>
-              <p><strong>Project:</strong> ${projectName}</p>
-              <p><strong>Description:</strong> ${projectDescription}</p>
-            `
-          })
-        });
-
-        const clientEmailRes = fetch('https://api.resend.com/emails', {
-          method: 'POST',
-          headers: {
-            'Authorization': `Bearer ${process.env.RESEND_API_KEY}`,
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({
-            from: 'InfronixWeb <support@infronixweb.in>',
-            to: email.trim().toLowerCase(),
-            subject: `We've received your project request - InfronixWeb`,
-            html: `
-              <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; line-height: 1.6;">
-                <h2>Hello ${firstName},</h2>
-                <p>Thank you for reaching out to InfronixWeb.</p>
-                <p>We've successfully received your project details. Our team will review your requirements for <strong>${projectName}</strong> and get back to you with the next steps.</p>
-                <br />
-                <p>Best regards,<br/><strong>The InfronixWeb Team</strong></p>
-                <a href="https://infronixweb.in">infronixweb.in</a>
-              </div>
-            `
-          })
-        });
-
-        // Fire and forget, don't await to avoid slowing down response
-        Promise.all([agencyEmailRes, clientEmailRes]).catch(e => console.error('Email sending failed:', e));
-      } catch (emailErr) {
-        console.error('Failed to trigger emails:', emailErr);
-      }
-    } else {
-      console.warn('RESEND_API_KEY not found. Emails were not sent.');
-    }
-
-    return NextResponse.json(
-      { success: true, message: 'Project request received successfully.' },
-      { status: 201 }
-    );
+    return NextResponse.json(result, { status: 201 });
   } catch (error) {
     console.error('Error submitting project inquiry:', error);
+    const isValidation =
+      error.message.includes('Please provide') ||
+      error.message.includes('valid') ||
+      error.message.includes('cannot receive') ||
+      error.message.includes('domain');
     return NextResponse.json(
-      { success: false, error: 'An internal server error occurred while processing your request.' },
-      { status: 500 }
+      { success: false, error: isValidation ? error.message : 'An internal server error occurred while processing your request.' },
+      { status: isValidation ? 400 : 500 }
     );
   }
 }

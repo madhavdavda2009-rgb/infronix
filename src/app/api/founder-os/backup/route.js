@@ -26,6 +26,9 @@ export async function GET(request) {
       { name: 'Revenue', table: 'founder_os_revenue' },
       { name: 'Expenses', table: 'founder_os_expenses' },
       { name: 'People', table: 'founder_os_people' },
+      { name: 'Blog Posts', table: 'founder_os_blogs' },
+      { name: 'Blog Categories', table: 'founder_os_blog_categories' },
+      { name: 'Blog Tags', table: 'founder_os_blog_tags' },
       { name: 'Security Accounts', table: 'founder_os_security_accounts' },
       { name: 'Audit Logs', table: 'founder_os_activity_logs' }
     ];
@@ -91,6 +94,10 @@ export async function POST(request) {
           revenue: (await query('SELECT * FROM founder_os_revenue')).rows,
           expenses: (await query('SELECT * FROM founder_os_expenses')).rows,
           people: (await query('SELECT * FROM founder_os_people')).rows,
+          blogs: (await query('SELECT * FROM founder_os_blogs')).rows,
+          blogCategories: (await query('SELECT * FROM founder_os_blog_categories')).rows,
+          blogTags: (await query('SELECT * FROM founder_os_blog_tags')).rows,
+          blogPostsTags: (await query('SELECT * FROM founder_os_blog_posts_tags')).rows,
           securityAccounts: (await query('SELECT * FROM founder_os_security_accounts')).rows,
           securityChecklist: (await query('SELECT * FROM founder_os_security_checklist')).rows,
           secretReferences: (await query('SELECT * FROM founder_os_secret_references')).rows,

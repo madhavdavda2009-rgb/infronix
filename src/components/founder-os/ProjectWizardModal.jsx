@@ -37,7 +37,6 @@ export default function ProjectWizardModal({
   const [existingClients, setExistingClients] = useState([]);
   const [peopleList, setPeopleList] = useState([]);
   const [leadsList, setLeadsList] = useState([]);
-  const [loadingLookups, setLoadingLookups] = useState(false);
 
   // Step 1: Client
   const [clientMode, setClientMode] = useState('existing'); // 'existing' | 'new'
@@ -131,7 +130,6 @@ export default function ProjectWizardModal({
   }, [isOpen, initialData]);
 
   async function loadLookups() {
-    setLoadingLookups(true);
     try {
       const [clientsRes, peopleRes, leadsRes] = await Promise.all([
         fetch('/api/founder-os/clients'),
@@ -150,8 +148,6 @@ export default function ProjectWizardModal({
       if (leadsData.success) setLeadsList(leadsData.leads || []);
     } catch (err) {
       console.error('Error loading lookups for wizard:', err);
-    } finally {
-      setLoadingLookups(false);
     }
   }
 
@@ -449,7 +445,6 @@ export default function ProjectWizardModal({
               {STEPS.map((s) => {
                 const isDone = currentStep > s.id;
                 const isCurrent = currentStep === s.id;
-                const StepIcon = s.icon;
                 return (
                   <button
                     key={s.id}

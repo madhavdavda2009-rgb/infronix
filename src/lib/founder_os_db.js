@@ -136,6 +136,13 @@ async function initializeSchema() {
       )
     `);
 
+    // Migration: add client_id to calls if table was created before this column existed
+    await client.query(`
+      ALTER TABLE founder_os_calls
+      ADD COLUMN IF NOT EXISTS client_id INTEGER REFERENCES founder_os_clients(id) ON DELETE SET NULL;
+    `);
+
+
     // 5. Proposals Table
     await client.query(`
       CREATE TABLE IF NOT EXISTS founder_os_proposals (
@@ -309,9 +316,47 @@ async function initializeSchema() {
         responsibilities_json JSONB DEFAULT '[]'::jsonb,
         status VARCHAR(50) NOT NULL DEFAULT 'Active',
         notes TEXT,
+        public_slug VARCHAR(255) UNIQUE,
+        public_bio TEXT,
+        profile_image_url VARCHAR(1000),
+        show_on_website BOOLEAN DEFAULT FALSE,
+        show_on_homepage BOOLEAN DEFAULT FALSE,
+        show_on_about_page BOOLEAN DEFAULT FALSE,
+        display_order INTEGER DEFAULT 0,
+        public_role VARCHAR(255),
+        linkedin_url VARCHAR(500),
+        github_url VARCHAR(500),
+        portfolio_url VARCHAR(500),
+        instagram_url VARCHAR(500),
+        is_founder BOOLEAN DEFAULT FALSE,
+        is_archived BOOLEAN DEFAULT FALSE,
         created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
         updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
       )
+    `);
+
+    // Migration for People Website Profile columns
+    await client.query(`
+      ALTER TABLE founder_os_people
+      ADD COLUMN IF NOT EXISTS public_slug VARCHAR(255),
+      ADD COLUMN IF NOT EXISTS public_bio TEXT,
+      ADD COLUMN IF NOT EXISTS profile_image_url VARCHAR(1000),
+      ADD COLUMN IF NOT EXISTS show_on_website BOOLEAN DEFAULT FALSE,
+      ADD COLUMN IF NOT EXISTS show_on_homepage BOOLEAN DEFAULT FALSE,
+      ADD COLUMN IF NOT EXISTS show_on_about_page BOOLEAN DEFAULT FALSE,
+      ADD COLUMN IF NOT EXISTS display_order INTEGER DEFAULT 0,
+      ADD COLUMN IF NOT EXISTS public_role VARCHAR(255),
+      ADD COLUMN IF NOT EXISTS linkedin_url VARCHAR(500),
+      ADD COLUMN IF NOT EXISTS github_url VARCHAR(500),
+      ADD COLUMN IF NOT EXISTS portfolio_url VARCHAR(500),
+      ADD COLUMN IF NOT EXISTS instagram_url VARCHAR(500),
+      ADD COLUMN IF NOT EXISTS is_founder BOOLEAN DEFAULT FALSE,
+      ADD COLUMN IF NOT EXISTS is_archived BOOLEAN DEFAULT FALSE;
+    `);
+
+    await client.query(`
+      CREATE INDEX IF NOT EXISTS idx_founder_os_people_website ON founder_os_people(show_on_website, status, display_order);
+      CREATE INDEX IF NOT EXISTS idx_founder_os_people_slug ON founder_os_people(public_slug);
     `);
 
     await client.query(`ALTER TABLE founder_os_client_requirements ADD COLUMN IF NOT EXISTS created_at TIMESTAMPTZ DEFAULT NOW()`);
@@ -484,6 +529,143 @@ async function initializeSchema() {
       )
     `);
 
+    // 24. Website Enquiries Table (Central submission tracking)
+    await client.query(`
+      CREATE TABLE IF NOT EXISTS founder_os_enquiries (
+        id SERIAL PRIMARY KEY,
+        reference_id VARCHAR(50) UNIQUE NOT NULL,
+        form_type VARCHAR(100) NOT NULL DEFAULT 'Contact Form',
+        full_name VARCHAR(255) NOT NULL,
+        email VARCHAR(255) NOT NULL,
+        phone VARCHAR(50),
+        company VARCHAR(255),
+        selected_service VARCHAR(255),
+        project_type VARCHAR(100),
+        budget VARCHAR(100),
+        preferred_start_date VARCHAR(100),
+        project_description TEXT,
+        message TEXT,
+        preferred_contact_method VARCHAR(50) DEFAULT 'Email',
+        source_page VARCHAR(255),
+        lead_source VARCHAR(100) DEFAULT 'Website',
+        utm_source VARCHAR(100),
+        utm_medium VARCHAR(100),
+        utm_campaign VARCHAR(100),
+        status VARCHAR(50) DEFAULT 'New',
+        lead_id INTEGER REFERENCES founder_os_leads(id) ON DELETE SET NULL,
+        client_id INTEGER REFERENCES founder_os_clients(id) ON DELETE SET NULL,
+        project_id INTEGER REFERENCES founder_os_projects(id) ON DELETE SET NULL,
+        customer_email_status VARCHAR(50) DEFAULT 'Pending',
+        customer_email_message_id VARCHAR(255),
+        admin_email_status VARCHAR(50) DEFAULT 'Pending',
+        admin_email_message_id VARCHAR(255),
+        email_attempt_count INTEGER DEFAULT 0,
+        last_email_error TEXT,
+        idempotency_key VARCHAR(100) UNIQUE,
+        submitted_ip_hash VARCHAR(100),
+        verification_token_hash VARCHAR(255),
+        verification_expires_at TIMESTAMP WITH TIME ZONE,
+        verification_attempts INTEGER DEFAULT 0,
+        created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+        updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+      )
+    `);
+
+    // Add new columns if the table already existed
+    await client.query(`
+      ALTER TABLE founder_os_enquiries
+      ADD COLUMN IF NOT EXISTS verification_token_hash VARCHAR(255),
+      ADD COLUMN IF NOT EXISTS verification_expires_at TIMESTAMP WITH TIME ZONE,
+      ADD COLUMN IF NOT EXISTS verification_attempts INTEGER DEFAULT 0;
+    `);
+
+    // 25. Blog Categories Table
+    await client.query(`
+      CREATE TABLE IF NOT EXISTS founder_os_blog_categories (
+        id SERIAL PRIMARY KEY,
+        name VARCHAR(255) NOT NULL,
+        slug VARCHAR(255) UNIQUE NOT NULL,
+        description TEXT,
+        display_order INTEGER DEFAULT 0,
+        created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+        updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+      )
+    `);
+
+    // 26. Blog Tags Table
+    await client.query(`
+      CREATE TABLE IF NOT EXISTS founder_os_blog_tags (
+        id SERIAL PRIMARY KEY,
+        name VARCHAR(255) NOT NULL,
+        slug VARCHAR(255) UNIQUE NOT NULL,
+        created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+      )
+    `);
+
+    // 27. Blog Posts Table
+    await client.query(`
+      CREATE TABLE IF NOT EXISTS founder_os_blogs (
+        id SERIAL PRIMARY KEY,
+        title VARCHAR(500) NOT NULL,
+        slug VARCHAR(255) UNIQUE NOT NULL,
+        excerpt TEXT NOT NULL,
+        content_markdown TEXT NOT NULL DEFAULT '',
+        content_json JSONB DEFAULT '{}'::jsonb,
+        cover_image_url VARCHAR(1000),
+        cover_image_alt VARCHAR(500),
+        author_person_id INTEGER REFERENCES founder_os_people(id) ON DELETE SET NULL,
+        author_name VARCHAR(255) NOT NULL DEFAULT 'InfronixWeb Editorial Team',
+        author_role VARCHAR(255) DEFAULT 'Digital Specialists',
+        author_avatar_url VARCHAR(1000),
+        category_id INTEGER REFERENCES founder_os_blog_categories(id) ON DELETE SET NULL,
+        status VARCHAR(50) NOT NULL DEFAULT 'Draft',
+        featured BOOLEAN NOT NULL DEFAULT FALSE,
+        published_at TIMESTAMP WITH TIME ZONE,
+        scheduled_for TIMESTAMP WITH TIME ZONE,
+        reading_time_minutes INTEGER DEFAULT 1,
+        seo_title VARCHAR(255),
+        seo_description TEXT,
+        canonical_url VARCHAR(1000),
+        og_image_url VARCHAR(1000),
+        previous_slugs_json JSONB DEFAULT '[]'::jsonb,
+        created_by VARCHAR(255) DEFAULT 'Founder',
+        updated_by VARCHAR(255) DEFAULT 'Founder',
+        archived_at TIMESTAMP WITH TIME ZONE,
+        created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+        updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+      )
+    `);
+
+    // 28. Blog Post Tags Mapping Table
+    await client.query(`
+      CREATE TABLE IF NOT EXISTS founder_os_blog_posts_tags (
+        post_id INTEGER REFERENCES founder_os_blogs(id) ON DELETE CASCADE,
+        tag_id INTEGER REFERENCES founder_os_blog_tags(id) ON DELETE CASCADE,
+        PRIMARY KEY (post_id, tag_id)
+      )
+    `);
+
+    await client.query(`
+      CREATE INDEX IF NOT EXISTS idx_founder_os_blogs_status_pub ON founder_os_blogs(status, published_at DESC);
+      CREATE INDEX IF NOT EXISTS idx_founder_os_blogs_slug ON founder_os_blogs(slug);
+      CREATE INDEX IF NOT EXISTS idx_founder_os_blogs_category ON founder_os_blogs(category_id);
+      CREATE INDEX IF NOT EXISTS idx_founder_os_blog_cats_slug ON founder_os_blog_categories(slug);
+      CREATE INDEX IF NOT EXISTS idx_founder_os_blog_tags_slug ON founder_os_blog_tags(slug);
+    `);
+
+    // Initialize Default Blog Categories if empty
+    const categoriesCheck = await client.query('SELECT COUNT(*) as count FROM founder_os_blog_categories');
+    if (parseInt(categoriesCheck.rows[0].count, 10) === 0) {
+      await client.query(`
+        INSERT INTO founder_os_blog_categories (name, slug, description, display_order) VALUES 
+        ('Web Development', 'web-development', 'Modern web design, development architectures, frameworks, and digital performance.', 1),
+        ('Local SEO', 'local-seo', 'Google Maps optimization, local search visibility, and localized growth strategies.', 2),
+        ('AI Automation', 'ai-automation', 'AI chatbots, automated inquiry workflows, and business process automation.', 3),
+        ('Digital Marketing', 'digital-marketing', 'Growth strategies, paid advertising, and high-converting funnel optimizations.', 4)
+        ON CONFLICT (slug) DO NOTHING
+      `);
+    }
+
     // Initialize Default Settings if empty
     const settingsCheck = await client.query('SELECT COUNT(*) as count FROM founder_os_settings');
     if (parseInt(settingsCheck.rows[0].count, 10) === 0) {
@@ -528,6 +710,57 @@ async function initializeSchema() {
           UPDATE founder_os_revenue SET client_id = $1 WHERE client_name = $2 AND client_id IS NULL
         `, [cRes.rows[0].id, row.client_name]);
       }
+    }
+
+    // Seed Founder (Madhav Davda) if not already present
+    const founderCheck = await client.query(`
+      SELECT id, profile_image_url FROM founder_os_people 
+      WHERE employment_type = 'Founder' OR is_founder = TRUE OR LOWER(name) LIKE '%madhav%'
+      LIMIT 1
+    `);
+
+    if (founderCheck.rows.length === 0) {
+      await client.query(`
+        INSERT INTO founder_os_people (
+          name, role, public_role, email, employment_type,
+          status, show_on_website, show_on_homepage, show_on_about_page,
+          display_order, is_founder, public_slug, public_bio,
+          instagram_url, responsibilities_json, created_at, updated_at
+        ) VALUES (
+          'Madhav Davda',
+          'Founder & Lead Engineer',
+          'Founder & Lead Engineer',
+          'support@infronixweb.in',
+          'Founder',
+          'Active',
+          TRUE,
+          TRUE,
+          TRUE,
+          0,
+          TRUE,
+          'madhav-davda',
+          'Founder & Lead Engineer at InfronixWeb. Direct access, massive impact.',
+          'https://www.instagram.com/madhavdavda09',
+          '["Architecture", "Product Engineering", "Technical Strategy"]'::jsonb,
+          NOW(),
+          NOW()
+        )
+      `);
+    } else {
+      await client.query(`
+        UPDATE founder_os_people
+        SET is_founder = TRUE,
+            employment_type = 'Founder',
+            show_on_website = TRUE,
+            show_on_homepage = TRUE,
+            show_on_about_page = TRUE,
+            display_order = 0,
+            public_role = COALESCE(public_role, 'Founder & Lead Engineer'),
+            public_slug = COALESCE(public_slug, 'madhav-davda'),
+            public_bio = COALESCE(public_bio, 'Founder & Lead Engineer at InfronixWeb. Direct access, massive impact.'),
+            instagram_url = COALESCE(instagram_url, 'https://www.instagram.com/madhavdavda09')
+        WHERE id = $1
+      `, [founderCheck.rows[0].id]);
     }
 
     await client.query('COMMIT');

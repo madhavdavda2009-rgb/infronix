@@ -1,5 +1,5 @@
 "use client";
-import { Clock, Timer, WarningCircle, ChatCircle } from "@phosphor-icons/react";
+import { Clock, Timer, WarningCircle, ChatCircle, CheckCircle } from "@phosphor-icons/react";
 import { useState, useEffect } from 'react';
 import { useToast } from '@/context/ToastContext';
 import { getFriendlyErrorMessage, parseJsonResponse } from '@/utils/errorHandler';
@@ -13,6 +13,9 @@ export default function ConsultationForm() {
   const [email, setEmail] = useState('');
   const [company, setCompany] = useState('');
   const [projectDetails, setProjectDetails] = useState('');
+  const [honeypot, setHoneypot] = useState('');
+  const [idempotencyKey, setIdempotencyKey] = useState('');
+  const [submittedRefId, setSubmittedRefId] = useState('');
 
   const [loading, setLoading] = useState(false);
   const [isRateLimited, setIsRateLimited] = useState(false);
@@ -23,6 +26,9 @@ export default function ConsultationForm() {
 
   useEffect(() => {
     checkRateLimit();
+    if (!idempotencyKey && typeof crypto !== 'undefined' && crypto.randomUUID) {
+      setIdempotencyKey(crypto.randomUUID());
+    }
   }, []);
 
   function checkRateLimit() {
@@ -95,7 +101,7 @@ export default function ConsultationForm() {
     setLoading(true);
 
     try {
-      const response = await fetch('/api/consultations', {
+      const response = await fetch('/api/enquiries/submit', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -103,7 +109,11 @@ export default function ConsultationForm() {
           lastName: formattedLastName,
           email: formattedEmail,
           company: formattedCompany,
-          projectDetails: formattedDetails
+          projectDetails: formattedDetails,
+          formType: 'Consultation Form',
+          sourcePage: '/contact',
+          idempotencyKey: idempotencyKey || undefined,
+          website_hp_check: honeypot
         })
       });
 
@@ -113,12 +123,16 @@ export default function ConsultationForm() {
         localStorage.setItem('infronix_last_submission_time', Date.now().toString());
         setIsRateLimited(true);
         setTimeRemainingText('2h 0m');
-        showToast(data.message || 'Thank you! Your request has been securely received.', 'success');
+        setSubmittedRefId(data.referenceId || '');
+        showToast(data.message || `Thank you! Your enquiry has been received. Reference: ${data.referenceId}`, 'success');
         setFirstName('');
         setLastName('');
         setEmail('');
         setCompany('');
         setProjectDetails('');
+        if (typeof crypto !== 'undefined' && crypto.randomUUID) {
+          setIdempotencyKey(crypto.randomUUID());
+        }
       } else {
         showToast(getFriendlyErrorMessage(data.error, 'Unable to submit your request.'), 'error');
       }
@@ -156,7 +170,31 @@ export default function ConsultationForm() {
           </div>
         )}
 
+        {submittedRefId && (
+          <div className="mb-8 p-5 sm:p-6 bg-green-50 border border-green-200 text-green-800 text-sm flex items-start gap-4 shadow-md relative border-l-4 border-l-green-600 rounded-xl">
+            <CheckCircle className="text-green-600 text-2xl mt-0.5 shrink-0" weight="fill" />
+            <div className="flex-1">
+              <h2 className="font-headline-md text-base sm:text-lg text-green-900 font-bold mb-1 tracking-wide">Enquiry Successfully Received</h2>
+              <p className="text-xs sm:text-sm text-green-700 leading-relaxed font-medium">
+                Your confirmation has been recorded with Reference ID: <strong className="font-mono text-green-900 font-bold">{submittedRefId}</strong>. A confirmation email has been dispatched to your inbox.
+              </p>
+            </div>
+          </div>
+        )}
+
         <form onSubmit={handleSubmit} className="flex flex-col gap-6 w-full bg-surface-container-lowest p-5 sm:p-8 md:p-10 border border-outline-variant shadow-md rounded-2xl" aria-label="Full consultation form">
+          {/* Honeypot field for bot protection */}
+          <div className="hidden" aria-hidden="true">
+            <input
+              type="text"
+              name="website_hp_check"
+              tabIndex={-1}
+              autoComplete="off"
+              value={honeypot}
+              onChange={(e) => setHoneypot(e.target.value)}
+            />
+          </div>
+
           <fieldset disabled={isRateLimited} className="flex flex-col gap-6 w-full">
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">

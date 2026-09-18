@@ -11,6 +11,7 @@ import DeliveryModule from './DeliveryModule';
 import SOPModule from './SOPModule';
 import FinanceModule from './FinanceModule';
 import PeopleModule from './PeopleModule';
+import BlogModule from './BlogModule';
 import SecurityModule from './SecurityModule';
 import ActivityLogModule from './ActivityLogModule';
 import SettingsModule from './SettingsModule';
@@ -23,7 +24,6 @@ export default function FounderOSShell() {
 
   const [activeTab, setActiveTab] = useState(searchParams.get('tab') || 'dashboard');
   const [subTab, setSubTab] = useState(searchParams.get('sub') || '');
-  const [initialLeadId, setInitialLeadId] = useState(searchParams.get('leadId') || null);
   const [initialProjectId, setInitialProjectId] = useState(searchParams.get('projectId') || null);
   const [initialSopId, setInitialSopId] = useState(searchParams.get('sopId') || null);
 
@@ -86,10 +86,9 @@ export default function FounderOSShell() {
   // Sync tab with URL search params
   useEffect(() => {
     const tab = searchParams.get('tab') || 'dashboard';
-    const tabs = ['dashboard', 'sales', 'clients', 'delivery', 'sops', 'finance', 'people', 'security', 'activity', 'settings'];
+    const tabs = ['dashboard', 'sales', 'clients', 'delivery', 'sops', 'finance', 'people', 'blog', 'security', 'activity', 'settings'];
     setActiveTab(tabs.includes(tab) ? tab : 'dashboard');
     setSubTab(searchParams.get('sub') || '');
-    setInitialLeadId(searchParams.get('leadId') || null);
     setInitialProjectId(searchParams.get('projectId') || null);
     setInitialSopId(searchParams.get('sopId') || null);
   }, [searchParams]);
@@ -247,6 +246,12 @@ export default function FounderOSShell() {
           {activeTab === 'people' && (
             <PeopleModule
               settings={settings}
+              onRefreshDashboard={loadDashboardData}
+            />
+          )}
+
+          {activeTab === 'blog' && (
+            <BlogModule
               onRefreshDashboard={loadDashboardData}
             />
           )}

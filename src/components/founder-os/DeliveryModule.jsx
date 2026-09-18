@@ -37,12 +37,10 @@ export default function DeliveryModule({ initialProjectId, settings = {}, onRefr
   const [showWizardModal, setShowWizardModal] = useState(false);
   const [wizardInitialData, setWizardInitialData] = useState(null);
 
-  const [showEditProjectModal, setShowEditProjectModal] = useState(false);
   const [showTaskModal, setShowTaskModal] = useState(false);
   const [editingTask, setEditingTask] = useState(null);
 
   const [showFeedbackModal, setShowFeedbackModal] = useState(false);
-  const [showCustomQAModal, setShowCustomQAModal] = useState(false);
 
   // Record Payment Modal
   const [showPaymentModal, setShowPaymentModal] = useState(false);
