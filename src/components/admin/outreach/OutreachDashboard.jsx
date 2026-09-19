@@ -510,26 +510,26 @@ export default function OutreachDashboard({ showToast }) {
       {/* Delete Confirmation Modal */}
       {deletingId && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-on-surface/40 backdrop-blur-sm animate-fadeIn">
-          <div className="bg-surface-container-lowest border border-red-500/50 p-6 max-w-sm w-full shadow-2xl space-y-4">
-            <h3 className="font-headline-lg text-lg text-on-surface font-bold flex items-center gap-2">
-              <Warning className="text-red-400" />
+          <div className="bg-surface-container-lowest border border-primary/40 p-6 max-w-sm w-full shadow-2xl space-y-4 rounded-2xl">
+            <h3 className="font-headline-lg text-lg text-on-surface font-normal flex items-center gap-2">
+              <Warning className="text-primary" weight="duotone" />
               Delete Lead Record?
             </h3>
-            <p className="text-xs text-main-text font-body-md leading-relaxed">
+            <p className="text-xs text-main-text font-light leading-relaxed">
               Are you sure you want to permanently delete this lead and its associated drafts? This action cannot be undone.
             </p>
             <div className="flex justify-end gap-3 pt-2">
               <button
                 onClick={() => setDeletingId(null)}
                 disabled={actionLoading}
-                className="px-4 py-2 border border-outline text-main-text text-xs uppercase font-label-caps tracking-widest cursor-pointer"
+                className="px-4 py-2 border border-outline hover:border-primary/40 text-main-text text-xs uppercase font-label-caps tracking-widest cursor-pointer rounded-xl font-normal transition-colors"
               >
                 Cancel
               </button>
               <button
                 onClick={handleDeleteConfirm}
                 disabled={actionLoading}
-                className="px-4 py-2 bg-red-600 hover:bg-red- text-white text-xs uppercase font-label-caps tracking-widest font-bold cursor-pointer"
+                className="px-4 py-2 bg-primary hover:bg-primary-dark text-white text-xs uppercase font-label-caps tracking-widest font-normal cursor-pointer rounded-xl transition-all shadow-[0_0_15px_rgba(139,92,246,0.25)]"
               >
                 {actionLoading ? 'Deleting...' : 'Delete'}
               </button>

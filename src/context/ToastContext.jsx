@@ -31,26 +31,32 @@ export function ToastProvider({ children }) {
         {toasts.map((toast) => (
           <div
             key={toast.id}
-            className={`pointer-events-auto flex items-start justify-between gap-3 p-4 shadow-2xl border backdrop-blur-md transform transition-all duration-300 animate-slide-in rounded-none ${
+            className={`pointer-events-auto flex items-start justify-between gap-3 p-4 rounded-xl shadow-2xl border backdrop-blur-md transform transition-all duration-300 animate-slide-in ${
               toast.type === 'error'
-                ? 'bg-red-950/95 border-red-500/50 text-red-100'
+                ? 'bg-[#121620]/95 border-primary/50 text-white shadow-[0_0_25px_rgba(139,92,246,0.2)]'
                 : toast.type === 'warning'
-                ? 'bg-deep-space/95 border-accent/60 text-accent shadow-2xl border-l-4 border-l-accent'
-                : 'bg-deep-space/95 border-accent/50 text-accent'
+                ? 'bg-[#121620]/95 border-amber-500/40 text-white shadow-[0_0_25px_rgba(245,158,11,0.15)]'
+                : 'bg-[#121620]/95 border-primary/40 text-white shadow-[0_0_25px_rgba(139,92,246,0.2)]'
             }`}
           >
             <div className="flex items-start gap-3">
-              {toast.type === 'error' ? <WarningCircle className="text-xl mt-0.5" /> : toast.type === 'warning' ? <Warning className="text-xl mt-0.5" /> : <CheckCircle className="text-xl mt-0.5" />}
-              <div className="font-body-md text-sm leading-snug">
+              {toast.type === 'error' ? (
+                <WarningCircle className="text-xl mt-0.5 text-primary shrink-0" weight="duotone" />
+              ) : toast.type === 'warning' ? (
+                <Warning className="text-xl mt-0.5 text-amber-400 shrink-0" weight="duotone" />
+              ) : (
+                <CheckCircle className="text-xl mt-0.5 text-accent shrink-0" weight="duotone" />
+              )}
+              <div className="font-light text-xs sm:text-sm leading-snug text-slate-200">
                 {toast.message}
               </div>
             </div>
             <button
               onClick={() => removeToast(toast.id)}
-              className="text-outline-variant hover:text-surface transition-colors cursor-pointer"
+              className="text-slate-400 hover:text-white transition-colors cursor-pointer shrink-0 ml-2"
               aria-label="Close notification"
             >
-              <X className="text-lg" weight="bold" />
+              <X className="text-base" />
             </button>
           </div>
         ))}

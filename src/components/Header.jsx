@@ -102,25 +102,30 @@ export default function Header() {
               <img src="/dark-web-logo.png" alt="InfronixWeb Digital Marketing" className="h-8 sm:h-10 md:h-12 w-auto object-contain" />
             </Link>
 
-            {/* Right side: CTA + Hamburger */}
+            {/* Right side: CTA + Taste-Driven Hamburger */}
             <div className="flex items-center gap-3 sm:gap-4">
               <Link
                 href="/start-project"
-                className="hidden sm:flex items-center justify-center bg-primary text-white font-bold text-xs sm:text-sm px-4 sm:px-6 py-2 sm:py-2.5 rounded-md hover:bg-primary-dark transition-all hover:scale-[1.02] active:scale-[0.98] shadow-[0_0_15px_rgba(139, 92, 246,0.3)]"
+                className="hidden sm:flex items-center justify-center bg-primary text-white font-normal text-xs sm:text-sm px-4 sm:px-6 py-2 sm:py-2.5 rounded-lg hover:bg-primary-dark transition-all hover:scale-[1.02] active:scale-[0.98] shadow-[0_0_15px_rgba(139,92,246,0.3)] tracking-wide"
               >
                 Get a Quote
               </Link>
 
-              {/* Hamburger Toggle — visible on ALL screen sizes */}
+              {/* Bespoke Architectural Menu Toggle */}
               <button
                 onClick={() => setMenuOpen(!menuOpen)}
-                aria-label="Toggle Navigation Menu"
+                aria-label={menuOpen ? "Close Navigation Menu" : "Open Navigation Menu"}
                 aria-expanded={menuOpen}
-                className="w-10 h-10 flex items-center justify-center text-white z-[60] relative cursor-pointer"
+                className="group flex items-center gap-2.5 px-3 py-2 rounded-lg bg-white/[0.04] hover:bg-white/[0.08] border border-white/10 hover:border-primary/40 transition-all cursor-pointer z-[60]"
               >
-                <motion.div animate={{ rotate: menuOpen ? 90 : 0 }} transition={{ duration: 0.2 }}>
-                  {menuOpen ? <X className="text-2xl" weight="bold" /> : <List className="text-2xl" weight="bold" />}
-                </motion.div>
+                <span className="text-[11px] font-mono tracking-[0.2em] uppercase text-slate-300 group-hover:text-white transition-colors hidden sm:inline-block font-light">
+                  {menuOpen ? 'CLOSE' : 'MENU'}
+                </span>
+                <div className="w-5 h-4 flex flex-col justify-between items-end py-0.5">
+                  <span className={`h-[1.5px] bg-white transition-all duration-300 ${menuOpen ? 'w-5 translate-y-[6px] rotate-45' : 'w-5'}`} />
+                  <span className={`h-[1.5px] bg-white transition-all duration-200 ${menuOpen ? 'opacity-0 scale-x-0' : 'w-3.5 group-hover:w-5'}`} />
+                  <span className={`h-[1.5px] bg-white transition-all duration-300 ${menuOpen ? 'w-5 -translate-y-[6px] -rotate-45' : 'w-4 group-hover:w-5'}`} />
+                </div>
               </button>
             </div>
           </div>
@@ -134,209 +139,215 @@ export default function Header() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 0.3 }}
+            transition={{ duration: 0.25 }}
             className="fixed inset-0 z-40 bg-black/60 backdrop-blur-sm"
             onClick={() => setMenuOpen(false)}
           />
         )}
       </AnimatePresence>
 
-      {/* Right-side Drawer Menu */}
+      {/* Navigation Drawer */}
       <AnimatePresence>
         {menuOpen && (
           <motion.div
             initial={{ x: "100%" }}
             animate={{ x: 0 }}
             exit={{ x: "100%" }}
-            transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
-            className="fixed top-0 right-0 z-50 bg-ink-black flex flex-col px-4 sm:px-6 py-6 sm:py-8 overflow-y-auto w-[92vw] sm:w-[420px] max-w-[420px] h-[100dvh] border-l border-[#1A1E26] shadow-2xl custom-scrollbar"
+            transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+            className="fixed top-0 right-0 z-50 bg-[#0B0D12] text-white flex flex-col justify-between px-6 sm:px-8 py-6 sm:py-8 overflow-y-auto w-[88vw] sm:w-[380px] max-w-[400px] h-[100dvh] border-l border-primary/20 shadow-2xl custom-scrollbar font-sans select-none"
           >
-            {/* Drawer Header */}
-            <div className="flex items-center justify-between mb-6 pb-4 border-b border-[#1A1E26]">
-              <img src="/dark-web-logo.png" alt="InfronixWeb Digital Marketing" className="h-7 sm:h-8 w-auto object-contain" />
+            {/* Top Bar */}
+            <div className="flex items-center justify-between pb-5 border-b border-white/10">
+              <Link href="/" onClick={() => setMenuOpen(false)}>
+                <img src="/dark-web-logo.png" alt="InfronixWeb" className="h-7 sm:h-8 w-auto object-contain" />
+              </Link>
               <button
                 onClick={() => setMenuOpen(false)}
-                className="text-text-light hover:text-white p-2 rounded-lg transition-colors"
+                className="p-2 text-slate-400 hover:text-white transition-colors cursor-pointer"
                 aria-label="Close menu"
               >
-                <X size={22} weight="bold" />
+                <X size={20} />
               </button>
             </div>
 
-            {/* Navigation Structure */}
-            <div className="flex flex-col gap-1 w-full flex-grow">
+            {/* Pure Navigation Links */}
+            <div className="py-6 flex flex-col gap-1.5 flex-grow">
               
               {/* Home */}
               <Link
                 href="/"
                 onClick={() => setMenuOpen(false)}
-                className={`text-lg font-medium py-3 px-3 rounded-lg transition-all flex items-center justify-between ${
-                  pathname === '/' ? 'text-primary bg-primary/10 font-bold' : 'text-white hover:text-primary hover:bg-white/5'
+                className={`py-2.5 px-3 rounded-lg text-base font-light transition-all flex items-center justify-between ${
+                  pathname === '/'
+                    ? 'text-primary bg-primary/10 font-normal'
+                    : 'text-slate-200 hover:text-white hover:bg-white/5'
                 }`}
               >
-                Home
+                <span>Home</span>
               </Link>
 
-              {/* Services Collapsible Section */}
-              <div className="my-1 rounded-xl bg-[#0B0E14] border border-[#1A1E26] overflow-hidden">
+              {/* Services Header / Accordion */}
+              <div className="py-1">
                 <button
                   type="button"
                   onClick={() => setServicesOpen(!servicesOpen)}
-                  className="w-full flex items-center justify-between py-3.5 px-4 text-left text-white hover:text-primary font-bold text-base transition-colors"
-                  aria-expanded={servicesOpen}
+                  className={`w-full py-2.5 px-3 rounded-lg text-base font-light transition-all flex items-center justify-between cursor-pointer ${
+                    pathname.startsWith('/web-development') || pathname.startsWith('/seo') || pathname.startsWith('/ai-automation') || pathname.startsWith('/digital-marketing')
+                      ? 'text-primary'
+                      : 'text-slate-200 hover:text-white hover:bg-white/5'
+                  }`}
                 >
-                  <span className="flex items-center gap-2">
-                    <span className="w-1.5 h-1.5 rounded-full bg-primary" />
-                    Services
-                  </span>
-                  <motion.div
-                    animate={{ rotate: servicesOpen ? 180 : 0 }}
-                    transition={{ duration: 0.2 }}
-                  >
-                    <CaretDown size={16} weight="bold" className="text-text-light" />
+                  <span>Services</span>
+                  <motion.div animate={{ rotate: servicesOpen ? 180 : 0 }} transition={{ duration: 0.2 }}>
+                    <CaretDown size={14} className="text-slate-400" />
                   </motion.div>
                 </button>
 
+                {/* Services Links */}
                 <AnimatePresence initial={false}>
                   {servicesOpen && (
                     <motion.div
                       initial={{ height: 0, opacity: 0 }}
                       animate={{ height: "auto", opacity: 1 }}
                       exit={{ height: 0, opacity: 0 }}
-                      transition={{ duration: 0.25 }}
-                      className="px-3 pb-3 pt-1 flex flex-col gap-1 border-t border-[#161A22]"
+                      transition={{ duration: 0.2 }}
+                      className="pl-4 pr-1 py-1 flex flex-col gap-1 border-l border-primary/20 ml-3.5 my-1"
                     >
-                      {/* Standard Services */}
-                      {mainServices.map((service) => {
-                        const IconComponent = service.icon;
-                        const isActive = pathname === service.path;
-                        return (
-                          <Link
-                            key={service.path}
-                            href={service.path}
-                            onClick={() => setMenuOpen(false)}
-                            className={`flex items-center gap-3 py-2.5 px-3 rounded-lg text-sm font-medium transition-all ${
-                              isActive
-                                ? 'bg-primary/15 text-primary font-bold border-l-2 border-primary'
-                                : 'text-[#A0AEC0] hover:text-white hover:bg-white/5'
-                            }`}
-                          >
-                            <IconComponent size={18} className={isActive ? 'text-primary' : 'text-[#6B7280]'} weight="duotone" />
-                            {service.label}
-                          </Link>
-                        );
-                      })}
+                      <Link
+                        href="/web-development"
+                        onClick={() => setMenuOpen(false)}
+                        className={`py-1.5 px-2.5 rounded-md text-sm font-light transition-colors ${
+                          pathname === '/web-development' ? 'text-primary font-normal bg-primary/10' : 'text-slate-300 hover:text-white'
+                        }`}
+                      >
+                        Web Development
+                      </Link>
 
-                      {/* Digital Marketing Nested Accordion */}
-                      <div className="mt-1 pt-1 border-t border-[#161A22]">
-                        <button
-                          type="button"
-                          onClick={() => setDigitalMarketingOpen(!digitalMarketingOpen)}
-                          className={`w-full flex items-center justify-between py-2.5 px-3 rounded-lg text-sm font-semibold transition-all ${
-                            pathname.startsWith('/digital-marketing') ? 'text-primary font-bold bg-primary/10' : 'text-white hover:bg-white/5'
-                          }`}
-                          aria-expanded={digitalMarketingOpen}
-                        >
-                          <span className="flex items-center gap-3">
-                            <Megaphone size={18} className="text-primary" weight="duotone" />
-                            Digital Marketing
-                          </span>
-                          <motion.div
-                            animate={{ rotate: digitalMarketingOpen ? 180 : 0 }}
-                            transition={{ duration: 0.2 }}
-                          >
-                            <CaretDown size={14} weight="bold" className="text-text-light" />
-                          </motion.div>
-                        </button>
+                      <Link
+                        href="/seo"
+                        onClick={() => setMenuOpen(false)}
+                        className={`py-1.5 px-2.5 rounded-md text-sm font-light transition-colors ${
+                          pathname === '/seo' ? 'text-primary font-normal bg-primary/10' : 'text-slate-300 hover:text-white'
+                        }`}
+                      >
+                        SEO Optimization
+                      </Link>
 
-                        {/* Digital Marketing Sub-Pages */}
-                        <AnimatePresence initial={false}>
-                          {digitalMarketingOpen && (
-                            <motion.div
-                              initial={{ height: 0, opacity: 0 }}
-                              animate={{ height: "auto", opacity: 1 }}
-                              exit={{ height: 0, opacity: 0 }}
-                              transition={{ duration: 0.2 }}
-                              className="pl-4 ml-3 my-1 border-l-2 border-[#1E2430] flex flex-col gap-1 py-1"
-                            >
-                              {digitalMarketingSubItems.map((subItem) => {
-                                const isSubActive = pathname === subItem.path;
-                                return (
-                                  <Link
-                                    key={subItem.path}
-                                    href={subItem.path}
-                                    onClick={() => setMenuOpen(false)}
-                                    className={`py-1.5 px-2.5 rounded-md text-xs font-medium transition-all flex items-center justify-between ${
-                                      isSubActive
-                                        ? 'text-primary font-bold bg-primary/15'
-                                        : 'text-[#8E9BAC] hover:text-white hover:bg-white/5'
-                                    } ${subItem.highlight ? 'text-white font-semibold' : ''}`}
-                                  >
-                                    <span>{subItem.label}</span>
-                                    {subItem.highlight && <ArrowRight size={12} className="text-primary" />}
-                                  </Link>
-                                );
-                              })}
-                            </motion.div>
-                          )}
-                        </AnimatePresence>
-                      </div>
+                      <Link
+                        href="/ai-automation"
+                        onClick={() => setMenuOpen(false)}
+                        className={`py-1.5 px-2.5 rounded-md text-sm font-light transition-colors ${
+                          pathname === '/ai-automation' ? 'text-primary font-normal bg-primary/10' : 'text-slate-300 hover:text-white'
+                        }`}
+                      >
+                        AI Automation
+                      </Link>
+
+                      <Link
+                        href="/digital-marketing"
+                        onClick={() => setMenuOpen(false)}
+                        className={`py-1.5 px-2.5 rounded-md text-sm font-light transition-colors ${
+                          pathname === '/digital-marketing' ? 'text-primary font-normal bg-primary/10' : 'text-slate-300 hover:text-white'
+                        }`}
+                      >
+                        Digital Marketing
+                      </Link>
+
+                      <Link
+                        href="/digital-marketing/social-media-marketing"
+                        onClick={() => setMenuOpen(false)}
+                        className={`py-1.5 px-2.5 rounded-md text-sm font-light transition-colors ${
+                          pathname === '/digital-marketing/social-media-marketing' ? 'text-primary font-normal bg-primary/10' : 'text-slate-300 hover:text-white'
+                        }`}
+                      >
+                        Social Media Marketing
+                      </Link>
+
+                      <Link
+                        href="/digital-marketing/paid-advertising"
+                        onClick={() => setMenuOpen(false)}
+                        className={`py-1.5 px-2.5 rounded-md text-sm font-light transition-colors ${
+                          pathname === '/digital-marketing/paid-advertising' ? 'text-primary font-normal bg-primary/10' : 'text-slate-300 hover:text-white'
+                        }`}
+                      >
+                        Paid Advertising (Meta & Google)
+                      </Link>
                     </motion.div>
                   )}
                 </AnimatePresence>
               </div>
 
-              {/* Remaining Main Links */}
+              {/* Our Work */}
               <Link
                 href="/projects"
                 onClick={() => setMenuOpen(false)}
-                className={`text-lg font-medium py-3 px-3 rounded-lg transition-all flex items-center justify-between ${
-                  pathname === '/projects' ? 'text-primary bg-primary/10 font-bold' : 'text-white hover:text-primary hover:bg-white/5'
+                className={`py-2.5 px-3 rounded-lg text-base font-light transition-all flex items-center justify-between ${
+                  pathname === '/projects'
+                    ? 'text-primary bg-primary/10 font-normal'
+                    : 'text-slate-200 hover:text-white hover:bg-white/5'
                 }`}
               >
-                Our Work
+                <span>Our Work</span>
               </Link>
 
+              {/* About Us */}
               <Link
                 href="/about"
                 onClick={() => setMenuOpen(false)}
-                className={`text-lg font-medium py-3 px-3 rounded-lg transition-all flex items-center justify-between ${
-                  pathname === '/about' ? 'text-primary bg-primary/10 font-bold' : 'text-white hover:text-primary hover:bg-white/5'
+                className={`py-2.5 px-3 rounded-lg text-base font-light transition-all flex items-center justify-between ${
+                  pathname === '/about'
+                    ? 'text-primary bg-primary/10 font-normal'
+                    : 'text-slate-200 hover:text-white hover:bg-white/5'
                 }`}
               >
-                About Us
+                <span>About Us</span>
               </Link>
 
+              {/* Blog */}
               <Link
                 href="/blog"
                 onClick={() => setMenuOpen(false)}
-                className={`text-lg font-medium py-3 px-3 rounded-lg transition-all flex items-center justify-between ${
-                  pathname === '/blog' ? 'text-primary bg-primary/10 font-bold' : 'text-white hover:text-primary hover:bg-white/5'
+                className={`py-2.5 px-3 rounded-lg text-base font-light transition-all flex items-center justify-between ${
+                  pathname === '/blog'
+                    ? 'text-primary bg-primary/10 font-normal'
+                    : 'text-slate-200 hover:text-white hover:bg-white/5'
                 }`}
               >
-                Blog
+                <span>Blog</span>
               </Link>
 
+              {/* Contact */}
               <Link
                 href="/contact"
                 onClick={() => setMenuOpen(false)}
-                className={`text-lg font-medium py-3 px-3 rounded-lg transition-all flex items-center justify-between ${
-                  pathname === '/contact' ? 'text-primary bg-primary/10 font-bold' : 'text-white hover:text-primary hover:bg-white/5'
+                className={`py-2.5 px-3 rounded-lg text-base font-light transition-all flex items-center justify-between ${
+                  pathname === '/contact'
+                    ? 'text-primary bg-primary/10 font-normal'
+                    : 'text-slate-200 hover:text-white hover:bg-white/5'
                 }`}
               >
-                Contact
+                <span>Contact</span>
               </Link>
             </div>
 
-            {/* Bottom CTA in Drawer */}
-            <div className="pt-6 mt-6 border-t border-[#1A1E26]">
+            {/* Bottom Actions */}
+            <div className="pt-5 border-t border-white/10 space-y-3">
               <Link
                 href="/start-project"
                 onClick={() => setMenuOpen(false)}
-                className="flex items-center justify-center w-full bg-primary text-white font-bold py-3.5 rounded-lg hover:bg-primary-dark transition-all hover:scale-[1.02] shadow-[0_0_20px_rgba(139, 92, 246,0.3)] text-base"
+                className="w-full inline-flex items-center justify-center py-3 px-4 rounded-xl bg-primary hover:bg-primary-dark text-white text-sm font-normal tracking-wide transition-all shadow-[0_0_20px_rgba(139,92,246,0.25)]"
               >
-                Get a Quote
+                <span>Get a Quote</span>
               </Link>
+
+              <div className="flex items-center justify-between text-xs text-slate-400 font-light pt-1">
+                <a href="tel:+916355792936" className="hover:text-primary transition-colors">
+                  +91 6355 792 936
+                </a>
+                <a href="mailto:support@infronixweb.in" className="hover:text-primary transition-colors">
+                  support@infronixweb.in
+                </a>
+              </div>
             </div>
           </motion.div>
         )}

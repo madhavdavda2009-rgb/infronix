@@ -139,8 +139,8 @@ export default function SentHistoryModal({ isOpen, onClose, showToast }) {
                     </p>
                     
                     {item.error_message ? (
-                      <p className="text-red-400 text-[11px] bg-red-950/40 p-2 border border-red-900 mt-2 font-mono">
-                        Error: {item.error_message}
+                      <p className="text-primary text-[11px] bg-primary/10 p-2.5 border border-primary/30 mt-2 font-mono rounded-lg">
+                        Notice: {item.error_message}
                       </p>
                     ) : (
                       <div className="mt-2 text-main-text bg-surface-container-lowest/80 p-3 border border-outline-variant font-mono text-[11px] whitespace-pre-wrap max-h-36 overflow-y-auto">

@@ -10,8 +10,19 @@ import SmoothScroll from '@/components/SmoothScroll';
 import { Inter, Outfit } from 'next/font/google';
 import Script from 'next/script';
 
-const inter = Inter({ subsets: ['latin'], variable: '--font-inter' });
-const outfit = Outfit({ subsets: ['latin'], variable: '--font-outfit' });
+const inter = Inter({ 
+  subsets: ['latin'], 
+  variable: '--font-inter',
+  weight: ['100', '200', '300', '400', '500'],
+  display: 'swap'
+});
+
+const outfit = Outfit({ 
+  subsets: ['latin'], 
+  variable: '--font-outfit',
+  weight: ['100', '200', '300', '400', '500'],
+  display: 'swap'
+});
 
 export const viewport = {
   width: 'device-width',
@@ -56,7 +67,7 @@ export const metadata = {
     description: 'Premier Digital Agency in Ahmedabad. We specialize in custom Website Development, Technical SEO, Social Media Marketing, Meta & Google Paid Ads, and AI Automation.',
     images: [
       {
-        url: 'https://www.infronixweb.in/og-image.png',
+        url: 'https://www.infronixweb.in/web-logo.png',
         width: 1200,
         height: 630,
         alt: 'InfronixWeb Digital Marketing - Websites, SEO, Digital Marketing & AI Automation',
@@ -68,7 +79,7 @@ export const metadata = {
     card: 'summary_large_image',
     title: 'InfronixWeb Digital Marketing | Web Development, SEO, Digital Marketing & AI Automation',
     description: 'Premier Digital Agency in Ahmedabad. Custom Website Development, Technical SEO, Social Media & Paid Ads, and AI Automation.',
-    images: ['https://www.infronixweb.in/og-image.png'],
+    images: ['https://www.infronixweb.in/web-logo.png'],
   },
   robots: {
     index: true,
@@ -91,6 +102,7 @@ export const metadata = {
     ],
     shortcut: '/favicon.ico',
     apple: [
+      { url: '/favicon.ico', sizes: 'any' },
       { url: '/apple-touch-icon.png', sizes: '180x180', type: 'image/png' },
     ],
   },
@@ -135,8 +147,8 @@ export default function RootLayout({ children }) {
                   "name": "InfronixWeb Digital Marketing",
                   "alternateName": "InfronixWeb Digital & Web Development Agency",
                   "url": "https://www.infronixweb.in/",
-                  "logo": "https://www.infronixweb.in/web-logo.png",
-                  "image": "https://www.infronixweb.in/og-image.png",
+                  "logo": "https://www.infronixweb.in/favicon.ico",
+                  "image": "https://www.infronixweb.in/web-logo.png",
                   "description": "InfronixWeb Digital Marketing is a premier agency based in Ahmedabad, Gujarat, offering custom web development, technical SEO, social media marketing, paid advertising, and AI workflow automation across India.",
                   "telephone": "+91-6355792936",
                   "email": "support@infronixweb.in",

@@ -36,14 +36,7 @@ export default function Breadcrumb({ className = "" }) {
 
   // If on home page
   if (segments.length === 0) {
-    return (
-      <nav aria-label="Breadcrumb" className={`flex items-center gap-2 text-xs font-semibold text-text-light mb-4 ${className}`}>
-        <span className="inline-flex items-center gap-1.5 text-primary font-bold bg-primary/10 px-2.5 py-1 rounded-md border border-primary/20">
-          <House size={13} weight="bold" />
-          Home
-        </span>
-      </nav>
-    );
+    return null;
   }
 
   // Build breadcrumb trail based strictly on URL structure
@@ -61,7 +54,7 @@ export default function Breadcrumb({ className = "" }) {
   });
 
   return (
-    <nav aria-label="Breadcrumb" className={`flex items-center flex-wrap gap-2 text-xs font-semibold text-text-light mb-4 ${className}`}>
+    <nav aria-label="Breadcrumb" className={`flex items-center flex-wrap gap-2 text-xs font-light text-text-light mb-4 ${className}`}>
       {breadcrumbs.map((crumb, index) => {
         const isLast = index === breadcrumbs.length - 1;
 
@@ -69,7 +62,7 @@ export default function Breadcrumb({ className = "" }) {
           return (
             <span
               key={crumb.href}
-              className="inline-flex items-center gap-1 text-primary font-bold bg-primary/10 px-2.5 py-1 rounded-md border border-primary/20"
+              className="text-primary font-normal"
               aria-current="page"
             >
               {crumb.label}
@@ -81,12 +74,12 @@ export default function Breadcrumb({ className = "" }) {
           <div key={crumb.href} className="inline-flex items-center gap-2">
             <Link
               href={crumb.href}
-              className="hover:text-primary transition-colors flex items-center gap-1"
+              className="hover:text-primary transition-colors flex items-center gap-1 text-slate-500 hover:text-primary"
             >
-              {index === 0 && <House size={13} weight="bold" className="text-text-light hover:text-primary" />}
-              {crumb.label}
+              {index === 0 && <House size={12} className="text-slate-400" />}
+              <span>{crumb.label}</span>
             </Link>
-            <CaretRight size={12} weight="bold" className="text-text-light/60" />
+            <CaretRight size={10} className="text-slate-400/60" />
           </div>
         );
       })}

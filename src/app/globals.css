@@ -49,6 +49,7 @@
     min-height: 100vh;
     overscroll-behavior-y: auto;
     font-family: var(--font-body);
+    font-weight: 300;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
@@ -56,17 +57,39 @@
   h1, h2, h3, h4, h5, h6 {
     font-family: var(--font-heading);
     color: var(--color-deep-space);
-    font-weight: 700;
+    font-weight: 300;
+    letter-spacing: -0.025em;
   }
   
   p {
     color: var(--color-main-text);
+    font-weight: 300;
+  }
+
+  strong, b {
+    font-weight: 450;
   }
 
   ::selection {
     background-color: var(--color-primary);
     color: #ffffff;
   }
+}
+
+/* Thin Typography System - converts heavy/thick weights to modern thin/light weights */
+.font-bold,
+.font-extrabold,
+.font-black,
+.font-semibold {
+  font-weight: 400 !important;
+}
+
+.font-medium {
+  font-weight: 350 !important;
+}
+
+button, a, input, textarea, select {
+  font-weight: 350;
 }
 
 /* Base Utility Classes for Animation */

@@ -64,20 +64,20 @@ export default function AdminLogin() {
           </div>
 
           <div className="text-center mb-6">
-            <h1 className="text-lg font-bold text-slate-900 font-outfit">Founder OS Portal</h1>
-            <p className="text-xs text-slate-500 mt-1">Sign in with executive credentials</p>
+            <h1 className="text-lg font-light text-slate-900 font-outfit tracking-tight">Founder OS Portal</h1>
+            <p className="text-xs text-slate-500 mt-1 font-light">Sign in with executive credentials</p>
           </div>
 
           {error && (
-            <div className="mb-4 p-3 bg-rose-50 border border-rose-200 text-rose-700 text-xs rounded-xl flex items-center gap-2">
-              <Warning className="text-rose-500 text-sm shrink-0" weight="bold" />
-              <span className="font-medium">{error}</span>
+            <div className="mb-4 p-3 bg-violet-50 border border-violet-200 text-violet-900 text-xs rounded-xl flex items-center gap-2">
+              <Warning className="text-violet-600 text-sm shrink-0" weight="duotone" />
+              <span className="font-normal">{error}</span>
             </div>
           )}
 
           <form onSubmit={handleSubmit} className="flex flex-col gap-4">
             <div>
-              <label htmlFor="admin-id" className="block text-[11px] font-bold text-slate-700 uppercase tracking-wider mb-1.5">
+              <label htmlFor="admin-id" className="block text-[11px] font-normal text-slate-700 uppercase tracking-wider mb-1.5">
                 ID / Username
               </label>
               <input
@@ -85,7 +85,7 @@ export default function AdminLogin() {
                 type="text"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
-                className="w-full bg-white text-slate-900 text-xs sm:text-sm px-3.5 py-2.5 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-violet-500/20 focus:border-violet-600 transition-colors placeholder:text-slate-400"
+                className="w-full bg-white text-slate-900 text-xs sm:text-sm px-3.5 py-2.5 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-violet-500/20 focus:border-violet-600 transition-colors placeholder:text-slate-400 font-light"
                 placeholder="Enter ID"
                 required
                 autoComplete="username"
@@ -93,7 +93,7 @@ export default function AdminLogin() {
             </div>
 
             <div>
-              <label htmlFor="admin-pass" className="block text-[11px] font-bold text-slate-700 uppercase tracking-wider mb-1.5">
+              <label htmlFor="admin-pass" className="block text-[11px] font-normal text-slate-700 uppercase tracking-wider mb-1.5">
                 Password
               </label>
               <input
@@ -101,7 +101,7 @@ export default function AdminLogin() {
                 type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="w-full bg-white text-slate-900 text-xs sm:text-sm px-3.5 py-2.5 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-violet-500/20 focus:border-violet-600 transition-colors placeholder:text-slate-400"
+                className="w-full bg-white text-slate-900 text-xs sm:text-sm px-3.5 py-2.5 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-violet-500/20 focus:border-violet-600 transition-colors placeholder:text-slate-400 font-light"
                 placeholder="Enter Password"
                 required
                 autoComplete="current-password"
@@ -111,7 +111,7 @@ export default function AdminLogin() {
             <button
               type="submit"
               disabled={loading}
-              className="mt-2 w-full min-h-[44px] bg-violet-600 hover:bg-violet-700 text-white font-bold uppercase tracking-wider py-2.5 rounded-xl transition-all shadow-md shadow-violet-600/20 flex items-center justify-center gap-2 text-xs disabled:opacity-50 cursor-pointer active:scale-98"
+              className="mt-2 w-full min-h-[44px] bg-violet-600 hover:bg-violet-700 text-white font-normal uppercase tracking-wider py-2.5 rounded-xl transition-all shadow-md shadow-violet-600/20 flex items-center justify-center gap-2 text-xs disabled:opacity-50 cursor-pointer active:scale-98"
             >
               {loading ? (
                 <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />

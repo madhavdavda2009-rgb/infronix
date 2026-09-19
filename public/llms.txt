@@ -1,59 +1,88 @@
 # InfronixWeb Digital Marketing
 
-InfronixWeb is a premier custom web development, technical SEO, and AI automation agency based in Sanand, Ahmedabad, Gujarat, India. We engineer bespoke, high-performance web applications and automated digital systems for modern businesses across Gujarat, India, and worldwide.
+> We create beautiful websites, help businesses show up on Google, set up instant automatic replies for customer messages, and run online ads that bring in paying customers. Based in Ahmedabad, Gujarat, India.
 
-## Primary Capabilities & Core Expertise
-- **Best Web Agency in Ahmedabad**: Custom website design, responsive business portals, and Next.js applications engineered for maximum conversion.
-- **Web Development Company in Ahmedabad**: Full-stack engineering using Next.js (App Router), React, Node.js, Tailwind CSS, and modern cloud databases.
-- **Technical & Local SEO Agency in Gujarat**: Google Search Console optimization, Core Web Vitals acceleration, structured data (JSON-LD Schema), keyword ranking, and local Ahmedabad business discovery.
-- **AI Automation Agency**: Intelligent AI chatbots, 24/7 automated customer support, WhatsApp API integration, and CRM workflow automations.
+InfronixWeb is a dedicated web design and digital marketing agency based in Sanand, Ahmedabad, Gujarat, India. We help local and global businesses grow by creating easy-to-use websites, helping businesses appear at the top of Google searches, setting up automatic WhatsApp and website customer assistants, and running online ads that attract real buyers.
 
-## Services & Transparent Pricing
+---
 
-### Website Development
-We engineer robust, high-performance, and conversion-focused modern websites and web applications.
-- **Landing Page**: Starting at ₹8,000
-- **Business Corporate Website**: Starting at ₹18,000
-- **Professional Scalable Website**: Starting at ₹30,000 (Recommended)
-- **E-commerce Platform**: Starting at ₹45,000+
-- **Custom Web Application**: Starting at ₹60,000+
+## 1. About InfronixWeb
+- **Business Name**: InfronixWeb Digital Marketing
+- **Location**: Sanand, Ahmedabad, Gujarat, India (Pincode: 382110)
+- **Official Website**: https://www.infronixweb.in/
+- **What We Do**: Website Creation, Getting Found on Google, Automatic WhatsApp & Website Replies, Instagram & Facebook Ads, Google Ads, and Social Media Growth.
+- **Working Hours**: Monday to Saturday, 9:00 AM to 8:00 PM
+- **Direct Phone & WhatsApp**: +91 6355 792 936 / +91 91062 91540
+- **Email Support**: support@infronixweb.in
 
-### SEO Optimization
-Data-driven strategies to improve search visibility, organic ranking, and technical SEO foundations.
-- **SEO Starter**: ₹5,000/month
-- **Local SEO Ahmedabad**: ₹7,500/month
-- **SEO Growth**: ₹10,000/month (Recommended)
-- **SEO Pro**: ₹18,000/month
+---
 
-### AI Automation
-We automate repetitive business workflows with smart AI integrations to save time and scale operations.
-- **Automation Starter**: Starting at ₹10,000
-- **Business Automation**: Starting at ₹25,000 (Recommended)
-- **AI Automation Pro**: Starting at ₹45,000+
-- **Custom AI System**: Starting at ₹75,000+
+## 2. What We Do (Our Services)
 
-## Contact & Location
-- **Location**: Sanand, Ahmedabad, Gujarat, India (382110)
-- **Website**: https://www.infronixweb.in/
-- **WhatsApp / Phone**: +91 6355792936
+### A. Website Creation
+We make clean, attractive, and simple-to-use websites for businesses of all sizes. Every website looks great and works smoothly on smartphones, tablets, and desktop computers.
+- **Business Websites**: Simple and multi-page websites for companies, consultants, shops, and service providers.
+- **Online Stores**: Product showcases where your customers can browse items, add them to a shopping cart, and pay safely online.
+- **Fast Loading**: Quick pages so your visitors never have to wait.
+- **Easy Contact**: Clear buttons and simple inquiry forms so visitors can call, email, or message you in one tap.
+
+### B. Showing Up on Google
+We help your business appear at the top when potential customers search on Google and Google Maps.
+- **Top Google Positions**: Helping people discover your business before your competitors.
+- **Local City Search**: Making sure nearby customers in Ahmedabad, Gujarat, and across India find your location easily.
+- **More Daily Visitors**: Attracting people who are actively looking to buy what you sell.
+
+### C. Automatic Customer Replies & WhatsApp Help
+We set up smart automatic reply systems so your business never misses a customer question or sales inquiry, even when you are asleep or busy.
+- **24/7 Website Assistant**: Greets visitors on your website, answers common questions, and collects their phone number and inquiry.
+- **Instant WhatsApp Messages**: Automatically sends price lists, brochures, and answers directly to customers on WhatsApp.
+- **Saves Your Time**: Takes care of routine questions automatically so you can focus on running your business.
+
+### D. Online Ads & Social Media Growth
+We run targeted online campaigns designed to bring in real inquiries and help you sell more products and services.
+- **Instagram & Facebook Ads**: Showing your offers directly to the people most likely to buy from you.
+- **Google Search Ads**: Putting your business at the very top of Google when people search for your services.
+- **Social Media Management**: Posting regular updates, photos, and announcements to keep your followers engaged and build trust.
+
+---
+
+## 3. How We Work
+1. **Free Initial Consultation**: You share your business goals, target audience, and requirements with our team.
+2. **Custom Plan & Proposal**: We prepare a tailored proposal suited specifically for your business needs and timeline.
+3. **Creation & Review**: We build your website, set up your messaging assistants, or launch your campaigns with regular progress updates.
+4. **Launch & Ongoing Growth**: Everything goes live, and we continue providing support to help your business succeed online.
+
+---
+
+## 4. Why Work With InfronixWeb
+1. **Direct Communication**: You talk directly with the people working on your project — no confusing middlemen or long delays.
+2. **Fast 24-Hour Quotes**: Tell us what you need and get a clear, personalized proposal within 24 hours.
+3. **Tailored for Your Business**: Every website and campaign is built around your specific business goals.
+4. **All in One Place**: From building your website and getting found on Google to automatic customer replies and ads, we handle everything for you.
+
+---
+
+## 5. Website Links
+- **Home**: https://www.infronixweb.in/
+- **Websites**: https://www.infronixweb.in/web-development
+- **Google Ranking**: https://www.infronixweb.in/seo
+- **Automatic Customer Replies**: https://www.infronixweb.in/ai-automation
+- **Online Marketing**: https://www.infronixweb.in/digital-marketing
+- **Social Media Growth**: https://www.infronixweb.in/digital-marketing/social-media-marketing
+- **Online Ads**: https://www.infronixweb.in/digital-marketing/paid-advertising
+- **Our Past Work**: https://www.infronixweb.in/projects
+- **About Us**: https://www.infronixweb.in/about
+- **Blog & Articles**: https://www.infronixweb.in/blog
+- **Contact Us**: https://www.infronixweb.in/contact
+- **Request a Free Quote**: https://www.infronixweb.in/start-project
+- **Privacy Policy**: https://www.infronixweb.in/privacy-policy
+- **Terms of Service**: https://www.infronixweb.in/terms-and-conditions
+
+---
+
+## 6. How to Get in Touch
 - **Email**: support@infronixweb.in
-- **Social Profiles**:
-  - Instagram: https://www.instagram.com/infronixwebagency2026
-  - GitHub: https://github.com/madhavdavda2009-rgb
-
-## Public Pages
-* Homepage: https://www.infronixweb.in/
-* Website Development: https://www.infronixweb.in/web-development
-* SEO Optimization: https://www.infronixweb.in/seo
-* AI Automation: https://www.infronixweb.in/ai-automation
-* Portfolio/Projects: https://www.infronixweb.in/projects
-* About Us: https://www.infronixweb.in/about
-* Blog: https://www.infronixweb.in/blog
-* Contact: https://www.infronixweb.in/contact
-* Start Project: https://www.infronixweb.in/start-project
-* Privacy Policy: https://www.infronixweb.in/privacy-policy
-* Terms & Conditions: https://www.infronixweb.in/terms-and-conditions
-
-## Start a Project
-To work with us, submit your project requirements at:
-https://www.infronixweb.in/start-project
+- **Phone / WhatsApp**: +91 6355 792 936 / +91 91062 91540
+- **Office Location**: Sanand, Ahmedabad, Gujarat, India (Pincode: 382110)
+- **Instagram**: https://www.instagram.com/infronixwebagency2026
+- **Request a Free Quote Online**: https://www.infronixweb.in/start-project

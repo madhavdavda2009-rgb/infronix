@@ -44,40 +44,43 @@ function VerifyEnquiryContent() {
   }, [token]);
 
   return (
-    <div className="min-h-screen bg-[#0b0d12] flex items-center justify-center p-4">
-      <div className="max-w-md w-full bg-[#11141d] rounded-2xl border border-white/10 p-8 shadow-2xl text-center">
+    <div className="min-h-screen bg-[#0B0D12] flex items-center justify-center p-4 relative overflow-hidden font-sans">
+      {/* Background glow */}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[450px] h-[450px] bg-primary/15 blur-[140px] rounded-full pointer-events-none" />
+
+      <div className="relative z-10 max-w-md w-full bg-[#121620]/90 rounded-2xl border border-primary/30 p-8 sm:p-10 shadow-[0_0_40px_rgba(139,92,246,0.15)] text-center backdrop-blur-md">
         {/* Logo */}
         <div className="flex justify-center mb-8">
           <Link href="/">
-            <img src="/dark-web-logo.png" alt="InfronixWeb" className="h-10" />
+            <img src="/dark-web-logo.png" alt="InfronixWeb" className="h-9 w-auto object-contain" />
           </Link>
         </div>
 
         {status === 'loading' && (
           <div className="space-y-6">
             <div className="flex justify-center">
-              <div className="w-12 h-12 border-4 border-[#3b82f6] border-t-transparent rounded-full animate-spin"></div>
+              <div className="w-12 h-12 border-3 border-primary border-t-transparent rounded-full animate-spin"></div>
             </div>
-            <h1 className="text-2xl font-bold text-white">Verifying Email</h1>
-            <p className="text-[#94a3b8]">Please wait while we verify your secure link...</p>
+            <h1 className="text-2xl font-light text-white font-heading tracking-tight">Verifying Email</h1>
+            <p className="text-slate-400 font-light text-sm">Please wait while we verify your secure link...</p>
           </div>
         )}
 
         {status === 'success' && (
           <div className="space-y-6 animate-fade-in">
             <div className="flex justify-center">
-              <div className="w-16 h-16 bg-green-500/20 rounded-full flex items-center justify-center">
-                <svg className="w-8 h-8 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+              <div className="w-16 h-16 bg-primary/15 border border-primary/30 rounded-full flex items-center justify-center text-accent">
+                <svg className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M5 13l4 4L19 7" />
                 </svg>
               </div>
             </div>
-            <h1 className="text-2xl font-bold text-white">Email Verified!</h1>
-            <p className="text-[#94a3b8]">
+            <h1 className="text-2xl font-light text-white font-heading tracking-tight">Email Verified!</h1>
+            <p className="text-slate-300 font-light text-sm leading-relaxed">
               Thank you for verifying your email address. Your enquiry has now been successfully submitted to our team.
             </p>
             <div className="pt-4">
-              <Link href="/" className="inline-flex items-center justify-center w-full px-6 py-3 bg-[#3b82f6] hover:bg-[#2563eb] text-white font-medium rounded-lg transition-colors">
+              <Link href="/" className="inline-flex items-center justify-center w-full px-6 py-3 bg-primary hover:bg-primary-dark text-white font-normal rounded-xl transition-all shadow-[0_0_20px_rgba(139,92,246,0.25)] text-sm uppercase tracking-wider">
                 Return to Website
               </Link>
             </div>
@@ -87,21 +90,21 @@ function VerifyEnquiryContent() {
         {status === 'error' && (
           <div className="space-y-6 animate-fade-in">
             <div className="flex justify-center">
-              <div className="w-16 h-16 bg-red-500/20 rounded-full flex items-center justify-center">
-                <svg className="w-8 h-8 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              <div className="w-16 h-16 bg-primary/15 border border-primary/30 rounded-full flex items-center justify-center text-primary">
+                <svg className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M6 18L18 6M6 6l12 12" />
                 </svg>
               </div>
             </div>
-            <h1 className="text-2xl font-bold text-white">Verification Failed</h1>
-            <p className="text-red-400 text-sm bg-red-500/10 p-4 rounded-lg">
+            <h1 className="text-2xl font-light text-white font-heading tracking-tight">Verification Notice</h1>
+            <p className="text-slate-200 text-xs sm:text-sm bg-primary/10 border border-primary/30 p-4 rounded-xl font-light leading-relaxed">
               {errorMessage}
             </p>
-            <p className="text-[#94a3b8] text-sm">
-              If your link has expired, you can request a new one by submitting the form again, or contact us directly at <a href="mailto:support@infronixweb.in" className="text-[#3b82f6] hover:underline">support@infronixweb.in</a>.
+            <p className="text-slate-400 text-xs font-light">
+              If your link has expired, you can request a new one by submitting the form again, or contact us directly at <a href="mailto:support@infronixweb.in" className="text-primary hover:underline">support@infronixweb.in</a>.
             </p>
             <div className="pt-4">
-              <Link href="/contact" className="inline-flex items-center justify-center w-full px-6 py-3 bg-white/5 hover:bg-white/10 text-white font-medium rounded-lg transition-colors border border-white/10">
+              <Link href="/contact" className="inline-flex items-center justify-center w-full px-6 py-3 bg-white/5 hover:bg-white/10 text-white font-normal rounded-xl transition-colors border border-white/10 text-sm">
                 Contact Support
               </Link>
             </div>
@@ -115,8 +118,8 @@ function VerifyEnquiryContent() {
 export default function VerifyEnquiryPage() {
   return (
     <Suspense fallback={
-      <div className="min-h-screen bg-[#0b0d12] flex items-center justify-center p-4">
-        <div className="w-12 h-12 border-4 border-[#3b82f6] border-t-transparent rounded-full animate-spin"></div>
+      <div className="min-h-screen bg-[#0B0D12] flex items-center justify-center p-4">
+        <div className="w-12 h-12 border-3 border-primary border-t-transparent rounded-full animate-spin"></div>
       </div>
     }>
       <VerifyEnquiryContent />

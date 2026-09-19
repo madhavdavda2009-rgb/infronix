@@ -112,7 +112,7 @@ export default function AddLeadModal({ isOpen, onClose, onSave, initialData = nu
         {/* Modal Form */}
         <form onSubmit={handleSubmit} className="p-6 space-y-4">
           {error && (
-            <div className="p-3 bg-red-950/70 border border-red-500/60 text-red-200 text-xs font-medium">
+            <div className="p-3 bg-primary/10 border border-primary/40 text-on-surface text-xs font-normal rounded-xl">
               {error}
             </div>
           )}

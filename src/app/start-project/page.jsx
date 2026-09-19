@@ -208,9 +208,9 @@ export default function StartProjectPage() {
           </div>
 
           {errorMsg && (
-            <div className="p-4 bg-red-50 border border-red-200 text-red-700 text-xs sm:text-sm flex items-start gap-3 rounded-lg">
-              <WarningCircle className="text-xl shrink-0 mt-0.5" weight="fill" />
-              <p className="font-medium">{errorMsg}</p>
+            <div className="p-4 bg-primary/10 border border-primary/40 text-on-surface text-xs sm:text-sm flex items-start gap-3 rounded-xl shadow-sm">
+              <WarningCircle className="text-xl text-primary shrink-0 mt-0.5" weight="duotone" />
+              <p className="font-normal text-on-surface">{errorMsg}</p>
             </div>
           )}
 
