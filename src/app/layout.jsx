@@ -7,7 +7,7 @@ import { ToastProvider } from '@/context/ToastContext';
 import Preloader from '@/components/Preloader';
 import SmoothScroll from '@/components/SmoothScroll';
 import { Inter, Outfit } from 'next/font/google';
-import Script from 'next/script';
+import { GoogleAnalytics } from '@next/third-parties/google';
 
 const WhatsAppWidget = dynamic(() => import('@/components/WhatsAppWidget'));
 const CookieBanner = dynamic(() => import('@/components/CookieBanner'));
@@ -116,22 +116,6 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <head>
-        {/* Google tag (gtag.js) */}
-        <Script
-          src={`https://www.googletagmanager.com/gtag/js?id=${gaId}`}
-          strategy="afterInteractive"
-        />
-        <Script id="google-analytics" strategy="afterInteractive">
-          {`
-            window.dataLayer = window.dataLayer || [];
-            function gtag(){dataLayer.push(arguments);}
-            gtag('js', new Date());
-            gtag('config', '${gaId}', {
-              page_path: window.location.pathname,
-            });
-          `}
-        </Script>
-
         {/* Unified LocalBusiness, ProfessionalService & WebSite JSON-LD Schema */}
         <script
           type="application/ld+json"
@@ -251,6 +235,7 @@ export default function RootLayout({ children }) {
             </SmoothScroll>
           </ToastProvider>
         </ErrorBoundary>
+        <GoogleAnalytics gaId={gaId} />
       </body>
     </html>
   );

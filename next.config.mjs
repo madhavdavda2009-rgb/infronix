@@ -4,7 +4,7 @@ const nextConfig = {
   compress: true,
   poweredByHeader: false,
   experimental: {
-    optimizePackageImports: ['@phosphor-icons/react', 'lenis', 'framer-motion'],
+    optimizePackageImports: ['@phosphor-icons/react', 'lenis', 'framer-motion', '@next/third-parties'],
   },
   images: {
     formats: ['image/avif', 'image/webp'],
