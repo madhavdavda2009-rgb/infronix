@@ -68,8 +68,8 @@ export default function Header() {
 
   return (
     <>
-      <div className={`fixed top-0 w-full z-50 flex flex-col transition-all duration-700 ease-out ${
-        isPreloading ? 'opacity-0 -translate-y-full pointer-events-none' : 'opacity-100 translate-y-0'
+      <div className={`fixed top-0 w-full z-50 flex flex-col transition-opacity duration-700 ease-out ${
+        isPreloading ? 'opacity-0 pointer-events-none' : 'opacity-100'
       }`}>
         {/* Top Info Bar */}
         <div className={`hidden lg:flex text-[#A0AEC0] text-xs py-2 w-full transition-all duration-700 ${

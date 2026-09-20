@@ -156,23 +156,46 @@ export default function Preloader() {
 
   // Center starting coordinates
   const centerX = windowDims.width / 2;
-  const startLogoY = windowDims.height < 700 ? windowDims.height * 0.12 : windowDims.height * 0.14;
-  const startLogoScale = windowDims.width < 640 ? 0.9 : 1.05;
+  const isMobile = windowDims.width < 768;
 
-  // Hero dimensions & coordinates
-  const heroWidth = heroTarget ? heroTarget.width : (windowDims.width < 640 ? 280 : windowDims.width < 1024 ? 360 : 440);
-  const heroHeight = heroTarget ? heroTarget.height : (windowDims.width < 640 ? 340 : windowDims.width < 1024 ? 420 : 500);
+  // Responsive starting logo coordinates
+  const startLogoY = isMobile
+    ? (windowDims.height < 700 ? 55 : 70)
+    : (windowDims.height < 700 ? windowDims.height * 0.12 : windowDims.height * 0.14);
+  const startLogoScale = isMobile ? 0.85 : 1.05;
+
+  // Responsive hero dimensions & starting coordinates
+  const heroWidth = heroTarget
+    ? heroTarget.width
+    : (windowDims.width < 640 ? 280 : windowDims.width < 1024 ? 360 : 440);
+  const heroHeight = heroTarget
+    ? heroTarget.height
+    : (windowDims.width < 640 ? 320 : windowDims.width < 1024 ? 400 : 480);
+
   const startHeroX = centerX - heroWidth / 2;
-  const startHeroY = (windowDims.height < 700 ? windowDims.height * 0.43 : windowDims.height * 0.44) - heroHeight / 2;
-  const startHeroScale = windowDims.width < 640 ? 0.72 : 0.8;
+  const startHeroY = isMobile
+    ? (windowDims.height < 700 ? 220 : 255) - heroHeight / 2
+    : (windowDims.height * 0.44 - heroHeight / 2);
+  const startHeroScale = isMobile ? 0.72 : 0.82;
 
-  // Final landing targets (with smart responsive fallbacks if not yet measured)
-  const finalLogoX = logoTarget ? logoTarget.x : (windowDims.width < 640 ? 80 : 120);
-  const finalLogoY = logoTarget ? logoTarget.y : (windowDims.width < 1024 ? 35 : 55);
-  const finalLogoScale = logoTarget ? Math.max(0.48, logoTarget.width / 210) : (windowDims.width < 640 ? 0.48 : 0.65);
+  // Final landing targets (calculated with measured targets and device fallbacks)
+  const finalLogoX = logoTarget
+    ? logoTarget.x
+    : (windowDims.width < 640 ? 68 : 120);
+  const finalLogoY = logoTarget
+    ? logoTarget.y
+    : (windowDims.width < 1024 ? 32 : 55);
+  const finalLogoScale = logoTarget
+    ? (logoTarget.height / 56)
+    : (windowDims.width < 640 ? 0.52 : 0.72);
 
-  const finalHeroX = heroTarget ? heroTarget.x : (windowDims.width > 1024 ? windowDims.width * 0.75 : windowDims.width * 0.5);
-  const finalHeroY = heroTarget ? heroTarget.y : (windowDims.width > 1024 ? windowDims.height * 0.5 : windowDims.height * 0.35);
+  const finalHeroX = heroTarget
+    ? heroTarget.x
+    : (windowDims.width > 1024 ? windowDims.width * 0.75 : windowDims.width * 0.5);
+  const finalHeroY = heroTarget
+    ? heroTarget.y
+    : (windowDims.width > 1024 ? windowDims.height * 0.5 : (windowDims.width < 640 ? 220 : windowDims.height * 0.35));
+
   const targetHeroX = finalHeroX - heroWidth / 2;
   const targetHeroY = finalHeroY - heroHeight / 2;
   const targetHeroScale = 1.0;
