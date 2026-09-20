@@ -36,5 +36,12 @@
     "postcss": "^8.5.26",
     "sharp": "^0.35.4",
     "tailwindcss": "^4.3.3"
-  }
+  },
+  "browserslist": [
+    "Chrome >= 90",
+    "Edge >= 90",
+    "Safari >= 15",
+    "Firefox >= 90",
+    "not dead"
+  ]
 }

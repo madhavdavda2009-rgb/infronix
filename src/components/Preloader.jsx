@@ -104,8 +104,8 @@ export default function Preloader() {
 
         <div className="w-full h-[2px] bg-surface-container-lowest/10 relative overflow-hidden">
           <div
-            className="absolute top-0 left-0 h-full bg-accent transition-all duration-75 ease-out"
-            style={{ width: `${percent}%` }}
+            className="absolute top-0 left-0 w-full h-full bg-accent origin-left transition-transform duration-75 ease-out will-change-transform"
+            style={{ transform: `scaleX(${percent / 100})` }}
           />
         </div>
       </div>

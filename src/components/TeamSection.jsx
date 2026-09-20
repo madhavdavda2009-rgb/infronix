@@ -26,15 +26,19 @@ export default function TeamSection() {
 
   useEffect(() => {
     let isMounted = true;
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 4000);
+
     async function loadTeam() {
       try {
-        const res = await fetch('/api/public/team?page=home');
+        const res = await fetch('/api/public/team?page=home', {
+          signal: controller.signal
+        });
         if (!res.ok) return;
         const data = await res.json();
         if (data.success && Array.isArray(data.team) && data.team.length > 0 && isMounted) {
-          // Normalize founder image fallback
           const formatted = data.team.map((m) => {
-            const isFounder = m.is_founder || m.employment_type === 'Founder' || m.name.toLowerCase().includes('madhav');
+            const isFounder = m.is_founder || m.employment_type === 'Founder' || m.name?.toLowerCase().includes('madhav');
             return {
               ...m,
               image: m.profile_image_url || (isFounder ? myImage.src : null),
@@ -43,14 +47,19 @@ export default function TeamSection() {
           });
           setTeamMembers(formatted);
         }
-      } catch (err) {
-        console.warn("Using baseline leadership data:", err.message);
+      } catch (_) {
+        // Fallback gracefully to default founder without throwing console error
       } finally {
+        clearTimeout(timeoutId);
         if (isMounted) setHasLoaded(true);
       }
     }
     loadTeam();
-    return () => { isMounted = false; };
+    return () => {
+      isMounted = false;
+      controller.abort();
+      clearTimeout(timeoutId);
+    };
   }, []);
 
   return (

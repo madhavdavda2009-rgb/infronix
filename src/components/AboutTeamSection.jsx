@@ -25,14 +25,19 @@ export default function AboutTeamSection() {
 
   useEffect(() => {
     let isMounted = true;
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 4000);
+
     async function loadTeam() {
       try {
-        const res = await fetch('/api/public/team?page=about');
+        const res = await fetch('/api/public/team?page=about', {
+          signal: controller.signal
+        });
         if (!res.ok) return;
         const data = await res.json();
         if (data.success && Array.isArray(data.team) && data.team.length > 0 && isMounted) {
           const formatted = data.team.map((m) => {
-            const isFounder = m.is_founder || m.employment_type === 'Founder' || m.name.toLowerCase().includes('madhav');
+            const isFounder = m.is_founder || m.employment_type === 'Founder' || m.name?.toLowerCase().includes('madhav');
             return {
               ...m,
               image: m.profile_image_url || (isFounder ? myImage.src : null),
@@ -41,14 +46,19 @@ export default function AboutTeamSection() {
           });
           setTeamMembers(formatted);
         }
-      } catch (err) {
-        console.warn("Using baseline leadership data:", err.message);
+      } catch (_) {
+        // Fallback gracefully without console noise
       } finally {
+        clearTimeout(timeoutId);
         if (isMounted) setLoading(false);
       }
     }
     loadTeam();
-    return () => { isMounted = false; };
+    return () => {
+      isMounted = false;
+      controller.abort();
+      clearTimeout(timeoutId);
+    };
   }, []);
 
   return (

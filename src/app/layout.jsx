@@ -111,30 +111,26 @@ export const metadata = {
 };
 
 export default function RootLayout({ children }) {
-  const gaId = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID;
+  const gaId = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID || 'G-T99V9E650K';
 
   return (
     <html lang="en">
       <head>
-        {/* Google Analytics 4 Script */}
-        {gaId && (
-          <>
-            <Script
-              src={`https://www.googletagmanager.com/gtag/js?id=${gaId}`}
-              strategy="afterInteractive"
-            />
-            <Script id="google-analytics" strategy="afterInteractive">
-              {`
-                window.dataLayer = window.dataLayer || [];
-                function gtag(){dataLayer.push(arguments);}
-                gtag('js', new Date());
-                gtag('config', '${gaId}', {
-                  page_path: window.location.pathname,
-                });
-              `}
-            </Script>
-          </>
-        )}
+        {/* Google tag (gtag.js) */}
+        <Script
+          src={`https://www.googletagmanager.com/gtag/js?id=${gaId}`}
+          strategy="afterInteractive"
+        />
+        <Script id="google-analytics" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', '${gaId}', {
+              page_path: window.location.pathname,
+            });
+          `}
+        </Script>
 
         {/* Unified LocalBusiness, ProfessionalService & WebSite JSON-LD Schema */}
         <script

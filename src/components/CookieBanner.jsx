@@ -110,7 +110,7 @@ export default function CookieBanner() {
             </button>
             <button
               onClick={handleAcceptAll}
-              className="px-4 py-2 bg-primary hover:bg-primary-dark text-ink-black text-xs font-label-caps uppercase tracking-wider font-bold transition-all shadow-md cursor-pointer flex-1 text-center rounded-md"
+              className="px-4 py-2 bg-primary hover:bg-primary-dark text-white text-xs font-label-caps uppercase tracking-wider font-bold transition-all shadow-md cursor-pointer flex-1 text-center rounded-md"
             >
               Accept All
             </button>
@@ -212,7 +212,7 @@ export default function CookieBanner() {
               </button>
               <button
                 onClick={handleSaveCustom}
-                className="px-5 py-2 bg-primary hover:bg-primary-dark text-ink-black text-xs font-label-caps uppercase tracking-wider font-bold transition-all shadow-md cursor-pointer rounded-md"
+                className="px-5 py-2 bg-primary hover:bg-primary-dark text-white text-xs font-label-caps uppercase tracking-wider font-bold transition-all shadow-md cursor-pointer rounded-md"
               >
                 Save Preferences
               </button>
