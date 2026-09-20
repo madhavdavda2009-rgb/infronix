@@ -195,7 +195,7 @@ export default async function BlogPreviewPage({ params, searchParams }) {
 
           {/* Safe Markdown Content Body */}
           <div className="pt-2 pb-10 border-b border-outline-variant/40">
-            <SafeMarkdownRenderer content={post.content_markdown} />
+            <SafeMarkdownRenderer content={post.content_markdown} fallbackExcerpt={post.excerpt} />
           </div>
 
           {/* Tags */}

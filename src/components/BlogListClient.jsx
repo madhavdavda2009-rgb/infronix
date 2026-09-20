@@ -14,6 +14,7 @@ import {
 export default function BlogListClient() {
   const [posts, setPosts] = useState([]);
   const [categories, setCategories] = useState([]);
+  const [tags, setTags] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [selectedTag, setSelectedTag] = useState('all');
   const [searchQuery, setSearchQuery] = useState('');

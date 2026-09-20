@@ -216,6 +216,44 @@ export default function BlogModule({ onRefreshDashboard }) {
     }, 50);
   }
 
+  // Insert ready-to-write article template
+  function insertArticleTemplate() {
+    const template = `## Introduction
+
+In today's fast-evolving market, having a high-performing digital presence is the single most valuable asset for a growing business.
+
+## Why Modern Performance Matters
+
+- **Sub-Second Load Times**: Modern customers expect instantaneous page interactions.
+- **Local Search Dominance**: Targeted local keywords and schema drive high-intent inquiries.
+- **Conversion-Centric UX**: Clean design directs visitors straight to booking and inquiries.
+
+| Feature | Legacy Website | Custom Next.js Platform |
+| :--- | :--- | :--- |
+| **Performance** | 3.5s+ Load Time | Under 0.8s Sub-second |
+| **SEO Architecture** | Basic Tags | Rich Schema + Core Web Vitals |
+| **Lead Conversion** | Static Forms | Real-Time Automated Funnels |
+
+> [!TIP]
+> Ensure your site loads under 1 second on 4G/5G mobile networks to cut bounce rates by half.
+
+## 3 Action Steps for Founders
+
+1. **Audit Mobile UX**: Test how quickly a user can reach your contact or WhatsApp button.
+2. **Optimize Local Schema**: Connect your Google Business Profile to localized landing pages.
+3. **Automate Inquiries**: Connect automated email and CRM notifications to capture every lead.
+
+## Conclusion
+
+Building a scalable digital asset requires modern engineering and deliberate strategy. Partner with InfronixWeb to accelerate your growth.`;
+
+    if (postContent.trim() && !window.confirm('Replace current article content with template outline?')) {
+      return;
+    }
+    setPostContent(template);
+    showToast('Article template inserted', 'success');
+  }
+
   // Upload Cover Photo
   async function handleImageUpload(e) {
     const file = e.target.files?.[0];
@@ -305,6 +343,12 @@ export default function BlogModule({ onRefreshDashboard }) {
     }
 
     const finalStatus = overrideStatus || postStatus;
+
+    if (finalStatus === 'Published' && !postContent.trim()) {
+      showToast('Please add content to the article body before publishing to the live website', 'error');
+      setEditorTab('content');
+      return;
+    }
 
     if (finalStatus === 'Scheduled' && !scheduledDate) {
       showToast('Please specify a scheduled publication date and time', 'error');
@@ -1261,11 +1305,29 @@ export default function BlogModule({ onRefreshDashboard }) {
                         />
                         <button
                           type="button"
+                          onClick={() => insertMarkdown('\n| Feature | Traditional | Modern Web |\n| :--- | :--- | :--- |\n| Speed | Slow | Sub-second |\n| SEO | Basic | Advanced Schema |\n', '', '')}
+                          className="p-1.5 hover:bg-white hover:text-violet-600 text-slate-700 rounded-lg transition-colors cursor-pointer text-[11px] font-bold"
+                          title="Insert Markdown Table"
+                        >
+                          Table
+                        </button>
+                        <button
+                          type="button"
                           onClick={() => insertMarkdown('\n---\n', '', '')}
                           className="p-1.5 hover:bg-white hover:text-violet-600 text-slate-700 rounded-lg transition-colors cursor-pointer"
                           title="Horizontal Divider"
                         >
                           <Minus size={16} />
+                        </button>
+                        <div className="w-[1px] h-4 bg-slate-300 mx-1" />
+                        <button
+                          type="button"
+                          onClick={insertArticleTemplate}
+                          className="px-2.5 py-1 bg-violet-50 hover:bg-violet-100 text-violet-700 rounded-lg transition-colors cursor-pointer text-[11px] font-bold flex items-center gap-1"
+                          title="Insert complete ready-to-write article outline"
+                        >
+                          <Sparkle size={13} weight="fill" />
+                          <span>Outline Template</span>
                         </button>
                       </div>
                     )}
