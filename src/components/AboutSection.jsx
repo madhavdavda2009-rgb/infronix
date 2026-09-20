@@ -1,6 +1,7 @@
 "use client";
 import { motion } from "framer-motion";
 import Link from "next/link";
+import Image from "next/image";
 import { ArrowRight } from "@phosphor-icons/react";
 
 export default function AboutSection() {
@@ -17,13 +18,13 @@ export default function AboutSection() {
               viewport={{ once: true, margin: "-100px" }}
               transition={{ duration: 0.8 }}
             >
-              <h2 className="text-xs sm:text-sm font-bold tracking-widest uppercase text-text-light mb-3 sm:mb-6">Why InfronixWeb</h2>
+              <span className="block text-xs sm:text-sm font-bold tracking-widest uppercase text-text-light mb-3 sm:mb-6">Why InfronixWeb</span>
               
-              <h3 className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-heading font-bold text-on-surface leading-[1.15] sm:leading-[1.1] mb-6 sm:mb-8">
+              <h2 className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-heading font-bold text-on-surface leading-[1.15] sm:leading-[1.1] mb-6 sm:mb-8">
                 Built to solve the <br className="hidden md:block" />
                 fragmentation <br className="hidden md:block" />
                 problem.
-              </h3>
+              </h2>
               
               <div className="w-16 sm:w-20 h-1 bg-primary mb-6 sm:mb-8" />
               
@@ -55,10 +56,13 @@ export default function AboutSection() {
             >
               {/* Main Image */}
               <div className="absolute inset-0 bg-surface-container-lowest rounded-xl overflow-hidden border border-outline-variant/60 shadow-lg">
-                <img 
+                <Image 
                   src="/img-1.avif" 
                   alt="InfronixWeb Digital Marketing Team" 
-                  className="w-full h-full object-cover"
+                  fill
+                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 500px"
+                  className="object-cover"
+                  loading="lazy"
                 />
               </div>
               

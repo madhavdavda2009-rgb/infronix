@@ -2,6 +2,7 @@
 import { X, List, CaretDown, Envelope, Phone, MapPin, Clock, Globe, MagnifyingGlass, Robot, Megaphone, ArrowRight } from "@phosphor-icons/react";
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import { motion, AnimatePresence, useScroll, useTransform } from 'framer-motion';
 
@@ -99,7 +100,15 @@ export default function Header() {
 
             {/* Logo + Brand Title */}
             <Link href="/" className="flex items-center gap-3 group shrink-0" aria-label="InfronixWeb Home">
-              <img src="/dark-web-logo.png" alt="InfronixWeb Digital Marketing" className="h-8 sm:h-10 md:h-12 w-auto object-contain" />
+              <Image
+                src="/dark-web-logo.webp"
+                alt="InfronixWeb Digital Marketing"
+                width={160}
+                height={48}
+                priority
+                style={{ width: 'auto', height: 'auto' }}
+                className="h-8 sm:h-10 md:h-12 w-auto object-contain"
+              />
             </Link>
 
             {/* Right side: CTA + Taste-Driven Hamburger */}
@@ -159,7 +168,13 @@ export default function Header() {
             {/* Top Bar */}
             <div className="flex items-center justify-between pb-5 border-b border-white/10">
               <Link href="/" onClick={() => setMenuOpen(false)}>
-                <img src="/dark-web-logo.png" alt="InfronixWeb" className="h-7 sm:h-8 w-auto object-contain" />
+                <img
+                  src="/dark-web-logo.webp"
+                  alt="InfronixWeb"
+                  width={120}
+                  height={36}
+                  className="h-7 sm:h-8 w-auto object-contain"
+                />
               </Link>
               <button
                 onClick={() => setMenuOpen(false)}

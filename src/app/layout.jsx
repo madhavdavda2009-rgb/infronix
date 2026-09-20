@@ -67,11 +67,11 @@ export const metadata = {
     description: 'Premier Digital Agency in Ahmedabad. We specialize in custom Website Development, Technical SEO, Social Media Marketing, Meta & Google Paid Ads, and AI Automation.',
     images: [
       {
-        url: 'https://www.infronixweb.in/web-logo.png',
+        url: 'https://www.infronixweb.in/opengraph-image.webp',
         width: 1200,
         height: 630,
         alt: 'InfronixWeb Digital Marketing - Websites, SEO, Digital Marketing & AI Automation',
-        type: 'image/png'
+        type: 'image/webp'
       }
     ],
   },
@@ -79,7 +79,7 @@ export const metadata = {
     card: 'summary_large_image',
     title: 'InfronixWeb Digital Marketing | Web Development, SEO, Digital Marketing & AI Automation',
     description: 'Premier Digital Agency in Ahmedabad. Custom Website Development, Technical SEO, Social Media & Paid Ads, and AI Automation.',
-    images: ['https://www.infronixweb.in/web-logo.png'],
+    images: ['https://www.infronixweb.in/opengraph-image.webp'],
   },
   robots: {
     index: true,

@@ -2,8 +2,6 @@
 import { useEffect, useRef } from "react";
 import Lenis from "lenis";
 import "lenis/dist/lenis.css";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { usePathname } from "next/navigation";
 
 export default function SmoothScroll({ children }) {
@@ -29,10 +27,6 @@ export default function SmoothScroll({ children }) {
     const prefersReducedMotion = typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     if (prefersReducedMotion) return;
 
-    if (typeof window !== "undefined") {
-      gsap.registerPlugin(ScrollTrigger);
-    }
-
     // Keep mobile touch scrolling 100% native to avoid touch stutter or viewport locking
     const isMobile = typeof window !== "undefined" && window.matchMedia("(max-width: 768px)").matches;
 
@@ -50,16 +44,12 @@ export default function SmoothScroll({ children }) {
 
     lenisRef.current = lenis;
 
-    // Connect Lenis scroll events to GSAP ScrollTrigger
-    lenis.on("scroll", ScrollTrigger.update);
-
-    // Sync Lenis with GSAP's internal ticker
-    const updateTicker = (time) => {
-      lenis.raf(time * 1000);
-    };
-
-    gsap.ticker.add(updateTicker);
-    gsap.ticker.lagSmoothing(0);
+    let rafId;
+    function raf(time) {
+      lenis.raf(time);
+      rafId = requestAnimationFrame(raf);
+    }
+    rafId = requestAnimationFrame(raf);
 
     // Smooth scroll for anchor tags (#id and /#id) across the site
     const handleAnchorClick = (e) => {
@@ -109,7 +99,7 @@ export default function SmoothScroll({ children }) {
 
     return () => {
       document.removeEventListener("click", handleAnchorClick);
-      gsap.ticker.remove(updateTicker);
+      if (rafId) cancelAnimationFrame(rafId);
       lenis.destroy();
       lenisRef.current = null;
       window.lenis = null;

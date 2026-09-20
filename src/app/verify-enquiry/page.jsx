@@ -51,8 +51,15 @@ function VerifyEnquiryContent() {
       <div className="relative z-10 max-w-md w-full bg-[#121620]/90 rounded-2xl border border-primary/30 p-8 sm:p-10 shadow-[0_0_40px_rgba(139,92,246,0.15)] text-center backdrop-blur-md">
         {/* Logo */}
         <div className="flex justify-center mb-8">
-          <Link href="/">
-            <img src="/dark-web-logo.png" alt="InfronixWeb" className="h-9 w-auto object-contain" />
+          <Link href="/" aria-label="InfronixWeb Home">
+            <img
+              src="/dark-web-logo.webp"
+              alt="InfronixWeb"
+              width={160}
+              height={40}
+              style={{ width: 'auto', height: 'auto' }}
+              className="h-9 w-auto object-contain"
+            />
           </Link>
         </div>
 

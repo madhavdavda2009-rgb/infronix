@@ -2,10 +2,11 @@
 import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
+import Image from "next/image";
 import { 
   InstagramLogo, LinkedinLogo, GithubLogo, LinkSimple, ArrowRight, User 
 } from "@phosphor-icons/react";
-import myImage from "@/assets/my-image.jpeg";
+import myImage from "@/assets/my-image.webp";
 
 const DEFAULT_FOUNDER = {
   id: "founder-canonical",
@@ -58,11 +59,11 @@ export default function TeamSection() {
         
         <div className="mb-12 sm:mb-16 md:mb-20 flex flex-col md:flex-row md:items-end justify-between gap-6 md:gap-8">
           <div className="max-w-2xl">
-            <h2 className="text-xs sm:text-sm font-bold tracking-widest uppercase text-text-light mb-3 sm:mb-4">Leadership & Engineering</h2>
-            <h3 className="text-2xl sm:text-4xl md:text-5xl font-heading font-bold text-on-surface leading-tight">
+            <span className="block text-xs sm:text-sm font-bold tracking-widest uppercase text-text-light mb-3 sm:mb-4">Leadership & Engineering</span>
+            <h2 className="text-2xl sm:text-4xl md:text-5xl font-heading font-bold text-on-surface leading-tight">
               Direct access. <br className="hidden md:block" />
               Massive impact.
-            </h3>
+            </h2>
           </div>
           <p className="text-sm sm:text-base md:text-lg text-main-text max-w-md md:text-right font-medium leading-relaxed">
             We intentionally keep our operations direct. You work closely with the experts engineering and designing your digital product.
@@ -86,10 +87,12 @@ export default function TeamSection() {
                 <div>
                   <div className="relative aspect-[3/4] w-full overflow-hidden rounded-lg bg-surface mb-4 sm:mb-6 flex items-center justify-center">
                     {memberImage ? (
-                      <img 
+                      <Image 
                         src={memberImage} 
                         alt={`${member.name} - ${member.role}`} 
-                        className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-[1.02]"
+                        fill
+                        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 380px"
+                        className="object-cover transition-transform duration-500 group-hover:scale-[1.02]"
                         loading="lazy"
                       />
                     ) : (
@@ -102,9 +105,9 @@ export default function TeamSection() {
                     )}
                   </div>
                   
-                  <h4 className="text-xl sm:text-2xl font-heading font-bold text-on-surface mb-1">
+                  <h3 className="text-xl sm:text-2xl font-heading font-bold text-on-surface mb-1">
                     {member.name}
-                  </h4>
+                  </h3>
                   <p className="text-xs sm:text-sm font-bold tracking-wider uppercase text-primary mb-2">
                     {member.role}
                   </p>

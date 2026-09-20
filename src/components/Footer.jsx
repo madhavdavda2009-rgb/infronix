@@ -1,5 +1,6 @@
 "use client";
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { InstagramLogo, ArrowUpRight } from "@phosphor-icons/react";
 
@@ -18,8 +19,15 @@ export default function Footer() {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-8 sm:gap-10 lg:gap-8 mb-12 sm:mb-16 md:mb-24">
           {/* Brand */}
           <div className="sm:col-span-2">
-            <Link href="/" className="inline-block mb-4 sm:mb-6">
-              <img src="/dark-web-logo.png" alt="InfronixWeb Digital Marketing" className="h-8 sm:h-10 md:h-12 w-auto object-contain hover:opacity-90 transition-opacity" />
+            <Link href="/" className="inline-block mb-4 sm:mb-6" aria-label="InfronixWeb Home">
+              <Image
+                src="/dark-web-logo.webp"
+                alt="InfronixWeb Digital Marketing"
+                width={160}
+                height={48}
+                style={{ width: 'auto', height: 'auto' }}
+                className="h-8 sm:h-10 md:h-12 w-auto object-contain hover:opacity-90 transition-opacity"
+              />
             </Link>
             <p className="text-[#9CA3AF] max-w-sm mb-6 sm:mb-8 leading-relaxed text-sm sm:text-base">
               Ahmedabad&apos;s premium digital agency. We build high-converting websites, execute technical SEO, and implement AI automation.
@@ -40,7 +48,7 @@ export default function Footer() {
 
           {/* Services */}
           <div>
-            <h4 className="font-bold tracking-widest uppercase text-xs sm:text-sm text-white mb-4 sm:mb-6">Services</h4>
+            <h3 className="font-bold tracking-widest uppercase text-xs sm:text-sm text-white mb-4 sm:mb-6">Services</h3>
             <ul className="flex flex-col gap-3 sm:gap-4 text-xs sm:text-sm">
               <li>
                 <Link href="/web-development" className="text-[#9CA3AF] hover:text-primary transition-colors">Web Development</Link>
@@ -62,7 +70,7 @@ export default function Footer() {
 
           {/* Company */}
           <div>
-            <h4 className="font-bold tracking-widest uppercase text-xs sm:text-sm text-white mb-4 sm:mb-6">Company</h4>
+            <h3 className="font-bold tracking-widest uppercase text-xs sm:text-sm text-white mb-4 sm:mb-6">Company</h3>
             <ul className="flex flex-col gap-3 sm:gap-4 text-xs sm:text-sm">
               <li>
                 <Link href="/about" className="text-[#9CA3AF] hover:text-primary transition-colors">About Us</Link>
@@ -78,7 +86,7 @@ export default function Footer() {
 
           {/* Contact */}
           <div>
-            <h4 className="font-bold tracking-widest uppercase text-xs sm:text-sm text-white mb-4 sm:mb-6">Contact</h4>
+            <h3 className="font-bold tracking-widest uppercase text-xs sm:text-sm text-white mb-4 sm:mb-6">Contact</h3>
             <ul className="flex flex-col gap-3 sm:gap-4 text-xs sm:text-sm">
               <li>
                 <a href="mailto:support@infronixweb.in" className="group flex items-center gap-1.5 text-[#9CA3AF] hover:text-primary transition-colors break-all">

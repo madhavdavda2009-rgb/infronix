@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 import Link from "next/link";
 import Image from "next/image";
 import { ArrowRight, Code, ChartLineUp, Robot } from "@phosphor-icons/react";
-import heroImg from "@/assets/hero-section.png";
+import heroImg from "@/assets/hero-section.webp";
 import Breadcrumb from "@/components/Breadcrumb";
 
 export default function HeroSection() {
@@ -52,7 +52,7 @@ export default function HeroSection() {
           <motion.div
             className="lg:col-span-7 xl:col-span-7"
             variants={containerVariants}
-            initial="hidden"
+            initial={false}
             animate="visible"
           >
             <Breadcrumb />
@@ -120,7 +120,7 @@ export default function HeroSection() {
           <motion.div
             className="lg:col-span-5 xl:col-span-5 flex justify-center items-center relative mt-2 lg:mt-0"
             variants={imageVariants}
-            initial="hidden"
+            initial={false}
             animate="visible"
           >
             <div className="relative w-full max-w-[320px] sm:max-w-[420px] lg:max-w-[480px] mx-auto flex items-center justify-center">
@@ -134,7 +134,11 @@ export default function HeroSection() {
                   src={heroImg}
                   alt="InfronixWeb Digital Marketing Hero"
                   className="w-full h-auto max-h-[420px] sm:max-h-[500px] lg:max-h-[540px] object-contain drop-shadow-2xl"
-                  priority
+                  priority={true}
+                  fetchPriority="high"
+                  loading="eager"
+                  sizes="(max-width: 640px) 320px, (max-width: 1024px) 420px, 480px"
+                  quality={90}
                 />
               </div>
 

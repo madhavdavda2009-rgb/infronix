@@ -64,13 +64,13 @@ export default function ServicesSection() {
           className="mb-10 sm:mb-16 md:mb-24 flex flex-col md:flex-row md:items-end justify-between gap-6 md:gap-8"
         >
           <div className="max-w-2xl">
-            <h2 className="text-xs sm:text-sm font-bold tracking-widest uppercase text-primary mb-3 sm:mb-4 flex items-center gap-3">
+            <span className="text-xs sm:text-sm font-bold tracking-widest uppercase text-primary mb-3 sm:mb-4 flex items-center gap-3">
               <span className="w-8 sm:w-12 h-[2px] bg-primary" /> Our Expertise
-            </h2>
-            <h3 className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-heading font-bold text-on-surface leading-tight">
+            </span>
+            <h2 className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-heading font-bold text-on-surface leading-tight">
               We specialize in the core <br className="hidden md:block" />
               pillars of digital growth.
-            </h3>
+            </h2>
           </div>
           <Link href="/services" className="group flex items-center gap-2 text-sm sm:text-base text-on-surface font-bold border-b-2 border-transparent hover:border-primary pb-1 hover:text-primary transition-all self-start md:self-auto">
             View All Capabilities <ArrowRight weight="bold" className="group-hover:translate-x-1 transition-transform" />
@@ -99,9 +99,9 @@ export default function ServicesSection() {
                     {service.id}
                   </span>
                   <div>
-                    <h4 className={`text-lg sm:text-2xl md:text-3xl font-heading font-bold mb-1 sm:mb-2 transition-colors duration-500 ${activeService === index ? 'text-on-surface' : 'text-main-text group-hover:text-on-surface'}`}>
+                    <h3 className={`text-lg sm:text-2xl md:text-3xl font-heading font-bold mb-1 sm:mb-2 transition-colors duration-500 ${activeService === index ? 'text-on-surface' : 'text-main-text group-hover:text-on-surface'}`}>
                       {service.title}
-                    </h4>
+                    </h3>
                     <p className={`text-xs sm:text-base md:text-lg transition-colors duration-500 ${activeService === index ? 'text-main-text' : 'text-text-light'}`}>
                       {service.short}
                     </p>
@@ -158,9 +158,9 @@ export default function ServicesSection() {
                         return Icon ? <Icon size={32} className="text-primary" weight="duotone" /> : null;
                       })()}
                     </div>
-                    <h4 className="text-4xl font-heading font-bold text-on-surface mb-6">
+                    <h3 className="text-4xl font-heading font-bold text-on-surface mb-6">
                       {services[activeService].title}
-                    </h4>
+                    </h3>
                     <p className="text-xl text-main-text leading-relaxed mb-8">
                       {services[activeService].desc}
                     </p>

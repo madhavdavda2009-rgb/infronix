@@ -23,10 +23,10 @@ export default function ProcessSection() {
       <div className="max-w-[1000px] mx-auto px-4 sm:px-6 md:px-12">
         
         <div className="text-center mb-12 sm:mb-16 md:mb-24">
-          <h2 className="text-xs sm:text-sm font-bold tracking-widest uppercase text-text-light mb-3 sm:mb-4">Our Methodology</h2>
-          <h3 className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-heading font-bold text-on-surface">
+          <span className="block text-xs sm:text-sm font-bold tracking-widest uppercase text-text-light mb-3 sm:mb-4">Our Methodology</span>
+          <h2 className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-heading font-bold text-on-surface">
             How we <span className="text-primary">execute.</span>
-          </h3>
+          </h2>
         </div>
 
         <div className="relative">
@@ -54,9 +54,9 @@ export default function ProcessSection() {
                   {/* Content */}
                   <div className={`w-full md:w-1/2 pl-10 sm:pl-16 md:pl-0 ${isEven ? 'md:pr-16 md:text-right' : 'md:pl-16'}`}>
                     <div className="md:hidden text-2xl sm:text-3xl font-heading font-bold text-primary/30 mb-1">{step.id}</div>
-                    <h4 className="text-xl sm:text-2xl md:text-3xl font-heading font-bold text-on-surface mb-2 sm:mb-4">
+                    <h3 className="text-xl sm:text-2xl md:text-3xl font-heading font-bold text-on-surface mb-2 sm:mb-4">
                       {step.title}
-                    </h4>
+                    </h3>
                     <p className="text-sm sm:text-base md:text-lg text-main-text leading-relaxed font-medium">
                       {step.desc}
                     </p>

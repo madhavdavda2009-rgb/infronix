@@ -1,10 +1,11 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
+import Image from "next/image";
 import { 
   InstagramLogo, LinkedinLogo, GithubLogo, LinkSimple, ShieldCheck 
 } from "@phosphor-icons/react";
-import myImage from "@/assets/my-image.jpeg";
+import myImage from "@/assets/my-image.webp";
 
 const DEFAULT_FOUNDER = {
   id: "founder-canonical",
@@ -85,10 +86,12 @@ export default function AboutTeamSection() {
                   {/* Photo container */}
                   <div className="relative aspect-[3/4] w-full overflow-hidden rounded-xl bg-surface mb-5 flex items-center justify-center">
                     {memberImage ? (
-                      <img 
+                      <Image 
                         src={memberImage} 
                         alt={`${member.name} - ${member.role}`} 
-                        className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-[1.02]"
+                        fill
+                        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 380px"
+                        className="object-cover transition-transform duration-500 group-hover:scale-[1.02]"
                         loading="lazy"
                       />
                     ) : (

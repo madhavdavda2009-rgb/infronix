@@ -1,184 +1,112 @@
 "use client";
 
 import { useState, useEffect, useRef } from 'react';
-import gsap from 'gsap';
-import { useGSAP } from '@gsap/react';
+import Image from 'next/image';
 
 export default function Preloader() {
   const [shouldRender, setShouldRender] = useState(false);
+  const [percent, setPercent] = useState(0);
+  const [phase, setPhase] = useState('initial'); // 'initial' | 'loading' | 'exiting' | 'done'
   const containerRef = useRef(null);
-  const counterRef = useRef(null);
-  const progressBarRef = useRef(null);
-  const text1Ref = useRef(null); // INFRONIXWEB
-  const text2Ref = useRef(null); // INTRODUCING...
-  const text3Ref = useRef(null); // LOADING...
 
   useEffect(() => {
     // Completely bypass preloader for search engine & LLM crawlers
     const isBot = typeof navigator !== 'undefined' && /bot|crawler|spider|googlebot|bingbot|yandex|duckduckbot|slurp|baiduspider|facebookexternalhit|twitterbot|linkedinbot|embedly|quora|whatsapp|slackbot|claude|chatgpt|gptbot|perplexity/i.test(navigator.userAgent);
     if (isBot) return;
 
+    // Respect reduced motion
+    const prefersReducedMotion = typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (prefersReducedMotion) return;
+
     // Only run on initial session load
     const hasPlayed = localStorage.getItem('infronix_preloader_played');
     if (!hasPlayed) {
       setShouldRender(true);
-      // Set immediately so if they refresh mid-animation, it doesn't play again
       localStorage.setItem('infronix_preloader_played', 'true');
     }
   }, []);
 
-  useGSAP(() => {
+  useEffect(() => {
     if (!shouldRender) return;
 
-    let mm = gsap.matchMedia();
+    setPhase('loading');
+    let start = null;
+    const duration = 1800; // 1.8s smooth loading
 
-    mm.add("(prefers-reduced-motion: no-preference)", () => {
-      const tl = gsap.timeline({
-        onComplete: () => {
+    let animationFrameId;
+
+    const step = (timestamp) => {
+      if (!start) start = timestamp;
+      const progress = Math.min((timestamp - start) / duration, 1);
+      // Ease out cubic
+      const easedProgress = 1 - Math.pow(1 - progress, 3);
+      setPercent(Math.round(easedProgress * 100));
+
+      if (progress < 1) {
+        animationFrameId = requestAnimationFrame(step);
+      } else {
+        setPhase('exiting');
+        setTimeout(() => {
           setShouldRender(false);
-        }
-      });
+          setPhase('done');
+        }, 600);
+      }
+    };
 
-      // 1. Initial setups
-      gsap.set([text1Ref.current, text2Ref.current, text3Ref.current], { opacity: 0, y: 20 });
-      gsap.set(progressBarRef.current, { scaleX: 0, transformOrigin: 'left center' });
+    animationFrameId = requestAnimationFrame(step);
 
-      const counter = { val: 0 };
+    return () => {
+      if (animationFrameId) cancelAnimationFrame(animationFrameId);
+    };
+  }, [shouldRender]);
 
-      tl.to(text1Ref.current, {
-        opacity: 1,
-        y: 0,
-        duration: 1,
-        ease: 'power3.out'
-      })
-        .to(text2Ref.current, {
-          opacity: 1,
-          y: 0,
-          duration: 0.8,
-          ease: 'power3.out'
-        }, "-=0.5")
-        .to(text3Ref.current, {
-          opacity: 0.6,
-          y: 0,
-          duration: 0.8,
-          ease: 'power3.out'
-        }, "-=0.6")
-        // Blink loading text
-        .to(text3Ref.current, {
-          opacity: 1,
-          duration: 0.5,
-          yoyo: true,
-          repeat: -1,
-          ease: 'power1.inOut'
-        }, "-=0.8")
-        // Counter & Progress Bar
-        .to(counter, {
-          val: 100,
-          duration: 2.5,
-          ease: 'power2.inOut',
-          onUpdate: function () {
-            if (counterRef.current) {
-              // padStart ensures 00, 01, ..., 100
-              counterRef.current.innerText = Math.round(counter.val).toString().padStart(2, '0') + '%';
-            }
-          }
-        }, "-=1.2")
-        .to(progressBarRef.current, {
-          scaleX: 1,
-          duration: 2.5,
-          ease: 'power2.inOut'
-        }, "<") // Start exactly at the same time as counter
-        .to([text1Ref.current, text2Ref.current, text3Ref.current], {
-          opacity: 0,
-          y: -10,
-          duration: 0.5,
-          ease: 'power2.in',
-          delay: 0.2 // Brief pause at 100%
-        })
-        .to(counterRef.current, {
-          opacity: 0,
-          duration: 0.3
-        }, "<")
-        .to(progressBarRef.current, {
-          opacity: 0,
-          duration: 0.3
-        }, "<")
-        // Finally, slide up the whole preloader
-        .to(containerRef.current, {
-          yPercent: -100,
-          duration: 1,
-          ease: 'power4.inOut',
-          onStart: () => {
-            if (containerRef.current) {
-              containerRef.current.style.pointerEvents = 'none';
-            }
-          }
-        });
-    });
+  if (!shouldRender || phase === 'done') return null;
 
-    mm.add("(prefers-reduced-motion: reduce)", () => {
-      // Reduced motion: Just fade out quickly
-      const tl = gsap.timeline({
-        onComplete: () => {
-          setShouldRender(false);
-        }
-      });
-      tl.to(containerRef.current, {
-        opacity: 0,
-        duration: 0.5,
-        delay: 1 // show for 1s then fade
-      });
-    });
-
-    return () => mm.revert();
-  }, { dependencies: [shouldRender], scope: containerRef });
-
-  if (!shouldRender) return null;
+  const isExiting = phase === 'exiting';
 
   return (
     <div
       ref={containerRef}
-      className="fixed inset-0 z-[9999] bg-deep-space flex flex-col justify-between p-8 md:p-16"
+      className={`fixed inset-0 z-[9999] bg-deep-space flex flex-col justify-between p-8 md:p-16 transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] ${
+        isExiting ? '-translate-y-full pointer-events-none' : 'translate-y-0'
+      }`}
       aria-hidden="true"
     >
-      <div className="flex-grow flex flex-col items-center justify-center text-center">
-        <div ref={text1Ref} className="mb-6 flex justify-center">
-          <img
-            src="/dark-web-logo.png"
+      <div className={`flex-grow flex flex-col items-center justify-center text-center transition-opacity duration-300 ${isExiting ? 'opacity-0' : 'opacity-100'}`}>
+        <div className="mb-6 flex justify-center">
+          <Image
+            src="/dark-web-logo.webp"
             alt="InfronixWeb Logo"
+            width={220}
+            height={70}
+            priority
+            style={{ width: 'auto', height: 'auto' }}
             className="h-24 sm:h-32 md:h-40 lg:h-48 w-auto object-contain drop-shadow-lg"
           />
         </div>
-        <p
-          ref={text2Ref}
-          className="font-label-caps text-xs sm:text-sm text-accent tracking-[0.3em] uppercase font-bold"
-        >
+        <p className="font-label-caps text-xs sm:text-sm text-accent tracking-[0.3em] uppercase font-bold">
           Introducing the InfronixWeb Digital Marketing
         </p>
       </div>
 
-      <div className="w-full flex flex-col gap-4">
+      <div className={`w-full flex flex-col gap-4 transition-opacity duration-300 ${isExiting ? 'opacity-0' : 'opacity-100'}`}>
         <div className="flex justify-between items-end">
-          <span
-            ref={text3Ref}
-            className="font-label-caps text-[10px] sm:text-xs text-slate-400 tracking-widest uppercase font-bold"
-          >
+          <span className="font-label-caps text-[10px] sm:text-xs text-slate-400 tracking-widest uppercase font-bold animate-pulse">
             Loading your experience...
           </span>
           <span
-            ref={counterRef}
             className="font-headline-lg text-2xl sm:text-4xl text-accent font-bold"
             style={{ fontVariantNumeric: 'tabular-nums' }}
           >
-            00%
+            {percent.toString().padStart(2, '0')}%
           </span>
         </div>
 
         <div className="w-full h-[2px] bg-surface-container-lowest/10 relative overflow-hidden">
           <div
-            ref={progressBarRef}
-            className="absolute top-0 left-0 h-full w-full bg-accent origin-left scale-x-0"
-          ></div>
+            className="absolute top-0 left-0 h-full bg-accent transition-all duration-75 ease-out"
+            style={{ width: `${percent}%` }}
+          />
         </div>
       </div>
     </div>

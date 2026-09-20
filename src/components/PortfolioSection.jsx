@@ -1,6 +1,7 @@
 "use client";
 import { motion } from "framer-motion";
 import Link from "next/link";
+import Image from "next/image";
 import { ArrowUpRight } from "@phosphor-icons/react";
 
 const projects = [
@@ -22,11 +23,11 @@ export default function PortfolioSection() {
         {/* Header */}
         <div className="mb-10 sm:mb-16 md:mb-24 flex flex-col md:flex-row md:items-end justify-between gap-6 md:gap-8">
           <div>
-            <h2 className="text-xs sm:text-sm font-bold tracking-widest uppercase text-text-light mb-3 sm:mb-4">Selected Work</h2>
-            <h3 className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-heading font-bold text-on-surface leading-tight">
+            <span className="block text-xs sm:text-sm font-bold tracking-widest uppercase text-text-light mb-3 sm:mb-4">Selected Work</span>
+            <h2 className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-heading font-bold text-on-surface leading-tight">
               Digital products that <br className="hidden md:block" />
               perform and inspire.
-            </h3>
+            </h2>
             <p className="text-sm sm:text-base text-main-text font-medium mt-3 max-w-xl">
               Engineered for ambitious businesses across Ahmedabad, Gujarat, and nationwide.
             </p>
@@ -54,10 +55,13 @@ export default function PortfolioSection() {
               {/* Project Image */}
               <div className={`w-full lg:w-3/5 overflow-hidden rounded-xl bg-surface border border-outline-variant/60 ${index % 2 !== 0 ? 'lg:order-2' : ''}`}>
                 <Link href={project.link} className="block relative aspect-[16/10] sm:aspect-[4/3] w-full overflow-hidden">
-                  <motion.img 
+                  <Image 
                     src={project.image} 
                     alt={project.title}
-                    className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+                    fill
+                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 60vw, 700px"
+                    className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+                    loading="lazy"
                   />
                   {/* Overlay */}
                   <div className="absolute inset-0 bg-black/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
@@ -78,9 +82,9 @@ export default function PortfolioSection() {
                   <span className="w-8 sm:w-12 h-[1px] bg-outline-variant"></span>
                 </div>
                 
-                <h4 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-heading font-bold text-on-surface mb-3 sm:mb-6 transition-colors group-hover:text-primary">
+                <h3 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-heading font-bold text-on-surface mb-3 sm:mb-6 transition-colors group-hover:text-primary">
                   <Link href={project.link}>{project.title}</Link>
-                </h4>
+                </h3>
                 
                 <p className="text-sm sm:text-base md:text-lg lg:text-xl text-main-text mb-6 sm:mb-8 leading-relaxed max-w-md font-medium">
                   {project.desc}

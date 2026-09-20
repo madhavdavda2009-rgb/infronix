@@ -277,8 +277,10 @@ ${enableUpi && upiId ? `Pay via UPI VPA: ${upiId}\n` : ''}Online Invoice & Terms
             <div className="flex items-start gap-4">
               <div className="w-14 h-14 bg-slate-100 flex items-center justify-center p-2 rounded shrink-0 border border-slate-200">
                 <img 
-                  src="/light-web-logo.png" 
+                  src="/light-web-logo.webp" 
                   alt="InfronixWeb" 
+                  width={56}
+                  height={56}
                   className="w-full h-full object-contain"
                 />
               </div>
@@ -861,8 +863,10 @@ ${enableUpi && upiId ? `Pay via UPI VPA: ${upiId}\n` : ''}Online Invoice & Terms
                   <div className="flex items-start gap-3">
                     <div className="w-12 h-12 bg-slate-100 rounded-xl flex items-center justify-center p-2 shrink-0 border border-slate-200 shadow-xs">
                       <img 
-                        src="/light-web-logo.png" 
+                        src="/light-web-logo.webp" 
                         alt="InfronixWeb Logo" 
+                        width={48}
+                        height={48}
                         className="w-full h-full object-contain"
                       />
                     </div>

@@ -57,8 +57,11 @@ export default function AdminLogin() {
           {/* Exact Logo for light background */}
           <div className="flex justify-center mb-6">
             <img
-              src="/light-web-logo.png"
+              src="/light-web-logo.webp"
               alt="InfronixWeb"
+              width={160}
+              height={40}
+              style={{ width: 'auto', height: 'auto' }}
               className="h-9 w-auto object-contain"
             />
           </div>
