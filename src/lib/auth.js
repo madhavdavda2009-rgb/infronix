@@ -12,7 +12,25 @@ export function verifyJwtToken(token) {
 
 export function verifyAdminAuth(request) {
   try {
-    const token = request.cookies?.get ? request.cookies.get('admin_token')?.value : null;
+    let token = null;
+
+    if (request?.cookies?.get) {
+      token = request.cookies.get('admin_token')?.value;
+    }
+
+    if (!token && request?.headers) {
+      const authHeader = request.headers.get('authorization') || request.headers.get('Authorization');
+      if (authHeader && authHeader.startsWith('Bearer ')) {
+        token = authHeader.substring(7).trim();
+      }
+      if (!token) {
+        const cookieHeader = request.headers.get('cookie') || '';
+        const match = cookieHeader.match(/(?:^|;\s*)admin_token=([^;]+)/);
+        if (match) {
+          token = decodeURIComponent(match[1]);
+        }
+      }
+    }
 
     if (!token) {
       return null;

@@ -651,6 +651,14 @@ async function initializeSchema() {
       CREATE INDEX IF NOT EXISTS idx_founder_os_blogs_category ON founder_os_blogs(category_id);
       CREATE INDEX IF NOT EXISTS idx_founder_os_blog_cats_slug ON founder_os_blog_categories(slug);
       CREATE INDEX IF NOT EXISTS idx_founder_os_blog_tags_slug ON founder_os_blog_tags(slug);
+
+      ALTER TABLE founder_os_blogs
+      ALTER COLUMN cover_image_url TYPE TEXT,
+      ALTER COLUMN og_image_url TYPE TEXT,
+      ALTER COLUMN author_avatar_url TYPE TEXT;
+
+      ALTER TABLE founder_os_people
+      ALTER COLUMN profile_image_url TYPE TEXT;
     `);
 
     // Initialize Default Blog Categories if empty

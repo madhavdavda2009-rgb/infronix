@@ -105,8 +105,8 @@ export default function PeopleModule({ settings = {}, onRefreshDashboard }) {
     const file = e.target.files?.[0];
     if (!file) return;
 
-    if (file.size > 5 * 1024 * 1024) {
-      showToast('Image file size must be under 5MB', 'error');
+    if (file.size > 10 * 1024 * 1024) {
+      showToast('Image file size must be under 10MB', 'error');
       return;
     }
 
@@ -120,14 +120,15 @@ export default function PeopleModule({ settings = {}, onRefreshDashboard }) {
         body: formData
       });
       const data = await res.json();
-      if (data.success) {
+      if (data.success && data.imageUrl) {
         setProfileImageUrl(data.imageUrl);
         showToast('Profile image uploaded successfully', 'success');
       } else {
         showToast(data.error || 'Failed to upload image', 'error');
       }
     } catch (err) {
-      showToast('Error uploading image', 'error');
+      console.error('Image upload error:', err);
+      showToast('Error uploading image. Please try again.', 'error');
     } finally {
       setUploadingImage(false);
       if (fileInputRef.current) fileInputRef.current.value = '';
@@ -693,7 +694,7 @@ export default function PeopleModule({ settings = {}, onRefreshDashboard }) {
                           type="file"
                           ref={fileInputRef}
                           onChange={handleImageUpload}
-                          accept="image/jpeg,image/png,image/webp,image/avif"
+                          accept="image/*,.jpg,.jpeg,.png,.webp,.avif,.gif,.svg"
                           className="hidden"
                           id="team-photo-upload"
                         />

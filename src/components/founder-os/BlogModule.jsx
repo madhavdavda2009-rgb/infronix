@@ -96,6 +96,7 @@ export default function BlogModule({ onRefreshDashboard }) {
   // Image upload state
   const [uploadingImage, setUploadingImage] = useState(false);
   const fileInputRef = useRef(null);
+  const contentImageInputRef = useRef(null);
 
   // Category & Tag modal states
   const [showCategoryModal, setShowCategoryModal] = useState(false);
@@ -220,8 +221,8 @@ export default function BlogModule({ onRefreshDashboard }) {
     const file = e.target.files?.[0];
     if (!file) return;
 
-    if (file.size > 5 * 1024 * 1024) {
-      showToast('Image size exceeds 5 MB limit', 'error');
+    if (file.size > 10 * 1024 * 1024) {
+      showToast('Image size exceeds 10 MB limit', 'error');
       return;
     }
 
@@ -240,16 +241,52 @@ export default function BlogModule({ onRefreshDashboard }) {
         if (!coverImageAlt && postTitle) {
           setCoverImageAlt(postTitle);
         }
-        showToast('Cover photo uploaded', 'success');
+        showToast('Cover photo uploaded successfully', 'success');
       } else {
         showToast(data.error || 'Failed to upload photo', 'error');
       }
     } catch (err) {
       console.error('Image upload error:', err);
-      showToast('Image upload failed', 'error');
+      showToast('Image upload failed. Please try again.', 'error');
     } finally {
       setUploadingImage(false);
       if (fileInputRef.current) fileInputRef.current.value = '';
+    }
+  }
+
+  // Upload and Insert Content Image directly into Markdown editor
+  async function handleContentImageUpload(e) {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    if (file.size > 10 * 1024 * 1024) {
+      showToast('Image size exceeds 10 MB limit', 'error');
+      return;
+    }
+
+    setUploadingImage(true);
+    try {
+      const formData = new FormData();
+      formData.append('image', file);
+
+      const res = await fetch('/api/founder-os/blogs/upload-image', {
+        method: 'POST',
+        body: formData
+      });
+      const data = await res.json();
+      if (data.success && data.imageUrl) {
+        const cleanName = (file.name || 'Image').replace(/\.[^/.]+$/, '').replace(/[-_]/g, ' ');
+        insertMarkdown(`\n![${cleanName}](`, ')\n', data.imageUrl);
+        showToast('Image uploaded and inserted into article', 'success');
+      } else {
+        showToast(data.error || 'Failed to upload image', 'error');
+      }
+    } catch (err) {
+      console.error('Content image upload error:', err);
+      showToast('Content image upload failed', 'error');
+    } finally {
+      setUploadingImage(false);
+      if (contentImageInputRef.current) contentImageInputRef.current.value = '';
     }
   }
 
@@ -1062,7 +1099,7 @@ export default function BlogModule({ onRefreshDashboard }) {
                         <input
                           ref={fileInputRef}
                           type="file"
-                          accept="image/jpeg,image/png,image/webp,image/avif"
+                          accept="image/*,.jpg,.jpeg,.png,.webp,.avif,.gif,.svg"
                           onChange={handleImageUpload}
                           className="hidden"
                         />
@@ -1200,12 +1237,28 @@ export default function BlogModule({ onRefreshDashboard }) {
                         </button>
                         <button
                           type="button"
+                          onClick={() => contentImageInputRef.current?.click()}
+                          className="px-2 py-1 bg-white hover:bg-violet-50 text-violet-700 border border-violet-200 rounded-lg transition-colors cursor-pointer flex items-center gap-1 font-semibold text-[11px]"
+                          title="Upload Image from Computer into Article"
+                        >
+                          <UploadSimple size={14} weight="bold" />
+                          <span>Upload Image</span>
+                        </button>
+                        <button
+                          type="button"
                           onClick={() => insertMarkdown('![Image description](', ')', 'https://...')}
                           className="p-1.5 hover:bg-white hover:text-violet-600 text-slate-700 rounded-lg transition-colors cursor-pointer"
-                          title="Insert Image"
+                          title="Insert Image by URL"
                         >
                           <ImageIcon size={16} />
                         </button>
+                        <input
+                          ref={contentImageInputRef}
+                          type="file"
+                          accept="image/*,.jpg,.jpeg,.png,.webp,.avif,.gif,.svg"
+                          onChange={handleContentImageUpload}
+                          className="hidden"
+                        />
                         <button
                           type="button"
                           onClick={() => insertMarkdown('\n---\n', '', '')}
