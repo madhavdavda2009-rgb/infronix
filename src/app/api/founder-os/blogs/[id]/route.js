@@ -3,7 +3,7 @@ import { revalidatePath } from 'next/cache';
 import { query, initFounderOSDb } from '@/lib/founder_os_db';
 import { verifyAdminAuth } from '@/lib/auth';
 import { logActivity } from '@/lib/audit_logger';
-import { calculateReadingTime } from '@/lib/markdown_parser';
+import { calculateReadingTime } from '@/lib/blog_utils';
 import { syncPublicSitemapXml } from '@/lib/sitemap_generator';
 
 function generateSlug(text) {

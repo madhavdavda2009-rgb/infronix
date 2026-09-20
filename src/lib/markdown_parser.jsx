@@ -1,88 +1,28 @@
-"use client";
-import React, { useState } from 'react';
+import React from 'react';
 import { 
-  Check, 
-  Copy, 
   Info, 
   Lightbulb, 
   Warning, 
   WarningCircle, 
   ShieldCheck,
   ArrowSquareOut
-} from '@phosphor-icons/react';
+} from '@phosphor-icons/react/dist/ssr';
+import CopyButton from '@/components/CopyButton';
+import { calculateReadingTime, stripMarkdown } from './blog_utils.js';
 
-/**
- * Calculates reading time in minutes based on ~200 words per minute average.
- */
-export function calculateReadingTime(text) {
-  if (!text || typeof text !== 'string') return 1;
-  const words = text.trim().split(/\s+/).filter(Boolean);
-  const wordCount = words.length;
-  return Math.max(1, Math.ceil(wordCount / 200));
-}
-
-/**
- * Strips markdown to pure plain text for excerpts or SEO summaries.
- */
-export function stripMarkdown(markdown) {
-  if (!markdown) return '';
-  return markdown
-    .replace(/<[^>]*>/g, '') // remove HTML tags
-    .replace(/^#{1,6}\s+/gm, '') // headings
-    .replace(/!\[(.*?)\]\(.*?\)/g, '$1') // images
-    .replace(/\[(.*?)\]\(.*?\)/g, '$1') // links
-    .replace(/(\*\*\*|___)(.*?)\1/g, '$2') // bold italic
-    .replace(/(\*\*|__)(.*?)\1/g, '$2') // bold
-    .replace(/(\*|_)(.*?)\1/g, '$2') // italic
-    .replace(/~~(.*?)~~/g, '$1') // strikethrough
-    .replace(/==(.*?)==/g, '$1') // highlight
-    .replace(/`{3}[\s\S]*?`{3}/g, '') // code blocks
-    .replace(/`(.+?)`/g, '$1') // inline code
-    .replace(/^>\s+/gm, '') // quotes
-    .replace(/^[-*+]\s+/gm, '') // lists
-    .replace(/^\d+\.\s+/gm, '') // numbered lists
-    .replace(/\|.*?\|/g, ' ') // tables
-    .replace(/\n+/g, ' ') // whitespace
-    .trim();
-}
+export { calculateReadingTime, stripMarkdown };
 
 /**
  * Code Block with Copy Button
  */
 function CodeBlock({ code, language }) {
-  const [copied, setCopied] = useState(false);
-
-  const handleCopy = () => {
-    if (typeof navigator !== 'undefined' && navigator.clipboard) {
-      navigator.clipboard.writeText(code);
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
-    }
-  };
-
   return (
     <div className="my-6 rounded-2xl overflow-hidden border border-slate-800 bg-[#0d1117] text-slate-100 shadow-lg">
       <div className="flex items-center justify-between px-4 py-2.5 bg-[#161b22] border-b border-slate-800 text-xs">
         <span className="font-mono text-slate-400 font-bold uppercase tracking-wider">
           {language || 'code'}
         </span>
-        <button
-          type="button"
-          onClick={handleCopy}
-          className="flex items-center gap-1 px-2.5 py-1 rounded-lg bg-slate-800/80 hover:bg-slate-700 text-slate-300 hover:text-white transition-colors cursor-pointer text-[11px]"
-        >
-          {copied ? (
-            <>
-              <Check size={13} className="text-emerald-400" />
-              <span className="text-emerald-400 font-semibold">Copied!</span>
-            </>
-          ) : (
-            <>
-              <Copy size={13} />
-              <span>Copy</span>
-            </>
-          )}
-        </button>
+        <CopyButton text={code} />
       </div>
       <pre className="p-4 sm:p-5 overflow-x-auto text-xs sm:text-sm font-mono leading-relaxed text-slate-200">
         <code>{code}</code>
@@ -350,7 +290,6 @@ export function renderInline(text, keyPrefix = 'in') {
       tokens.push(remaining);
       break;
     } else if (nextSpecial === 0) {
-      // If at special char but didn't match any rule above, push char and step forward
       tokens.push(remaining[0]);
       remaining = remaining.slice(1);
     } else {
@@ -422,10 +361,9 @@ function parseTable(lines, keyPrefix) {
 }
 
 /**
- * Universal Safe Markdown & HTML Body Renderer
+ * Universal Safe Markdown & HTML Body Renderer (Universal component)
  */
 export function SafeMarkdownRenderer({ content, fallbackExcerpt = '', className = '' }) {
-  // Graceful fallback if content is missing
   if (!content || (typeof content === 'string' && !content.trim())) {
     if (fallbackExcerpt && fallbackExcerpt.trim()) {
       return (
@@ -621,7 +559,6 @@ export function SafeMarkdownRenderer({ content, fallbackExcerpt = '', className 
       elements.push(
         <ul key={`ul-${i}`} className="my-5 pl-6 sm:pl-8 space-y-2.5 list-disc text-main-text text-sm sm:text-base marker:text-primary leading-relaxed">
           {listItems.map((item, lIdx) => {
-            // Checklist item check: [ ] or [x]
             const checkMatch = item.match(/^\[([ xX])\]\s+(.*)$/);
             if (checkMatch) {
               const isChecked = checkMatch[1].toLowerCase() === 'x';
