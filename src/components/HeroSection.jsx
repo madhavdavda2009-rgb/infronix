@@ -5,15 +5,21 @@ import Image from "next/image";
 import { ArrowRight, Code, ChartLineUp, Robot } from "@phosphor-icons/react";
 import heroImg from "@/assets/hero-section.webp";
 import Breadcrumb from "@/components/Breadcrumb";
+import { useIntro } from "@/context/IntroContext";
 
 export default function HeroSection() {
+  const { introPhase, isIntroActive } = useIntro();
+
+  const isPreloading = isIntroActive && introPhase === 'loading';
+  const isImageHidden = isIntroActive && introPhase !== 'completed';
+
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.1,
-        delayChildren: 0.2
+        staggerChildren: 0.12,
+        delayChildren: isIntroActive ? 0.35 : 0.1
       }
     }
   };
@@ -28,21 +34,21 @@ export default function HeroSection() {
   };
 
   const imageVariants = {
-    hidden: { opacity: 0, scale: 0.92, y: 20 },
+    hidden: { opacity: 0, scale: 0.94, y: 20 },
     visible: {
       opacity: 1,
       scale: 1,
       y: 0,
-      transition: { duration: 0.9, ease: [0.16, 1, 0.3, 1], delay: 0.3 }
+      transition: { duration: 0.9, ease: [0.16, 1, 0.3, 1], delay: 0.2 }
     }
   };
 
   return (
     <section className="relative w-full flex items-center justify-center pt-6 sm:pt-8 md:pt-10 lg:pt-12 pb-12 sm:pb-16 md:pb-20 overflow-hidden bg-surface-container-lowest">
-      {/* Background subtle elements */}
+      {/* Background subtle elements - Warm Green & Purple Palette */}
       <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
-        <div className="absolute top-1/4 right-1/4 w-[300px] sm:w-[500px] h-[300px] sm:h-[500px] bg-soft-violet rounded-full blur-[80px] sm:blur-[100px] opacity-40 mix-blend-multiply animate-pulse" style={{ animationDuration: '8s' }} />
-        <div className="absolute bottom-1/4 left-1/4 w-[250px] sm:w-[400px] h-[250px] sm:h-[400px] bg-[#00F5D4]/20 rounded-full blur-[60px] sm:blur-[80px] opacity-60 mix-blend-multiply" />
+        <div className="absolute top-1/4 right-1/4 w-[300px] sm:w-[500px] h-[300px] sm:h-[500px] bg-[#8B5CF6]/15 rounded-full blur-[80px] sm:blur-[110px] mix-blend-multiply animate-pulse" style={{ animationDuration: '8s' }} />
+        <div className="absolute bottom-1/4 left-1/4 w-[250px] sm:w-[400px] h-[250px] sm:h-[400px] bg-[#10B981]/15 rounded-full blur-[60px] sm:blur-[90px] mix-blend-multiply" />
       </div>
 
       <div className="max-w-[1440px] w-full mx-auto px-4 sm:px-6 md:px-12 relative z-10">
@@ -50,10 +56,12 @@ export default function HeroSection() {
 
           {/* Left Column: Text & Content (7 Cols) - order-2 on mobile, order-1 on desktop */}
           <motion.div
-            className="order-2 lg:order-1 lg:col-span-7 xl:col-span-7"
+            className={`order-2 lg:order-1 lg:col-span-7 xl:col-span-7 transition-all duration-700 ${
+              isPreloading ? 'opacity-0 translate-y-6 pointer-events-none' : 'opacity-100 translate-y-0'
+            }`}
             variants={containerVariants}
-            initial={false}
-            animate="visible"
+            initial={isPreloading ? "hidden" : false}
+            animate={isPreloading ? "hidden" : "visible"}
           >
             <Breadcrumb />
 
@@ -67,7 +75,7 @@ export default function HeroSection() {
               <span className="text-text-light">Built to move your</span><br />
               <span className="relative inline-block">
                 business forward.
-                <svg className="absolute -bottom-1 sm:-bottom-2 left-0 w-full h-2 sm:h-3 text-primary" viewBox="0 0 100 10" preserveAspectRatio="none">
+                <svg className="absolute -bottom-1 sm:-bottom-2 left-0 w-full h-2 sm:h-3 text-primary" viewBox="0 0 100 10" preserveAspectRatio="none" aria-hidden="true">
                   <path d="M0 5 Q 50 10 100 5" fill="transparent" stroke="currentColor" strokeWidth="4" />
                 </svg>
               </span>
@@ -85,7 +93,7 @@ export default function HeroSection() {
             <motion.div variants={itemVariants} className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 sm:gap-6 w-full sm:w-auto">
               <Link
                 href="/start-project"
-                className="group relative flex items-center justify-center gap-2 bg-primary text-white font-bold text-sm sm:text-base md:text-lg px-6 py-3.5 sm:px-8 sm:py-4 rounded-md overflow-hidden transition-transform hover:scale-[1.02] active:scale-[0.98] shadow-[0_0_20px_rgba(139, 92, 246,0.2)] text-center"
+                className="group relative flex items-center justify-center gap-2 bg-primary text-white font-bold text-sm sm:text-base md:text-lg px-6 py-3.5 sm:px-8 sm:py-4 rounded-md overflow-hidden transition-transform hover:scale-[1.02] active:scale-[0.98] shadow-[0_0_20px_rgba(139,92,246,0.2)] text-center"
               >
                 <span className="relative z-10 flex items-center justify-center gap-2">
                   Get a Quote <ArrowRight className="group-hover:translate-x-1 transition-transform" />
@@ -118,19 +126,21 @@ export default function HeroSection() {
 
           {/* Right Column: Hero Visual Photo (5 Cols) - order-1 on mobile, order-2 on desktop */}
           <motion.div
+            id="hero-image-target"
             className="order-1 lg:order-2 lg:col-span-5 xl:col-span-5 flex justify-center items-center relative mb-4 sm:mb-6 lg:mb-0"
             variants={imageVariants}
-            initial={false}
-            animate="visible"
+            initial={isPreloading ? "hidden" : false}
+            animate={isPreloading ? "hidden" : "visible"}
           >
             <div className="relative w-full max-w-[320px] sm:max-w-[420px] lg:max-w-[480px] mx-auto flex items-center justify-center">
 
-              {/* Background gradient decorative glow */}
-              <div className="absolute inset-0 bg-gradient-to-tr from-primary/25 via-soft-violet/40 to-[#00F5D4]/20 rounded-full blur-3xl transform scale-90 opacity-60 pointer-events-none" />
+              {/* Background gradient decorative glow - Green and Purple brand mesh */}
+              <div className="absolute inset-0 bg-gradient-to-tr from-[#10B981]/20 via-[#8B5CF6]/30 to-[#6D28D9]/20 rounded-full blur-3xl transform scale-90 opacity-60 pointer-events-none" />
 
               {/* Clean Hero Person Image without overlays or borders */}
               <div className="relative w-full flex items-center justify-center">
                 <Image
+                  id="hero-image-element"
                   src={heroImg}
                   alt="InfronixWeb Digital Marketing Hero"
                   className="w-full h-auto max-h-[420px] sm:max-h-[500px] lg:max-h-[540px] object-contain drop-shadow-2xl"
@@ -139,6 +149,10 @@ export default function HeroSection() {
                   loading="eager"
                   sizes="(max-width: 640px) 320px, (max-width: 1024px) 420px, 480px"
                   quality={90}
+                  style={{
+                    opacity: isImageHidden ? 0 : 1,
+                    transition: 'opacity 0.2s ease',
+                  }}
                 />
               </div>
 

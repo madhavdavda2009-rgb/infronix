@@ -4,6 +4,7 @@ import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import ErrorBoundary from '@/components/ErrorBoundary';
 import { ToastProvider } from '@/context/ToastContext';
+import { IntroProvider } from '@/context/IntroContext';
 import Preloader from '@/components/Preloader';
 import SmoothScroll from '@/components/SmoothScroll';
 import { Inter, Outfit } from 'next/font/google';
@@ -219,22 +220,24 @@ export default function RootLayout({ children }) {
         />
       </head>
       <body className={`${inter.variable} ${outfit.variable} bg-[var(--color-light-bg)] text-[var(--color-deep-space)] antialiased`}>
-        <Preloader />
-        <ErrorBoundary>
-          <ToastProvider>
-            <SmoothScroll>
-              <div className="flex flex-col min-h-screen relative">
-                <Header />
-                <div className="flex-grow">
-                  {children}
+        <IntroProvider>
+          <Preloader />
+          <ErrorBoundary>
+            <ToastProvider>
+              <SmoothScroll>
+                <div className="flex flex-col min-h-screen relative">
+                  <Header />
+                  <div className="flex-grow">
+                    {children}
+                  </div>
+                  <Footer />
+                  <WhatsAppWidget />
+                  <CookieBanner />
                 </div>
-                <Footer />
-                <WhatsAppWidget />
-                <CookieBanner />
-              </div>
-            </SmoothScroll>
-          </ToastProvider>
-        </ErrorBoundary>
+              </SmoothScroll>
+            </ToastProvider>
+          </ErrorBoundary>
+        </IntroProvider>
         <GoogleAnalytics gaId={gaId} />
       </body>
     </html>

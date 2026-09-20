@@ -5,6 +5,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import { motion, AnimatePresence, useScroll, useTransform } from 'framer-motion';
+import { useIntro } from '@/context/IntroContext';
 
 export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -12,6 +13,7 @@ export default function Header() {
   const [digitalMarketingOpen, setDigitalMarketingOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const pathname = usePathname();
+  const { introPhase, isIntroActive } = useIntro();
   const { scrollYProgress } = useScroll();
   const scaleX = useTransform(scrollYProgress, [0, 1], [0, 1]);
 
@@ -60,11 +62,19 @@ export default function Header() {
     return null;
   }
 
+  const isPreloading = isIntroActive && introPhase === 'loading';
+  const isTransitioning = isIntroActive && introPhase === 'transitioning';
+  const isLogoHidden = isIntroActive && introPhase !== 'completed';
+
   return (
     <>
-      <div className="fixed top-0 w-full z-50 flex flex-col">
+      <div className={`fixed top-0 w-full z-50 flex flex-col transition-all duration-700 ease-out ${
+        isPreloading ? 'opacity-0 -translate-y-full pointer-events-none' : 'opacity-100 translate-y-0'
+      }`}>
         {/* Top Info Bar */}
-        <div className={`hidden lg:flex text-[#A0AEC0] text-xs py-2 w-full transition-colors duration-300 ${scrolled ? 'bg-[#0B0D12]/95 backdrop-blur-md' : 'bg-[#0B0D12]'}`}>
+        <div className={`hidden lg:flex text-[#A0AEC0] text-xs py-2 w-full transition-all duration-700 ${
+          isPreloading ? 'opacity-0 -translate-y-4' : 'opacity-100 translate-y-0'
+        } ${scrolled ? 'bg-[#0B0D12]/95 backdrop-blur-md' : 'bg-[#0B0D12]'}`}>
           <div className="max-w-[1440px] mx-auto px-6 md:px-12 w-full flex justify-between items-center">
             <div className="flex items-center gap-6">
               <a href="mailto:support@infronixweb.in" className="flex items-center gap-2 hover:text-white transition-colors">
@@ -101,18 +111,26 @@ export default function Header() {
             {/* Logo + Brand Title */}
             <Link href="/" className="flex items-center gap-3 group shrink-0" aria-label="InfronixWeb Home">
               <Image
+                id="header-logo-image"
                 src="/dark-web-logo.webp"
                 alt="InfronixWeb Digital Marketing"
                 width={160}
                 height={48}
                 priority
-                style={{ width: 'auto', height: 'auto' }}
+                style={{
+                  width: 'auto',
+                  height: 'auto',
+                  opacity: isLogoHidden ? 0 : 1,
+                  transition: 'opacity 0.2s ease',
+                }}
                 className="h-8 sm:h-10 md:h-12 w-auto object-contain"
               />
             </Link>
 
             {/* Right side: CTA + Taste-Driven Hamburger */}
-            <div className="flex items-center gap-3 sm:gap-4">
+            <div className={`flex items-center gap-3 sm:gap-4 transition-all duration-700 ${
+              isPreloading ? 'opacity-0 translate-y-2' : 'opacity-100 translate-y-0'
+            }`}>
               <Link
                 href="/start-project"
                 className="hidden sm:flex items-center justify-center bg-primary text-white font-normal text-xs sm:text-sm px-4 sm:px-6 py-2 sm:py-2.5 rounded-lg hover:bg-primary-dark transition-all hover:scale-[1.02] active:scale-[0.98] shadow-[0_0_15px_rgba(139,92,246,0.3)] tracking-wide"
