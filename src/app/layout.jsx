@@ -1,14 +1,16 @@
 import './globals.css';
+import dynamic from 'next/dynamic';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
-import WhatsAppWidget from '@/components/WhatsAppWidget';
-import CookieBanner from '@/components/CookieBanner';
 import ErrorBoundary from '@/components/ErrorBoundary';
 import { ToastProvider } from '@/context/ToastContext';
 import Preloader from '@/components/Preloader';
 import SmoothScroll from '@/components/SmoothScroll';
 import { Inter, Outfit } from 'next/font/google';
 import Script from 'next/script';
+
+const WhatsAppWidget = dynamic(() => import('@/components/WhatsAppWidget'));
+const CookieBanner = dynamic(() => import('@/components/CookieBanner'));
 
 const inter = Inter({ 
   subsets: ['latin'], 

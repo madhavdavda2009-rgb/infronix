@@ -82,7 +82,7 @@ export default function Header() {
             </div>
             <div className="flex items-center gap-4">
               <span className="flex items-center gap-2 font-medium text-white/90">
-                <Clock size={14} weight="bold" className="text-primary" /> Mon - Sat: 9:00 AM - 8:00 PM
+                <Clock size={14} weight="bold" className="text-violet-400" /> Mon - Sat: 9:00 AM - 8:00 PM
               </span>
             </div>
           </div>

@@ -38,7 +38,7 @@ export default function HeroSection() {
   };
 
   return (
-    <section className="relative w-full flex items-center justify-center pt-2 sm:pt-4 md:pt-6 lg:pt-8 pb-10 sm:pb-14 overflow-hidden bg-surface-container-lowest">
+    <section className="relative w-full flex items-center justify-center pt-6 sm:pt-8 md:pt-10 lg:pt-12 pb-12 sm:pb-16 md:pb-20 overflow-hidden bg-surface-container-lowest">
       {/* Background subtle elements */}
       <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
         <div className="absolute top-1/4 right-1/4 w-[300px] sm:w-[500px] h-[300px] sm:h-[500px] bg-soft-violet rounded-full blur-[80px] sm:blur-[100px] opacity-40 mix-blend-multiply animate-pulse" style={{ animationDuration: '8s' }} />
@@ -48,9 +48,9 @@ export default function HeroSection() {
       <div className="max-w-[1440px] w-full mx-auto px-4 sm:px-6 md:px-12 relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-8 xl:gap-12 items-center">
 
-          {/* Left Column: Text & Content (7 Cols) */}
+          {/* Left Column: Text & Content (7 Cols) - order-2 on mobile, order-1 on desktop */}
           <motion.div
-            className="lg:col-span-7 xl:col-span-7"
+            className="order-2 lg:order-1 lg:col-span-7 xl:col-span-7"
             variants={containerVariants}
             initial={false}
             animate="visible"
@@ -116,9 +116,9 @@ export default function HeroSection() {
 
           </motion.div>
 
-          {/* Right Column: Hero Visual Photo (5 Cols) */}
+          {/* Right Column: Hero Visual Photo (5 Cols) - order-1 on mobile, order-2 on desktop */}
           <motion.div
-            className="lg:col-span-5 xl:col-span-5 flex justify-center items-center relative mt-2 lg:mt-0"
+            className="order-1 lg:order-2 lg:col-span-5 xl:col-span-5 flex justify-center items-center relative mb-4 sm:mb-6 lg:mb-0"
             variants={imageVariants}
             initial={false}
             animate="visible"

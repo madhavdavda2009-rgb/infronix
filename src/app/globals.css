@@ -2,9 +2,9 @@
 
 @theme {
   /* Neon Digital Agency Palette */
-  --color-primary: #8B5CF6; /* Electric Violet */
-  --color-primary-dark: #7C3AED;
-  --color-primary-glow: rgba(139, 92, 246, 0.4);
+  --color-primary: #6D28D9; /* Deep Vibrant Violet (WCAG AAA 6.7:1 contrast) */
+  --color-primary-dark: #5B21B6;
+  --color-primary-glow: rgba(109, 40, 217, 0.4);
   
   --color-accent: #00F5D4; /* Neon Cyan */
   --color-accent-alt: #C7FF3D; /* Acid Lime */

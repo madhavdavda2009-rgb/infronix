@@ -103,7 +103,7 @@ export default function Footer() {
                   +91 91062 91540
                 </a>
               </li>
-              <li className="text-xs text-primary font-medium">
+              <li className="text-xs text-slate-300 font-medium">
                 Mon – Sat: 9:00 AM to 8:00 PM
               </li>
               <li className="text-[#9CA3AF] mt-1">
