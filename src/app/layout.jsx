@@ -58,6 +58,14 @@ export default function RootLayout({ children }) {
                 { '@type': 'Organization', '@id': SITE_URL + '/#organization', name: 'InfronixWeb', url: SITE_URL,
                   logo: SITE_URL + '/web-logo.webp', description: 'An Ahmedabad-based digital agency helping businesses build, grow and automate their digital presence.',
                   telephone: '+91-6355792936', email: 'support@infronixweb.in',
+                  address: {
+                    '@type': 'PostalAddress',
+                    streetAddress: 'Shree Eklingji Residency 2',
+                    addressLocality: 'Sanand, Ahmedabad',
+                    addressRegion: 'Gujarat',
+                    postalCode: '382110',
+                    addressCountry: 'IN'
+                  },
                   areaServed: { '@type': 'City', name: 'Ahmedabad' },
                   sameAs: ['https://www.instagram.com/infronixwebagency2026', 'https://github.com/madhavdavda2009-rgb'] },
                 { '@type': 'WebSite', '@id': SITE_URL + '/#website', url: SITE_URL, name: 'InfronixWeb', publisher: { '@id': SITE_URL + '/#organization' } }
