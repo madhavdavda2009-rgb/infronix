@@ -1,14 +1,9 @@
+import { pageMetadata } from '@/lib/site-seo';
 import ConsultationForm from '@/components/ConsultationForm';
 import FAQSection from '@/components/FAQSection';
 import Breadcrumb from '@/components/Breadcrumb';
 
-export const metadata = {
-  title: 'Contact InfronixWeb | Web Agency in Ahmedabad',
-  description: 'Contact InfronixWeb Digital Marketing. We serve clients in Ahmedabad, Gujarat, and globally with premium web development and SEO services.',
-  alternates: {
-    canonical: 'https://www.infronixweb.in/contact'
-  }
-};
+export const metadata = pageMetadata("Contact Our Digital Agency in Ahmedabad", "Discuss websites, SEO, digital marketing, ads or automation with InfronixWeb in Ahmedabad. Tell us what your business needs.", '/contact');
 
 export default function ContactPage() {
   return (

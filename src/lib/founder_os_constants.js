@@ -60,7 +60,7 @@ export const DEFAULT_STAGE_TASKS = {
     { title: 'Get client sign-off on visual design system', priority: 'Urgent' }
   ],
   'Development': [
-    { title: 'Setup Next.js codebase & component structure', priority: 'High' },
+    { title: 'Setup web app codebase & component structure', priority: 'High' },
     { title: 'Build core pages & layout components', priority: 'High' },
     { title: 'Implement responsive mobile navigation & styling', priority: 'High' },
     { title: 'Integrate forms, interactive widgets & dynamic features', priority: 'Medium' }

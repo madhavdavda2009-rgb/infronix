@@ -6,6 +6,13 @@ import { CaretRight, House } from '@phosphor-icons/react';
 const ROUTE_LABELS = {
   '': 'Home',
   'web-development': 'Web Development',
+  'services': 'Services',
+  'ai-chatbot': 'AI Chatbots',
+  'crm-automation': 'CRM Automation',
+  'whatsapp-automation': 'WhatsApp Automation',
+  'google-ads': 'Google Ads',
+  'meta-ads': 'Meta Ads',
+  'performance-marketing': 'Performance Marketing',
   'seo': 'SEO Optimization',
   'ai-automation': 'AI Automation',
   'digital-marketing': 'Digital Marketing',

@@ -1,15 +1,10 @@
+import { pageMetadata } from '@/lib/site-seo';
 import AboutSection from '@/components/AboutSection';
 import AboutTeamSection from '@/components/AboutTeamSection';
 import CTASection from '@/components/CTASection';
 import Breadcrumb from '@/components/Breadcrumb';
 
-export const metadata = {
-  title: 'About Us | InfronixWeb Digital Marketing',
-  description: 'Learn about InfronixWeb Digital Marketing. Based in Sanand, Ahmedabad, we are a collective of engineers dedicated to technical excellence and digital brilliance.',
-  alternates: {
-    canonical: 'https://www.infronixweb.in/about'
-  }
-};
+export const metadata = pageMetadata("About Our Ahmedabad Digital Agency", "Meet InfronixWeb, an Ahmedabad-based agency helping businesses with websites, SEO, digital marketing, advertising and automation.", '/about');
 
 export default function AboutPage() {
   return (

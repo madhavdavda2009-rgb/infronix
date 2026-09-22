@@ -4,6 +4,7 @@ import { House, ArrowRight, EnvelopeSimple, Compass } from '@phosphor-icons/reac
 export const metadata = {
   title: '404 - Page Not Found',
   description: "The page you are looking for doesn't exist or has been moved.",
+  alternates: { canonical: null },
   robots: {
     index: false,
     follow: true,

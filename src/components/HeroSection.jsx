@@ -56,7 +56,7 @@ export default function HeroSection() {
 
           {/* Left Column: Text & Content (7 Cols) - order-2 on mobile, order-1 on desktop */}
           <motion.div
-            className={`order-2 lg:order-1 lg:col-span-7 xl:col-span-7 transition-all duration-700 ${
+            className={`order-1 lg:col-span-7 xl:col-span-7 transition-all duration-700 ${
               isPreloading ? 'opacity-0 translate-y-6 pointer-events-none' : 'opacity-100 translate-y-0'
             }`}
             variants={containerVariants}
@@ -70,11 +70,11 @@ export default function HeroSection() {
               variants={itemVariants}
               className="text-3xl sm:text-5xl md:text-6xl lg:text-6xl xl:text-7xl leading-[1.1] sm:leading-[1.05] font-heading font-bold text-on-surface tracking-tight mb-5 sm:mb-7"
             >
-              Websites. SEO.<br />
-              AI Automation.<br />
-              <span className="text-text-light">Built to move your</span><br />
+              Build, Grow &amp;<br />
+              Automate<br />
+              <span className="text-text-light">your business with</span><br />
               <span className="relative inline-block">
-                business forward.
+                InfronixWeb.
                 <svg className="absolute -bottom-1 sm:-bottom-2 left-0 w-full h-2 sm:h-3 text-primary" viewBox="0 0 100 10" preserveAspectRatio="none" aria-hidden="true">
                   <path d="M0 5 Q 50 10 100 5" fill="transparent" stroke="currentColor" strokeWidth="4" />
                 </svg>
@@ -86,7 +86,7 @@ export default function HeroSection() {
               variants={itemVariants}
               className="text-base sm:text-lg md:text-xl text-main-text max-w-2xl mb-7 sm:mb-9 font-medium leading-relaxed"
             >
-              We build custom, fast-loading websites, help more customers find you on Google, and automate repetitive tasks to grow your business.
+              Your digital agency in Ahmedabad for websites, SEO, digital marketing and AI automation. We help businesses build their online presence, reach customers and simplify everyday work.
             </motion.p>
 
             {/* CTAs */}
@@ -115,7 +115,7 @@ export default function HeroSection() {
                 <Code size={18} weight="bold" className="text-primary shrink-0" /> Custom Websites
               </div>
               <div className="flex items-center gap-2 text-xs sm:text-sm font-bold text-on-surface tracking-wider uppercase">
-                <ChartLineUp size={18} weight="bold" className="text-primary shrink-0" /> Google Search Growth
+                <ChartLineUp size={18} weight="bold" className="text-primary shrink-0" /> SEO & Digital Marketing
               </div>
               <div className="flex items-center gap-2 text-xs sm:text-sm font-bold text-on-surface tracking-wider uppercase">
                 <Robot size={18} weight="bold" className="text-primary shrink-0" /> Smart Automations
@@ -127,7 +127,7 @@ export default function HeroSection() {
           {/* Right Column: Hero Visual Photo (5 Cols) - order-1 on mobile, order-2 on desktop */}
           <motion.div
             id="hero-image-target"
-            className="order-1 lg:order-2 lg:col-span-5 xl:col-span-5 flex justify-center items-center relative mb-4 sm:mb-6 lg:mb-0"
+            className="order-2 lg:col-span-5 xl:col-span-5 flex justify-center items-center relative mb-4 sm:mb-6 lg:mb-0"
             variants={imageVariants}
             initial={isPreloading ? "hidden" : false}
             animate={isPreloading ? "hidden" : "visible"}

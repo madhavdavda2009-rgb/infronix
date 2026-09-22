@@ -1,29 +1,73 @@
+import { query } from '@/lib/founder_os_db';
+import { pageMetadata } from '@/lib/site-seo';
 import CTASection from '@/components/CTASection';
 import Breadcrumb from '@/components/Breadcrumb';
 import BlogListClient from '@/components/BlogListClient';
 
-export const metadata = {
-  title: 'Blog & Insights | Web Development, Local SEO & AI Automation | InfronixWeb',
-  description: 'Explore actionable insights, engineering guides, and digital growth strategies for custom websites, Google Maps visibility, and AI automation.',
-  alternates: {
-    canonical: 'https://www.infronixweb.in/blog'
-  },
-  openGraph: {
-    title: 'Blog & Insights | InfronixWeb',
-    description: 'Actionable articles, guides, and practical insights on custom website creation, local Google search growth, and smart business automations.',
-    url: 'https://www.infronixweb.in/blog',
-    siteName: 'InfronixWeb',
-    locale: 'en_IN',
-    type: 'website'
-  },
-  twitter: {
-    card: 'summary_large_image',
-    title: 'Blog & Insights | InfronixWeb',
-    description: 'Actionable articles, guides, and practical insights on custom website creation, local Google search growth, and smart business automations.'
-  }
-};
+export const revalidate = 300; // 5-minute ISR cache for fast page delivery
 
-export default function BlogPage() {
+export const metadata = pageMetadata(
+  "Insights on Websites, SEO, Marketing & Automation",
+  "Practical insights on websites, SEO, digital marketing and business automation for Ahmedabad businesses.",
+  '/blog'
+);
+
+export default async function BlogPage() {
+  let initialPosts = [];
+  let initialCategories = [];
+  let initialTags = [];
+  let initialError = false;
+
+  try {
+    const [postsRes, catsRes, tagsRes] = await Promise.all([
+      query(`
+        SELECT 
+          b.id, 
+          b.title, 
+          b.slug, 
+          b.excerpt, 
+          b.cover_image_url, 
+          b.cover_image_alt, 
+          b.author_name, 
+          b.author_avatar_url, 
+          b.reading_time_minutes, 
+          b.featured, 
+          COALESCE(b.published_at, b.scheduled_for, b.created_at) AS published_at, 
+          c.name AS category_name,
+          c.slug AS category_slug
+        FROM founder_os_blogs b 
+        LEFT JOIN founder_os_blog_categories c ON c.id = b.category_id
+        WHERE b.status = 'Published' OR (b.status = 'Scheduled' AND b.scheduled_for <= NOW())
+        ORDER BY b.featured DESC, COALESCE(b.published_at, b.scheduled_for, b.created_at) DESC 
+        LIMIT 30
+      `),
+      query(`
+        SELECT c.id, c.name, c.slug, c.description, COUNT(b.id)::int AS post_count
+        FROM founder_os_blog_categories c
+        JOIN founder_os_blogs b ON b.category_id = c.id
+        WHERE (b.status = 'Published' OR (b.status = 'Scheduled' AND b.scheduled_for <= NOW()))
+        GROUP BY c.id
+        ORDER BY c.display_order ASC, c.name ASC
+      `),
+      query(`
+        SELECT t.id, t.name, t.slug, COUNT(pt.post_id)::int AS post_count
+        FROM founder_os_blog_tags t
+        JOIN founder_os_blog_posts_tags pt ON pt.tag_id = t.id
+        JOIN founder_os_blogs b ON b.id = pt.post_id
+        WHERE (b.status = 'Published' OR (b.status = 'Scheduled' AND b.scheduled_for <= NOW()))
+        GROUP BY t.id
+        ORDER BY t.name ASC
+      `)
+    ]);
+
+    initialPosts = JSON.parse(JSON.stringify(postsRes.rows || []));
+    initialCategories = JSON.parse(JSON.stringify(catsRes.rows || []));
+    initialTags = JSON.parse(JSON.stringify(tagsRes.rows || []));
+  } catch (err) {
+    console.error('Failed to load initial blog data:', err?.message);
+    initialError = true;
+  }
+
   return (
     <>
       <main className="w-full pt-20 sm:pt-28 md:pt-32 min-h-screen bg-surface" id="main-content">
@@ -46,7 +90,12 @@ export default function BlogPage() {
         </section>
 
         {/* Dynamic Database-Driven Articles Section */}
-        <BlogListClient />
+        <BlogListClient 
+          initialPosts={initialPosts} 
+          initialCategories={initialCategories}
+          initialTags={initialTags}
+          initialError={initialError} 
+        />
 
         <CTASection />
       </main>

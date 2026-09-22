@@ -1,12 +1,11 @@
 import { NextResponse } from 'next/server';
-import { query, initFounderOSDb } from '@/lib/founder_os_db';
+import { query } from '@/lib/founder_os_db';
 
 export const dynamic = 'force-dynamic';
 
 export async function GET(request) {
   try {
-    await initFounderOSDb();
-    const { searchParams } = new URL(request.url);
+      const { searchParams } = new URL(request.url);
     const page = searchParams.get('page'); // 'home', 'about', or null (all public)
 
     let sql = `

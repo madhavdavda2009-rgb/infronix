@@ -106,3 +106,12 @@ button, a, input, textarea, select {
 ::-webkit-scrollbar {
   display: none;
 }
+/* Public interaction quality: preserve the established palette and spacing. */
+:where(a, button, input, select, textarea, summary):focus-visible { outline: 3px solid #8b5cf6; outline-offset: 4px; }
+.skip-link { position: fixed; top: 8px; left: 8px; z-index: 1000; padding: 12px 20px; background: #fff; color: #0b0d12; transform: translateY(-160%); }
+.skip-link:focus { transform: translateY(0); }
+main { scroll-margin-top: 120px; }
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto !important; }
+  *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
+}

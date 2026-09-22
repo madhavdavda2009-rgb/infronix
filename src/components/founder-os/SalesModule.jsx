@@ -1372,7 +1372,7 @@ export default function SalesModule({ initialSub = 'leads', settings = {}, onRef
                     name="project_title"
                     defaultValue={editingProposal?.project_title || ''}
                     required
-                    placeholder="e.g. Next.js Portal & 3D Interactive Design"
+                    placeholder="e.g. Modern Web Portal & Interactive Design"
                     className="w-full bg-white border border-slate-300 rounded-xl px-3.5 py-2.5 text-slate-900"
                   />
                 </div>

@@ -30,7 +30,7 @@ export default function Footer() {
               />
             </Link>
             <p className="text-[#9CA3AF] max-w-sm mb-6 sm:mb-8 leading-relaxed text-sm sm:text-base">
-              Ahmedabad&apos;s premium digital agency. We build high-converting websites, execute technical SEO, and implement AI automation.
+              Build, grow and automate with InfronixWeb, your Ahmedabad digital agency for websites, SEO, digital marketing, advertising and business automation.
             </p>
             <div className="flex items-center gap-4">
               <a
@@ -50,6 +50,7 @@ export default function Footer() {
           <div>
             <h3 className="font-bold tracking-widest uppercase text-xs sm:text-sm text-white mb-4 sm:mb-6">Services</h3>
             <ul className="flex flex-col gap-3 sm:gap-4 text-xs sm:text-sm">
+              <li><Link href="/services" className="text-[#9CA3AF] hover:text-violet-300 transition-colors">All services: Build, Grow &amp; Automate</Link></li>
               <li>
                 <Link href="/web-development" className="text-[#9CA3AF] hover:text-primary transition-colors">Web Development</Link>
               </li>

@@ -1,7 +1,10 @@
 User-agent: *
 Allow: /
 Disallow: /api/
-Disallow: /admin/
+Disallow: /admin
+Disallow: /founder-os
+Disallow: /blog/preview/
+Disallow: /verify-enquiry
 Disallow: /dashboard/
 Disallow: /login/
 

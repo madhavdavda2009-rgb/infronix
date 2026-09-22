@@ -16,7 +16,7 @@ At InfronixWeb, we don't just build websites; we engineer digital experiences. O
 
 This project is built using modern web technologies to ensure a robust and flexible foundation:
 
-- **Framework:** Next.js / React (Functional components & modern hooks)
+- **Framework:** React / Modern Web Platform (Functional components & modern hooks)
 - **Styling:** Vanilla CSS & PostCSS (Custom design system, avoiding generic UI kits)
 - **Architecture:** Clean component structures, separated business logic, and dedicated API handling.
 

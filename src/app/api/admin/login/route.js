@@ -42,7 +42,7 @@ export async function POST(request) {
       { expiresIn: '8h' }
     );
 
-    // Set secure HTTP-Only cookie using Next.js cookies API
+    // Set secure HTTP-Only cookie using cookies API
     const cookieStore = await cookies();
     cookieStore.set('admin_token', token, {
       httpOnly: true,

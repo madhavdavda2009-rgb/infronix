@@ -1,16 +1,12 @@
-import FAQSection from '@/components/FAQSection';
-import CTASection from '@/components/CTASection';
+import ServiceDetails from '@/components/ServiceDetails';
+import { getService } from '@/lib/services';
+import { pageMetadata } from '@/lib/site-seo';
 import Breadcrumb from '@/components/Breadcrumb';
 import Link from 'next/link';
 import { ArrowRight, CheckCircle, UsersThree, Target } from '@phosphor-icons/react/dist/ssr';
 
-export const metadata = {
-  title: 'Digital Marketing Agency in Ahmedabad | Social Media & Paid Ads',
-  description: 'Drive high-ROI growth with InfronixWeb Digital Marketing. We deliver expert Social Media Marketing, Meta & Google Ads, Reels creation, and targeted performance marketing.',
-  alternates: {
-    canonical: 'https://www.infronixweb.in/digital-marketing'
-  }
-};
+const service = getService('digital-marketing');
+export const metadata = pageMetadata(service.title, service.description, '/digital-marketing');
 
 const subServices = [
   {
@@ -163,8 +159,8 @@ export default function DigitalMarketingPage() {
           </div>
         </section>
 
-        <CTASection />
-        <FAQSection />
+
+        <ServiceDetails slug="digital-marketing" />
       </main>
     </>
   );

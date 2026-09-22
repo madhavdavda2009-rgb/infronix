@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { 
   MagnifyingGlass, 
@@ -11,16 +11,29 @@ import {
   X
 } from '@phosphor-icons/react';
 
-export default function BlogListClient() {
-  const [posts, setPosts] = useState([]);
-  const [categories, setCategories] = useState([]);
-  const [tags, setTags] = useState([]);
+export default function BlogListClient({ 
+  initialPosts = [], 
+  initialCategories = [], 
+  initialTags = [], 
+  initialError = false 
+}) {
+  const [posts, setPosts] = useState(initialPosts);
+  const [categories, setCategories] = useState(initialCategories);
+  const [tags, setTags] = useState(initialTags);
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [selectedTag, setSelectedTag] = useState('all');
   const [searchQuery, setSearchQuery] = useState('');
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
+  const [loadError, setLoadError] = useState(initialError);
+  const isInitialMount = useRef(true);
 
   useEffect(() => {
+    // Skip redundant network fetch on initial mount when default filters are active
+    if (isInitialMount.current) {
+      isInitialMount.current = false;
+      return;
+    }
+
     let isMounted = true;
     async function loadBlogs() {
       try {
@@ -31,14 +44,16 @@ export default function BlogListClient() {
         if (searchQuery.trim()) params.append('search', searchQuery.trim());
 
         const res = await fetch(`/api/public/blogs?${params.toString()}`);
-        if (!res.ok) return;
+        if (!res.ok) throw new Error('Articles are temporarily unavailable.');
         const data = await res.json();
         if (data.success && isMounted) {
+          setLoadError(false);
           setPosts(data.posts || []);
           if (data.categories) setCategories(data.categories);
           if (data.tags) setTags(data.tags);
         }
       } catch (err) {
+        if (isMounted) setLoadError(true);
         console.warn('Failed to load published blogs:', err.message);
       } finally {
         if (isMounted) setLoading(false);
@@ -47,7 +62,7 @@ export default function BlogListClient() {
 
     const timer = setTimeout(() => {
       loadBlogs();
-    }, 200);
+    }, 150);
 
     return () => {
       isMounted = false;
@@ -112,6 +127,7 @@ export default function BlogListClient() {
               <button
                 onClick={() => setSearchQuery('')}
                 className="absolute right-2.5 top-1/2 -translate-y-1/2 text-text-light hover:text-on-surface p-0.5 cursor-pointer"
+                aria-label="Clear search"
               >
                 <X size={14} />
               </button>
@@ -125,7 +141,7 @@ export default function BlogListClient() {
             <span className="text-text-light">Filtered by tag:</span>
             <span className="px-2.5 py-1 rounded-lg bg-primary/10 text-primary font-bold flex items-center gap-1">
               #{selectedTag}
-              <button onClick={() => setSelectedTag('all')} className="hover:text-rose-600 ml-1 cursor-pointer">
+              <button onClick={() => setSelectedTag('all')} className="hover:text-rose-600 ml-1 cursor-pointer" aria-label="Remove tag filter">
                 <X size={12} />
               </button>
             </span>
@@ -149,6 +165,8 @@ export default function BlogListClient() {
                     src={featuredPost.cover_image_url}
                     alt={featuredPost.cover_image_alt || featuredPost.title}
                     className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                    decoding="async"
+                    fetchPriority="high"
                   />
                 ) : (
                   <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-primary/10 to-surface">
@@ -184,7 +202,13 @@ export default function BlogListClient() {
                 <div className="flex items-center justify-between pt-4 border-t border-outline-variant/40 mt-auto">
                   <div className="flex items-center gap-2.5">
                     {featuredPost.author_avatar_url ? (
-                      <img src={featuredPost.author_avatar_url} alt="" className="w-8 h-8 rounded-full object-cover border border-outline-variant" />
+                      <img 
+                        src={featuredPost.author_avatar_url} 
+                        alt="" 
+                        className="w-8 h-8 rounded-full object-cover border border-outline-variant"
+                        loading="lazy"
+                        decoding="async" 
+                      />
                     ) : (
                       <div className="w-8 h-8 rounded-full bg-primary/10 text-primary flex items-center justify-center font-bold text-xs">
                         {featuredPost.author_name ? featuredPost.author_name[0] : 'I'}
@@ -192,7 +216,9 @@ export default function BlogListClient() {
                     )}
                     <div>
                       <div className="text-xs font-bold text-on-surface">{featuredPost.author_name}</div>
-                      <div className="text-[10px] text-text-light">{new Date(featuredPost.published_at).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' })}</div>
+                      <div className="text-[10px] text-text-light">
+                        {featuredPost.published_at ? new Date(featuredPost.published_at).toLocaleDateString('en-IN', { timeZone: 'Asia/Kolkata', month: 'short', day: 'numeric', year: 'numeric' }) : ''}
+                      </div>
                     </div>
                   </div>
 
@@ -226,10 +252,10 @@ export default function BlogListClient() {
               <Article size={32} />
             </div>
             <h3 className="text-xl sm:text-2xl font-heading font-bold text-on-surface mb-2">
-              No articles found
+              {loadError ? 'Articles are temporarily unavailable' : 'No articles found'}
             </h3>
             <p className="text-sm text-main-text leading-relaxed mb-6">
-              {searchQuery || selectedCategory !== 'all' || selectedTag !== 'all'
+              {loadError ? 'Please try reloading this page. You can still contact us to discuss your project.' : searchQuery || selectedCategory !== 'all' || selectedTag !== 'all'
                 ? 'No published articles matched your search query or topic filters. Try clearing your filters.'
                 : 'Our digital insights, engineering guides, and automation strategies are being written. Check back soon!'}
             </p>
@@ -259,6 +285,7 @@ export default function BlogListClient() {
                         alt={post.cover_image_alt || post.title}
                         className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                         loading="lazy"
+                        decoding="async"
                       />
                     ) : (
                       <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-surface to-surface-container-lowest">
@@ -276,7 +303,7 @@ export default function BlogListClient() {
                   <div className="flex items-center gap-2 text-[11px] text-text-light mb-2">
                     <span className="flex items-center gap-1">
                       <CalendarBlank size={13} />
-                      {new Date(post.published_at).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' })}
+                      {post.published_at ? new Date(post.published_at).toLocaleDateString('en-IN', { timeZone: 'Asia/Kolkata', month: 'short', day: 'numeric', year: 'numeric' }) : ''}
                     </span>
                     <span>•</span>
                     <span className="flex items-center gap-1">
@@ -299,7 +326,13 @@ export default function BlogListClient() {
                 <div className="pt-3.5 border-t border-outline-variant/40 flex items-center justify-between text-xs mt-auto">
                   <div className="flex items-center gap-2">
                     {post.author_avatar_url ? (
-                      <img src={post.author_avatar_url} alt="" className="w-6 h-6 rounded-full object-cover border border-outline-variant" />
+                      <img 
+                        src={post.author_avatar_url} 
+                        alt="" 
+                        className="w-6 h-6 rounded-full object-cover border border-outline-variant"
+                        loading="lazy"
+                        decoding="async"
+                      />
                     ) : (
                       <div className="w-6 h-6 rounded-full bg-primary/10 text-primary flex items-center justify-center font-bold text-[10px]">
                         {post.author_name ? post.author_name[0] : 'I'}

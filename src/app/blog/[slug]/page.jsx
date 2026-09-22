@@ -1,4 +1,6 @@
-import React from 'react';
+import React, { cache } from 'react';
+import { serializeJsonLd } from '@/lib/site-seo';
+import { RelatedServices } from '@/components/ServiceDetails';
 import Link from 'next/link';
 import { notFound, redirect } from 'next/navigation';
 import { 
@@ -11,16 +13,29 @@ import {
   ArrowRight,
   ShieldCheck
 } from '@phosphor-icons/react/dist/ssr';
-import { query, initFounderOSDb } from '@/lib/founder_os_db';
+import { query } from '@/lib/founder_os_db';
 import { SafeMarkdownRenderer } from '@/lib/markdown_parser';
 import Breadcrumb from '@/components/Breadcrumb';
 import CTASection from '@/components/CTASection';
 import ShareButtons from '@/components/ShareButtons';
 
-export const revalidate = 60; // ISR revalidation every 60 seconds
+export const revalidate = 300; // 5-minute ISR revalidation
 
-async function getBlogPost(slug) {
-  await initFounderOSDb();
+export async function generateStaticParams() {
+  try {
+    const res = await query(`
+      SELECT slug FROM founder_os_blogs 
+      WHERE status = 'Published' OR (status = 'Scheduled' AND scheduled_for <= NOW())
+      ORDER BY COALESCE(published_at, created_at) DESC 
+      LIMIT 50
+    `);
+    return (res.rows || []).map((row) => ({ slug: row.slug }));
+  } catch {
+    return [];
+  }
+}
+
+const getBlogPost = cache(async function getBlogPost(slug) {
   const cleanSlug = slug.toLowerCase().trim();
 
   // 1. Check exact published slug
@@ -59,7 +74,7 @@ async function getBlogPost(slug) {
   }
 
   return { post: null, redirected: false };
-}
+});
 
 async function getRelatedPosts(postId, categoryId, limit = 3) {
   try {
@@ -103,10 +118,10 @@ export async function generateMetadata({ params }) {
   const pageTitle = post.seo_title || `${post.title} | InfronixWeb Insights`;
   const pageDescription = post.seo_description || post.excerpt;
   const canonical = post.canonical_url || `https://www.infronixweb.in/blog/${post.slug}`;
-  const ogImage = post.og_image_url || post.cover_image_url || 'https://www.infronixweb.in/opengraph-image.png';
+  const ogImage = post.og_image_url || post.cover_image_url || 'https://www.infronixweb.in/opengraph-image.webp';
 
   return {
-    title: pageTitle,
+    title: { absolute: pageTitle },
     description: pageDescription,
     alternates: {
       canonical
@@ -160,13 +175,13 @@ export default async function BlogPostPage({ params }) {
     '@type': 'BlogPosting',
     headline: post.title,
     description: post.excerpt,
-    image: post.cover_image_url ? [post.cover_image_url] : ['https://www.infronixweb.in/opengraph-image.png'],
+    image: post.cover_image_url ? [post.cover_image_url] : ['https://www.infronixweb.in/opengraph-image.webp'],
     datePublished: post.published_at,
     dateModified: post.updated_at,
     author: {
-      '@type': 'Person',
+      '@type': post.author_name ? 'Person' : 'Organization',
       name: post.author_name || 'InfronixWeb Editorial Team',
-      jobTitle: post.author_role || 'Digital Specialist'
+      ...(post.author_role ? { jobTitle: post.author_role } : {})
     },
     publisher: {
       '@type': 'Organization',
@@ -213,11 +228,11 @@ export default async function BlogPostPage({ params }) {
       {/* Schema.org Structured Data */}
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        dangerouslySetInnerHTML={{ __html: serializeJsonLd(jsonLd) }}
       />
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
+        dangerouslySetInnerHTML={{ __html: serializeJsonLd(breadcrumbJsonLd) }}
       />
 
       <main className="w-full pt-20 sm:pt-28 md:pt-32 min-h-screen bg-surface" id="main-content">
@@ -259,6 +274,8 @@ export default async function BlogPostPage({ params }) {
                   src={post.author_avatar_url}
                   alt={post.author_name}
                   className="w-12 h-12 rounded-full object-cover border-2 border-outline-variant"
+                  loading="lazy"
+                  decoding="async"
                 />
               ) : (
                 <div className="w-12 h-12 rounded-full bg-primary/10 text-primary flex items-center justify-center font-bold text-base border border-primary/20">
@@ -269,14 +286,14 @@ export default async function BlogPostPage({ params }) {
                 <div className="text-sm sm:text-base font-bold text-on-surface flex items-center gap-1.5">
                   <span>{post.author_name}</span>
                 </div>
-                <div className="text-xs text-text-light">{post.author_role || 'Digital Specialist'}</div>
+                <div className="text-xs text-text-light">{post.author_role || ''}</div>
               </div>
             </div>
 
             <div className="flex items-center gap-3 text-xs text-text-light">
               <span className="flex items-center gap-1">
                 <CalendarBlank size={15} />
-                {new Date(post.published_at).toLocaleDateString(undefined, {
+                {new Date(post.published_at).toLocaleDateString('en-IN', {
                   month: 'long',
                   day: 'numeric',
                   year: 'numeric'
@@ -296,6 +313,8 @@ export default async function BlogPostPage({ params }) {
                 src={post.cover_image_url}
                 alt={post.cover_image_alt || post.title}
                 className="w-full aspect-[16/9] object-cover"
+                decoding="async"
+                fetchPriority="high"
               />
               {post.cover_image_alt && (
                 <div className="p-2.5 bg-surface-container-lowest text-center text-xs text-text-light italic border-t border-outline-variant/40">
@@ -328,6 +347,7 @@ export default async function BlogPostPage({ params }) {
             <ShareButtons title={post.title} slug={post.slug} />
           </div>
 
+          <aside className="py-8"><h2 className="text-xl mb-3">Put these ideas into practice</h2><RelatedServices slugs={/seo/i.test(post.category_name || '') ? ['seo', 'web-development'] : /automat|ai|crm/i.test(post.category_name || '') ? ['ai-automation', 'crm-automation'] : /google|ads/i.test(post.category_name || '') ? ['google-ads', 'performance-marketing'] : /social/i.test(post.category_name || '') ? ['digital-marketing/social-media-marketing', 'meta-ads'] : /web/i.test(post.category_name || '') ? ['web-development', 'seo'] : ['digital-marketing', 'ai-automation']} /></aside>
         </article>
 
         {/* Related Articles Section */}
@@ -356,6 +376,7 @@ export default async function BlogPostPage({ params }) {
                             alt={rel.cover_image_alt || rel.title}
                             className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                             loading="lazy"
+                            decoding="async"
                           />
                         </div>
                       ) : (

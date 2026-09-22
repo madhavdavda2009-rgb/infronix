@@ -2,40 +2,28 @@
 
 const FAQS = [
   {
-    question: "Why choose InfronixWeb for my business website?",
-    answer: "InfronixWeb creates custom, fast-loading, and modern websites designed to turn visitors into real customers. We focus on clean design, effortless customer navigation, and strong Google search visibility to help your business grow and stand out from competitors."
+    "question": "What can InfronixWeb help our business with?",
+    "answer": "We help businesses build their online presence through websites, grow through SEO, content and advertising, and automate repeated tasks such as lead capture and follow-ups."
   },
   {
-    question: "How long does it take to build and launch a website?",
-    answer: "A focused sales landing page or standard business website usually takes 1 to 3 weeks. Larger online stores or advanced business websites take around 3 to 6 weeks. We keep you updated at every stage so you always know the exact progress."
+    "question": "Can we start with just one service?",
+    "answer": "Yes. We can scope a website, an SEO audit, a campaign or one automation workflow around your immediate priority."
   },
   {
-    question: "How will you help more people find my business on Google?",
-    answer: "We structure your website so Google easily understands your business, your services, and your location in Ahmedabad and across Gujarat. We optimize your page content, speed, and local business listings so customers searching for your products or services find you first."
+    "question": "Do you work with businesses in Ahmedabad?",
+    "answer": "InfronixWeb is based in Ahmedabad, Gujarat. Share your audience, service area and requirements so we can plan work around your business."
   },
   {
-    question: "What kind of websites and digital solutions can you create for my business?",
-    answer: "We create everything from clean corporate websites and high-converting landing pages to online stores, customer inquiry systems, and automated customer support tools tailored specifically to your business goals."
+    "question": "How are costs and timelines decided?",
+    "answer": "We review the deliverables, content, integrations and access required before preparing a proposal. Advertising spend and third-party software costs are identified separately."
   },
   {
-    question: "Can you automate repetitive tasks and save my team time?",
-    answer: "Yes. We build smart, easy-to-use automations like 24/7 instant chat assistants, automatic WhatsApp inquiry replies, and customer inquiry notifications that help you respond to leads instantly without manual effort."
+    "question": "Do you guarantee rankings or advertising results?",
+    "answer": "No. We agree useful measures and review progress, but competition, customer demand, budget and follow-up affect results."
   },
   {
-    question: "Can you connect my website with the tools my business already uses?",
-    answer: "Yes. We can seamlessly connect your website with your WhatsApp, email inbox, payment gateways, booking systems, or customer management software so all your business data stays organized in one place."
-  },
-  {
-    question: "Will my website work properly on mobile phones, tablets, and computers?",
-    answer: "Yes, 100%. Every website we create is thoroughly tested on iPhones, Android smartphones, tablets, laptops, and desktop computers to ensure fast loading, easy reading, and simple navigation on every screen size."
-  },
-  {
-    question: "How much does a new website or marketing service cost?",
-    answer: "We offer transparent, upfront pricing: high-impact landing pages starting from ₹8,000, complete business websites from ₹18,000 to ₹30,000, and ongoing Google visibility and marketing plans from ₹5,000/month. We also create custom packages tailored to your specific budget."
-  },
-  {
-    question: "Do you help maintain and update my website after it goes live?",
-    answer: "Yes. We provide continuous support, regular security updates, fast technical help, and content changes so your website stays secure, fast, and up-to-date while you focus on running your business."
+    "question": "Can you connect our existing software?",
+    "answer": "We check API availability, permissions, data quality and platform limits before confirming an automation scope. Important exceptions need a clear human handoff."
   }
 ];
 
@@ -49,10 +37,10 @@ export default function FAQSection() {
             Frequently Asked Questions
           </span>
           <h2 id="faq-title" className="font-headline-lg text-2xl sm:text-3xl md:text-4xl text-on-surface font-bold">
-            Web Development &amp; SEO FAQs
+            Working with InfronixWeb
           </h2>
           <p className="font-body-md text-xs sm:text-sm md:text-base text-main-text max-w-xl mx-auto mt-2 leading-relaxed font-medium">
-            Everything you need to know about partnering with InfronixWeb Digital Marketing for your website, SEO, and AI automation needs.
+            Everything you need to know about partnering with InfronixWeb Digital Marketing for your website, marketing and automation needs.
           </p>
         </div>
 

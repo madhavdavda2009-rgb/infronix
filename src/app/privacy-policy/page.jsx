@@ -1,14 +1,10 @@
 "use client";
-import SEO from '@/components/SEO';
 import Breadcrumb from '@/components/Breadcrumb';
 
 export default function PrivacyPolicy() {
   return (
     <>
-      <SEO
-        title="Privacy Policy | InfronixWeb"
-        description="Comprehensive Privacy Policy for InfronixWeb Digital Marketing. Understand how we collect, use, store, process, disclose, and protect your personal information."
-      />
+
       <main className="w-full pt-20 sm:pt-28 md:pt-32 pb-16 sm:pb-24 bg-surface text-on-surface" id="main-content">
         <div className="max-w-[900px] mx-auto px-4 sm:px-6 md:px-8">
           <Breadcrumb />
@@ -27,7 +23,7 @@ export default function PrivacyPolicy() {
 
           {/* Document Content */}
           <div className="flex flex-col gap-10 font-body-md text-body-md text-on-surface-variant leading-relaxed">
-            
+
             {/* 1. Introduction */}
             <section aria-labelledby="section-1" className="space-y-4">
               <h2 id="section-1" className="font-headline-md text-2xl font-semibold text-on-surface border-l-4 border-on-surface pl-4">
@@ -147,7 +143,7 @@ export default function PrivacyPolicy() {
                 <li>Project requirements</li>
                 <li>Other information voluntarily provided by the visitor</li>
               </ul>
-              
+
               <p className="pt-2">
                 Chatbot information may be processed to:
               </p>

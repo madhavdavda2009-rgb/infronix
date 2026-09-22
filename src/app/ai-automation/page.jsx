@@ -1,32 +1,12 @@
-import FAQSection from '@/components/FAQSection';
-import CTASection from '@/components/CTASection';
+import ServiceDetails from '@/components/ServiceDetails';
+import { getService } from '@/lib/services';
+import { pageMetadata } from '@/lib/site-seo';
 import Breadcrumb from '@/components/Breadcrumb';
 import Link from 'next/link';
 import { Robot, WhatsappLogo, UsersFour, Headset, EnvelopeSimple, ArrowsClockwise, Plugs, Database } from '@phosphor-icons/react/dist/ssr';
 
-export const metadata = {
-  title: 'AI Automation Agency in Ahmedabad | InfronixWeb',
-  description: 'InfronixWeb helps businesses use AI automation to simplify repetitive tasks, improve customer communication, and streamline operations. AI chatbots, WhatsApp automation, lead management, and workflow integrations in Ahmedabad.',
-  keywords: [
-    'AI Automation Agency',
-    'AI Automation Services',
-    'AI Solutions for Businesses',
-    'AI Chatbot Development',
-    'WhatsApp Automation Services',
-    'Business Process Automation',
-    'Workflow Automation',
-    'CRM Automation',
-    'AI Integration Services',
-    'Customer Support Automation',
-    'Lead Automation',
-    'AI Automation Agency in Ahmedabad',
-    'AI Automation Company in Gujarat',
-    'Digital Marketing Agency in Ahmedabad'
-  ],
-  alternates: {
-    canonical: 'https://www.infronixweb.in/ai-automation'
-  }
-};
+const service = getService('ai-automation');
+export const metadata = pageMetadata(service.title, service.description, '/ai-automation');
 
 const services = [
   {
@@ -160,26 +140,7 @@ export default function AIAutomationPage() {
           </div>
         </section>
 
-        {/* Final CTA */}
-        <section className="w-full py-12 sm:py-16 md:py-24 bg-surface border-b border-outline-variant/30">
-          <div className="max-w-[1280px] mx-auto px-4 sm:px-6 md:px-12 text-center">
-            <h2 className="text-2xl sm:text-3xl md:text-4xl font-heading font-bold text-on-surface mb-4 sm:mb-6">
-              Ready to Automate Your Business?
-            </h2>
-            <p className="text-base sm:text-lg text-main-text font-medium max-w-2xl mx-auto mb-6 sm:mb-8 leading-relaxed">
-              Let&apos;s explore how AI automation can simplify your workflow and help your business work smarter.
-            </p>
-            <Link
-              href="/start-project"
-              className="inline-block bg-primary text-white font-bold text-xs sm:text-sm px-8 py-4 rounded-md hover:bg-primary-dark transition-all hover:scale-[1.02] active:scale-[0.98] shadow-[0_0_15px_rgba(139,92,246,0.3)]"
-            >
-              Get a Quote
-            </Link>
-          </div>
-        </section>
-
-        <CTASection />
-        <FAQSection />
+        <ServiceDetails slug="ai-automation" />
       </main>
     </>
   );

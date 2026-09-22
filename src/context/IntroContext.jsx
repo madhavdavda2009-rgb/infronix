@@ -17,13 +17,13 @@ export function IntroProvider({ children }) {
   const isHome = pathname === "/";
 
   // When on home page, start with 'loading' so preloader executes every reload/load
-  const [introPhase, setIntroPhase] = useState("loading");
+  const [introPhase, setIntroPhase] = useState("completed");
   const [targetLogoRect, setTargetLogoRect] = useState(null);
   const [targetHeroRect, setTargetHeroRect] = useState(null);
 
   useEffect(() => {
-    // If not on homepage, complete immediately
-    if (!isHome) {
+    // Keep essential content available immediately. Offer the existing intro only when explicitly requested.
+    if (!isHome || window.matchMedia("(prefers-reduced-motion: reduce)").matches || new URLSearchParams(window.location.search).get("intro") !== "1") {
       setIntroPhase("completed");
     } else {
       setIntroPhase("loading");

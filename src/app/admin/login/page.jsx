@@ -2,7 +2,6 @@
 import { Warning } from "@phosphor-icons/react";
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import SEO from '@/components/SEO';
 import { useToast } from '@/context/ToastContext';
 import { getFriendlyErrorMessage, parseJsonResponse } from '@/utils/errorHandler';
 
@@ -11,7 +10,7 @@ export default function AdminLogin() {
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
-  
+
   const { showToast } = useToast();
   const router = useRouter();
 
@@ -48,7 +47,7 @@ export default function AdminLogin() {
 
   return (
     <>
-      <SEO title="Sign In | InfronixWeb" description="Executive Portal Sign In" />
+
       <main className="min-h-screen w-full bg-slate-50 flex items-center justify-center p-4 sm:p-6 relative overflow-hidden font-sans">
         {/* Subtle background glow */}
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-violet-500/10 blur-[120px] rounded-full pointer-events-none" />

@@ -1,28 +1,12 @@
-import FAQSection from '@/components/FAQSection';
-import CTASection from '@/components/CTASection';
+import ServiceDetails from '@/components/ServiceDetails';
+import { getService } from '@/lib/services';
+import { pageMetadata } from '@/lib/site-seo';
 import Breadcrumb from '@/components/Breadcrumb';
 import Link from 'next/link';
 import { Globe, Buildings, Crosshair, ShoppingBag, Code } from '@phosphor-icons/react/dist/ssr';
 
-export const metadata = {
-  title: 'Website Development Agency in Ahmedabad | InfronixWeb',
-  description: 'InfronixWeb builds modern, responsive websites for businesses in Ahmedabad, Gujarat, and across India. Business websites, landing pages, e-commerce stores, and custom web applications.',
-  keywords: [
-    'Website Development Agency',
-    'Website Development Company',
-    'Web Design Agency',
-    'Business Website Development',
-    'Website Design Services',
-    'Responsive Website Design',
-    'Custom Website Development',
-    'E-commerce Website Development',
-    'Website Development in Ahmedabad',
-    'Web Development Company in Gujarat'
-  ],
-  alternates: {
-    canonical: 'https://www.infronixweb.in/web-development'
-  }
-};
+const service = getService('web-development');
+export const metadata = pageMetadata(service.title, service.description, '/web-development');
 
 const services = [
   {
@@ -141,26 +125,7 @@ export default function WebDevelopmentPage() {
           </div>
         </section>
 
-        {/* Final CTA */}
-        <section className="w-full py-12 sm:py-16 md:py-24 bg-surface border-b border-outline-variant/30">
-          <div className="max-w-[1280px] mx-auto px-4 sm:px-6 md:px-12 text-center">
-            <h2 className="text-2xl sm:text-3xl md:text-4xl font-heading font-bold text-on-surface mb-4 sm:mb-6">
-              Ready to Build Your Digital Presence?
-            </h2>
-            <p className="text-base sm:text-lg text-main-text font-medium max-w-2xl mx-auto mb-6 sm:mb-8 leading-relaxed">
-              Let&apos;s create a website that represents your business and supports your growth.
-            </p>
-            <Link
-              href="/start-project"
-              className="inline-block bg-primary text-white font-bold text-xs sm:text-sm px-8 py-4 rounded-md hover:bg-primary-dark transition-all hover:scale-[1.02] active:scale-[0.98] shadow-[0_0_15px_rgba(139,92,246,0.3)]"
-            >
-              Get a Quote
-            </Link>
-          </div>
-        </section>
-
-        <CTASection />
-        <FAQSection />
+        <ServiceDetails slug="web-development" />
       </main>
     </>
   );

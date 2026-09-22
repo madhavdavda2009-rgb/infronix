@@ -1,6 +1,6 @@
 "use client";
-import { X, List, CaretDown, Envelope, Phone, MapPin, Clock, Globe, MagnifyingGlass, Robot, Megaphone, ArrowRight } from "@phosphor-icons/react";
-import { useState, useEffect } from 'react';
+import { X, CaretDown, Envelope, Phone, MapPin, Clock, Globe, MagnifyingGlass, Robot } from "@phosphor-icons/react";
+import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
@@ -8,9 +8,10 @@ import { motion, AnimatePresence, useScroll, useTransform } from 'framer-motion'
 import { useIntro } from '@/context/IntroContext';
 
 export default function Header() {
+  const drawerRef = useRef(null);
+  const menuButtonRef = useRef(null);
   const [menuOpen, setMenuOpen] = useState(false);
   const [servicesOpen, setServicesOpen] = useState(true);
-  const [digitalMarketingOpen, setDigitalMarketingOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const pathname = usePathname();
   const { introPhase, isIntroActive } = useIntro();
@@ -30,11 +31,28 @@ export default function Header() {
     setMenuOpen(false);
     if (pathname.startsWith('/digital-marketing')) {
       setServicesOpen(true);
-      setDigitalMarketingOpen(true);
     } else if (pathname === '/web-development' || pathname === '/seo' || pathname === '/ai-automation') {
       setServicesOpen(true);
     }
   }, [pathname]);
+
+  useEffect(() => {
+    if (!menuOpen) return;
+    const previousFocus = document.activeElement;
+    const drawer = drawerRef.current;
+    const controls = () => [...drawer.querySelectorAll('a[href], button:not([disabled])')].filter(el => el.getClientRects().length);
+    controls()[0]?.focus();
+    const handleKey = event => {
+      if (event.key === 'Escape') { setMenuOpen(false); return; }
+      if (event.key !== 'Tab') return;
+      const items = controls();
+      const first = items[0], last = items.at(-1);
+      if (event.shiftKey && (document.activeElement === first || !drawer.contains(document.activeElement))) { event.preventDefault(); last?.focus(); }
+      else if (!event.shiftKey && (document.activeElement === last || !drawer.contains(document.activeElement))) { event.preventDefault(); first?.focus(); }
+    };
+    document.addEventListener('keydown', handleKey);
+    return () => { document.removeEventListener('keydown', handleKey); previousFocus?.focus(); };
+  }, [menuOpen]);
 
   // Prevent body scroll when menu open
   useEffect(() => {
@@ -46,13 +64,7 @@ export default function Header() {
     return () => { document.body.style.overflow = ''; };
   }, [menuOpen]);
 
-  const digitalMarketingSubItems = [
-    { path: '/digital-marketing', label: 'Overview & All Services', highlight: true },
-    { path: '/digital-marketing/social-media-marketing', label: 'Social Media Marketing' },
-    { path: '/digital-marketing/paid-advertising', label: 'Paid Advertising (Meta & Google)' }
-  ];
-
-  const mainServices = [
+const mainServices = [
     { path: '/web-development', label: 'Web Development', icon: Globe },
     { path: '/seo', label: 'SEO Optimization', icon: MagnifyingGlass },
     { path: '/ai-automation', label: 'AI Automation', icon: Robot }
@@ -63,7 +75,6 @@ export default function Header() {
   }
 
   const isPreloading = isIntroActive && introPhase === 'loading';
-  const isTransitioning = isIntroActive && introPhase === 'transitioning';
   const isLogoHidden = isIntroActive && introPhase !== 'completed';
 
   return (
@@ -142,6 +153,8 @@ export default function Header() {
               <button
                 onClick={() => setMenuOpen(!menuOpen)}
                 aria-label={menuOpen ? "Close Navigation Menu" : "Open Navigation Menu"}
+                ref={menuButtonRef}
+                aria-controls="navigation-drawer"
                 aria-expanded={menuOpen}
                 className="group flex items-center gap-2.5 px-3 py-2 rounded-lg bg-white/[0.04] hover:bg-white/[0.08] border border-white/10 hover:border-primary/40 transition-all cursor-pointer z-[60]"
               >
@@ -177,6 +190,11 @@ export default function Header() {
       <AnimatePresence>
         {menuOpen && (
           <motion.div
+            ref={drawerRef}
+            id="navigation-drawer"
+            role="dialog"
+            aria-modal="true"
+            aria-label="Navigation"
             initial={{ x: "100%" }}
             animate={{ x: 0 }}
             exit={{ x: "100%" }}
@@ -219,11 +237,13 @@ export default function Header() {
                 <span>Home</span>
               </Link>
 
+              <Link href="/services" onClick={() => setMenuOpen(false)} className="py-3 px-3 text-slate-200 hover:text-white">All services: Build, Grow &amp; Automate</Link>
               {/* Services Header / Accordion */}
               <div className="py-1">
                 <button
                   type="button"
                   onClick={() => setServicesOpen(!servicesOpen)}
+                  aria-expanded={servicesOpen}
                   className={`w-full py-2.5 px-3 rounded-lg text-base font-light transition-all flex items-center justify-between cursor-pointer ${
                     pathname.startsWith('/web-development') || pathname.startsWith('/seo') || pathname.startsWith('/ai-automation') || pathname.startsWith('/digital-marketing')
                       ? 'text-primary'

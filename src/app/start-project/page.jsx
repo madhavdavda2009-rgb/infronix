@@ -3,6 +3,7 @@ import { useState, useRef, useEffect } from 'react';
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
 import { ArrowRight, CheckCircle, WarningCircle, Globe, MagnifyingGlass, Robot, Megaphone } from "@phosphor-icons/react";
+import { services } from '@/lib/services';
 import Breadcrumb from '@/components/Breadcrumb';
 import { getFriendlyErrorMessage, parseJsonResponse } from '@/utils/errorHandler';
 import { formatTitleCase, formatEmail, isValidEmail } from '@/utils/formFormatters';
@@ -36,6 +37,8 @@ export default function StartProjectPage() {
   const formRef = useRef(null);
 
   useEffect(() => {
+    const requestedService = new URLSearchParams(window.location.search).get('service');
+    if (services.some(service => service.name === requestedService)) setSelectedServices([requestedService]);
     const savedRef = localStorage.getItem('infronixweb_project_ref');
     if (savedRef) {
       setReferenceId(savedRef);
@@ -46,6 +49,7 @@ export default function StartProjectPage() {
   }, []);
 
   useGSAP(() => {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
     gsap.fromTo(".fade-up",
       { opacity: 0, y: 30 },
       { opacity: 1, y: 0, duration: 0.8, stagger: 0.1, ease: "power3.out" }
@@ -131,7 +135,7 @@ export default function StartProjectPage() {
 
   if (success) {
     return (
-      <section className="min-h-screen pt-24 sm:pt-32 pb-16 bg-surface flex items-center justify-center px-4" ref={containerRef}>
+      <main id="main-content" className="min-h-screen pt-24 sm:pt-32 pb-16 bg-surface flex items-center justify-center px-4" ref={containerRef}>
         <div className="max-w-2xl mx-auto text-center fade-up">
           <div className="w-16 h-16 sm:w-20 sm:h-20 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-6 sm:mb-8">
             <CheckCircle className="text-primary text-3xl sm:text-4xl" weight="fill" />
@@ -146,7 +150,7 @@ export default function StartProjectPage() {
           )}
 
           <p className="font-body-md text-main-text text-sm sm:text-base md:text-lg mb-8 sm:mb-10 max-w-lg mx-auto">
-            Thanks for reaching out to InfronixWeb. We&apos;ve received your project details and dispatched a confirmation email. Our team will review your requirements and get back to you within 24 hours.
+            Your project details have been received. Keep your reference ID for follow-up. If an email verification link arrives, use it to confirm your address. You can also contact support@infronixweb.in for help.
           </p>
           <div className="flex flex-wrap gap-4 justify-center items-center">
             <a href="/" className="inline-block bg-primary text-white font-label-caps uppercase tracking-widest px-6 py-3.5 sm:px-8 sm:py-4 hover:bg-primary-dark transition-all border border-primary font-bold shadow-md rounded-lg text-xs sm:text-sm">
@@ -176,21 +180,21 @@ export default function StartProjectPage() {
             </button>
           </div>
         </div>
-      </section>
+      </main>
     );
   }
 
   return (
-    <section className="min-h-screen pt-20 sm:pt-28 md:pt-32 pb-16 bg-surface" ref={containerRef}>
+    <main id="main-content" className="min-h-screen pt-20 sm:pt-28 md:pt-32 pb-16 bg-surface" ref={containerRef}>
       <div className="max-w-4xl mx-auto px-4 sm:px-6">
         <Breadcrumb className="justify-center" />
 
         {/* Page Header */}
         <div className="text-center mb-10 sm:mb-12 md:mb-16 fade-up">
           <span className="font-label-caps text-xs text-primary tracking-widest uppercase mb-2 block font-bold">Get a Quote</span>
-          <h1 className="font-headline-lg text-2xl sm:text-3xl md:text-4xl text-on-surface font-bold mb-3 sm:mb-4">Let&apos;s build something that matters.</h1>
+          <h1 className="font-headline-lg text-2xl sm:text-3xl md:text-4xl text-on-surface font-bold mb-3 sm:mb-4">Let&apos;s plan your next step.</h1>
           <p className="font-body-md text-main-text text-xs sm:text-sm md:text-base max-w-2xl mx-auto leading-relaxed font-medium">
-            Tell us what you need — we&apos;ll get back to you with a tailored proposal within 24 hours. Proudly serving clients in Ahmedabad, Gujarat, and across India.
+            Tell us what you need so we can discuss a practical scope and proposal. Based in Ahmedabad, Gujarat, and working with businesses across India.
           </p>
         </div>
 
@@ -223,8 +227,8 @@ export default function StartProjectPage() {
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
               {[
-                { id: 'Website Development', label: 'Website Development', desc: 'Custom Next.js, Web Apps & E-Commerce', icon: Globe },
-                { id: 'SEO Optimization', label: 'SEO Optimization', desc: 'Google Search & Local Maps Ranking', icon: MagnifyingGlass },
+                { id: 'Website Development', label: 'Website Development', desc: 'Custom Web Platforms, Web Apps & E-Commerce', icon: Globe },
+                { id: 'SEO', label: 'SEO', desc: 'Search Visibility & Local Discovery', icon: MagnifyingGlass },
                 { id: 'Digital Marketing', label: 'Digital Marketing & Ads', desc: 'Social Media, Meta & Google Paid Ads', icon: Megaphone },
                 { id: 'AI Automation', label: 'AI Automation', desc: '24/7 Chatbots & WhatsApp Automation', icon: Robot },
               ].map((svc) => {
@@ -235,6 +239,7 @@ export default function StartProjectPage() {
                     key={svc.id}
                     type="button"
                     onClick={() => toggleService(svc.id)}
+                    aria-pressed={isSelected}
                     className={`p-4 rounded-xl border text-left flex items-start gap-3.5 transition-all cursor-pointer ${
                       isSelected
                         ? 'bg-primary/10 border-primary text-on-surface shadow-sm ring-1 ring-primary'
@@ -254,6 +259,16 @@ export default function StartProjectPage() {
                   </button>
                 );
               })}
+            </div>
+            <div className="mt-6">
+              <label htmlFor="sp-specialty" className={LABEL_CLASS}>Specific service (optional)</label>
+              <select id="sp-specialty" className={`${INPUT_CLASS} mt-2`} value={selectedServices.find(name => !['Website Development', 'SEO', 'Digital Marketing', 'AI Automation'].includes(name)) || ''} onChange={event => {
+                const core = selectedServices.filter(name => ['Website Development', 'SEO', 'Digital Marketing', 'AI Automation'].includes(name));
+                setSelectedServices(event.target.value ? [...core, event.target.value] : core.length ? core : ['Website Development']);
+              }}>
+                <option value="">Help me define the scope</option>
+                {services.filter(service => !['Website Development', 'SEO', 'Digital Marketing', 'AI Automation', 'Paid Advertising'].includes(service.name)).map(service => <option key={service.slug} value={service.name}>{service.name}</option>)}
+              </select>
             </div>
           </div>
 
@@ -352,7 +367,7 @@ export default function StartProjectPage() {
           {/* ═══ SUBMIT ═══ */}
           <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4 pt-4 pb-8 border-t border-outline-variant">
             <p className="text-xs text-main-text max-w-md leading-relaxed font-medium">
-              We&apos;ll share a detailed, customized proposal and next steps within 24 hours of receiving your request.
+              We&apos;ll review your requirements and contact you to clarify the scope and next steps.
             </p>
             <button
               type="submit"
@@ -374,6 +389,6 @@ export default function StartProjectPage() {
           </div>
         </form>
       </div>
-    </section>
+    </main>
   );
 }

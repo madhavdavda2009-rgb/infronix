@@ -1,14 +1,12 @@
+import ServiceDetails from '@/components/ServiceDetails';
+import { getService } from '@/lib/services';
+import { pageMetadata } from '@/lib/site-seo';
 import Breadcrumb from '@/components/Breadcrumb';
 import Link from 'next/link';
 import { GoogleLogo, MetaLogo, YoutubeLogo, CheckCircle, ArrowRight, Sparkle, ShieldCheck, Lightning, Buildings, Storefront, RocketLaunch, Briefcase, ShoppingBag, Globe, MagnifyingGlass, Robot, Megaphone } from '@phosphor-icons/react/dist/ssr';
 
-export const metadata = {
-  title: 'Paid Advertising Agency in Ahmedabad | Google & Meta Ads | InfronixWeb',
-  description: 'Turn your ad budget into business opportunities. Expert Google Ads, Meta Ads (Facebook & Instagram), YouTube Ads, lead generation funnels, and remarketing.',
-  alternates: {
-    canonical: 'https://www.infronixweb.in/digital-marketing/paid-advertising'
-  }
-};
+const service = getService('digital-marketing/paid-advertising');
+export const metadata = pageMetadata(service.title, service.description, '/digital-marketing/paid-advertising');
 
 const whatWeDo = [
   {
@@ -753,6 +751,7 @@ export default function PaidAdvertisingPage() {
           </div>
         </section>
 
+        <ServiceDetails slug="digital-marketing/paid-advertising" />
       </main>
     </>
   );

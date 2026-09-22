@@ -1,14 +1,10 @@
 "use client";
-import SEO from '@/components/SEO';
 import Breadcrumb from '@/components/Breadcrumb';
 
 export default function TermsAndConditions() {
   return (
     <>
-      <SEO
-        title="Terms and Conditions | InfronixWeb"
-        description="Comprehensive Terms and Conditions governing the use of InfronixWeb Digital Marketing services, web development, SEO, AI automation, and digital solutions."
-      />
+
       <main className="w-full pt-20 sm:pt-28 md:pt-32 pb-16 sm:pb-24 bg-surface text-on-surface" id="main-content">
         <div className="max-w-[900px] mx-auto px-4 sm:px-6 md:px-8">
           <Breadcrumb />
@@ -27,7 +23,7 @@ export default function TermsAndConditions() {
 
           {/* Document Content */}
           <div className="flex flex-col gap-10 font-body-md text-body-md text-on-surface-variant leading-relaxed">
-            
+
             {/* 1. Introduction */}
             <section aria-labelledby="section-1" className="space-y-4">
               <h2 id="section-1" className="font-headline-md text-2xl font-semibold text-on-surface border-l-4 border-on-surface pl-4">
@@ -153,7 +149,7 @@ export default function TermsAndConditions() {
               <p>
                 You must not use our services, websites, software, automation, APIs, or delivered systems to:
               </p>
-              
+
               <div className="bg-error-container/10 border border-error/30 rounded-lg p-5 space-y-2">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-2 text-sm text-on-surface">
                   {[

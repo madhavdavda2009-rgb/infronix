@@ -4,7 +4,8 @@ import Link from "next/link";
 import Image from "next/image";
 import { ArrowRight } from "@phosphor-icons/react";
 
-export default function AboutSection() {
+export default function AboutSection({ asH1 = false }) {
+  const Heading = asH1 ? "h1" : "h2";
   return (
     <section className="py-16 sm:py-20 md:py-24 bg-surface">
       <div className="max-w-[1440px] mx-auto px-4 sm:px-6 md:px-12">
@@ -20,16 +21,16 @@ export default function AboutSection() {
             >
               <span className="block text-xs sm:text-sm font-bold tracking-widest uppercase text-text-light mb-3 sm:mb-6">Why InfronixWeb</span>
               
-              <h2 className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-heading font-bold text-on-surface leading-[1.15] sm:leading-[1.1] mb-6 sm:mb-8">
+              <Heading className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-heading font-bold text-on-surface leading-[1.15] sm:leading-[1.1] mb-6 sm:mb-8">
                 Built to solve the <br className="hidden md:block" />
                 fragmentation <br className="hidden md:block" />
                 problem.
-              </h2>
+              </Heading>
               
               <div className="w-16 sm:w-20 h-1 bg-primary mb-6 sm:mb-8" />
               
               <p className="text-base sm:text-xl md:text-2xl text-on-surface font-medium leading-relaxed mb-4 sm:mb-6">
-                Most agencies do one thing well. You hire them for a website, then need another for SEO, and a completely different consultant for automation.
+                Your website, marketing and customer workflows need to work together. InfronixWeb brings web development, SEO, digital marketing and automation into one coordinated plan.
               </p>
               
               <p className="text-sm sm:text-base md:text-lg text-main-text leading-relaxed mb-6 sm:mb-10 font-medium">
@@ -91,10 +92,10 @@ export default function AboutSection() {
                 className="absolute right-2 sm:-right-6 md:-right-12 bottom-1/4 bg-ink-black text-white p-3 sm:p-5 md:p-6 shadow-xl rounded-lg border border-[#1A1E26]"
               >
                 <div className="text-xl sm:text-3xl md:text-4xl font-heading font-bold mb-0.5 sm:mb-1">
-                  100%
+                  Direct
                 </div>
                 <div className="text-[10px] sm:text-xs md:text-sm font-bold tracking-wider uppercase text-primary">
-                  Dedicated Direct
+                  Collaboration
                 </div>
               </motion.div>
 

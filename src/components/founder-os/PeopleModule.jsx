@@ -817,7 +817,7 @@ export default function PeopleModule({ settings = {}, onRefreshDashboard }) {
                     value={newRespInput}
                     onChange={(e) => setNewRespInput(e.target.value)}
                     onKeyDown={(e) => { if (e.key === 'Enter') { e.preventDefault(); handleAddResponsibility(); } }}
-                    placeholder="e.g. Next.js architecture, Code review, 3D Canvas"
+                    placeholder="e.g. Modern Web Architecture, Code review, 3D Canvas"
                     className="flex-1 bg-white border border-slate-300 rounded-xl px-3 py-2 text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-violet-600 focus:ring-2 focus:ring-violet-500/20"
                   />
                   <button

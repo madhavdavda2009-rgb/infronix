@@ -9,7 +9,7 @@ const services = [
     id: "01",
     title: "Website Development",
     short: "Custom websites designed to win customers.",
-    desc: "We build modern, fast, and easy-to-use websites that showcase your brand and turn visitors into real paying customers.",
+    desc: "We build modern, fast, and easy-to-use websites that showcase your brand and make it easier for interested visitors to enquire or buy.",
     features: ["Modern Brand Design", "Mobile & Fast Loading", "Easy Navigation", "Online Stores & Inquiries"],
     icon: Globe,
     link: "/web-development",
@@ -19,7 +19,7 @@ const services = [
     id: "02",
     title: "SEO Optimization",
     short: "Help local customers find you on Google.",
-    desc: "Get your business found on Google search and maps. We improve your visibility and rankings so potential clients find you before your competitors.",
+    desc: "Get your business found on Google search and maps. We improve your visibility and rankings so relevant customers can discover your services.",
     features: ["Google Search Ranking", "Google Maps & Local Setup", "Content & Keywords", "Speed & Search Fixes"],
     icon: MagnifyingGlass,
     link: "/seo",
@@ -29,7 +29,7 @@ const services = [
     id: "03",
     title: "AI Automation",
     short: "Automate daily tasks & save team hours.",
-    desc: "Save hours every week by automating routine inquiries and customer communication with smart, 24/7 instant response tools.",
+    desc: "Connect supported tools to reduce repeated data entry, route enquiries and help your team follow up.",
     features: ["24/7 Chat Assistants", "WhatsApp Auto-Replies", "Lead Notifications", "Tool & App Connections"],
     icon: Robot,
     link: "/ai-automation",
@@ -39,7 +39,7 @@ const services = [
     id: "04",
     title: "Digital Marketing",
     short: "Reach targeted buyers on social media & Google.",
-    desc: "Reach more targeted customers with attractive social media content and high-converting advertisements that bring real inquiries.",
+    desc: "Reach more targeted customers with attractive social media content and advertising built around your audience, offer and enquiry journey.",
     features: ["Social Media Growth", "Google & Instagram Ads", "Engaging Video & Reels", "Inquiry & Sales Tracking"],
     icon: Megaphone,
     link: "/digital-marketing",
@@ -89,6 +89,7 @@ export default function ServicesSection() {
                 key={service.id}
                 onMouseEnter={() => setActiveService(index)}
                 onClick={() => setActiveService(index)}
+                onFocus={() => setActiveService(index)}
                 className={`group cursor-pointer p-4 sm:p-6 md:p-8 rounded-xl transition-all duration-500 border ${activeService === index
                   ? 'bg-surface border-outline-variant shadow-[0_20px_40px_rgba(0,0,0,0.03)] scale-[1.01] sm:scale-[1.02]'
                   : 'bg-surface-container-lowest border-outline-variant/40 hover:border-outline hover:bg-surface/50'
@@ -100,7 +101,7 @@ export default function ServicesSection() {
                   </span>
                   <div>
                     <h3 className={`text-lg sm:text-2xl md:text-3xl font-heading font-bold mb-1 sm:mb-2 transition-colors duration-500 ${activeService === index ? 'text-on-surface' : 'text-main-text group-hover:text-on-surface'}`}>
-                      {service.title}
+                      <button type="button" aria-expanded={activeService === index} onClick={() => setActiveService(index)} className="text-left">{service.title}</button>
                     </h3>
                     <p className={`text-xs sm:text-base md:text-lg transition-colors duration-500 ${activeService === index ? 'text-main-text' : 'text-text-light'}`}>
                       {service.short}
@@ -127,7 +128,7 @@ export default function ServicesSection() {
                       </ul>
                       <Link
                         href={service.link}
-                        className="inline-flex items-center justify-center gap-2 text-xs sm:text-sm font-bold bg-deep-space text-surface-container-lowest px-5 py-3 sm:px-6 sm:py-3.5 rounded-md hover:bg-primary hover:text-ink-black transition-colors shadow-lg w-full sm:w-auto text-center"
+                        className="inline-flex items-center justify-center gap-2 text-xs sm:text-sm font-bold bg-deep-space text-surface-container-lowest px-5 py-3 sm:px-6 sm:py-3.5 rounded-md hover:bg-primary hover:text-white transition-colors shadow-lg w-full sm:w-auto text-center"
                       >
                         Explore Service <ArrowRight weight="bold" />
                       </Link>

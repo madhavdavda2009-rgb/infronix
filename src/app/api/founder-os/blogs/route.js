@@ -4,7 +4,6 @@ import { query, initFounderOSDb } from '@/lib/founder_os_db';
 import { verifyAdminAuth } from '@/lib/auth';
 import { logActivity } from '@/lib/audit_logger';
 import { calculateReadingTime } from '@/lib/blog_utils';
-import { syncPublicSitemapXml } from '@/lib/sitemap_generator';
 
 function generateSlug(text) {
   if (!text) return `post-${Date.now()}`;
@@ -273,13 +272,12 @@ export async function POST(request) {
         revalidatePath('/blog');
         revalidatePath(`/blog/${post.slug}`);
         revalidatePath('/sitemap.xml');
-        await syncPublicSitemapXml();
       } catch (e) {
         console.warn('Revalidation note:', e.message);
       }
     } else {
       // Still sync in case a previous version existed
-      await syncPublicSitemapXml();
+      revalidatePath('/sitemap.xml');
     }
 
     return NextResponse.json({ success: true, post });

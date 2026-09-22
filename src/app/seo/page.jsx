@@ -1,30 +1,12 @@
-import FAQSection from '@/components/FAQSection';
-import CTASection from '@/components/CTASection';
+import ServiceDetails from '@/components/ServiceDetails';
+import { getService } from '@/lib/services';
+import { pageMetadata } from '@/lib/site-seo';
 import Breadcrumb from '@/components/Breadcrumb';
 import Link from 'next/link';
 import { Gear, FileText, MagnifyingGlass, MapPin, Article, ChartLineUp } from '@phosphor-icons/react/dist/ssr';
 
-export const metadata = {
-  title: 'SEO Optimization Services in Ahmedabad | InfronixWeb',
-  description: 'InfronixWeb helps businesses improve search engine visibility with Technical SEO, On-Page SEO, keyword research, Local SEO, and content optimization in Ahmedabad, Gujarat, and across India.',
-  keywords: [
-    'SEO Optimization Services',
-    'SEO Agency',
-    'SEO Company',
-    'Search Engine Optimization',
-    'Local SEO Services',
-    'Technical SEO Services',
-    'On-Page SEO',
-    'Keyword Research Services',
-    'Google Business Profile Optimization',
-    'SEO Agency in Ahmedabad',
-    'SEO Company in Gujarat',
-    'Digital Marketing Agency in Ahmedabad'
-  ],
-  alternates: {
-    canonical: 'https://www.infronixweb.in/seo'
-  }
-};
+const service = getService('seo');
+export const metadata = pageMetadata(service.title, service.description, '/seo');
 
 const services = [
   {
@@ -77,7 +59,7 @@ export default function SEOPage() {
                 <span className="w-8 sm:w-12 h-[2px] bg-primary" /> SEO Optimization
               </span>
               <h1 className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-heading font-bold text-on-surface leading-tight tracking-tight">
-                Get Found. Get Noticed. Grow Online.
+                SEO Services That Improve Your Business Visibility
               </h1>
               <p className="text-base sm:text-lg md:text-xl text-main-text font-medium max-w-2xl leading-relaxed">
                 InfronixWeb is a digital marketing agency helping businesses improve their search engine visibility, reach relevant customers, and build a stronger online presence.
@@ -148,26 +130,7 @@ export default function SEOPage() {
           </div>
         </section>
 
-        {/* Final CTA */}
-        <section className="w-full py-12 sm:py-16 md:py-24 bg-surface border-b border-outline-variant/30">
-          <div className="max-w-[1280px] mx-auto px-4 sm:px-6 md:px-12 text-center">
-            <h2 className="text-2xl sm:text-3xl md:text-4xl font-heading font-bold text-on-surface mb-4 sm:mb-6">
-              Ready to Improve Your Online Visibility?
-            </h2>
-            <p className="text-base sm:text-lg text-main-text font-medium max-w-2xl mx-auto mb-6 sm:mb-8 leading-relaxed">
-              Let&apos;s build an SEO strategy that helps your business reach the right audience.
-            </p>
-            <Link
-              href="/start-project"
-              className="inline-block bg-primary text-white font-bold text-xs sm:text-sm px-8 py-4 rounded-md hover:bg-primary-dark transition-all hover:scale-[1.02] active:scale-[0.98] shadow-[0_0_15px_rgba(139,92,246,0.3)]"
-            >
-              Get a Quote
-            </Link>
-          </div>
-        </section>
-
-        <CTASection />
-        <FAQSection />
+        <ServiceDetails slug="seo" />
       </main>
     </>
   );

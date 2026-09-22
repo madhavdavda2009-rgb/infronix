@@ -2,7 +2,7 @@ export default function manifest() {
   return {
     name: 'InfronixWeb Digital Marketing',
     short_name: 'InfronixWeb',
-    description: 'InfronixWeb is a premier web agency in Ahmedabad, Gujarat. We engineer high-converting websites, Next.js web applications, technical SEO, and custom AI automations.',
+    description: 'Build, grow and automate with InfronixWeb in Ahmedabad: websites, SEO, digital marketing, advertising and business automation.',
     start_url: '/',
     display: 'standalone',
     background_color: '#080c14',

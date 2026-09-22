@@ -1,9 +1,12 @@
 import { NextResponse } from 'next/server';
 import { processEnquirySubmission } from '@/lib/enquiry_service';
+import { enquiryDescription } from '@/lib/enquiry-input';
 
 export async function POST(request) {
   try {
-    const body = await request.json();
+    let body;
+    try { body = await request.json(); } catch { return NextResponse.json({ success: false, error: 'Please send a valid form submission.' }, { status: 400 }); }
+    if (!body || typeof body !== 'object' || Array.isArray(body)) return NextResponse.json({ success: false, error: 'Please send a valid form submission.' }, { status: 400 });
 
     const clientIp = request.headers.get('x-forwarded-for')?.split(',')[0]?.trim() ||
                      request.headers.get('x-real-ip') ||
@@ -27,8 +30,6 @@ export async function POST(request) {
       projectType,
       budget,
       timeline,
-      projectDescription,
-      projectDetails,
       message,
       preferredContactMethod,
       formType,
@@ -45,7 +46,7 @@ export async function POST(request) {
     const resolvedFullName = fullName || [firstName, lastName].filter(Boolean).join(' ');
     const resolvedCompany = company || companyName || '';
     const resolvedServices = service || (Array.isArray(selectedServices) ? selectedServices.join(', ') : selectedServices) || '';
-    const resolvedDescription = projectDescription || projectDetails || message || '';
+    const resolvedDescription = enquiryDescription(body);
     const resolvedHoneypot = honeypot || website_hp_check || '';
 
     const result = await processEnquirySubmission({

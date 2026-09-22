@@ -228,7 +228,7 @@ In today's fast-evolving market, having a high-performing digital presence is th
 - **Local Search Dominance**: Targeted local keywords and schema drive high-intent inquiries.
 - **Conversion-Centric UX**: Clean design directs visitors straight to booking and inquiries.
 
-| Feature | Legacy Website | Custom Next.js Platform |
+| Feature | Legacy Website | Modern Web Platform |
 | :--- | :--- | :--- |
 | **Performance** | 3.5s+ Load Time | Under 0.8s Sub-second |
 | **SEO Architecture** | Basic Tags | Rich Schema + Core Web Vitals |
@@ -1909,7 +1909,7 @@ function TagModal({ isOpen, tag, onClose, onSaved }) {
                 setName(e.target.value);
                 if (!tag) setSlug(generateSlug(e.target.value));
               }}
-              placeholder="e.g. NextJS"
+              placeholder="e.g. Web Development"
               className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl text-xs text-slate-900 focus:bg-white focus:outline-none focus:border-violet-600"
             />
           </div>
@@ -1920,7 +1920,7 @@ function TagModal({ isOpen, tag, onClose, onSaved }) {
               type="text"
               value={slug}
               onChange={(e) => setSlug(generateSlug(e.target.value))}
-              placeholder="nextjs"
+              placeholder="web-development"
               className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl text-xs font-mono text-slate-900 focus:bg-white focus:outline-none focus:border-violet-600"
             />
           </div>

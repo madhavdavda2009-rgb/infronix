@@ -1,12 +1,11 @@
 import { NextResponse } from 'next/server';
-import { query, initFounderOSDb } from '@/lib/founder_os_db';
+import { query } from '@/lib/founder_os_db';
 
 export const dynamic = 'force-dynamic';
 
 export async function GET(request) {
   try {
-    await initFounderOSDb();
-    const { searchParams } = new URL(request.url);
+      const { searchParams } = new URL(request.url);
     const categorySlug = searchParams.get('category');
     const tagSlug = searchParams.get('tag');
     const search = searchParams.get('search');
@@ -116,7 +115,7 @@ export async function GET(request) {
       },
       {
         headers: {
-          'Cache-Control': 'public, s-maxage=60, stale-while-revalidate=300'
+          'Cache-Control': 'public, s-maxage=120, stale-while-revalidate=600'
         }
       }
     );

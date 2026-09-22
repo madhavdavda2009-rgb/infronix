@@ -1,14 +1,12 @@
+import ServiceDetails from '@/components/ServiceDetails';
+import { getService } from '@/lib/services';
+import { pageMetadata } from '@/lib/site-seo';
 import Breadcrumb from '@/components/Breadcrumb';
 import Link from 'next/link';
 import { InstagramLogo, FacebookLogo, LinkedinLogo, CheckCircle, ArrowRight, Sparkle, ShieldCheck, Lightning, Buildings, Storefront, RocketLaunch, Briefcase, User, ShoppingBag } from '@phosphor-icons/react/dist/ssr';
 
-export const metadata = {
-  title: 'Social Media Marketing Services in Ahmedabad | InfronixWeb',
-  description: 'Build your brand and grow your audience with strategic social media marketing for businesses in Ahmedabad and across India. Instagram, Facebook & LinkedIn management, Reels editing, content planning, and brand awareness.',
-  alternates: {
-    canonical: 'https://www.infronixweb.in/digital-marketing/social-media-marketing'
-  }
-};
+const service = getService('digital-marketing/social-media-marketing');
+export const metadata = pageMetadata(service.title, service.description, '/digital-marketing/social-media-marketing');
 
 const whatWeDo = [
   {
@@ -603,6 +601,7 @@ export default function SocialMediaMarketingPage() {
           </div>
         </section>
 
+        <ServiceDetails slug="digital-marketing/social-media-marketing" />
       </main>
     </>
   );
