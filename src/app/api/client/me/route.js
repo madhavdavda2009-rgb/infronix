@@ -15,20 +15,15 @@ export async function GET(request) {
     await initFounderOSDb();
     const { user, client, isAdminPreview } = auth;
 
-    // Get aggregated statistics for the client dashboard
+    // Get aggregated statistics for the client dashboard with fast index scans
     const statsRes = await query(`
       SELECT 
-        COUNT(DISTINCT p.id) as total_projects,
-        COUNT(DISTINCT CASE WHEN p.status NOT IN ('Completed', 'Cancelled') THEN p.id END) as active_projects,
-        COUNT(DISTINCT CASE WHEN p.status = 'Completed' THEN p.id END) as completed_projects,
-        COUNT(DISTINCT CASE WHEN cr.status NOT IN ('Completed', 'Cancelled', 'Rejected') THEN cr.id END) as open_change_requests,
-        COUNT(DISTINCT CASE WHEN req.status = 'Pending' THEN req.id END) as pending_requirements,
-        COUNT(DISTINCT CASE WHEN n.is_read = FALSE THEN n.id END) as unread_notifications
-      FROM founder_os_projects p
-      LEFT JOIN founder_os_client_change_requests cr ON (cr.client_id = p.client_id AND cr.project_id = p.id)
-      LEFT JOIN founder_os_client_requirements req ON req.project_id = p.id
-      LEFT JOIN founder_os_portal_notifications n ON (n.client_id = $1 AND (n.portal_user_id = $2 OR n.portal_user_id IS NULL))
-      WHERE p.client_id = $1
+        (SELECT COUNT(*) FROM founder_os_projects WHERE client_id = $1) as total_projects,
+        (SELECT COUNT(*) FROM founder_os_projects WHERE client_id = $1 AND status NOT IN ('Completed', 'Cancelled')) as active_projects,
+        (SELECT COUNT(*) FROM founder_os_projects WHERE client_id = $1 AND status = 'Completed') as completed_projects,
+        (SELECT COUNT(*) FROM founder_os_client_change_requests WHERE client_id = $1 AND status NOT IN ('Completed', 'Cancelled', 'Rejected')) as open_change_requests,
+        (SELECT COUNT(*) FROM founder_os_client_requirements req JOIN founder_os_projects p ON p.id = req.project_id WHERE p.client_id = $1 AND req.status = 'Pending') as pending_requirements,
+        (SELECT COUNT(*) FROM founder_os_portal_notifications WHERE client_id = $1 AND (portal_user_id = $2 OR portal_user_id IS NULL) AND is_read = FALSE) as unread_notifications
     `, [client.id, user.id]);
 
     const stats = statsRes.rows[0] || {

@@ -7,6 +7,7 @@ import CreateChangeRequestModal from '@/components/client-portal/CreateChangeReq
 import ChangeRequestDrawer from '@/components/client-portal/ChangeRequestDrawer';
 import UploadRequirementModal from '@/components/client-portal/UploadRequirementModal';
 import DeliverableApprovalModal from '@/components/client-portal/DeliverableApprovalModal';
+import { useClientPortal } from '@/context/ClientPortalContext';
 import {
   FolderSimple,
   GitPullRequest,
@@ -33,6 +34,8 @@ function ProjectWorkspaceContent() {
   const initialTab = searchParams?.get('tab') || 'overview';
   const initialCrId = searchParams?.get('crId');
 
+  const { getProjectBundleCached, invalidateCache } = useClientPortal();
+
   const [activeTab, setActiveTab] = useState(initialTab);
   const [project, setProject] = useState(null);
   const [stages, setStages] = useState([]);
@@ -51,56 +54,32 @@ function ProjectWorkspaceContent() {
 
   const { showToast } = useToast();
 
-  useEffect(() => {
-    if (projectId) {
-      fetchProjectData();
-    }
-  }, [projectId, adminPreviewClientId]);
-
-  async function fetchProjectData() {
-    setLoading(true);
+  const fetchProjectData = React.useCallback(async (force = false) => {
+    if (!projectId) return;
+    if (force || !project) setLoading(true);
     try {
-      const headers = {};
-      if (adminPreviewClientId) {
-        headers['x-admin-preview-client-id'] = adminPreviewClientId;
+      const data = await getProjectBundleCached(projectId, force);
+      if (data.success) {
+        if (data.project) setProject(data.project);
+        if (data.stages) setStages(data.stages || []);
+        if (data.tasks) setTasks(data.tasks || []);
+        if (data.requirements) setRequirements(data.requirements || []);
+        if (data.payments) setPayments(data.payments);
+        if (data.documents) setDocuments(data.documents || []);
+        if (data.change_requests) setChangeRequests(data.change_requests || []);
       }
-
-      const q = adminPreviewClientId ? `?admin_preview_client_id=${adminPreviewClientId}` : '';
-
-      // Fetch in parallel
-      const [pRes, sRes, tRes, rRes, payRes, dRes, crRes] = await Promise.all([
-        fetch(`/api/client/projects/${projectId}${q}`, { headers }),
-        fetch(`/api/client/projects/${projectId}/stages${q}`, { headers }),
-        fetch(`/api/client/projects/${projectId}/tasks${q}`, { headers }),
-        fetch(`/api/client/projects/${projectId}/requirements${q}`, { headers }),
-        fetch(`/api/client/projects/${projectId}/payments${q}`, { headers }),
-        fetch(`/api/client/projects/${projectId}/documents${q}`, { headers }),
-        fetch(`/api/client/projects/${projectId}/change-requests${q}`, { headers })
-      ]);
-
-      const [pData, sData, tData, rData, payData, dData, crData] = await Promise.all([
-        pRes.json(),
-        sRes.json(),
-        tRes.json(),
-        rRes.json(),
-        payRes.json(),
-        dRes.json(),
-        crRes.json()
-      ]);
-
-      if (pData.success) setProject(pData.project);
-      if (sData.success) setStages(sData.stages || []);
-      if (tData.success) setTasks(tData.tasks || []);
-      if (rData.success) setRequirements(rData.requirements || []);
-      if (payData.success) setPayments(payData);
-      if (dData.success) setDocuments(dData.documents || []);
-      if (crData.success) setChangeRequests(crData.change_requests || []);
     } catch (err) {
       showToast('Error loading project details', 'error');
     } finally {
       setLoading(false);
     }
-  }
+  }, [projectId, getProjectBundleCached, showToast, project]);
+
+  useEffect(() => {
+    if (projectId) {
+      fetchProjectData();
+    }
+  }, [projectId, adminPreviewClientId]);
 
   const TABS = [
     { id: 'overview', label: 'Overview', icon: FolderSimple },
@@ -639,7 +618,7 @@ function ProjectWorkspaceContent() {
           onClose={() => setShowCreateCr(false)}
           projectId={projectId}
           stages={stages}
-          onSuccess={fetchProjectData}
+          onSuccess={() => fetchProjectData(true)}
         />
       )}
 
@@ -648,7 +627,7 @@ function ProjectWorkspaceContent() {
           isOpen={Boolean(selectedCrId)}
           onClose={() => setSelectedCrId(null)}
           changeRequestId={selectedCrId}
-          onUpdate={fetchProjectData}
+          onUpdate={() => fetchProjectData(true)}
         />
       )}
 
@@ -658,7 +637,7 @@ function ProjectWorkspaceContent() {
           onClose={() => setUploadReqModal({ isOpen: false, req: null })}
           projectId={projectId}
           requirement={uploadReqModal.req}
-          onSuccess={fetchProjectData}
+          onSuccess={() => fetchProjectData(true)}
         />
       )}
 
@@ -670,7 +649,7 @@ function ProjectWorkspaceContent() {
           approvalType={approvalModal.type}
           deliverableTitle={approvalModal.title}
           deliverableVersion={approvalModal.version}
-          onSuccess={fetchProjectData}
+          onSuccess={() => fetchProjectData(true)}
         />
       )}
     </ClientPortalShell>

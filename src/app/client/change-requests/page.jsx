@@ -1,12 +1,14 @@
 "use client";
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useSearchParams } from 'next/navigation';
 import ClientPortalShell from '@/components/client-portal/ClientPortalShell';
 import ChangeRequestDrawer from '@/components/client-portal/ChangeRequestDrawer';
+import { useClientPortal } from '@/context/ClientPortalContext';
 import { GitPullRequest, CurrencyInr, Clock, CheckCircle, Warning, Plus } from '@phosphor-icons/react';
 import { useToast } from '@/context/ToastContext';
 
 function ChangeRequestsContent() {
+  const { getChangeRequestsCached, invalidateCache } = useClientPortal();
   const [changeRequests, setChangeRequests] = useState([]);
   const [filterStatus, setFilterStatus] = useState('ALL');
   const [selectedCrId, setSelectedCrId] = useState(null);
@@ -16,32 +18,26 @@ function ChangeRequestsContent() {
   const adminPreviewClientId = searchParams?.get('admin_preview_client_id');
   const { showToast } = useToast();
 
-  useEffect(() => {
-    fetchChangeRequests();
-  }, [filterStatus, adminPreviewClientId]);
-
-  async function fetchChangeRequests() {
-    setLoading(true);
+  const fetchChangeRequests = useCallback(async (force = false) => {
+    if (force) setLoading(true);
     try {
-      const headers = {};
-      if (adminPreviewClientId) {
-        headers['x-admin-preview-client-id'] = adminPreviewClientId;
-      }
-      const q = new URLSearchParams();
-      if (adminPreviewClientId) q.set('admin_preview_client_id', adminPreviewClientId);
-      if (filterStatus !== 'ALL') q.set('status', filterStatus);
-
-      const res = await fetch(`/api/client/change-requests?${q.toString()}`, { headers });
-      const data = await res.json();
-      if (data.success) {
-        setChangeRequests(data.change_requests || []);
-      }
-    } catch (err) {
+      const crs = await getChangeRequestsCached(filterStatus, force);
+      setChangeRequests(crs || []);
+    } catch {
       showToast('Error loading change requests', 'error');
     } finally {
       setLoading(false);
     }
-  }
+  }, [filterStatus, getChangeRequestsCached, showToast]);
+
+  useEffect(() => {
+    fetchChangeRequests();
+  }, [fetchChangeRequests, adminPreviewClientId]);
+
+  const handleUpdate = () => {
+    invalidateCache('changeRequests');
+    fetchChangeRequests(true);
+  };
 
   const FILTERS = ['ALL', 'Submitted', 'Under Review', 'Quoted', 'Scheduled', 'In Progress', 'Completed'];
 
@@ -125,7 +121,7 @@ function ChangeRequestsContent() {
           isOpen={Boolean(selectedCrId)}
           onClose={() => setSelectedCrId(null)}
           changeRequestId={selectedCrId}
-          onUpdate={fetchChangeRequests}
+          onUpdate={handleUpdate}
         />
       )}
     </ClientPortalShell>

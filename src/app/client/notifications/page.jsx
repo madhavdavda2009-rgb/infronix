@@ -1,51 +1,12 @@
 "use client";
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import Link from 'next/link';
-import { useSearchParams } from 'next/navigation';
 import ClientPortalShell from '@/components/client-portal/ClientPortalShell';
+import { useClientPortal } from '@/context/ClientPortalContext';
 import { Bell, CheckCircle, ArrowRight, ShieldCheck } from '@phosphor-icons/react';
-import { useToast } from '@/context/ToastContext';
 
 function NotificationsContent() {
-  const [notifications, setNotifications] = useState([]);
-  const [loading, setLoading] = useState(true);
-
-  const searchParams = useSearchParams();
-  const adminPreviewClientId = searchParams?.get('admin_preview_client_id');
-  const { showToast } = useToast();
-
-  useEffect(() => {
-    fetchNotifications();
-  }, [adminPreviewClientId]);
-
-  async function fetchNotifications() {
-    setLoading(true);
-    try {
-      const headers = {};
-      if (adminPreviewClientId) headers['x-admin-preview-client-id'] = adminPreviewClientId;
-      const res = await fetch(`/api/client/notifications${adminPreviewClientId ? `?admin_preview_client_id=${adminPreviewClientId}` : ''}`, { headers });
-      const data = await res.json();
-      if (data.success) {
-        setNotifications(data.notifications || []);
-      }
-    } catch (err) {
-      showToast('Error loading notifications', 'error');
-    } finally {
-      setLoading(false);
-    }
-  }
-
-  async function handleMarkAllRead() {
-    try {
-      const headers = {};
-      if (adminPreviewClientId) headers['x-admin-preview-client-id'] = adminPreviewClientId;
-      await fetch('/api/client/notifications/all/read', { method: 'PUT', headers });
-      setNotifications(prev => prev.map(n => ({ ...n, is_read: true })));
-      showToast('All notifications marked as read', 'success');
-    } catch (err) {
-      showToast('Failed to update notifications', 'error');
-    }
-  }
+  const { notifications, loading, markAllNotificationsRead } = useClientPortal();
 
   return (
     <ClientPortalShell
@@ -57,7 +18,7 @@ function NotificationsContent() {
         <div className="flex items-center justify-between pb-3 border-b border-slate-100">
           <h3 className="font-bold text-sm text-slate-900 font-outfit">Activity & Alerts</h3>
           <button
-            onClick={handleMarkAllRead}
+            onClick={markAllNotificationsRead}
             className="text-xs font-semibold text-violet-600 hover:text-violet-700 cursor-pointer"
           >
             Mark all as read

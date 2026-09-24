@@ -1,3 +1,5 @@
+import { ClientPortalProvider } from '@/context/ClientPortalContext';
+
 export const metadata = {
   title: 'Client Portal | InfronixWeb',
   description: 'Secure client workspace for project milestones, live staging preview, change requests, and deliverables.',
@@ -10,7 +12,10 @@ export const metadata = {
 export default function ClientPortalLayout({ children }) {
   return (
     <div className="min-h-screen bg-slate-50 text-slate-900 font-sans antialiased selection:bg-violet-500 selection:text-white">
-      {children}
+      <ClientPortalProvider>
+        {children}
+      </ClientPortalProvider>
     </div>
   );
 }
+

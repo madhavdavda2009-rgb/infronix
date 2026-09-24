@@ -52,37 +52,41 @@ export async function GET(request) {
       return NextResponse.json({ success: true, projects: [] }, { headers: getPortalSecurityHeaders() });
     }
 
-    // Fetch client-visible stages for progress computation
-    const stagesRes = await query(`
-      SELECT 
-        id, project_id, stage_name, stage_order, status,
-        COALESCE(visible_to_client, TRUE) as visible_to_client,
-        client_title, client_description, client_note,
-        COALESCE(stage_weight, 1) as stage_weight
-      FROM founder_os_project_stages
-      WHERE project_id = ANY($1::int[]) AND (visible_to_client IS NULL OR visible_to_client = TRUE)
-      ORDER BY project_id, stage_order ASC
-    `, [projectIds]);
-
-    // Fetch counts for pending requirements & open change requests
-    const countsRes = await query(`
-      SELECT 
-        p.id as project_id,
-        COUNT(DISTINCT CASE WHEN req.status = 'Pending' THEN req.id END) as pending_reqs,
-        COUNT(DISTINCT CASE WHEN cr.status NOT IN ('Completed', 'Cancelled', 'Rejected') THEN cr.id END) as open_crs
-      FROM founder_os_projects p
-      LEFT JOIN founder_os_client_requirements req ON req.project_id = p.id
-      LEFT JOIN founder_os_client_change_requests cr ON cr.project_id = p.id
-      WHERE p.id = ANY($1::int[])
-      GROUP BY p.id
-    `, [projectIds]);
+    // Fetch client-visible stages, pending requirements, and open change requests in parallel
+    const [stagesRes, reqCountsRes, crCountsRes] = await Promise.all([
+      query(`
+        SELECT 
+          id, project_id, stage_name, stage_order, status,
+          COALESCE(visible_to_client, TRUE) as visible_to_client,
+          client_title, client_description, client_note,
+          COALESCE(stage_weight, 1) as stage_weight
+        FROM founder_os_project_stages
+        WHERE project_id = ANY($1::int[]) AND (visible_to_client IS NULL OR visible_to_client = TRUE)
+        ORDER BY project_id, stage_order ASC
+      `, [projectIds]),
+      query(`
+        SELECT project_id, COUNT(*) as pending_reqs
+        FROM founder_os_client_requirements
+        WHERE project_id = ANY($1::int[]) AND status = 'Pending'
+        GROUP BY project_id
+      `, [projectIds]),
+      query(`
+        SELECT project_id, COUNT(*) as open_crs
+        FROM founder_os_client_change_requests
+        WHERE project_id = ANY($1::int[]) AND status NOT IN ('Completed', 'Cancelled', 'Rejected')
+        GROUP BY project_id
+      `, [projectIds])
+    ]);
 
     const countsMap = {};
-    for (const row of countsRes.rows) {
-      countsMap[row.project_id] = {
-        pending_reqs: parseInt(row.pending_reqs || 0, 10),
-        open_crs: parseInt(row.open_crs || 0, 10)
-      };
+    for (const pid of projectIds) {
+      countsMap[pid] = { pending_reqs: 0, open_crs: 0 };
+    }
+    for (const row of reqCountsRes.rows) {
+      if (countsMap[row.project_id]) countsMap[row.project_id].pending_reqs = parseInt(row.pending_reqs || 0, 10);
+    }
+    for (const row of crCountsRes.rows) {
+      if (countsMap[row.project_id]) countsMap[row.project_id].open_crs = parseInt(row.open_crs || 0, 10);
     }
 
     const stagesByProject = {};

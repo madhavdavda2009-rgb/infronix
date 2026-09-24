@@ -1,20 +1,25 @@
 "use client";
 import React, { useState, useEffect } from 'react';
-import { useSearchParams } from 'next/navigation';
 import ClientPortalShell from '@/components/client-portal/ClientPortalShell';
+import { useClientPortal } from '@/context/ClientPortalContext';
 import { User, LockSimple, ShieldCheck, CheckCircle, Warning } from '@phosphor-icons/react';
 import { useToast } from '@/context/ToastContext';
 
 function ProfileContent() {
+  const { user, client, fetchProfile: refreshProfile } = useClientPortal();
+
   const [profile, setProfile] = useState({
-    full_name: '',
-    email: '',
-    phone: '',
-    role_title: '',
-    public_client_id: '',
-    must_change_password: false
+    full_name: user?.full_name || '',
+    email: user?.email || '',
+    phone: user?.phone || '',
+    role_title: user?.role_title || '',
+    public_client_id: user?.public_client_id || '',
+    must_change_password: user?.must_change_password || false
   });
-  const [clientInfo, setClientInfo] = useState({ name: '', company: '' });
+  const [clientInfo, setClientInfo] = useState({ 
+    name: client?.name || '', 
+    company: client?.company || '' 
+  });
   const [savingProfile, setSavingProfile] = useState(false);
 
   // Password change state
@@ -23,28 +28,26 @@ function ProfileContent() {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [savingPassword, setSavingPassword] = useState(false);
 
-  const searchParams = useSearchParams();
-  const adminPreviewClientId = searchParams?.get('admin_preview_client_id');
   const { showToast } = useToast();
 
   useEffect(() => {
-    fetchProfile();
-  }, [adminPreviewClientId]);
-
-  async function fetchProfile() {
-    try {
-      const headers = {};
-      if (adminPreviewClientId) headers['x-admin-preview-client-id'] = adminPreviewClientId;
-      const res = await fetch(`/api/client/me${adminPreviewClientId ? `?admin_preview_client_id=${adminPreviewClientId}` : ''}`, { headers });
-      const data = await res.json();
-      if (data.success) {
-        setProfile(data.user);
-        setClientInfo(data.client);
-      }
-    } catch (err) {
-      console.warn('Profile fetch error:', err);
+    if (user) {
+      setProfile({
+        full_name: user.full_name || '',
+        email: user.email || '',
+        phone: user.phone || '',
+        role_title: user.role_title || '',
+        public_client_id: user.public_client_id || '',
+        must_change_password: user.must_change_password || false
+      });
     }
-  }
+    if (client) {
+      setClientInfo({
+        name: client.name || '',
+        company: client.company || ''
+      });
+    }
+  }, [user, client]);
 
   async function handleSaveProfile(e) {
     e.preventDefault();
@@ -64,6 +67,7 @@ function ProfileContent() {
       const data = await res.json();
       if (data.success) {
         showToast('Profile updated successfully', 'success');
+        refreshProfile(true);
       } else {
         showToast(data.error || 'Failed to update profile', 'error');
       }

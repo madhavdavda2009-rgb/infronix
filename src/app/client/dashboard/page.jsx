@@ -1,9 +1,10 @@
 "use client";
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 import ClientPortalShell from '@/components/client-portal/ClientPortalShell';
 import UploadRequirementModal from '@/components/client-portal/UploadRequirementModal';
+import { useClientPortal } from '@/context/ClientPortalContext';
 import { 
   GitPullRequest, 
   UploadSimple, 
@@ -18,6 +19,7 @@ import {
 import { useToast } from '@/context/ToastContext';
 
 function DashboardContent() {
+  const { getProjectsCached, invalidateCache } = useClientPortal();
   const [projects, setProjects] = useState([]);
   const [loading, setLoading] = useState(true);
   const [activeReqModal, setActiveReqModal] = useState({ isOpen: false, projectId: null, requirement: null });
@@ -27,31 +29,26 @@ function DashboardContent() {
   const querySuffix = adminPreviewClientId ? `?admin_preview_client_id=${adminPreviewClientId}` : '';
   const { showToast } = useToast();
 
-  useEffect(() => {
-    fetchProjects();
-  }, [adminPreviewClientId]);
-
-  async function fetchProjects() {
-    setLoading(true);
+  const loadProjects = useCallback(async (force = false) => {
     try {
-      const headers = {};
-      if (adminPreviewClientId) {
-        headers['x-admin-preview-client-id'] = adminPreviewClientId;
-      }
-
-      const res = await fetch(`/api/client/projects${adminPreviewClientId ? `?admin_preview_client_id=${adminPreviewClientId}` : ''}`, {
-        headers
-      });
-      const data = await res.json();
-      if (data.success) {
-        setProjects(data.projects || []);
-      }
-    } catch (err) {
+      if (force) setLoading(true);
+      const list = await getProjectsCached(force);
+      setProjects(list || []);
+    } catch {
       showToast('Error loading project dashboard', 'error');
     } finally {
       setLoading(false);
     }
-  }
+  }, [getProjectsCached, showToast]);
+
+  useEffect(() => {
+    loadProjects();
+  }, [loadProjects, adminPreviewClientId]);
+
+  const handleRequirementSuccess = () => {
+    invalidateCache('projects');
+    loadProjects(true);
+  };
 
   const activeProjects = projects.filter(p => p.status !== 'Completed' && p.status !== 'Cancelled');
   const completedProjects = projects.filter(p => p.status === 'Completed');
@@ -259,7 +256,7 @@ function DashboardContent() {
           onClose={() => setActiveReqModal({ isOpen: false, projectId: null, requirement: null })}
           projectId={activeReqModal.projectId}
           requirement={activeReqModal.requirement}
-          onSuccess={fetchProjects}
+          onSuccess={handleRequirementSuccess}
         />
       )}
     </ClientPortalShell>

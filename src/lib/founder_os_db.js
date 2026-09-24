@@ -3,21 +3,21 @@ const { Pool } = pg;
 // DATE columns represent calendar dates, not local-time instants.
 pg.types.setTypeParser(1082, value => value);
 
-let pool = null;
-let initialized = false;
+let pool = globalThis._founder_os_db_pool || null;
+let initialized = Boolean(globalThis._founder_os_db_initialized);
 let initialization = null;
 
 export function getPool() {
-  if (!pool) {
+  if (!globalThis._founder_os_db_pool) {
     const connectionString = process.env.SUPABASE_DATABASE_URL;
     if (!connectionString) {
       throw new Error('SUPABASE_DATABASE_URL environment variable is missing');
     }
-    pool = new Pool({
+    globalThis._founder_os_db_pool = new Pool({
       connectionString,
-      max: 10,
-      idleTimeoutMillis: 10000,
-      connectionTimeoutMillis: 10000,
+      max: 15,
+      idleTimeoutMillis: 30000,
+      connectionTimeoutMillis: 8000,
       keepAlive: true,
       keepAliveInitialDelayMillis: 10000,
       ssl: {
@@ -25,11 +25,11 @@ export function getPool() {
       }
     });
 
-    pool.on('error', (err) => {
+    globalThis._founder_os_db_pool.on('error', (err) => {
       console.warn('PostgreSQL idle client pool error (recovering):', err.message);
     });
   }
-  return pool;
+  return globalThis._founder_os_db_pool;
 }
 
 export async function query(sql, params = []) {
@@ -81,9 +81,32 @@ const INITIAL_SECURITY_CHECKLIST_TEMPLATES = [
 ];
 
 export async function initFounderOSDb() {
-  if (initialized) return;
+  if (globalThis._founder_os_db_initialized) return;
   if (!initialization) {
-    initialization = initializeSchema().finally(() => { initialization = null; });
+    initialization = (async () => {
+      try {
+        const p = getPool();
+        const check = await p.query(`
+          SELECT EXISTS (
+            SELECT FROM information_schema.tables 
+            WHERE table_schema = 'public' 
+            AND table_name = 'founder_os_portal_users'
+          ) as exists;
+        `);
+        if (check.rows?.[0]?.exists) {
+          globalThis._founder_os_db_initialized = true;
+          initialized = true;
+          return;
+        }
+      } catch {
+        // Fallback to full schema migration
+      }
+      return initializeSchema();
+    })().finally(() => { 
+      initialization = null; 
+      globalThis._founder_os_db_initialized = true;
+      initialized = true;
+    });
   }
   return initialization;
 }
