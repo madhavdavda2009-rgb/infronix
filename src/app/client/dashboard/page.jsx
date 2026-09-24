@@ -5,7 +5,6 @@ import { useSearchParams } from 'next/navigation';
 import ClientPortalShell from '@/components/client-portal/ClientPortalShell';
 import UploadRequirementModal from '@/components/client-portal/UploadRequirementModal';
 import { 
-  FolderSimple, 
   GitPullRequest, 
   UploadSimple, 
   Eye, 
@@ -14,8 +13,7 @@ import {
   CheckCircle, 
   Clock, 
   ShieldCheck,
-  Warning,
-  Sparkle
+  Warning
 } from '@phosphor-icons/react';
 import { useToast } from '@/context/ToastContext';
 
@@ -64,35 +62,63 @@ function DashboardContent() {
       subtitle="Overview of your deliverables, live progress, and milestones"
       breadcrumbs={[{ label: 'Client Portal' }, { label: 'Dashboard' }]}
     >
-      <div className="space-y-6">
-        {/* Welcome Banner */}
-        <div className="relative overflow-hidden rounded-3xl bg-gradient-to-r from-violet-900 via-indigo-900 to-slate-900 p-6 sm:p-8 text-white shadow-xl">
-          <div className="absolute right-0 top-0 w-96 h-96 bg-violet-500/10 rounded-full blur-3xl pointer-events-none" />
-          
-          <div className="relative z-10 max-w-2xl">
-            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/10 backdrop-blur-md text-[11px] font-semibold text-violet-200 mb-3 border border-white/10">
-              <Sparkle size={13} weight="fill" className="text-amber-300" />
-              Executive Client Portal
+      <div className="space-y-8">
+
+        {/* ── Welcome Banner — matches website design system ─────────────── */}
+        <div className="relative overflow-hidden bg-surface-container-lowest rounded-xl border border-outline px-6 sm:px-8 py-7 sm:py-9">
+          {/* Ambient glow — same as HeroSection */}
+          <div className="absolute top-1/2 right-0 -translate-y-1/2 w-[300px] h-[300px] bg-primary/8 rounded-full blur-[80px] pointer-events-none" />
+
+          <div className="relative z-10 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-6">
+            <div className="max-w-xl">
+              {/* Eyebrow label — same pattern as ServicesSection */}
+              <span className="text-xs font-bold tracking-widest uppercase text-primary mb-3 flex items-center gap-3">
+                <span className="w-8 h-[2px] bg-primary shrink-0" />
+                Your workspace
+              </span>
+              <h2 className="text-xl sm:text-2xl font-heading font-bold text-on-surface leading-snug mb-2">
+                Project Dashboard
+              </h2>
+              <p className="text-sm text-text-light leading-relaxed">
+                Track live stage progression, test upcoming builds, submit change requests, and verify deliverables.
+              </p>
             </div>
-            <h2 className="text-xl sm:text-2xl font-bold font-outfit tracking-tight mb-2">
-              Welcome to your Project Workspace
-            </h2>
-            <p className="text-xs sm:text-sm text-slate-300 leading-relaxed font-normal">
-              Track live stage progression, test upcoming builds in the staging preview, submit change requests, and verify deliverables.
-            </p>
+
+            {/* Stat chips — light surface, same as site's service highlights */}
+            <div className="flex items-center gap-3 shrink-0">
+              <div className="flex flex-col items-center px-5 py-3 rounded-md border border-outline bg-surface min-w-[72px]">
+                <span className="text-2xl font-heading font-bold text-on-surface leading-none">
+                  {activeProjects.length}
+                </span>
+                <span className="text-[11px] text-text-light mt-1 tracking-wide">Active</span>
+              </div>
+              <div className="flex flex-col items-center px-5 py-3 rounded-md border border-outline bg-surface min-w-[72px]">
+                <span className="text-2xl font-heading font-bold text-on-surface leading-none">
+                  {completedProjects.length}
+                </span>
+                <span className="text-[11px] text-text-light mt-1 tracking-wide">Delivered</span>
+              </div>
+            </div>
           </div>
         </div>
 
-        {/* Projects Section */}
+        {/* ── Projects Section ───────────────────────────────────────────── */}
         <div id="projects" className="space-y-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-2">
-              <FolderSimple size={20} className="text-violet-600" weight="bold" />
-              <h3 className="text-sm font-bold text-slate-900 font-outfit">Your Active Projects</h3>
-            </div>
-            <span className="text-xs text-slate-500 font-medium">
-              {activeProjects.length} Active {activeProjects.length === 1 ? 'Project' : 'Projects'}
+          <div className="flex items-center justify-between border-b border-outline pb-3">
+            <span className="text-xs font-bold tracking-widest uppercase text-primary flex items-center gap-2.5">
+              <span className="w-6 h-[2px] bg-primary shrink-0" />
+              Active Projects
+              {activeProjects.length > 0 && (
+                <span className="ml-1 px-1.5 py-0.5 rounded bg-soft-violet text-primary text-[10px] font-bold">
+                  {activeProjects.length}
+                </span>
+              )}
             </span>
+            {completedProjects.length > 0 && (
+              <span className="text-xs text-text-light">
+                {completedProjects.length} delivered
+              </span>
+            )}
           </div>
 
           {loading ? (

@@ -53,7 +53,7 @@ export default function ClientSidebar({
       >
         {/* Brand Header */}
         <div className="h-16 px-5 flex items-center justify-between border-b border-slate-100 shrink-0 bg-white">
-          <div className="flex items-center gap-2.5">
+          <div className="flex items-center">
             <img
               src="/light-web-logo.webp"
               alt="InfronixWeb"
@@ -62,9 +62,6 @@ export default function ClientSidebar({
               style={{ width: 'auto', height: 'auto' }}
               className="h-7 w-auto object-contain"
             />
-            <span className="px-1.5 py-0.5 rounded bg-violet-50 border border-violet-200 text-[9px] font-bold text-violet-700 uppercase tracking-wider">
-              Portal
-            </span>
           </div>
           <button
             onClick={onCloseMobile}
@@ -72,31 +69,6 @@ export default function ClientSidebar({
           >
             <X size={20} />
           </button>
-        </div>
-
-        {/* Client ID Card */}
-        <div className="p-3 m-3 bg-gradient-to-br from-violet-50/80 to-slate-50 border border-violet-100 rounded-xl">
-          <div className="flex items-center justify-between mb-1">
-            <span className="text-[10px] uppercase font-bold text-violet-700 tracking-wider">Client Workspace</span>
-            <span className="flex items-center gap-1 text-[9px] font-medium text-emerald-700 bg-emerald-50 px-1.5 py-0.5 rounded-full border border-emerald-200">
-              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-              Verified
-            </span>
-          </div>
-          <div className="font-bold text-xs text-slate-900 truncate">
-            {client?.name || user?.full_name || 'Client Account'}
-          </div>
-          {client?.company && (
-            <div className="text-[11px] text-slate-500 truncate mt-0.5">
-              {client.company}
-            </div>
-          )}
-          <div className="mt-2 pt-2 border-t border-violet-100/60 flex items-center justify-between text-[10px]">
-            <span className="text-slate-500">Client ID:</span>
-            <span className="font-mono font-bold text-violet-900 bg-white px-1.5 py-0.5 rounded border border-violet-200">
-              {user?.public_client_id || 'IW-CLIENT'}
-            </span>
-          </div>
         </div>
 
         {/* Navigation Section */}

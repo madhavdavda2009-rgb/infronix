@@ -11,36 +11,106 @@ export async function GET(request) {
   try {
     await initFounderOSDb();
 
-    // 1. Core Financial Aggregates
-    const revenueRes = await query(`
-      SELECT 
-        COALESCE(SUM(CASE WHEN payment_status = 'Paid' THEN amount ELSE 0 END), 0) as total_revenue,
-        COALESCE(SUM(CASE WHEN payment_status IN ('Pending', 'Overdue') THEN amount ELSE 0 END), 0) as outstanding_payments,
-        COUNT(*) as total_revenue_records
-      FROM founder_os_revenue
-    `);
+    // ── Run all independent queries in PARALLEL for maximum speed ──────────
+    const [
+      revenueRes,
+      expensesRes,
+      projectsRes,
+      leadsRes,
+      proposalsRes,
+      monthlyRevRes,
+      monthlyExpRes,
+      followupsRes,
+      deadlinesRes,
+      activityRes,
+      settingsRes,
+    ] = await Promise.all([
+      // 1. Revenue
+      query(`
+        SELECT 
+          COALESCE(SUM(CASE WHEN payment_status = 'Paid' THEN amount ELSE 0 END), 0) as total_revenue,
+          COALESCE(SUM(CASE WHEN payment_status IN ('Pending', 'Overdue') THEN amount ELSE 0 END), 0) as outstanding_payments
+        FROM founder_os_revenue
+      `),
+      // 2. Expenses
+      query(`
+        SELECT COALESCE(SUM(amount), 0) as total_expenses
+        FROM founder_os_expenses
+      `),
+      // 3. Projects by status
+      query(`
+        SELECT status, COUNT(*) as status_count
+        FROM founder_os_projects
+        GROUP BY status
+      `),
+      // 4. Leads by status
+      query(`
+        SELECT status, COUNT(*) as status_count
+        FROM founder_os_leads
+        GROUP BY status
+      `),
+      // 5. Proposals
+      query(`
+        SELECT 
+          COUNT(CASE WHEN status IN ('Draft', 'Sent', 'Viewed', 'Negotiation') THEN 1 END) as pending_proposals
+        FROM founder_os_proposals
+      `),
+      // 6. Monthly revenue chart
+      query(`
+        SELECT 
+          TO_CHAR(payment_date, 'YYYY-MM') as month,
+          SUM(CASE WHEN payment_status = 'Paid' THEN amount ELSE 0 END) as revenue
+        FROM founder_os_revenue
+        WHERE payment_date >= CURRENT_DATE - INTERVAL '12 months'
+        GROUP BY TO_CHAR(payment_date, 'YYYY-MM')
+        ORDER BY month ASC
+      `),
+      // 7. Monthly expenses chart
+      query(`
+        SELECT 
+          TO_CHAR(expense_date, 'YYYY-MM') as month,
+          SUM(amount) as expenses
+        FROM founder_os_expenses
+        WHERE expense_date >= CURRENT_DATE - INTERVAL '12 months'
+        GROUP BY TO_CHAR(expense_date, 'YYYY-MM')
+        ORDER BY month ASC
+      `),
+      // 8. Follow-ups due/overdue
+      query(`
+        SELECT id, name, company, next_followup, status
+        FROM founder_os_leads
+        WHERE next_followup IS NOT NULL 
+          AND next_followup <= CURRENT_DATE 
+          AND status NOT IN ('Won', 'Lost')
+        ORDER BY next_followup ASC
+        LIMIT 5
+      `),
+      // 9. Deadlines upcoming / overdue
+      query(`
+        SELECT id, project_name, client_name, deadline, status
+        FROM founder_os_projects
+        WHERE deadline IS NOT NULL 
+          AND deadline <= CURRENT_DATE + INTERVAL '7 days'
+          AND status NOT IN ('Completed', 'On Hold')
+        ORDER BY deadline ASC
+        LIMIT 5
+      `),
+      // 10. Recent activity
+      query(`
+        SELECT id, user_name, entity_type, entity_id, action, details, created_at
+        FROM founder_os_activity_logs
+        ORDER BY created_at DESC
+        LIMIT 8
+      `),
+      // 11. Settings
+      query('SELECT key, value FROM founder_os_settings'),
+    ]);
 
-    const expensesRes = await query(`
-      SELECT 
-        COALESCE(SUM(amount), 0) as total_expenses,
-        COUNT(*) as total_expense_records
-      FROM founder_os_expenses
-    `);
-
+    // ── Aggregate results ──────────────────────────────────────────────────
     const totalRevenue = parseFloat(revenueRes.rows[0]?.total_revenue || 0);
     const outstandingPayments = parseFloat(revenueRes.rows[0]?.outstanding_payments || 0);
     const totalExpenses = parseFloat(expensesRes.rows[0]?.total_expenses || 0);
     const netProfit = totalRevenue - totalExpenses;
-
-    // 2. Operational Counts
-    const projectsRes = await query(`
-      SELECT 
-        COUNT(*) as total_projects,
-        COUNT(CASE WHEN status NOT IN ('Completed', 'On Hold') THEN 1 END) as active_projects,
-        status, COUNT(*) as status_count
-      FROM founder_os_projects
-      GROUP BY status
-    `);
 
     let totalProjects = 0;
     let activeProjects = 0;
@@ -53,13 +123,6 @@ export async function GET(request) {
       projectStatusMap[row.status] = parseInt(row.status_count, 10);
     }
 
-    const leadsRes = await query(`
-      SELECT 
-        status, COUNT(*) as status_count
-      FROM founder_os_leads
-      GROUP BY status
-    `);
-
     let totalLeads = 0;
     let openLeads = 0;
     const leadStatusMap = {};
@@ -71,34 +134,7 @@ export async function GET(request) {
       leadStatusMap[row.status] = parseInt(row.status_count, 10);
     }
 
-    const proposalsRes = await query(`
-      SELECT 
-        COUNT(CASE WHEN status IN ('Draft', 'Sent', 'Viewed', 'Negotiation') THEN 1 END) as pending_proposals,
-        COUNT(*) as total_proposals
-      FROM founder_os_proposals
-    `);
     const pendingProposals = parseInt(proposalsRes.rows[0]?.pending_proposals || 0, 10);
-
-    // 3. Monthly Financial Chart Data (Real data aggregation by month)
-    const monthlyRevRes = await query(`
-      SELECT 
-        TO_CHAR(payment_date, 'YYYY-MM') as month,
-        SUM(CASE WHEN payment_status = 'Paid' THEN amount ELSE 0 END) as revenue
-      FROM founder_os_revenue
-      WHERE payment_date >= CURRENT_DATE - INTERVAL '12 months'
-      GROUP BY TO_CHAR(payment_date, 'YYYY-MM')
-      ORDER BY month ASC
-    `);
-
-    const monthlyExpRes = await query(`
-      SELECT 
-        TO_CHAR(expense_date, 'YYYY-MM') as month,
-        SUM(amount) as expenses
-      FROM founder_os_expenses
-      WHERE expense_date >= CURRENT_DATE - INTERVAL '12 months'
-      GROUP BY TO_CHAR(expense_date, 'YYYY-MM')
-      ORDER BY month ASC
-    `);
 
     const monthlyMap = {};
     for (const row of monthlyRevRes.rows) {
@@ -111,29 +147,13 @@ export async function GET(request) {
         monthlyMap[row.month].expenses = parseFloat(row.expenses || 0);
       }
     }
-
     const monthlyChartData = Object.values(monthlyMap)
-      .map(item => ({
-        ...item,
-        profit: item.revenue - item.expenses
-      }))
+      .map(item => ({ ...item, profit: item.revenue - item.expenses }))
       .sort((a, b) => a.month.localeCompare(b.month));
 
-    // 4. Live Actionable Notifications / Alerts (Computed dynamically from real database records)
     const alerts = [];
-
-    // Follow-ups due or overdue
-    const followupsRes = await query(`
-      SELECT id, name, company, next_followup, status
-      FROM founder_os_leads
-      WHERE next_followup IS NOT NULL 
-        AND next_followup <= CURRENT_DATE 
-        AND status NOT IN ('Won', 'Lost')
-      ORDER BY next_followup ASC
-      LIMIT 5
-    `);
     for (const f of followupsRes.rows) {
-      const isOverdue = new Date(f.next_followup) < new Date(new Date().setHours(0,0,0,0));
+      const isOverdue = new Date(f.next_followup) < new Date(new Date().setHours(0, 0, 0, 0));
       alerts.push({
         id: `followup-${f.id}`,
         type: isOverdue ? 'danger' : 'warning',
@@ -143,19 +163,8 @@ export async function GET(request) {
         link: `/admin?tab=sales&sub=leads&leadId=${f.id}`
       });
     }
-
-    // Projects with approaching deadlines (within next 7 days) or overdue
-    const deadlinesRes = await query(`
-      SELECT id, project_name, client_name, deadline, status
-      FROM founder_os_projects
-      WHERE deadline IS NOT NULL 
-        AND deadline <= CURRENT_DATE + INTERVAL '7 days'
-        AND status NOT IN ('Completed', 'On Hold')
-      ORDER BY deadline ASC
-      LIMIT 5
-    `);
     for (const d of deadlinesRes.rows) {
-      const isOverdue = new Date(d.deadline) < new Date(new Date().setHours(0,0,0,0));
+      const isOverdue = new Date(d.deadline) < new Date(new Date().setHours(0, 0, 0, 0));
       alerts.push({
         id: `deadline-${d.id}`,
         type: isOverdue ? 'danger' : 'info',
@@ -165,8 +174,6 @@ export async function GET(request) {
         link: `/admin?tab=delivery&projectId=${d.id}`
       });
     }
-
-    // Outstanding / Pending payments
     if (outstandingPayments > 0) {
       alerts.push({
         id: 'finance-pending',
@@ -178,16 +185,6 @@ export async function GET(request) {
       });
     }
 
-    // 5. Recent Activity Logs (Actual events only)
-    const activityRes = await query(`
-      SELECT id, user_name, entity_type, entity_id, action, details, created_at
-      FROM founder_os_activity_logs
-      ORDER BY created_at DESC
-      LIMIT 8
-    `);
-
-    // 6. Settings
-    const settingsRes = await query('SELECT key, value FROM founder_os_settings');
     const settings = {};
     for (const s of settingsRes.rows) {
       settings[s.key] = s.value;
