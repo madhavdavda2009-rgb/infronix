@@ -16,11 +16,17 @@ export function getPool() {
     pool = new Pool({
       connectionString,
       max: 10,
-      idleTimeoutMillis: 30000,
+      idleTimeoutMillis: 10000,
       connectionTimeoutMillis: 10000,
+      keepAlive: true,
+      keepAliveInitialDelayMillis: 10000,
       ssl: {
         rejectUnauthorized: false
       }
+    });
+
+    pool.on('error', (err) => {
+      console.warn('PostgreSQL idle client pool error (recovering):', err.message);
     });
   }
   return pool;
@@ -32,6 +38,25 @@ export async function query(sql, params = []) {
     const result = await p.query(sql, params);
     return result;
   } catch (err) {
+    const isConnErr = 
+      err.message?.includes('Connection terminated') ||
+      err.message?.includes('timeout') ||
+      err.message?.includes('ECONNRESET') ||
+      err.message?.includes('Connection lost') ||
+      err.message?.includes('closed') ||
+      err.code === '57P01';
+
+    if (isConnErr) {
+      console.warn('PostgreSQL socket reconnection triggered for query:', err.message);
+      try {
+        const retryResult = await p.query(sql, params);
+        return retryResult;
+      } catch (retryErr) {
+        console.error('Founder OS DB retry error:', retryErr.message, '\nSQL:', sql);
+        throw retryErr;
+      }
+    }
+
     console.error('Founder OS DB query error:', err.message, '\nSQL:', sql);
     throw err;
   }
@@ -659,6 +684,253 @@ async function initializeSchema() {
 
       ALTER TABLE founder_os_people
       ALTER COLUMN profile_image_url TYPE TEXT;
+    `);
+
+    // 29. Client Portal Users Table
+    await client.query(`
+      CREATE TABLE IF NOT EXISTS founder_os_portal_users (
+        id SERIAL PRIMARY KEY,
+        public_client_id VARCHAR(50) UNIQUE NOT NULL,
+        client_id INTEGER NOT NULL REFERENCES founder_os_clients(id) ON DELETE CASCADE,
+        full_name VARCHAR(255) NOT NULL,
+        email VARCHAR(255) NOT NULL,
+        phone VARCHAR(50),
+        role_title VARCHAR(100) DEFAULT 'Client Representative',
+        password_hash VARCHAR(255),
+        status VARCHAR(50) NOT NULL DEFAULT 'Invited',
+        email_verified BOOLEAN DEFAULT FALSE,
+        must_change_password BOOLEAN DEFAULT TRUE,
+        failed_login_count INTEGER DEFAULT 0,
+        locked_until TIMESTAMP WITH TIME ZONE,
+        last_login TIMESTAMP WITH TIME ZONE,
+        password_changed_at TIMESTAMP WITH TIME ZONE,
+        setup_token_hash VARCHAR(255),
+        setup_token_expires_at TIMESTAMP WITH TIME ZONE,
+        reset_token_hash VARCHAR(255),
+        reset_token_expires_at TIMESTAMP WITH TIME ZONE,
+        created_by VARCHAR(255) DEFAULT 'admin',
+        created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+        updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+      )
+    `);
+
+    // 30. Client Portal Sessions Table
+    await client.query(`
+      CREATE TABLE IF NOT EXISTS founder_os_portal_sessions (
+        id SERIAL PRIMARY KEY,
+        portal_user_id INTEGER NOT NULL REFERENCES founder_os_portal_users(id) ON DELETE CASCADE,
+        session_token_hash VARCHAR(255) UNIQUE NOT NULL,
+        ip_hash VARCHAR(100),
+        user_agent TEXT,
+        expires_at TIMESTAMP WITH TIME ZONE NOT NULL,
+        is_revoked BOOLEAN DEFAULT FALSE,
+        created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+      )
+    `);
+
+    // 31. Project Client Portal Settings Table
+    await client.query(`
+      CREATE TABLE IF NOT EXISTS founder_os_project_portal_settings (
+        id SERIAL PRIMARY KEY,
+        project_id INTEGER UNIQUE NOT NULL REFERENCES founder_os_projects(id) ON DELETE CASCADE,
+        portal_enabled BOOLEAN DEFAULT TRUE,
+        portal_display_name VARCHAR(255),
+        client_summary TEXT,
+        client_announcement TEXT,
+        preview_enabled BOOLEAN DEFAULT FALSE,
+        preview_url TEXT,
+        preview_label VARCHAR(255),
+        preview_status VARCHAR(50) DEFAULT 'Preparing',
+        preview_instructions TEXT,
+        change_requests_enabled BOOLEAN DEFAULT TRUE,
+        change_request_policy TEXT,
+        visible_financials BOOLEAN DEFAULT TRUE,
+        created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+        updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+      )
+    `);
+
+    // 32. Client Portal Change Requests Table
+    await client.query(`
+      CREATE TABLE IF NOT EXISTS founder_os_client_change_requests (
+        id SERIAL PRIMARY KEY,
+        reference_id VARCHAR(50) UNIQUE NOT NULL,
+        project_id INTEGER NOT NULL REFERENCES founder_os_projects(id) ON DELETE CASCADE,
+        client_id INTEGER NOT NULL REFERENCES founder_os_clients(id) ON DELETE CASCADE,
+        portal_user_id INTEGER REFERENCES founder_os_portal_users(id) ON DELETE SET NULL,
+        stage_id INTEGER REFERENCES founder_os_project_stages(id) ON DELETE SET NULL,
+        title VARCHAR(255) NOT NULL,
+        description TEXT NOT NULL,
+        category VARCHAR(100) NOT NULL DEFAULT 'Content Change',
+        client_priority VARCHAR(50) DEFAULT 'Medium',
+        admin_priority VARCHAR(50) DEFAULT 'Medium',
+        page_route VARCHAR(255),
+        attachment_url TEXT,
+        attachment_name VARCHAR(255),
+        status VARCHAR(50) NOT NULL DEFAULT 'Submitted',
+        is_in_scope BOOLEAN DEFAULT TRUE,
+        quote_amount NUMERIC(12, 2) DEFAULT 0,
+        quote_currency VARCHAR(10) DEFAULT 'INR',
+        quote_tax_included BOOLEAN DEFAULT FALSE,
+        timeline_impact_days INTEGER DEFAULT 0,
+        estimated_completion_date DATE,
+        quote_terms TEXT,
+        admin_explanation TEXT,
+        quote_version INTEGER DEFAULT 1,
+        client_quote_decision VARCHAR(50),
+        client_quote_decision_at TIMESTAMP WITH TIME ZONE,
+        client_quote_notes TEXT,
+        created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+        updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+      )
+    `);
+
+    // 33. Client Portal Change Request Comments Table
+    await client.query(`
+      CREATE TABLE IF NOT EXISTS founder_os_change_request_comments (
+        id SERIAL PRIMARY KEY,
+        change_request_id INTEGER NOT NULL REFERENCES founder_os_client_change_requests(id) ON DELETE CASCADE,
+        sender_type VARCHAR(50) NOT NULL DEFAULT 'Client',
+        sender_name VARCHAR(255) NOT NULL,
+        sender_id INTEGER,
+        message TEXT NOT NULL,
+        attachment_url TEXT,
+        attachment_name VARCHAR(255),
+        is_internal_note BOOLEAN DEFAULT FALSE,
+        created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+      )
+    `);
+
+    // 34. Client Portal Deliverable Approvals Table
+    await client.query(`
+      CREATE TABLE IF NOT EXISTS founder_os_client_approvals (
+        id SERIAL PRIMARY KEY,
+        project_id INTEGER NOT NULL REFERENCES founder_os_projects(id) ON DELETE CASCADE,
+        portal_user_id INTEGER REFERENCES founder_os_portal_users(id) ON DELETE SET NULL,
+        approval_type VARCHAR(100) NOT NULL,
+        deliverable_title VARCHAR(255) NOT NULL,
+        version VARCHAR(50) DEFAULT '1.0',
+        document_hash VARCHAR(255),
+        client_comment TEXT,
+        ip_hash VARCHAR(100),
+        created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+      )
+    `);
+
+    // 35. Client Portal Documents Table
+    await client.query(`
+      CREATE TABLE IF NOT EXISTS founder_os_portal_documents (
+        id SERIAL PRIMARY KEY,
+        project_id INTEGER NOT NULL REFERENCES founder_os_projects(id) ON DELETE CASCADE,
+        title VARCHAR(255) NOT NULL,
+        category VARCHAR(100) NOT NULL DEFAULT 'Project Brief',
+        description TEXT,
+        file_url TEXT NOT NULL,
+        file_name VARCHAR(255),
+        file_size VARCHAR(50),
+        version VARCHAR(50) DEFAULT '1.0',
+        is_visible_to_client BOOLEAN DEFAULT TRUE,
+        is_download_allowed BOOLEAN DEFAULT TRUE,
+        published_date DATE DEFAULT CURRENT_DATE,
+        created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+        updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+      )
+    `);
+
+    // 36. Client Portal Notifications Table
+    await client.query(`
+      CREATE TABLE IF NOT EXISTS founder_os_portal_notifications (
+        id SERIAL PRIMARY KEY,
+        recipient_type VARCHAR(50) DEFAULT 'Client',
+        portal_user_id INTEGER REFERENCES founder_os_portal_users(id) ON DELETE CASCADE,
+        client_id INTEGER REFERENCES founder_os_clients(id) ON DELETE CASCADE,
+        project_id INTEGER REFERENCES founder_os_projects(id) ON DELETE SET NULL,
+        title VARCHAR(255) NOT NULL,
+        message TEXT NOT NULL,
+        action_url VARCHAR(255),
+        category VARCHAR(100) DEFAULT 'General',
+        is_read BOOLEAN DEFAULT FALSE,
+        created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+      )
+    `);
+
+    // 37. Portal Project Access Table (Granular project permissions)
+    await client.query(`
+      CREATE TABLE IF NOT EXISTS founder_os_portal_project_access (
+        id SERIAL PRIMARY KEY,
+        portal_user_id INTEGER NOT NULL REFERENCES founder_os_portal_users(id) ON DELETE CASCADE,
+        project_id INTEGER NOT NULL REFERENCES founder_os_projects(id) ON DELETE CASCADE,
+        can_view_payments BOOLEAN DEFAULT TRUE,
+        can_submit_change_requests BOOLEAN DEFAULT TRUE,
+        can_upload_files BOOLEAN DEFAULT TRUE,
+        can_approve_deliverables BOOLEAN DEFAULT TRUE,
+        created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+        UNIQUE (portal_user_id, project_id)
+      )
+    `);
+
+    // Migrations for Existing Tables
+    await client.query(`
+      ALTER TABLE founder_os_project_stages
+      ADD COLUMN IF NOT EXISTS visible_to_client BOOLEAN DEFAULT TRUE,
+      ADD COLUMN IF NOT EXISTS client_title VARCHAR(255),
+      ADD COLUMN IF NOT EXISTS client_description TEXT,
+      ADD COLUMN IF NOT EXISTS client_status VARCHAR(50),
+      ADD COLUMN IF NOT EXISTS client_note TEXT,
+      ADD COLUMN IF NOT EXISTS stage_weight INTEGER DEFAULT 1,
+      ADD COLUMN IF NOT EXISTS target_date DATE;
+
+      ALTER TABLE founder_os_tasks
+      ADD COLUMN IF NOT EXISTS visible_to_client BOOLEAN DEFAULT FALSE,
+      ADD COLUMN IF NOT EXISTS client_title VARCHAR(255),
+      ADD COLUMN IF NOT EXISTS client_description TEXT;
+
+      ALTER TABLE founder_os_client_requirements
+      ADD COLUMN IF NOT EXISTS uploaded_file_url TEXT,
+      ADD COLUMN IF NOT EXISTS uploaded_file_name VARCHAR(255),
+      ADD COLUMN IF NOT EXISTS uploaded_file_size VARCHAR(50),
+      ADD COLUMN IF NOT EXISTS uploaded_file_type VARCHAR(100),
+      ADD COLUMN IF NOT EXISTS client_message TEXT,
+      ADD COLUMN IF NOT EXISTS uploaded_at TIMESTAMP WITH TIME ZONE,
+      ADD COLUMN IF NOT EXISTS admin_review_note TEXT,
+      ADD COLUMN IF NOT EXISTS portal_user_id INTEGER REFERENCES founder_os_portal_users(id) ON DELETE SET NULL;
+
+      ALTER TABLE founder_os_client_approvals
+      ADD COLUMN IF NOT EXISTS client_id INTEGER REFERENCES founder_os_clients(id) ON DELETE CASCADE;
+
+      ALTER TABLE founder_os_portal_documents
+      ADD COLUMN IF NOT EXISTS client_id INTEGER REFERENCES founder_os_clients(id) ON DELETE CASCADE;
+
+      ALTER TABLE founder_os_project_portal_settings
+      ADD COLUMN IF NOT EXISTS portal_enabled BOOLEAN DEFAULT TRUE,
+      ADD COLUMN IF NOT EXISTS portal_display_name VARCHAR(255),
+      ADD COLUMN IF NOT EXISTS client_summary TEXT,
+      ADD COLUMN IF NOT EXISTS client_announcement TEXT,
+      ADD COLUMN IF NOT EXISTS preview_enabled BOOLEAN DEFAULT FALSE,
+      ADD COLUMN IF NOT EXISTS preview_url TEXT,
+      ADD COLUMN IF NOT EXISTS preview_label VARCHAR(255),
+      ADD COLUMN IF NOT EXISTS preview_status VARCHAR(50) DEFAULT 'Preparing',
+      ADD COLUMN IF NOT EXISTS preview_instructions TEXT,
+      ADD COLUMN IF NOT EXISTS change_requests_enabled BOOLEAN DEFAULT TRUE,
+      ADD COLUMN IF NOT EXISTS change_request_policy TEXT,
+      ADD COLUMN IF NOT EXISTS visible_financials BOOLEAN DEFAULT TRUE;
+    `);
+
+    // Indexes for Portal Tables
+    await client.query(`
+      CREATE INDEX IF NOT EXISTS idx_portal_users_client ON founder_os_portal_users(client_id);
+      CREATE INDEX IF NOT EXISTS idx_portal_users_public_id ON founder_os_portal_users(public_client_id);
+      CREATE INDEX IF NOT EXISTS idx_portal_users_email ON founder_os_portal_users(LOWER(email));
+      CREATE INDEX IF NOT EXISTS idx_portal_sessions_user ON founder_os_portal_sessions(portal_user_id);
+      CREATE INDEX IF NOT EXISTS idx_portal_sessions_token ON founder_os_portal_sessions(session_token_hash);
+      CREATE INDEX IF NOT EXISTS idx_project_portal_settings_proj ON founder_os_project_portal_settings(project_id);
+      CREATE INDEX IF NOT EXISTS idx_change_requests_proj ON founder_os_client_change_requests(project_id);
+      CREATE INDEX IF NOT EXISTS idx_change_requests_client ON founder_os_client_change_requests(client_id);
+      CREATE INDEX IF NOT EXISTS idx_cr_comments_req ON founder_os_change_request_comments(change_request_id);
+      CREATE INDEX IF NOT EXISTS idx_approvals_proj ON founder_os_client_approvals(project_id);
+      CREATE INDEX IF NOT EXISTS idx_portal_docs_proj ON founder_os_portal_documents(project_id);
+      CREATE INDEX IF NOT EXISTS idx_portal_notifs_user ON founder_os_portal_notifications(portal_user_id, is_read);
+      CREATE INDEX IF NOT EXISTS idx_portal_proj_access ON founder_os_portal_project_access(portal_user_id, project_id);
     `);
 
     // Initialize Default Blog Categories if empty

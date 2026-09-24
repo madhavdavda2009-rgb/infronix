@@ -110,6 +110,12 @@ export async function PUT(request, { params }) {
     const clientId = parseInt(id, 10);
     const body = await request.json();
     const { name, company, phone, email, industry, notes } = body;
+    const cleanName = typeof name === 'string' && name.trim() ? name.trim() : null;
+    const cleanCompany = typeof company === 'string' ? company.trim() : null;
+    const cleanPhone = typeof phone === 'string' ? phone.trim() : null;
+    const cleanEmail = typeof email === 'string' ? email.trim() : null;
+    const cleanIndustry = typeof industry === 'string' ? industry.trim() : null;
+    const cleanNotes = typeof notes === 'string' ? notes.trim() : (notes === null ? null : undefined);
 
     const res = await query(`
       UPDATE founder_os_clients
@@ -119,17 +125,17 @@ export async function PUT(request, { params }) {
         phone = COALESCE($3, phone),
         email = COALESCE($4, email),
         industry = COALESCE($5, industry),
-        notes = $6,
+        notes = COALESCE($6, notes),
         updated_at = NOW()
       WHERE id = $7
       RETURNING *
     `, [
-      name ? name.trim() : null,
-      company !== undefined ? company.trim() : null,
-      phone !== undefined ? phone.trim() : null,
-      email !== undefined ? email.trim() : null,
-      industry !== undefined ? industry.trim() : null,
-      notes,
+      cleanName,
+      cleanCompany,
+      cleanPhone,
+      cleanEmail,
+      cleanIndustry,
+      cleanNotes,
       clientId
     ]);
 
@@ -138,7 +144,13 @@ export async function PUT(request, { params }) {
     }
 
     const client = res.rows[0];
-    await logActivity(auth.username, 'Client', clientId, 'Updated', `Updated client: ${client.name}`);
+
+    // If name changed, synchronize client_name in projects and leads
+    if (cleanName) {
+      await query('UPDATE founder_os_projects SET client_name = $1 WHERE client_id = $2', [client.name, clientId]);
+    }
+
+    await logActivity(auth.username || 'Admin', 'Client', clientId, 'Updated', `Updated client profile: ${client.name}`);
 
     return NextResponse.json({ success: true, client });
   } catch (err) {

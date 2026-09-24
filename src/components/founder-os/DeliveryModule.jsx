@@ -1,7 +1,7 @@
 "use client";
 import CreateTeamMember from './CreateTeamMember';
 import React, { useState, useEffect } from 'react';
-import { Folder, Plus, MagnifyingGlass, Pencil, Trash, CheckCircle, Calendar, X, ListChecks, ChatCircleText, ArrowLeft, CheckSquare, Square, CreditCard, HardDrives, Users, Warning, Check } from '@phosphor-icons/react';
+import { Folder, Plus, MagnifyingGlass, Pencil, Trash, CheckCircle, Calendar, X, ListChecks, ChatCircleText, ArrowLeft, CheckSquare, Square, CreditCard, HardDrives, Users, Warning, Check, ShieldCheck, Globe, Eye, ArrowSquareOut, FileText, UploadSimple, Clock, CurrencyInr, ChatDots, Tag, ArrowsClockwise, FilePlus, Sparkle, Link } from '@phosphor-icons/react';
 import EmptyState from './EmptyState';
 import { ConfirmModal } from './ConfirmModal';
 import { useToast } from '@/context/ToastContext';
@@ -32,6 +32,49 @@ export default function DeliveryModule({ initialProjectId, settings = {}, onRefr
   const [search, setSearch] = useState('');
   const [statusFilter, setStatusFilter] = useState('ALL');
   const [priorityFilter, setPriorityFilter] = useState('ALL');
+
+  // Client Portal State
+  const [portalSettings, setPortalSettings] = useState({
+    is_portal_enabled: true,
+    portal_enabled: true,
+    portal_display_name: '',
+    client_summary: '',
+    allow_live_preview: false,
+    preview_enabled: false,
+    staging_preview_url: '',
+    preview_url: '',
+    preview_label: 'Live Staging Preview',
+    preview_status: 'Preparing',
+    preview_instructions: '',
+    allow_change_requests: true,
+    change_requests_enabled: true,
+    change_request_policy: 'Change requests will be reviewed and scheduled by the delivery team.'
+  });
+  const [portalSubtab, setPortalSubtab] = useState('settings'); // 'settings' | 'stages' | 'tasks' | 'change_requests' | 'requirements' | 'documents' | 'approvals'
+  const [selectedChangeRequest, setSelectedChangeRequest] = useState(null);
+  const [crReviewForm, setCrReviewForm] = useState({
+    status: '',
+    admin_priority: '',
+    scope_decision: 'Included in Scope',
+    impact_cost: '0',
+    timeline_impact: 'No schedule impact',
+    estimated_completion_date: '',
+    admin_notes: '',
+    status_comment: ''
+  });
+  const [newCommentText, setNewCommentText] = useState('');
+  const [isInternalComment, setIsInternalComment] = useState(false);
+  const [reviewReqItem, setReviewReqItem] = useState(null);
+  const [reqReviewNotes, setReqReviewNotes] = useState('');
+  const [showPublishDocModal, setShowPublishDocModal] = useState(false);
+  const [publishDocForm, setPublishDocForm] = useState({
+    title: '',
+    category: 'Deliverable',
+    file_url: '',
+    description: '',
+    version: '1.0',
+    is_client_downloadable: true
+  });
 
   // Modals
   const [showWizardModal, setShowWizardModal] = useState(false);
@@ -123,9 +166,229 @@ export default function DeliveryModule({ initialProjectId, settings = {}, onRefr
       if (data.success) {
         setSelectedProject(data.project);
         setProjectDetails(data);
+        if (data.portalSettings) {
+          const ps = data.portalSettings;
+          setPortalSettings({
+            is_portal_enabled: ps.is_portal_enabled ?? ps.portal_enabled ?? true,
+            portal_enabled: ps.portal_enabled ?? ps.is_portal_enabled ?? true,
+            portal_display_name: ps.portal_display_name || data.project?.project_name || '',
+            client_summary: ps.client_summary || '',
+            allow_live_preview: ps.allow_live_preview ?? ps.preview_enabled ?? false,
+            preview_enabled: ps.preview_enabled ?? ps.allow_live_preview ?? false,
+            staging_preview_url: ps.staging_preview_url ?? ps.preview_url ?? '',
+            preview_url: ps.preview_url ?? ps.staging_preview_url ?? '',
+            preview_label: ps.preview_label || 'Live Staging Preview',
+            preview_status: ps.preview_status || 'Preparing',
+            preview_instructions: ps.preview_instructions || '',
+            allow_change_requests: ps.allow_change_requests ?? ps.change_requests_enabled ?? true,
+            change_requests_enabled: ps.change_requests_enabled ?? ps.allow_change_requests ?? true,
+            change_request_policy: ps.change_request_policy || 'Change requests will be reviewed and scheduled by the delivery team.'
+          });
+        }
       }
     } catch (err) {
       showToast('Error loading project details', 'error');
+    }
+  }
+
+  // Client Portal Handlers
+  async function handleSavePortalSettings(e) {
+    if (e) e.preventDefault();
+    if (!selectedProject) return;
+    setActionLoading(true);
+    try {
+      const payload = {
+        ...portalSettings,
+        portal_enabled: portalSettings.is_portal_enabled ?? portalSettings.portal_enabled ?? true,
+        is_portal_enabled: portalSettings.is_portal_enabled ?? portalSettings.portal_enabled ?? true,
+        preview_enabled: portalSettings.allow_live_preview ?? portalSettings.preview_enabled ?? false,
+        allow_live_preview: portalSettings.allow_live_preview ?? portalSettings.preview_enabled ?? false,
+        preview_url: (portalSettings.staging_preview_url || portalSettings.preview_url || '').trim(),
+        staging_preview_url: (portalSettings.staging_preview_url || portalSettings.preview_url || '').trim(),
+        change_requests_enabled: portalSettings.allow_change_requests ?? portalSettings.change_requests_enabled ?? true,
+        allow_change_requests: portalSettings.allow_change_requests ?? portalSettings.change_requests_enabled ?? true,
+      };
+
+      const res = await fetch(`/api/founder-os/projects/${selectedProject.id}/portal-settings`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+      const data = await res.json();
+      if (data.success) {
+        showToast('Client Portal settings saved successfully', 'success');
+        if (data.settings) {
+          setPortalSettings(data.settings);
+        }
+        loadProjectDetail(selectedProject.id);
+      } else {
+        showToast(data.error || 'Failed to save portal settings', 'error');
+      }
+    } catch (err) {
+      showToast('Error saving portal settings', 'error');
+    } finally {
+      setActionLoading(false);
+    }
+  }
+
+  async function handleToggleStageVisibility(stageId, isVisible, clientTitle, clientDesc, clientNote, weight) {
+    if (!selectedProject) return;
+    try {
+      const res = await fetch(`/api/founder-os/projects/${selectedProject.id}/stages/${stageId}/visibility`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          is_visible_to_client: isVisible,
+          client_title: clientTitle,
+          client_description: clientDesc,
+          client_note: clientNote,
+          stage_weight: weight
+        })
+      });
+      const data = await res.json();
+      if (data.success) {
+        showToast('Stage portal settings updated', 'success');
+        loadProjectDetail(selectedProject.id);
+      } else {
+        showToast(data.error || 'Failed to update stage visibility', 'error');
+      }
+    } catch (err) {
+      showToast('Error updating stage', 'error');
+    }
+  }
+
+  async function handleToggleTaskVisibility(taskId, isVisible, clientDesc) {
+    if (!selectedProject) return;
+    try {
+      const res = await fetch(`/api/founder-os/projects/${selectedProject.id}/tasks/${taskId}/visibility`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          is_visible_to_client: isVisible,
+          client_description: clientDesc
+        })
+      });
+      const data = await res.json();
+      if (data.success) {
+        showToast('Task portal visibility updated', 'success');
+        loadProjectDetail(selectedProject.id);
+      } else {
+        showToast(data.error || 'Failed to update task visibility', 'error');
+      }
+    } catch (err) {
+      showToast('Error updating task', 'error');
+    }
+  }
+
+  async function handleReviewRequirement(reqId, status, reviewNotes) {
+    if (!selectedProject) return;
+    setActionLoading(true);
+    try {
+      const res = await fetch(`/api/founder-os/projects/${selectedProject.id}/requirements/${reqId}/review`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ status, review_notes: reviewNotes })
+      });
+      const data = await res.json();
+      if (data.success) {
+        showToast(`Requirement marked as ${status}`, 'success');
+        setReviewReqItem(null);
+        setReqReviewNotes('');
+        loadProjectDetail(selectedProject.id);
+      } else {
+        showToast(data.error || 'Failed to review requirement', 'error');
+      }
+    } catch (err) {
+      showToast('Error reviewing requirement', 'error');
+    } finally {
+      setActionLoading(false);
+    }
+  }
+
+  async function handleSaveChangeRequest(changeRequestId, updates) {
+    if (!selectedProject) return;
+    setActionLoading(true);
+    try {
+      const res = await fetch(`/api/founder-os/projects/${selectedProject.id}/change-requests`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ change_request_id: changeRequestId, ...updates })
+      });
+      const data = await res.json();
+      if (data.success) {
+        showToast('Change request updated', 'success');
+        loadProjectDetail(selectedProject.id);
+        if (selectedChangeRequest?.id === changeRequestId) {
+          setSelectedChangeRequest(data.changeRequest);
+        }
+      } else {
+        showToast(data.error || 'Failed to update change request', 'error');
+      }
+    } catch (err) {
+      showToast('Error updating change request', 'error');
+    } finally {
+      setActionLoading(false);
+    }
+  }
+
+  async function handleAddChangeRequestComment(changeRequestId) {
+    if (!newCommentText.trim() || !selectedProject) return;
+    setActionLoading(true);
+    try {
+      const res = await fetch(`/api/founder-os/projects/${selectedProject.id}/change-requests`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          change_request_id: changeRequestId,
+          message: newCommentText.trim(),
+          is_internal_note: isInternalComment
+        })
+      });
+      const data = await res.json();
+      if (data.success) {
+        showToast(isInternalComment ? 'Internal note added' : 'Response message sent to client', 'success');
+        setNewCommentText('');
+        loadProjectDetail(selectedProject.id);
+      } else {
+        showToast(data.error || 'Failed to post comment', 'error');
+      }
+    } catch (err) {
+      showToast('Error posting message', 'error');
+    } finally {
+      setActionLoading(false);
+    }
+  }
+
+  async function handlePublishDocument(e) {
+    e.preventDefault();
+    if (!selectedProject) return;
+    setActionLoading(true);
+    try {
+      const res = await fetch(`/api/founder-os/projects/${selectedProject.id}/portal-documents`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(publishDocForm)
+      });
+      const data = await res.json();
+      if (data.success) {
+        showToast('Document published to Client Portal', 'success');
+        setShowPublishDocModal(false);
+        setPublishDocForm({
+          title: '',
+          category: 'Deliverable',
+          file_url: '',
+          description: '',
+          version: '1.0',
+          is_client_downloadable: true
+        });
+        loadProjectDetail(selectedProject.id);
+      } else {
+        showToast(data.error || 'Failed to publish document', 'error');
+      }
+    } catch (err) {
+      showToast('Error publishing document', 'error');
+    } finally {
+      setActionLoading(false);
     }
   }
 
@@ -695,6 +958,11 @@ export default function DeliveryModule({ initialProjectId, settings = {}, onRefr
           <div className="flex items-center gap-1.5 p-1 rounded-xl bg-white border border-slate-200 shadow-xs overflow-x-auto no-scrollbar w-full">
             {[
               { id: 'overview', label: 'Overview' },
+              { 
+                id: 'portal', 
+                label: 'Client Portal', 
+                badge: projectDetails?.changeRequests?.filter(cr => cr.status === 'Submitted' || cr.status === 'Under Review').length || (projectDetails?.portalSettings?.is_portal_enabled ? 'Active' : undefined) 
+              },
               { id: 'tasks', label: 'Tasks', badge: projectDetails?.tasks?.length },
               { id: 'stages', label: 'Delivery Stages', badge: projectDetails?.stages?.length },
               { id: 'finance', label: 'Finance & Profitability' },
@@ -1369,6 +1637,622 @@ export default function DeliveryModule({ initialProjectId, settings = {}, onRefr
               )}
             </div>
           )}
+
+          {/* TAB 11: CLIENT PORTAL COMMAND & VISIBILITY */}
+          {activeDetailTab === 'portal' && (
+            <div className="space-y-5 animate-fadeIn">
+              {/* Portal Header & Quick Launch Bar */}
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-4 rounded-2xl bg-white border border-slate-200 shadow-xs">
+                <div>
+                  <h3 className="text-sm font-bold text-slate-900 font-outfit uppercase tracking-wider flex items-center gap-2">
+                    <ShieldCheck size={18} className="text-violet-600" weight="bold" />
+                    <span>Client Portal Project Controls</span>
+                  </h3>
+                  <p className="text-xs text-slate-500 mt-0.5">
+                    Control client-visible stages, live staging preview, change requests, requirements, deliverables, and approvals.
+                  </p>
+                </div>
+
+                <div className="flex items-center gap-2 flex-wrap">
+                  <a
+                    href={`/client/projects/${selectedProject.id}?admin_preview_client_id=${selectedProject.client_id}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold uppercase tracking-wider shadow-xs cursor-pointer min-h-[38px]"
+                    title="View this project exactly as the client sees it (Read-Only Preview)"
+                  >
+                    <Eye size={15} weight="bold" />
+                    <span>View as Client</span>
+                    <ArrowSquareOut size={13} />
+                  </a>
+
+                  <button
+                    type="button"
+                    onClick={() => setShowPublishDocModal(true)}
+                    className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-violet-600 hover:bg-violet-700 text-white text-xs font-bold uppercase tracking-wider shadow-xs shadow-violet-600/20 cursor-pointer min-h-[38px]"
+                  >
+                    <FilePlus size={15} weight="bold" />
+                    <span>Publish Document</span>
+                  </button>
+                </div>
+              </div>
+
+              {/* Portal Sub-navigation Pills */}
+              <div className="flex items-center gap-1.5 p-1 rounded-xl bg-slate-100/80 border border-slate-200 overflow-x-auto no-scrollbar w-full">
+                {[
+                  { id: 'settings', label: 'Settings & Staging Preview' },
+                  { id: 'change_requests', label: 'Change Requests', badge: projectDetails?.changeRequests?.length },
+                  { id: 'visibility', label: 'Stages & Tasks Visibility' },
+                  { id: 'requirements', label: 'Client Uploads & Requirements', badge: projectDetails?.requirements?.filter(r => r.file_url).length },
+                  { id: 'documents', label: 'Published Deliverables', badge: projectDetails?.portalDocuments?.length },
+                  { id: 'approvals', label: 'Approvals Audit Trail', badge: projectDetails?.approvals?.length }
+                ].map(sub => (
+                  <button
+                    key={sub.id}
+                    type="button"
+                    onClick={() => setPortalSubtab(sub.id)}
+                    className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all whitespace-nowrap flex items-center gap-1.5 cursor-pointer ${
+                      portalSubtab === sub.id ? 'bg-white text-slate-900 shadow-2xs' : 'text-slate-600 hover:text-slate-900'
+                    }`}
+                  >
+                    <span>{sub.label}</span>
+                    {sub.badge !== undefined && sub.badge > 0 && (
+                      <span className="px-1.5 py-0.2 rounded-full text-[10px] font-bold bg-violet-100 text-violet-800">
+                        {sub.badge}
+                      </span>
+                    )}
+                  </button>
+                ))}
+              </div>
+
+              {/* SUBTAB 1: SETTINGS & STAGING PREVIEW */}
+              {portalSubtab === 'settings' && (
+                <form onSubmit={handleSavePortalSettings} className="space-y-5">
+                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
+                    {/* General Portal Settings */}
+                    <div className="p-5 rounded-2xl bg-white border border-slate-200 shadow-xs space-y-4">
+                      <h4 className="text-xs font-bold uppercase tracking-wider text-slate-900 font-outfit border-b border-slate-100 pb-2">
+                        General Portal Visibility
+                      </h4>
+
+                      <label className="flex items-center justify-between p-3.5 rounded-xl bg-slate-50 border border-slate-200 cursor-pointer">
+                        <div>
+                          <span className="font-bold text-slate-900 text-xs block">Enable Project in Client Portal</span>
+                          <span className="text-[11px] text-slate-500">Allow authorized client contacts to access this project workspace</span>
+                        </div>
+                        <input
+                          type="checkbox"
+                          checked={Boolean(portalSettings.is_portal_enabled)}
+                          onChange={(e) => setPortalSettings({ ...portalSettings, is_portal_enabled: e.target.checked, portal_enabled: e.target.checked })}
+                          className="w-4 h-4 text-violet-600 rounded focus:ring-violet-500"
+                        />
+                      </label>
+
+                      <div>
+                        <label className="block text-slate-700 font-bold text-xs mb-1">Portal Display Name</label>
+                        <input
+                          type="text"
+                          value={portalSettings.portal_display_name || ''}
+                          onChange={(e) => setPortalSettings({ ...portalSettings, portal_display_name: e.target.value })}
+                          placeholder={selectedProject.project_name}
+                          className="w-full bg-white border border-slate-300 rounded-xl px-3.5 py-2.5 text-xs text-slate-900 focus:outline-none focus:ring-2 focus:ring-violet-500/20 focus:border-violet-600"
+                        />
+                      </div>
+
+                      <div>
+                        <label className="block text-slate-700 font-bold text-xs mb-1">Client-Facing Project Brief / Summary</label>
+                        <textarea
+                          rows={3}
+                          value={portalSettings.client_summary || ''}
+                          onChange={(e) => setPortalSettings({ ...portalSettings, client_summary: e.target.value })}
+                          placeholder="High-level project objectives and deliverables visible to the client..."
+                          className="w-full bg-white border border-slate-300 rounded-xl px-3.5 py-2.5 text-xs text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-violet-500/20 focus:border-violet-600"
+                        />
+                      </div>
+
+                      <div>
+                        <label className="flex items-center justify-between p-3 rounded-xl bg-slate-50 border border-slate-200 cursor-pointer mb-2">
+                          <span className="font-bold text-slate-900 text-xs">Allow Client Change Requests</span>
+                          <input
+                            type="checkbox"
+                            checked={Boolean(portalSettings.allow_change_requests)}
+                            onChange={(e) => setPortalSettings({ ...portalSettings, allow_change_requests: e.target.checked, change_requests_enabled: e.target.checked })}
+                            className="w-4 h-4 text-violet-600 rounded focus:ring-violet-500"
+                          />
+                        </label>
+                        <label className="block text-slate-700 font-bold text-xs mb-1">Change Request Policy</label>
+                        <textarea
+                          rows={2}
+                          value={portalSettings.change_request_policy || ''}
+                          onChange={(e) => setPortalSettings({ ...portalSettings, change_request_policy: e.target.value })}
+                          placeholder="e.g. Requests outside original scope will receive an impact quotation."
+                          className="w-full bg-white border border-slate-300 rounded-xl px-3.5 py-2 text-xs text-slate-900 focus:outline-none focus:ring-2 focus:ring-violet-500/20 focus:border-violet-600"
+                        />
+                      </div>
+                    </div>
+
+                    {/* Staging Live Preview Settings */}
+                    <div className="p-5 rounded-2xl bg-white border border-slate-200 shadow-xs space-y-4">
+                      <div className="flex items-center justify-between border-b border-slate-100 pb-2">
+                        <h4 className="text-xs font-bold uppercase tracking-wider text-slate-900 font-outfit flex items-center gap-1.5">
+                          <Globe size={16} className="text-violet-600" />
+                          <span>Live Staging Preview Controls</span>
+                        </h4>
+                        <span className={`px-2 py-0.5 rounded text-[10px] font-bold uppercase ${
+                          portalSettings.preview_status === 'Available'
+                            ? 'bg-emerald-50 text-emerald-700 border border-emerald-200'
+                            : 'bg-slate-100 text-slate-700 border border-slate-200'
+                        }`}>
+                          {portalSettings.preview_status || 'Not Available'}
+                        </span>
+                      </div>
+
+                      <label className="flex items-center justify-between p-3.5 rounded-xl bg-slate-50 border border-slate-200 cursor-pointer">
+                        <div>
+                          <span className="font-bold text-slate-900 text-xs block">Enable Live Preview Tab in Client Portal</span>
+                          <span className="text-[11px] text-slate-500">Allows client to interact with responsive iframe staging deployment</span>
+                        </div>
+                        <input
+                          type="checkbox"
+                          checked={Boolean(portalSettings.allow_live_preview)}
+                          onChange={(e) => setPortalSettings({ ...portalSettings, allow_live_preview: e.target.checked, preview_enabled: e.target.checked })}
+                          className="w-4 h-4 text-violet-600 rounded focus:ring-violet-500"
+                        />
+                      </label>
+
+                      <div>
+                        <label className="block text-slate-700 font-bold text-xs mb-1">Staging / Live Preview URL *</label>
+                        <input
+                          type="url"
+                          value={portalSettings.staging_preview_url || ''}
+                          onChange={(e) => setPortalSettings({ ...portalSettings, staging_preview_url: e.target.value })}
+                          placeholder="https://staging.infronixweb.com or https://client-staging.vercel.app"
+                          className="w-full bg-white border border-slate-300 rounded-xl px-3.5 py-2.5 text-xs text-slate-900 focus:outline-none focus:ring-2 focus:ring-violet-500/20 focus:border-violet-600 font-mono"
+                        />
+                        <span className="text-[10px] text-slate-400 mt-1 block">
+                          Security rule: Must be a valid HTTPS URL on an approved staging domain. Unsafe protocols (`javascript:`, `data:`) are strictly blocked.
+                        </span>
+                      </div>
+
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        <div>
+                          <label className="block text-slate-700 font-bold text-xs mb-1">Preview Label</label>
+                          <input
+                            type="text"
+                            value={portalSettings.preview_label || ''}
+                            onChange={(e) => setPortalSettings({ ...portalSettings, preview_label: e.target.value })}
+                            placeholder="e.g. v1.2 Staging Build"
+                            className="w-full bg-white border border-slate-300 rounded-xl px-3.5 py-2 text-xs text-slate-900 focus:outline-none focus:ring-2 focus:ring-violet-500/20 focus:border-violet-600"
+                          />
+                        </div>
+
+                        <div>
+                          <label className="block text-slate-700 font-bold text-xs mb-1">Preview Status</label>
+                          <select
+                            value={portalSettings.preview_status || 'Not Available'}
+                            onChange={(e) => setPortalSettings({ ...portalSettings, preview_status: e.target.value })}
+                            className="w-full bg-white border border-slate-300 rounded-xl px-3.5 py-2 text-xs text-slate-900 focus:outline-none focus:ring-2 focus:ring-violet-500/20 focus:border-violet-600 cursor-pointer"
+                          >
+                            <option value="Not Available">Not Available</option>
+                            <option value="Preparing">Preparing</option>
+                            <option value="Available">Available</option>
+                            <option value="Temporarily Unavailable">Temporarily Unavailable</option>
+                            <option value="Approved">Approved</option>
+                            <option value="Replaced by Live Website">Replaced by Live Website</option>
+                          </select>
+                        </div>
+                      </div>
+
+                      <div>
+                        <label className="block text-slate-700 font-bold text-xs mb-1">Client Preview Instructions</label>
+                        <textarea
+                          rows={2}
+                          value={portalSettings.preview_instructions || ''}
+                          onChange={(e) => setPortalSettings({ ...portalSettings, preview_instructions: e.target.value })}
+                          placeholder="e.g. Test on desktop and mobile viewports. Submit any UI changes via the Change Request button."
+                          className="w-full bg-white border border-slate-300 rounded-xl px-3.5 py-2 text-xs text-slate-900 focus:outline-none focus:ring-2 focus:ring-violet-500/20 focus:border-violet-600"
+                        />
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="flex justify-end">
+                    <button
+                      type="submit"
+                      disabled={actionLoading}
+                      className="px-6 py-2.5 rounded-xl bg-violet-600 hover:bg-violet-700 text-white font-bold text-xs uppercase tracking-wider shadow-sm shadow-violet-600/20 cursor-pointer disabled:opacity-50 min-h-[40px]"
+                    >
+                      {actionLoading ? 'Saving Settings...' : 'Save Portal Settings'}
+                    </button>
+                  </div>
+                </form>
+              )}
+
+              {/* SUBTAB 2: CHANGE REQUESTS */}
+              {portalSubtab === 'change_requests' && (
+                <div className="space-y-4">
+                  <div className="flex items-center justify-between border-b border-slate-100 pb-3">
+                    <h4 className="text-sm font-bold text-slate-900 font-outfit uppercase tracking-wider">
+                      Client Change Requests ({projectDetails?.changeRequests?.length || 0})
+                    </h4>
+                    <span className="text-xs text-slate-500">
+                      Requests submitted by clients directly from the portal or live preview
+                    </span>
+                  </div>
+
+                  {(!projectDetails?.changeRequests || projectDetails.changeRequests.length === 0) ? (
+                    <EmptyState
+                      icon={ChatDots}
+                      title="No change requests submitted yet"
+                      description="When the client submits scope revisions, feature updates, or design changes, they will appear here with quoting and scope controls."
+                    />
+                  ) : (
+                    <div className="divide-y divide-slate-100 rounded-2xl bg-white border border-slate-200 shadow-xs overflow-hidden">
+                      {projectDetails.changeRequests.map((cr) => (
+                        <div key={cr.id} className="p-4 flex flex-col md:flex-row md:items-center justify-between gap-4 text-xs hover:bg-slate-50/50 transition-colors">
+                          <div className="space-y-1.5 max-w-2xl">
+                            <div className="flex items-center gap-2 flex-wrap">
+                              <strong className="text-sm text-slate-900 font-outfit">{cr.title}</strong>
+                              <span className="px-2 py-0.5 rounded text-[10px] font-bold uppercase bg-violet-50 text-violet-700 border border-violet-200">
+                                {cr.category}
+                              </span>
+                              <span className={`px-2 py-0.5 rounded text-[10px] font-bold uppercase ${
+                                cr.status === 'Approved' || cr.status === 'Completed'
+                                  ? 'bg-emerald-50 text-emerald-700 border border-emerald-200'
+                                  : cr.status === 'Rejected'
+                                  ? 'bg-rose-50 text-rose-700 border border-rose-200'
+                                  : cr.status === 'Quoted' || cr.status === 'Awaiting Client Approval'
+                                  ? 'bg-amber-50 text-amber-700 border border-amber-200'
+                                  : 'bg-blue-50 text-blue-700 border border-blue-200'
+                              }`}>
+                                {cr.status}
+                              </span>
+                              {cr.scope_decision && (
+                                <span className="px-2 py-0.5 rounded text-[10px] font-bold uppercase bg-slate-100 text-slate-700 border border-slate-200">
+                                  {cr.scope_decision}
+                                </span>
+                              )}
+                            </div>
+                            <p className="text-slate-600 line-clamp-2 leading-relaxed">{cr.description}</p>
+                            <div className="text-[11px] text-slate-400 flex items-center gap-3 flex-wrap">
+                              <span>By: <strong>{cr.author_name || 'Client'}</strong> ({cr.public_client_id || 'Client'})</span>
+                              <span>•</span>
+                              <span>Requested: {new Date(cr.created_at).toLocaleDateString()}</span>
+                              {parseFloat(cr.impact_cost || 0) > 0 && (
+                                <span className="font-bold text-emerald-700 font-mono">
+                                  • Quote: {currency}{parseFloat(cr.impact_cost).toLocaleString('en-IN')}
+                                </span>
+                              )}
+                              {cr.timeline_impact && (
+                                <span className="text-slate-600">• Impact: {cr.timeline_impact}</span>
+                              )}
+                              <span>• {cr.total_comments || 0} messages</span>
+                            </div>
+                          </div>
+
+                          <div className="flex items-center gap-2 shrink-0">
+                            <button
+                              type="button"
+                              onClick={() => {
+                                setSelectedChangeRequest(cr);
+                                setCrReviewForm({
+                                  status: cr.status || 'Submitted',
+                                  admin_priority: cr.admin_priority || cr.priority_preference || 'Medium',
+                                  scope_decision: cr.scope_decision || 'Included in Scope',
+                                  impact_cost: String(cr.impact_cost || 0),
+                                  timeline_impact: cr.timeline_impact || 'No schedule impact',
+                                  estimated_completion_date: cr.estimated_completion_date ? cr.estimated_completion_date.substring(0, 10) : '',
+                                  admin_notes: cr.admin_notes || '',
+                                  status_comment: ''
+                                });
+                              }}
+                              className="px-3.5 py-2 rounded-xl bg-violet-600 hover:bg-violet-700 text-white font-bold text-xs uppercase tracking-wider shadow-xs cursor-pointer min-h-[36px]"
+                            >
+                              Review & Quote
+                            </button>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              )}
+
+              {/* SUBTAB 3: STAGES & TASKS VISIBILITY */}
+              {portalSubtab === 'visibility' && (
+                <div className="space-y-6">
+                  {/* Stages Visibility */}
+                  <div className="p-5 rounded-2xl bg-white border border-slate-200 shadow-xs space-y-4">
+                    <div className="flex items-center justify-between border-b border-slate-100 pb-2">
+                      <h4 className="text-xs font-bold uppercase tracking-wider text-slate-900 font-outfit">
+                        Delivery Stages Client Visibility & Labels ({projectDetails?.stages?.length || 0})
+                      </h4>
+                      <span className="text-[11px] text-slate-400">
+                        Client will only see stages marked visible. Client progress is computed strictly from visible stages.
+                      </span>
+                    </div>
+
+                    <div className="divide-y divide-slate-100">
+                      {(projectDetails?.stages || []).map((stg) => (
+                        <div key={stg.id} className="py-3.5 flex flex-col md:flex-row md:items-center justify-between gap-3 text-xs">
+                          <div className="space-y-1 flex-1 max-w-xl">
+                            <div className="flex items-center gap-2">
+                              <span className="w-5 h-5 rounded-full bg-violet-100 text-violet-700 font-bold text-[10px] flex items-center justify-center shrink-0">
+                                {stg.stage_order}
+                              </span>
+                              <strong className="text-slate-900">{stg.stage_name}</strong>
+                              <span className="px-2 py-0.5 rounded text-[10px] font-bold uppercase bg-slate-100 text-slate-600">
+                                Internal Status: {stg.status}
+                              </span>
+                            </div>
+                            <div className="text-[11px] text-slate-500 pl-7">
+                              Client Display Title: <strong>{stg.client_title || stg.stage_name}</strong>
+                              {stg.client_description && <span className="block text-slate-400 mt-0.5">{stg.client_description}</span>}
+                            </div>
+                          </div>
+
+                          <div className="flex items-center gap-3">
+                            <label className="flex items-center gap-2 cursor-pointer bg-slate-50 px-3 py-1.5 rounded-lg border border-slate-200">
+                              <input
+                                type="checkbox"
+                                checked={Boolean(stg.is_visible_to_client)}
+                                onChange={(e) => handleToggleStageVisibility(
+                                  stg.id,
+                                  e.target.checked,
+                                  stg.client_title || stg.stage_name,
+                                  stg.client_description,
+                                  stg.client_note,
+                                  stg.stage_weight
+                                )}
+                                className="w-4 h-4 text-violet-600 rounded focus:ring-violet-500"
+                              />
+                              <span className="font-bold text-[11px] text-slate-700">Visible to Client</span>
+                            </label>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Tasks Visibility */}
+                  <div className="p-5 rounded-2xl bg-white border border-slate-200 shadow-xs space-y-4">
+                    <div className="flex items-center justify-between border-b border-slate-100 pb-2">
+                      <h4 className="text-xs font-bold uppercase tracking-wider text-slate-900 font-outfit">
+                        Tasks Client Visibility ({projectDetails?.tasks?.length || 0})
+                      </h4>
+                      <span className="text-[11px] text-slate-400">
+                        Tasks remain private by default. Check items you want clients to track in their portal.
+                      </span>
+                    </div>
+
+                    <div className="divide-y divide-slate-100 max-h-96 overflow-y-auto">
+                      {(projectDetails?.tasks || []).map((t) => (
+                        <div key={t.id} className="py-2.5 flex items-center justify-between gap-3 text-xs">
+                          <div>
+                            <span className="font-bold text-slate-800">{t.task_name}</span>
+                            <span className="text-[11px] text-slate-400 block">
+                              Status: {t.status} {t.deadline && `• Due: ${new Date(t.deadline).toLocaleDateString()}`}
+                            </span>
+                          </div>
+
+                          <label className="flex items-center gap-2 cursor-pointer bg-slate-50 px-3 py-1.5 rounded-lg border border-slate-200">
+                            <input
+                              type="checkbox"
+                              checked={Boolean(t.is_visible_to_client)}
+                              onChange={(e) => handleToggleTaskVisibility(t.id, e.target.checked, t.client_description)}
+                              className="w-4 h-4 text-violet-600 rounded focus:ring-violet-500"
+                            />
+                            <span className="font-bold text-[11px] text-slate-700">Client Visible</span>
+                          </label>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* SUBTAB 4: CLIENT REQUIREMENTS REVIEW */}
+              {portalSubtab === 'requirements' && (
+                <div className="p-5 rounded-2xl bg-white border border-slate-200 shadow-xs space-y-4">
+                  <div className="flex items-center justify-between border-b border-slate-100 pb-2">
+                    <h4 className="text-xs font-bold uppercase tracking-wider text-slate-900 font-outfit">
+                      Client Requirement Assets & Uploaded Files
+                    </h4>
+                    <span className="text-[11px] text-slate-400">
+                      Verify client-submitted brand assets, content files, and documents
+                    </span>
+                  </div>
+
+                  {(!projectDetails?.requirements || projectDetails.requirements.length === 0) ? (
+                    <EmptyState
+                      icon={UploadSimple}
+                      title="No requirements configured"
+                      description="Add requirements from the Client Requirements tab."
+                    />
+                  ) : (
+                    <div className="divide-y divide-slate-100">
+                      {projectDetails.requirements.map((req) => (
+                        <div key={req.id} className="py-4 flex flex-col md:flex-row md:items-center justify-between gap-3 text-xs">
+                          <div className="space-y-1 max-w-xl">
+                            <div className="flex items-center gap-2">
+                              <strong className="text-slate-900 text-sm font-outfit">{req.requirement_name}</strong>
+                              <span className={`px-2 py-0.5 rounded text-[10px] font-bold uppercase ${
+                                req.status === 'Approved' || req.status === 'Received'
+                                  ? 'bg-emerald-50 text-emerald-700 border border-emerald-200'
+                                  : req.status === 'Submitted'
+                                  ? 'bg-blue-50 text-blue-700 border border-blue-200'
+                                  : req.status === 'Needs Revision'
+                                  ? 'bg-rose-50 text-rose-700 border border-rose-200'
+                                  : 'bg-amber-50 text-amber-700 border border-amber-200'
+                              }`}>
+                                {req.status}
+                              </span>
+                            </div>
+
+                            {req.file_url ? (
+                              <div className="p-2.5 rounded-xl bg-slate-50 border border-slate-200 space-y-1">
+                                <div className="flex items-center gap-2 font-mono text-[11px] text-slate-700">
+                                  <FileText size={14} className="text-violet-600" />
+                                  <span className="truncate">{req.file_name || 'Uploaded File'}</span>
+                                  {req.file_size && <span className="text-slate-400">({(req.file_size / 1024).toFixed(0)} KB)</span>}
+                                  <a
+                                    href={req.file_url}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="text-violet-700 font-bold hover:underline ml-2"
+                                  >
+                                    Download / View File
+                                  </a>
+                                </div>
+                                {req.client_notes && (
+                                  <p className="text-[11px] text-slate-600 italic pl-5">“{req.client_notes}”</p>
+                                )}
+                              </div>
+                            ) : (
+                              <span className="text-[11px] text-slate-400 block">No file uploaded yet by client.</span>
+                            )}
+                          </div>
+
+                          <div className="flex items-center gap-2">
+                            {req.file_url && (
+                              <>
+                                <button
+                                  type="button"
+                                  onClick={() => handleReviewRequirement(req.id, 'Approved', 'Asset approved by delivery lead.')}
+                                  disabled={actionLoading}
+                                  className="px-3.5 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs shadow-2xs cursor-pointer"
+                                >
+                                  Approve Asset
+                                </button>
+                                <button
+                                  type="button"
+                                  onClick={() => {
+                                    setReviewReqItem(req);
+                                    setReqReviewNotes('Please upload higher resolution format / update missing information.');
+                                  }}
+                                  disabled={actionLoading}
+                                  className="px-3.5 py-1.5 rounded-lg bg-amber-50 hover:bg-amber-100 text-amber-800 border border-amber-200 font-bold text-xs cursor-pointer"
+                                >
+                                  Request Revision
+                                </button>
+                              </>
+                            )}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              )}
+
+              {/* SUBTAB 5: PUBLISHED DELIVERABLES */}
+              {portalSubtab === 'documents' && (
+                <div className="p-5 rounded-2xl bg-white border border-slate-200 shadow-xs space-y-4">
+                  <div className="flex items-center justify-between border-b border-slate-100 pb-2">
+                    <h4 className="text-xs font-bold uppercase tracking-wider text-slate-900 font-outfit">
+                      Published Client Portal Documents & Deliverables ({projectDetails?.portalDocuments?.length || 0})
+                    </h4>
+                    <button
+                      type="button"
+                      onClick={() => setShowPublishDocModal(true)}
+                      className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-violet-600 hover:bg-violet-700 text-white font-bold text-xs uppercase"
+                    >
+                      <Plus size={14} weight="bold" />
+                      <span>Publish New Document</span>
+                    </button>
+                  </div>
+
+                  {(!projectDetails?.portalDocuments || projectDetails.portalDocuments.length === 0) ? (
+                    <EmptyState
+                      icon={FileText}
+                      title="No portal documents published"
+                      description="Publish proposals, contracts, handover documents, and user guides to the client workspace."
+                      actionLabel="Publish First Document"
+                      onAction={() => setShowPublishDocModal(true)}
+                    />
+                  ) : (
+                    <div className="divide-y divide-slate-100">
+                      {projectDetails.portalDocuments.map((doc) => (
+                        <div key={doc.id} className="py-3.5 flex items-center justify-between gap-3 text-xs">
+                          <div>
+                            <div className="flex items-center gap-2">
+                              <strong className="text-slate-900">{doc.title}</strong>
+                              <span className="px-2 py-0.5 rounded text-[10px] font-bold uppercase bg-violet-50 text-violet-700 border border-violet-200">
+                                {doc.category}
+                              </span>
+                              <span className="text-[10px] font-mono text-slate-400">v{doc.version || '1.0'}</span>
+                            </div>
+                            {doc.description && <p className="text-[11px] text-slate-500 mt-0.5">{doc.description}</p>}
+                          </div>
+
+                          <div className="flex items-center gap-2">
+                            <a
+                              href={doc.file_url}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="px-3 py-1.5 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs"
+                            >
+                              Download
+                            </a>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              )}
+
+              {/* SUBTAB 6: APPROVALS AUDIT TRAIL */}
+              {portalSubtab === 'approvals' && (
+                <div className="p-5 rounded-2xl bg-white border border-slate-200 shadow-xs space-y-4">
+                  <div className="flex items-center justify-between border-b border-slate-100 pb-2">
+                    <h4 className="text-xs font-bold uppercase tracking-wider text-slate-900 font-outfit">
+                      Deliverable & Stage Client Approvals ({projectDetails?.approvals?.length || 0})
+                    </h4>
+                    <span className="text-[11px] text-slate-400">
+                      Cryptographically recorded client approvals with timestamp, version identifier, and client user identity.
+                    </span>
+                  </div>
+
+                  {(!projectDetails?.approvals || projectDetails.approvals.length === 0) ? (
+                    <EmptyState
+                      icon={CheckCircle}
+                      title="No client approvals recorded yet"
+                      description="When the client approves design iterations, staging previews, or final project delivery, legally auditable records are listed here."
+                    />
+                  ) : (
+                    <div className="divide-y divide-slate-100">
+                      {projectDetails.approvals.map((appr) => (
+                        <div key={appr.id} className="py-3.5 flex flex-col md:flex-row md:items-center justify-between gap-3 text-xs">
+                          <div className="space-y-1">
+                            <div className="flex items-center gap-2">
+                              <span className="px-2 py-0.5 rounded text-[10px] font-bold uppercase bg-emerald-50 text-emerald-700 border border-emerald-200">
+                                {appr.approval_type}
+                              </span>
+                              <strong className="text-slate-900 text-sm font-outfit">{appr.deliverable_title}</strong>
+                              <span className="text-[10px] font-mono text-slate-400">v{appr.version || '1.0'}</span>
+                            </div>
+                            <div className="text-[11px] text-slate-500">
+                              Approved by: <strong>{appr.client_user_name || 'Authorized Contact'}</strong> ({appr.public_client_id}) • {new Date(appr.created_at).toLocaleString()}
+                            </div>
+                            {appr.client_comment && (
+                              <p className="text-[11px] text-slate-600 italic bg-slate-50 p-2 rounded-lg border border-slate-100">
+                                “{appr.client_comment}”
+                              </p>
+                            )}
+                          </div>
+
+                          <div className="text-right font-mono text-[10px] text-slate-400 shrink-0">
+                            IP Hash: {appr.ip_hash ? appr.ip_hash.substring(0, 16) + '...' : 'Verified Session'}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              )}
+            </div>
+          )}
         </div>
       ) : (
         /* PROJECTS LIST VIEW */
@@ -1985,6 +2869,367 @@ export default function DeliveryModule({ initialProjectId, settings = {}, onRefr
                 Proceed & Mark Completed
               </button>
             </div>
+          </div>
+        </div>
+      )}
+
+      {/* MODAL: CHANGE REQUEST REVIEW & IMPACT QUOTE */}
+      {selectedChangeRequest && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-slate-900/60 backdrop-blur-sm animate-fadeIn">
+          <div className="w-full max-w-2xl bg-white border border-slate-200 rounded-2xl shadow-2xl p-5 sm:p-6 max-h-[90vh] overflow-y-auto space-y-5">
+            <div className="flex items-center justify-between border-b border-slate-100 pb-3">
+              <div className="flex items-center gap-2">
+                <span className="p-1.5 rounded-lg bg-violet-100 text-violet-700">
+                  <ChatDots size={18} weight="bold" />
+                </span>
+                <div>
+                  <h3 className="text-base font-bold text-slate-900 font-outfit">
+                    Review Change Request #{selectedChangeRequest.id}
+                  </h3>
+                  <span className="text-xs text-slate-500">
+                    From {selectedChangeRequest.author_name || 'Client'} ({selectedChangeRequest.public_client_id})
+                  </span>
+                </div>
+              </div>
+              <button
+                type="button"
+                onClick={() => setSelectedChangeRequest(null)}
+                className="text-slate-400 hover:text-slate-600 p-1"
+              >
+                <X size={18} />
+              </button>
+            </div>
+
+            {/* Request Summary */}
+            <div className="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-2 text-xs">
+              <div className="flex items-center justify-between gap-2 flex-wrap">
+                <strong className="text-sm text-slate-900 font-outfit">{selectedChangeRequest.title}</strong>
+                <span className="px-2 py-0.5 rounded text-[10px] font-bold uppercase bg-violet-100 text-violet-800">
+                  {selectedChangeRequest.category}
+                </span>
+              </div>
+              <p className="text-slate-700 leading-relaxed bg-white p-3 rounded-lg border border-slate-200">
+                {selectedChangeRequest.description}
+              </p>
+              <div className="text-[11px] text-slate-500 flex items-center gap-3 flex-wrap pt-1">
+                <span>Client Priority: <strong>{selectedChangeRequest.priority_preference || 'Medium'}</strong></span>
+                {selectedChangeRequest.page_path && <span>• Route: <code className="bg-slate-200/60 px-1 py-0.5 rounded">{selectedChangeRequest.page_path}</code></span>}
+                {selectedChangeRequest.attachment_url && (
+                  <a href={selectedChangeRequest.attachment_url} target="_blank" rel="noopener noreferrer" className="text-violet-700 font-bold hover:underline">
+                    • View Attachment
+                  </a>
+                )}
+              </div>
+            </div>
+
+            {/* Scope, Status & Impact Assessment Form */}
+            <form onSubmit={async (e) => {
+              e.preventDefault();
+              await handleSaveChangeRequest(selectedChangeRequest.id, crReviewForm);
+              setSelectedChangeRequest(null);
+            }} className="space-y-4 text-xs">
+              <h4 className="font-bold text-slate-900 uppercase tracking-wider text-[11px] border-b border-slate-100 pb-1 font-outfit">
+                Scope & Impact Assessment
+              </h4>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div>
+                  <label className="block text-slate-700 font-bold mb-1">Change Request Status *</label>
+                  <select
+                    value={crReviewForm.status}
+                    onChange={(e) => setCrReviewForm({ ...crReviewForm, status: e.target.value })}
+                    className="w-full bg-white border border-slate-300 rounded-xl px-3 py-2 text-slate-900 focus:outline-none focus:ring-2 focus:ring-violet-500/20 focus:border-violet-600"
+                  >
+                    <option value="Submitted">Submitted</option>
+                    <option value="Under Review">Under Review</option>
+                    <option value="More Information Required">More Information Required</option>
+                    <option value="Approved">Approved</option>
+                    <option value="Rejected">Rejected</option>
+                    <option value="Quoted">Quoted (Requires Client Approval)</option>
+                    <option value="Awaiting Client Approval">Awaiting Client Approval</option>
+                    <option value="Scheduled">Scheduled</option>
+                    <option value="In Progress">In Progress</option>
+                    <option value="Ready for Review">Ready for Review</option>
+                    <option value="Completed">Completed</option>
+                    <option value="Cancelled">Cancelled</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label className="block text-slate-700 font-bold mb-1">Scope Classification *</label>
+                  <select
+                    value={crReviewForm.scope_decision}
+                    onChange={(e) => setCrReviewForm({ ...crReviewForm, scope_decision: e.target.value })}
+                    className="w-full bg-white border border-slate-300 rounded-xl px-3 py-2 text-slate-900 focus:outline-none focus:ring-2 focus:ring-violet-500/20 focus:border-violet-600"
+                  >
+                    <option value="Included in Scope">Included in Current Scope (₹0)</option>
+                    <option value="Additional Quote">Additional Quote Required</option>
+                  </select>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                <div>
+                  <label className="block text-slate-700 font-bold mb-1">Additional Cost ({currency})</label>
+                  <input
+                    type="number"
+                    value={crReviewForm.impact_cost}
+                    onChange={(e) => setCrReviewForm({ ...crReviewForm, impact_cost: e.target.value })}
+                    placeholder="0"
+                    className="w-full bg-white border border-slate-300 rounded-xl px-3 py-2 text-slate-900 focus:outline-none focus:ring-2 focus:ring-violet-500/20 focus:border-violet-600"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-slate-700 font-bold mb-1">Timeline Impact</label>
+                  <input
+                    type="text"
+                    value={crReviewForm.timeline_impact}
+                    onChange={(e) => setCrReviewForm({ ...crReviewForm, timeline_impact: e.target.value })}
+                    placeholder="e.g. +2 business days"
+                    className="w-full bg-white border border-slate-300 rounded-xl px-3 py-2 text-slate-900 focus:outline-none focus:ring-2 focus:ring-violet-500/20 focus:border-violet-600"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-slate-700 font-bold mb-1">Target Delivery Date</label>
+                  <input
+                    type="date"
+                    value={crReviewForm.estimated_completion_date}
+                    onChange={(e) => setCrReviewForm({ ...crReviewForm, estimated_completion_date: e.target.value })}
+                    className="w-full bg-white border border-slate-300 rounded-xl px-3 py-2 text-slate-900 focus:outline-none focus:ring-2 focus:ring-violet-500/20 focus:border-violet-600"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-slate-700 font-bold mb-1">Internal Admin Notes (Never exposed to client)</label>
+                <textarea
+                  rows={2}
+                  value={crReviewForm.admin_notes}
+                  onChange={(e) => setCrReviewForm({ ...crReviewForm, admin_notes: e.target.value })}
+                  placeholder="Private development estimates, scope notes, or technical considerations..."
+                  className="w-full bg-white border border-slate-300 rounded-xl px-3 py-2 text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-violet-500/20 focus:border-violet-600"
+                />
+              </div>
+
+              <div className="flex items-center justify-end gap-2.5 pt-2 border-t border-slate-100">
+                <button
+                  type="button"
+                  onClick={() => setSelectedChangeRequest(null)}
+                  className="px-4 py-2 text-xs font-bold text-slate-700 bg-slate-100 rounded-xl"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  disabled={actionLoading}
+                  className="px-5 py-2.5 rounded-xl bg-violet-600 hover:bg-violet-700 text-white font-bold text-xs uppercase tracking-wider shadow-sm"
+                >
+                  {actionLoading ? 'Updating...' : 'Save Scope & Status'}
+                </button>
+              </div>
+            </form>
+
+            {/* Conversation Thread & Response Composer */}
+            <div className="border-t border-slate-100 pt-4 space-y-3">
+              <h4 className="font-bold text-slate-900 uppercase tracking-wider text-[11px] font-outfit">
+                Client Message & Discussion
+              </h4>
+
+              <div className="space-y-2">
+                <textarea
+                  rows={2}
+                  value={newCommentText}
+                  onChange={(e) => setNewCommentText(e.target.value)}
+                  placeholder="Type a message or explanation to the client..."
+                  className="w-full bg-white border border-slate-300 rounded-xl px-3 py-2 text-xs text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-violet-500/20 focus:border-violet-600"
+                />
+                <div className="flex items-center justify-between">
+                  <label className="flex items-center gap-1.5 cursor-pointer text-xs text-slate-600">
+                    <input
+                      type="checkbox"
+                      checked={isInternalComment}
+                      onChange={(e) => setIsInternalComment(e.target.checked)}
+                      className="w-3.5 h-3.5 text-violet-600 rounded"
+                    />
+                    <span>Post as Private Internal Note (Client will not see this)</span>
+                  </label>
+
+                  <button
+                    type="button"
+                    onClick={() => handleAddChangeRequestComment(selectedChangeRequest.id)}
+                    disabled={!newCommentText.trim() || actionLoading}
+                    className="px-4 py-1.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs disabled:opacity-50"
+                  >
+                    Send Message
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* MODAL: REQUIREMENT REVISION REQUEST */}
+      {reviewReqItem && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-slate-900/60 backdrop-blur-sm animate-fadeIn">
+          <div className="w-full max-w-md bg-white border border-slate-200 rounded-2xl shadow-2xl p-5 sm:p-6 space-y-4">
+            <div className="flex items-center justify-between border-b border-slate-100 pb-2">
+              <h3 className="text-base font-bold text-slate-900 font-outfit">
+                Request Asset Revision
+              </h3>
+              <button onClick={() => setReviewReqItem(null)} className="text-slate-400 hover:text-slate-600">
+                <X size={18} />
+              </button>
+            </div>
+
+            <div className="text-xs text-slate-600">
+              Requirement: <strong className="text-slate-900">{reviewReqItem.requirement_name}</strong>
+            </div>
+
+            <div>
+              <label className="block text-slate-700 font-bold text-xs mb-1">Feedback / Revision Reason *</label>
+              <textarea
+                rows={3}
+                value={reqReviewNotes}
+                onChange={(e) => setReqReviewNotes(e.target.value)}
+                placeholder="Explain what needs to be changed or re-uploaded..."
+                className="w-full bg-white border border-slate-300 rounded-xl px-3.5 py-2.5 text-xs text-slate-900 focus:outline-none focus:ring-2 focus:ring-violet-500/20 focus:border-violet-600"
+              />
+            </div>
+
+            <div className="flex items-center justify-end gap-2.5 pt-2 border-t border-slate-100">
+              <button
+                type="button"
+                onClick={() => setReviewReqItem(null)}
+                className="px-4 py-2 text-xs font-bold text-slate-700 bg-slate-100 rounded-xl"
+              >
+                Cancel
+              </button>
+              <button
+                type="button"
+                onClick={() => handleReviewRequirement(reviewReqItem.id, 'Needs Revision', reqReviewNotes)}
+                disabled={actionLoading || !reqReviewNotes.trim()}
+                className="px-5 py-2.5 rounded-xl bg-amber-600 hover:bg-amber-700 text-white font-bold text-xs uppercase tracking-wider"
+              >
+                {actionLoading ? 'Saving...' : 'Send Revision Request'}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* MODAL: PUBLISH PORTAL DOCUMENT */}
+      {showPublishDocModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-slate-900/60 backdrop-blur-sm animate-fadeIn">
+          <div className="w-full max-w-md bg-white border border-slate-200 rounded-2xl shadow-2xl p-5 sm:p-6 space-y-4">
+            <div className="flex items-center justify-between border-b border-slate-100 pb-2">
+              <div className="flex items-center gap-2">
+                <FilePlus size={18} className="text-violet-600" weight="bold" />
+                <h3 className="text-base font-bold text-slate-900 font-outfit">
+                  Publish Document to Portal
+                </h3>
+              </div>
+              <button onClick={() => setShowPublishDocModal(false)} className="text-slate-400 hover:text-slate-600">
+                <X size={18} />
+              </button>
+            </div>
+
+            <form onSubmit={handlePublishDocument} className="space-y-3.5 text-xs">
+              <div>
+                <label className="block text-slate-700 font-bold mb-1">Document Title *</label>
+                <input
+                  type="text"
+                  required
+                  value={publishDocForm.title}
+                  onChange={(e) => setPublishDocForm({ ...publishDocForm, title: e.target.value })}
+                  placeholder="e.g. Website Handover & Admin Guide"
+                  className="w-full bg-white border border-slate-300 rounded-xl px-3.5 py-2 text-slate-900 focus:outline-none focus:ring-2 focus:ring-violet-500/20 focus:border-violet-600"
+                />
+              </div>
+
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <label className="block text-slate-700 font-bold mb-1">Category</label>
+                  <select
+                    value={publishDocForm.category}
+                    onChange={(e) => setPublishDocForm({ ...publishDocForm, category: e.target.value })}
+                    className="w-full bg-white border border-slate-300 rounded-xl px-3 py-2 text-slate-900 focus:outline-none focus:ring-2 focus:ring-violet-500/20 focus:border-violet-600"
+                  >
+                    <option value="Deliverable">Deliverable</option>
+                    <option value="Proposal">Proposal</option>
+                    <option value="Agreement">Agreement / Contract</option>
+                    <option value="Invoice">Invoice</option>
+                    <option value="Receipt">Receipt</option>
+                    <option value="Project Brief">Project Brief</option>
+                    <option value="User Guide">User Guide</option>
+                    <option value="Handover">Handover</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label className="block text-slate-700 font-bold mb-1">Version</label>
+                  <input
+                    type="text"
+                    value={publishDocForm.version}
+                    onChange={(e) => setPublishDocForm({ ...publishDocForm, version: e.target.value })}
+                    placeholder="1.0"
+                    className="w-full bg-white border border-slate-300 rounded-xl px-3.5 py-2 text-slate-900 focus:outline-none focus:ring-2 focus:ring-violet-500/20 focus:border-violet-600"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-slate-700 font-bold mb-1">Document File URL *</label>
+                <input
+                  type="url"
+                  required
+                  value={publishDocForm.file_url}
+                  onChange={(e) => setPublishDocForm({ ...publishDocForm, file_url: e.target.value })}
+                  placeholder="https://... or cloud storage link"
+                  className="w-full bg-white border border-slate-300 rounded-xl px-3.5 py-2 text-slate-900 focus:outline-none focus:ring-2 focus:ring-violet-500/20 focus:border-violet-600 font-mono"
+                />
+              </div>
+
+              <div>
+                <label className="block text-slate-700 font-bold mb-1">Description</label>
+                <textarea
+                  rows={2}
+                  value={publishDocForm.description}
+                  onChange={(e) => setPublishDocForm({ ...publishDocForm, description: e.target.value })}
+                  placeholder="Short note on what this document contains..."
+                  className="w-full bg-white border border-slate-300 rounded-xl px-3.5 py-2 text-slate-900 focus:outline-none focus:ring-2 focus:ring-violet-500/20 focus:border-violet-600"
+                />
+              </div>
+
+              <label className="flex items-center gap-2 cursor-pointer pt-1">
+                <input
+                  type="checkbox"
+                  checked={publishDocForm.is_client_downloadable}
+                  onChange={(e) => setPublishDocForm({ ...publishDocForm, is_client_downloadable: e.target.checked })}
+                  className="w-4 h-4 text-violet-600 rounded focus:ring-violet-500"
+                />
+                <span className="text-slate-700 font-bold">Allow Client Download</span>
+              </label>
+
+              <div className="flex items-center justify-end gap-2.5 pt-3 border-t border-slate-100">
+                <button
+                  type="button"
+                  onClick={() => setShowPublishDocModal(false)}
+                  className="px-4 py-2 text-xs font-bold text-slate-700 bg-slate-100 rounded-xl"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  disabled={actionLoading}
+                  className="px-5 py-2.5 rounded-xl bg-violet-600 hover:bg-violet-700 text-white font-bold text-xs uppercase tracking-wider shadow-sm"
+                >
+                  {actionLoading ? 'Publishing...' : 'Publish Document'}
+                </button>
+              </div>
+            </form>
           </div>
         </div>
       )}

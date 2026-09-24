@@ -17,14 +17,37 @@ export async function GET(request) {
     let sql = `
       SELECT 
         c.*,
-        COUNT(DISTINCT p.id) as total_projects,
-        COALESCE(SUM(p.project_value), 0) as total_contract_value,
-        COALESCE(SUM(r.amount), 0) as total_cash_received,
-        COUNT(DISTINCT l.id) as total_leads
+        COALESCE(proj.total_projects, 0) as total_projects,
+        COALESCE(proj.total_contract_value, 0) as total_contract_value,
+        COALESCE(rev.total_cash_received, 0) as total_cash_received,
+        COALESCE(leads.total_leads, 0) as total_leads
       FROM founder_os_clients c
-      LEFT JOIN founder_os_projects p ON p.client_id = c.id
-      LEFT JOIN founder_os_revenue r ON (r.client_id = c.id OR (r.project_id = p.id AND r.payment_status = 'Paid'))
-      LEFT JOIN founder_os_leads l ON l.client_id = c.id
+      LEFT JOIN (
+        SELECT 
+          COALESCE(p.client_id, c_inner.id) as client_id,
+          COUNT(DISTINCT p.id) as total_projects, 
+          COALESCE(SUM(p.project_value), 0) as total_contract_value
+        FROM founder_os_projects p
+        LEFT JOIN founder_os_clients c_inner ON (p.client_id IS NULL AND LOWER(p.client_name) = LOWER(c_inner.name))
+        GROUP BY COALESCE(p.client_id, c_inner.id)
+      ) proj ON proj.client_id = c.id
+      LEFT JOIN (
+        SELECT 
+          COALESCE(r.client_id, c_inner.id) as client_id,
+          COALESCE(SUM(r.amount), 0) as total_cash_received
+        FROM founder_os_revenue r
+        LEFT JOIN founder_os_clients c_inner ON (r.client_id IS NULL AND LOWER(r.client_name) = LOWER(c_inner.name))
+        WHERE r.payment_status = 'Paid'
+        GROUP BY COALESCE(r.client_id, c_inner.id)
+      ) rev ON rev.client_id = c.id
+      LEFT JOIN (
+        SELECT 
+          COALESCE(l.client_id, c_inner.id) as client_id,
+          COUNT(DISTINCT l.id) as total_leads
+        FROM founder_os_leads l
+        LEFT JOIN founder_os_clients c_inner ON (l.client_id IS NULL AND LOWER(l.name) = LOWER(c_inner.name))
+        GROUP BY COALESCE(l.client_id, c_inner.id)
+      ) leads ON leads.client_id = c.id
       WHERE 1=1
     `;
     const params = [];
@@ -34,7 +57,7 @@ export async function GET(request) {
       sql += ` AND (LOWER(c.name) LIKE $1 OR LOWER(COALESCE(c.company, '')) LIKE $1 OR LOWER(COALESCE(c.email, '')) LIKE $1)`;
     }
 
-    sql += ' GROUP BY c.id ORDER BY c.created_at DESC';
+    sql += ' ORDER BY c.created_at DESC';
 
     const res = await query(sql, params);
 
@@ -44,6 +67,8 @@ export async function GET(request) {
       const outstandingVal = Math.max(0, contractVal - receivedVal);
       return {
         ...row,
+        total_projects: parseInt(row.total_projects || 0, 10),
+        total_leads: parseInt(row.total_leads || 0, 10),
         total_contract_value: contractVal,
         total_cash_received: receivedVal,
         total_outstanding: outstandingVal

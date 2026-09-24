@@ -55,6 +55,70 @@ export async function GET(request, { params }) {
       ORDER BY created_at DESC LIMIT 15
     `, [projectId]);
 
+    // Portal Settings
+    const portalSettingsRes = await query('SELECT * FROM founder_os_project_portal_settings WHERE project_id = $1', [projectId]);
+    const pRow = portalSettingsRes.rows[0] || {};
+    const portalSettings = {
+      id: pRow.id,
+      project_id: projectId,
+      portal_enabled: pRow.portal_enabled !== undefined ? Boolean(pRow.portal_enabled) : true,
+      is_portal_enabled: pRow.portal_enabled !== undefined ? Boolean(pRow.portal_enabled) : true,
+      portal_display_name: pRow.portal_display_name || project.project_name,
+      client_summary: pRow.client_summary || '',
+      client_announcement: pRow.client_announcement || '',
+      preview_enabled: Boolean(pRow.preview_enabled),
+      allow_live_preview: Boolean(pRow.preview_enabled),
+      preview_url: pRow.preview_url || '',
+      staging_preview_url: pRow.preview_url || '',
+      preview_label: pRow.preview_label || 'Live Staging Preview',
+      preview_status: pRow.preview_status || 'Preparing',
+      preview_instructions: pRow.preview_instructions || '',
+      change_requests_enabled: pRow.change_requests_enabled !== undefined ? Boolean(pRow.change_requests_enabled) : true,
+      allow_change_requests: pRow.change_requests_enabled !== undefined ? Boolean(pRow.change_requests_enabled) : true,
+      change_request_policy: pRow.change_request_policy || 'Change requests will be reviewed and scheduled by the delivery team.',
+      visible_financials: pRow.visible_financials !== undefined ? Boolean(pRow.visible_financials) : true
+    };
+
+    // Client Change Requests with comments
+    const changeRequestsRes = await query(`
+      SELECT 
+        cr.*,
+        u.full_name as author_name,
+        u.email as author_email,
+        u.public_client_id,
+        s.stage_name,
+        s.client_title as stage_client_title,
+        COUNT(c.id) as total_comments,
+        COUNT(CASE WHEN c.is_internal_note = TRUE THEN 1 END) as internal_notes_count
+      FROM founder_os_client_change_requests cr
+      LEFT JOIN founder_os_portal_users u ON u.id = cr.portal_user_id
+      LEFT JOIN founder_os_project_stages s ON s.id = cr.stage_id
+      LEFT JOIN founder_os_change_request_comments c ON c.change_request_id = cr.id
+      WHERE cr.project_id = $1
+      GROUP BY cr.id, u.full_name, u.email, u.public_client_id, s.stage_name, s.client_title
+      ORDER BY cr.created_at DESC
+    `, [projectId]);
+
+    // Approvals Audit
+    const approvalsRes = await query(`
+      SELECT 
+        a.*,
+        u.full_name as client_user_name,
+        u.email as client_user_email,
+        u.public_client_id
+      FROM founder_os_client_approvals a
+      LEFT JOIN founder_os_portal_users u ON u.id = a.portal_user_id
+      WHERE a.project_id = $1
+      ORDER BY a.created_at DESC
+    `, [projectId]);
+
+    // Portal Documents
+    const portalDocsRes = await query(`
+      SELECT * FROM founder_os_portal_documents
+      WHERE project_id = $1
+      ORDER BY created_at DESC
+    `, [projectId]);
+
     // Financial Metrics Calculation
     const contractValue = parseFloat(project.project_value || 0);
 
@@ -130,6 +194,10 @@ export async function GET(request, { params }) {
       qaChecklist: qaRes.rows,
       feedback: feedbackRes.rows,
       activity: activityRes.rows,
+      portalSettings,
+      changeRequests: changeRequestsRes.rows,
+      approvals: approvalsRes.rows,
+      portalDocuments: portalDocsRes.rows,
       financials: {
         contractValue,
         cashReceived,

@@ -32,7 +32,7 @@ export default function Footer() {
     return () => observer.disconnect();
   }, []);
 
-  if (pathname?.startsWith('/admin') || pathname?.startsWith('/founder-os')) {
+  if (pathname?.startsWith('/admin') || pathname?.startsWith('/founder-os') || pathname?.startsWith('/client')) {
     return null;
   }
 
@@ -90,6 +90,7 @@ export default function Footer() {
             <ul className="flex flex-col gap-3 sm:gap-4 text-xs sm:text-sm">
               <li><Link href="/about" className="text-[#9CA3AF] hover:text-primary transition-colors">About Us</Link></li>
               <li><Link href="/blog" className="text-[#9CA3AF] hover:text-primary transition-colors">Blog &amp; Insights</Link></li>
+              <li><Link href="/client/login" className="text-[#9CA3AF] hover:text-primary transition-colors">Client Portal</Link></li>
               <li><Link href="/contact" className="text-[#9CA3AF] hover:text-primary transition-colors">Contact Us</Link></li>
               <li><Link href="/start-project" className="text-[#9CA3AF] hover:text-primary transition-colors">Start a Project</Link></li>
             </ul>
