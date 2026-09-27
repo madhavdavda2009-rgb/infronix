@@ -17,70 +17,48 @@ export default function BlogListClient({
   initialTags = [], 
   initialError = false 
 }) {
-  const [posts, setPosts] = useState(initialPosts);
-  const [categories, setCategories] = useState(initialCategories);
-  const [tags, setTags] = useState(initialTags);
+  const categories = initialCategories;
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [selectedTag, setSelectedTag] = useState('all');
   const [searchQuery, setSearchQuery] = useState('');
-  const [loading, setLoading] = useState(false);
-  const [loadError, setLoadError] = useState(initialError);
-  const isInitialMount = useRef(true);
 
-  useEffect(() => {
-    // Skip redundant network fetch on initial mount when default filters are active
-    if (isInitialMount.current) {
-      isInitialMount.current = false;
-      return;
-    }
-
-    let isMounted = true;
-    async function loadBlogs() {
-      try {
-        setLoading(true);
-        const params = new URLSearchParams();
-        if (selectedCategory !== 'all') params.append('category', selectedCategory);
-        if (selectedTag !== 'all') params.append('tag', selectedTag);
-        if (searchQuery.trim()) params.append('search', searchQuery.trim());
-
-        const res = await fetch(`/api/public/blogs?${params.toString()}`, {
-          cache: 'no-store'
-        });
-        if (!res.ok) throw new Error('Articles are temporarily unavailable.');
-        const data = await res.json();
-        if (data.success && isMounted) {
-          setLoadError(false);
-          setPosts(data.posts || []);
-          if (data.categories) setCategories(data.categories);
-          if (data.tags) setTags(data.tags);
-        }
-      } catch (err) {
-        if (isMounted) setLoadError(true);
-        console.warn('Failed to load published blogs:', err.message);
-      } finally {
-        if (isMounted) setLoading(false);
+  // Instant 0ms In-Memory Filter for 60fps real-time search without network roundtrip
+  const filteredPosts = React.useMemo(() => {
+    const q = searchQuery.trim().toLowerCase();
+    return initialPosts.filter((post) => {
+      // Category filter
+      if (selectedCategory !== 'all' && post.category_slug !== selectedCategory) {
+        return false;
       }
-    }
-
-    const timer = setTimeout(() => {
-      loadBlogs();
-    }, 150);
-
-    return () => {
-      isMounted = false;
-      clearTimeout(timer);
-    };
-  }, [selectedCategory, selectedTag, searchQuery]);
+      // Tag filter
+      if (selectedTag !== 'all' && !(Array.isArray(post.tags) && post.tags.some(t => t.slug === selectedTag))) {
+        return false;
+      }
+      // Text search match across title, excerpt, category, author, and tags
+      if (q) {
+        const titleMatch = post.title?.toLowerCase().includes(q);
+        const excerptMatch = post.excerpt?.toLowerCase().includes(q);
+        const categoryMatch = post.category_name?.toLowerCase().includes(q);
+        const authorMatch = post.author_name?.toLowerCase().includes(q);
+        const tagMatch = Array.isArray(post.tags) && post.tags.some(t => 
+          (t.name && t.name.toLowerCase().includes(q)) || 
+          (t.slug && t.slug.toLowerCase().includes(q))
+        );
+        return titleMatch || excerptMatch || categoryMatch || authorMatch || tagMatch;
+      }
+      return true;
+    });
+  }, [initialPosts, selectedCategory, selectedTag, searchQuery]);
 
   // Featured post (if any in the current result set)
   const featuredPost = selectedCategory === 'all' && selectedTag === 'all' && !searchQuery.trim()
-    ? posts.find(p => p.featured)
+    ? filteredPosts.find(p => p.featured)
     : null;
 
   // Regular grid posts (exclude featured hero post if shown in hero)
   const gridPosts = featuredPost 
-    ? posts.filter(p => p.id !== featuredPost.id)
-    : posts;
+    ? filteredPosts.filter(p => p.id !== featuredPost.id)
+    : filteredPosts;
 
   return (
     <div className="w-full">
@@ -237,27 +215,16 @@ export default function BlogListClient({
 
       {/* Main Grid Section */}
       <section className="max-w-[1280px] mx-auto px-4 sm:px-6 md:px-12 pb-16">
-        {loading && posts.length === 0 ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
-            {[1, 2, 3].map((n) => (
-              <div key={n} className="animate-pulse bg-surface-container-lowest border border-outline-variant/40 rounded-2xl p-5 space-y-4">
-                <div className="aspect-[16/10] bg-surface rounded-xl" />
-                <div className="h-4 bg-surface rounded w-1/3" />
-                <div className="h-6 bg-surface rounded w-3/4" />
-                <div className="h-12 bg-surface rounded w-full" />
-              </div>
-            ))}
-          </div>
-        ) : gridPosts.length === 0 ? (
+        {gridPosts.length === 0 ? (
           <div className="bg-surface-container-lowest border border-outline-variant/60 rounded-3xl p-10 sm:p-16 text-center max-w-2xl mx-auto">
             <div className="w-16 h-16 rounded-2xl bg-primary/10 text-primary flex items-center justify-center mx-auto mb-4">
               <Article size={32} />
             </div>
             <h3 className="text-xl sm:text-2xl font-heading font-bold text-on-surface mb-2">
-              {loadError ? 'Articles are temporarily unavailable' : 'No articles found'}
+              {initialError ? 'Articles are temporarily unavailable' : 'No articles found'}
             </h3>
             <p className="text-sm text-main-text leading-relaxed mb-6">
-              {loadError ? 'Please try reloading this page. You can still contact us to discuss your project.' : searchQuery || selectedCategory !== 'all' || selectedTag !== 'all'
+              {initialError ? 'Please try reloading this page. You can still contact us to discuss your project.' : searchQuery || selectedCategory !== 'all' || selectedTag !== 'all'
                 ? 'No published articles matched your search query or topic filters. Try clearing your filters.'
                 : 'Our digital insights, engineering guides, and automation strategies are being written. Check back soon!'}
             </p>

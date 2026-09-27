@@ -35,12 +35,19 @@ export default async function BlogPage() {
           b.featured, 
           COALESCE(b.published_at, b.scheduled_for, b.created_at) AS published_at, 
           c.name AS category_name,
-          c.slug AS category_slug
+          c.slug AS category_slug,
+          COALESCE(
+            json_agg(json_build_object('name', t.name, 'slug', t.slug)) 
+            FILTER (WHERE t.id IS NOT NULL), '[]'
+          ) AS tags
         FROM founder_os_blogs b 
         LEFT JOIN founder_os_blog_categories c ON c.id = b.category_id
+        LEFT JOIN founder_os_blog_posts_tags pt ON pt.post_id = b.id
+        LEFT JOIN founder_os_blog_tags t ON t.id = pt.tag_id
         WHERE b.status = 'Published' OR (b.status = 'Scheduled' AND b.scheduled_for <= NOW())
+        GROUP BY b.id, c.name, c.slug
         ORDER BY b.featured DESC, COALESCE(b.published_at, b.scheduled_for, b.created_at) DESC 
-        LIMIT 30
+        LIMIT 100
       `),
       query(`
         SELECT c.id, c.name, c.slug, c.description, COUNT(b.id)::int AS post_count
