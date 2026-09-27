@@ -27,7 +27,7 @@ export default function TeamSection() {
   useEffect(() => {
     let isMounted = true;
     const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), 4000);
+    const timeoutId = setTimeout(() => controller.abort(), 12000);
 
     async function loadTeam() {
       try {
@@ -39,7 +39,7 @@ export default function TeamSection() {
         const data = await res.json();
         if (data.success && Array.isArray(data.team) && data.team.length > 0 && isMounted) {
           const formatted = data.team.map((m) => {
-            const isFounder = m.is_founder || m.employment_type === 'Founder' || m.name?.toLowerCase().includes('madhav');
+            const isFounder = Boolean(m.is_founder || m.employment_type === 'Founder' || m.name?.toLowerCase().includes('madhav'));
             return {
               ...m,
               image: m.profile_image_url || (isFounder ? myImage.src : null),
@@ -48,8 +48,10 @@ export default function TeamSection() {
           });
           setTeamMembers(formatted);
         }
-      } catch (_) {
-        // Fallback gracefully to default founder without throwing console error
+      } catch (err) {
+        if (err.name !== 'AbortError') {
+          console.warn('Team fetch notice:', err.message);
+        }
       } finally {
         clearTimeout(timeoutId);
         if (isMounted) setHasLoaded(true);
