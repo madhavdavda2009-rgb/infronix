@@ -55,9 +55,17 @@ export default function RootLayout({ children }) {
             __html: serializeJsonLd({
               '@context': 'https://schema.org',
               '@graph': [
-                { '@type': 'Organization', '@id': SITE_URL + '/#organization', name: 'InfronixWeb', url: SITE_URL,
-                  logo: SITE_URL + '/web-logo.webp', description: 'An Ahmedabad-based digital agency helping businesses build, grow and automate their digital presence.',
-                  telephone: '+91-6355792936', email: 'support@infronixweb.in',
+                { 
+                  '@type': ['Organization', 'LocalBusiness', 'ProfessionalService'], 
+                  '@id': SITE_URL + '/#organization', 
+                  name: 'InfronixWeb', 
+                  url: SITE_URL,
+                  logo: SITE_URL + '/web-logo.webp', 
+                  image: SITE_URL + '/opengraph-image.webp',
+                  description: 'An Ahmedabad-based digital agency helping businesses build high-performance web applications, scale search visibility with SEO, manage digital ads, and automate operations.',
+                  telephone: '+91-6355792936', 
+                  email: 'support@infronixweb.in',
+                  priceRange: '₹₹',
                   address: {
                     '@type': 'PostalAddress',
                     streetAddress: 'Shree Eklingji Residency 2',
@@ -66,9 +74,44 @@ export default function RootLayout({ children }) {
                     postalCode: '382110',
                     addressCountry: 'IN'
                   },
-                  areaServed: { '@type': 'City', name: 'Ahmedabad' },
-                  sameAs: ['https://www.instagram.com/infronixwebagency2026', 'https://github.com/madhavdavda2009-rgb'] },
-                { '@type': 'WebSite', '@id': SITE_URL + '/#website', url: SITE_URL, name: 'InfronixWeb', publisher: { '@id': SITE_URL + '/#organization' } }
+                  geo: {
+                    '@type': 'GeoCoordinates',
+                    latitude: 22.9868,
+                    longitude: 72.3814
+                  },
+                  openingHoursSpecification: [
+                    {
+                      '@type': 'OpeningHoursSpecification',
+                      dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
+                      opens: '09:00',
+                      closes: '19:00'
+                    }
+                  ],
+                  areaServed: [
+                    { '@type': 'City', name: 'Ahmedabad' },
+                    { '@type': 'State', name: 'Gujarat' },
+                    { '@type': 'Country', name: 'India' }
+                  ],
+                  sameAs: [
+                    'https://www.instagram.com/infronixwebagency2026', 
+                    'https://github.com/madhavdavda2009-rgb'
+                  ] 
+                },
+                { 
+                  '@type': 'WebSite', 
+                  '@id': SITE_URL + '/#website', 
+                  url: SITE_URL, 
+                  name: 'InfronixWeb', 
+                  publisher: { '@id': SITE_URL + '/#organization' },
+                  potentialAction: {
+                    '@type': 'SearchAction',
+                    target: {
+                      '@type': 'EntryPoint',
+                      urlTemplate: `${SITE_URL}/blog?search={search_term_string}`
+                    },
+                    'query-input': 'required name=search_term_string'
+                  }
+                }
               ]
             })
           }}

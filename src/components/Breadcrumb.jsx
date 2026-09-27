@@ -35,6 +35,8 @@ function formatSlug(slug) {
     .join(' ');
 }
 
+import { SITE_URL, serializeJsonLd } from '@/lib/site-seo';
+
 export default function Breadcrumb({ className = "" }) {
   const pathname = usePathname() || '/';
 
@@ -60,8 +62,24 @@ export default function Breadcrumb({ className = "" }) {
     });
   });
 
+  const breadcrumbSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: breadcrumbs.map((crumb, index) => ({
+      '@type': 'ListItem',
+      position: index + 1,
+      name: crumb.label,
+      item: `${SITE_URL}${crumb.href === '/' ? '' : crumb.href}`
+    }))
+  };
+
   return (
-    <nav aria-label="Breadcrumb" className={`flex items-center flex-wrap gap-2 text-xs font-light text-text-light mb-4 ${className}`}>
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: serializeJsonLd(breadcrumbSchema) }}
+      />
+      <nav aria-label="Breadcrumb" className={`flex items-center flex-wrap gap-2 text-xs font-light text-text-light mb-4 ${className}`}>
       {breadcrumbs.map((crumb, index) => {
         const isLast = index === breadcrumbs.length - 1;
 
@@ -91,5 +109,6 @@ export default function Breadcrumb({ className = "" }) {
         );
       })}
     </nav>
+    </>
   );
 }

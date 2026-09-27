@@ -27,9 +27,29 @@ const FAQS = [
   }
 ];
 
+import { serializeJsonLd } from '@/lib/site-seo';
+
 export default function FAQSection() {
+  const faqSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: FAQS.map((faq) => ({
+      '@type': 'Question',
+      name: faq.question,
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: faq.answer
+      }
+    }))
+  };
+
   return (
-    <section id="faq" className="w-full py-16 sm:py-20 md:py-24 bg-surface relative z-20" aria-labelledby="faq-title">
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: serializeJsonLd(faqSchema) }}
+      />
+      <section id="faq" className="w-full py-16 sm:py-20 md:py-24 bg-surface relative z-20" aria-labelledby="faq-title">
       <div className="max-w-[900px] mx-auto px-4 sm:px-6 md:px-8">
 
         <div className="text-center mb-10 sm:mb-14 border-b border-outline pb-6 sm:pb-8">
@@ -67,5 +87,6 @@ export default function FAQSection() {
 
       </div>
     </section>
+    </>
   );
 }

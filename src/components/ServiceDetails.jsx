@@ -12,12 +12,33 @@ export function RelatedServices({ slugs }) {
 export default function ServiceDetails({ slug }) {
   const service = getService(slug);
   const schema = {
-    '@context': 'https://schema.org', '@type': 'Service', name: service.name,
-    description: service.description, url: `${SITE_URL}/${slug}`,
-    provider: { '@id': `${SITE_URL}/#organization` }, areaServed: { '@type': 'City', name: 'Ahmedabad' },
+    '@context': 'https://schema.org', 
+    '@type': 'Service', 
+    name: service.name,
+    description: service.description, 
+    url: `${SITE_URL}/${slug}`,
+    provider: { '@id': `${SITE_URL}/#organization` }, 
+    areaServed: { '@type': 'City', name: 'Ahmedabad' },
   };
+
+  const faqSchema = service.faqs && service.faqs.length > 0 ? {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: service.faqs.map(([question, answer]) => ({
+      '@type': 'Question',
+      name: question,
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: answer
+      }
+    }))
+  } : null;
+
   return <>
     <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: serializeJsonLd(schema) }} />
+    {faqSchema && (
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: serializeJsonLd(faqSchema) }} />
+    )}
     {service.process && <>
       <section className="py-12 sm:py-20 bg-surface border-b border-outline-variant/40">
         <div className="max-w-[1280px] mx-auto px-4 sm:px-6 md:px-12 grid md:grid-cols-2 gap-10 md:gap-16">
