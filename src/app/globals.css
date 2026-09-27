@@ -1,31 +1,32 @@
 @import "tailwindcss";
 
 @theme {
-  /* Neon Digital Agency Palette */
-  --color-primary: #6D28D9; /* Deep Vibrant Violet (WCAG AAA 6.7:1 contrast) */
+  /* High-Taste Digital Agency Palette */
+  --color-primary: #6D28D9; /* Deep Vibrant Violet (WCAG AAA contrast) */
   --color-primary-dark: #5B21B6;
-  --color-primary-glow: rgba(109, 40, 217, 0.4);
+  --color-primary-hover: #7C3AED;
+  --color-primary-glow: rgba(109, 40, 217, 0.25);
   
   --color-accent: #00F5D4; /* Neon Cyan */
   --color-accent-alt: #C7FF3D; /* Acid Lime */
   
   --color-soft-violet: #E7DFFF;
-  --color-light-bg: #F5F7F4;
+  --color-light-bg: #F8F9FA;
   
   --color-deep-space: #0B0D12;
-  --color-main-text: #171A22;
-  --color-text-light: #4B5563;
+  --color-main-text: #1E293B;
+  --color-text-light: #64748B;
 
-  /* Surface & Outline */
+  /* Surface & Outline Tokens */
   --color-surface: var(--color-light-bg);
   --color-surface-container-lowest: #FFFFFF;
   --color-on-surface: var(--color-deep-space);
   
-  --color-outline: #E5E7EB;
-  --color-outline-variant: var(--color-soft-violet);
+  --color-outline: #E2E8F0;
+  --color-outline-variant: #CBD5E1;
   --color-ink-black: var(--color-deep-space);
 
-  /* Fonts */
+  /* Typography */
   --font-heading: var(--font-outfit), sans-serif;
   --font-body: var(--font-inter), sans-serif;
 }
@@ -59,7 +60,7 @@
     min-height: 100dvh;
     overscroll-behavior-y: auto;
     font-family: var(--font-body);
-    font-weight: 300;
+    font-weight: 400;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
@@ -73,17 +74,11 @@
   h1, h2, h3, h4, h5, h6 {
     font-family: var(--font-heading);
     color: var(--color-deep-space);
-    font-weight: 300;
     letter-spacing: -0.025em;
   }
   
   p {
     color: var(--color-main-text);
-    font-weight: 300;
-  }
-
-  strong, b {
-    font-weight: 450;
   }
 
   ::selection {
@@ -92,23 +87,19 @@
   }
 }
 
-/* Thin Typography System - converts heavy/thick weights to modern thin/light weights */
-.font-bold,
-.font-extrabold,
-.font-black,
-.font-semibold {
-  font-weight: 400 !important;
+/* Luxury Agency Visual Polish & Micro-Interactions */
+.agency-glass-card {
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(226, 232, 240, 0.8);
 }
 
-.font-medium {
-  font-weight: 350 !important;
+.agency-dark-card {
+  background: #0E1118;
+  border: 1px solid rgba(255, 255, 255, 0.08);
 }
 
-button, a, input, textarea, select {
-  font-weight: 350;
-}
-
-/* Base Utility Classes for Animation */
 .reveal-text {
   clip-path: polygon(0 0, 100% 0, 100% 100%, 0% 100%);
 }
@@ -122,12 +113,43 @@ button, a, input, textarea, select {
 ::-webkit-scrollbar {
   display: none;
 }
-/* Public interaction quality: preserve the established palette and spacing. */
-:where(a, button, input, select, textarea, summary):focus-visible { outline: 3px solid #8b5cf6; outline-offset: 4px; }
-.skip-link { position: fixed; top: 8px; left: 8px; z-index: 1000; padding: 12px 20px; background: #fff; color: #0b0d12; transform: translateY(-160%); }
-.skip-link:focus { transform: translateY(0); }
-main { scroll-margin-top: 120px; }
+
+/* Accessible focus outlines */
+:where(a, button, input, select, textarea, summary):focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 3px;
+}
+
+.skip-link {
+  position: fixed;
+  top: 8px;
+  left: 8px;
+  z-index: 1000;
+  padding: 12px 20px;
+  background: #ffffff;
+  color: #0b0d12;
+  font-weight: 600;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  transform: translateY(-160%);
+  transition: transform 0.2s ease-out;
+}
+
+.skip-link:focus {
+  transform: translateY(0);
+}
+
+main {
+  scroll-margin-top: 120px;
+}
+
 @media (prefers-reduced-motion: reduce) {
-  html { scroll-behavior: auto !important; }
-  *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
+  html {
+    scroll-behavior: auto !important;
+  }
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }

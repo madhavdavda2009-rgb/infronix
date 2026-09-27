@@ -8,18 +8,16 @@ import {
   Clock, 
   ArrowLeft, 
   Tag as TagIcon, 
-  Sparkle, 
   Article,
-  ArrowRight,
-  ShieldCheck
+  ArrowRight
 } from '@phosphor-icons/react/dist/ssr';
 import { query } from '@/lib/founder_os_db';
 import { SafeMarkdownRenderer } from '@/lib/markdown_parser';
-import Breadcrumb from '@/components/Breadcrumb';
 import CTASection from '@/components/CTASection';
 import ShareButtons from '@/components/ShareButtons';
 
-export const revalidate = 300; // 5-minute ISR revalidation
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
 
 export async function generateStaticParams() {
   try {
@@ -38,42 +36,52 @@ export async function generateStaticParams() {
 const getBlogPost = cache(async function getBlogPost(slug) {
   const cleanSlug = slug.toLowerCase().trim();
 
-  // 1. Check exact published slug
-  const res = await query(`
-    SELECT 
-      b.*,
-      c.name AS category_name,
-      c.slug AS category_slug,
-      COALESCE(
-        json_agg(json_build_object('name', t.name, 'slug', t.slug)) 
-        FILTER (WHERE t.id IS NOT NULL), '[]'
-      ) AS tags
-    FROM founder_os_blogs b
-    LEFT JOIN founder_os_blog_categories c ON c.id = b.category_id
-    LEFT JOIN founder_os_blog_posts_tags pt ON pt.post_id = b.id
-    LEFT JOIN founder_os_blog_tags t ON t.id = pt.tag_id
-    WHERE LOWER(b.slug) = $1 
-      AND (b.status = 'Published' OR (b.status = 'Scheduled' AND b.scheduled_for <= NOW()))
-    GROUP BY b.id, c.name, c.slug
-  `, [cleanSlug]);
+  try {
+    // 1. Direct match on current slug
+    let res = await query(`
+      SELECT 
+        b.*,
+        c.name as category_name,
+        c.slug as category_slug,
+        u.name as author_name,
+        u.role as author_role,
+        u.avatar_url as author_avatar_url,
+        COALESCE(
+          json_agg(
+            json_build_object('id', t.id, 'name', t.name, 'slug', t.slug)
+          ) FILTER (WHERE t.id IS NOT NULL), '[]'
+        ) as tags
+      FROM founder_os_blogs b
+      LEFT JOIN founder_os_blog_categories c ON b.category_id = c.id
+      LEFT JOIN founder_os_users u ON b.author_id = u.id
+      LEFT JOIN founder_os_blog_tag_relations tr ON b.id = tr.blog_id
+      LEFT JOIN founder_os_blog_tags t ON tr.tag_id = t.id
+      WHERE LOWER(b.slug) = $1 
+        AND (b.status = 'Published' OR (b.status = 'Scheduled' AND b.scheduled_for <= NOW()))
+      GROUP BY b.id, c.name, c.slug, u.name, u.role, u.avatar_url
+      LIMIT 1
+    `, [cleanSlug]);
 
-  if (res.rows.length > 0) {
-    return { post: res.rows[0], redirected: false };
+    if (res.rows.length > 0) {
+      return { post: res.rows[0], redirected: false, targetSlug: null };
+    }
+
+    // 2. Check redirect table
+    const redirRes = await query(`
+      SELECT target_slug FROM founder_os_blog_redirects
+      WHERE LOWER(source_slug) = $1
+      LIMIT 1
+    `, [cleanSlug]);
+
+    if (redirRes.rows.length > 0) {
+      return { post: null, redirected: true, targetSlug: redirRes.rows[0].target_slug };
+    }
+
+    return { post: null, redirected: false, targetSlug: null };
+  } catch (err) {
+    console.error('Error fetching blog post:', err);
+    return { post: null, redirected: false, targetSlug: null };
   }
-
-  // 2. Check previous slugs for redirect
-  const legacyRes = await query(`
-    SELECT slug FROM founder_os_blogs 
-    WHERE previous_slugs_json @> $1::jsonb 
-      AND (status = 'Published' OR (status = 'Scheduled' AND scheduled_for <= NOW()))
-    LIMIT 1
-  `, [JSON.stringify([cleanSlug])]);
-
-  if (legacyRes.rows.length > 0) {
-    return { post: null, redirected: true, targetSlug: legacyRes.rows[0].slug };
-  }
-
-  return { post: null, redirected: false };
 });
 
 async function getRelatedPosts(postId, categoryId, limit = 3) {
@@ -81,18 +89,18 @@ async function getRelatedPosts(postId, categoryId, limit = 3) {
     const res = await query(`
       SELECT 
         b.id, b.title, b.slug, b.excerpt, b.cover_image_url, b.cover_image_alt,
-        b.author_name, b.reading_time_minutes, b.published_at,
-        c.name AS category_name
+        b.reading_time_minutes, b.published_at,
+        c.name as category_name, c.slug as category_slug
       FROM founder_os_blogs b
-      LEFT JOIN founder_os_blog_categories c ON c.id = b.category_id
+      LEFT JOIN founder_os_blog_categories c ON b.category_id = c.id
       WHERE b.id != $1
-        AND (b.category_id = $2 OR $2 IS NULL)
+        AND ($2::uuid IS NULL OR b.category_id = $2)
         AND (b.status = 'Published' OR (b.status = 'Scheduled' AND b.scheduled_for <= NOW()))
       ORDER BY b.published_at DESC
       LIMIT $3
     `, [postId, categoryId || null, limit]);
     return res.rows;
-  } catch (err) {
+  } catch {
     return [];
   }
 }
@@ -262,7 +270,7 @@ export default async function BlogPostPage({ params }) {
           </h1>
 
           {/* Excerpt / Lead */}
-          <p className="text-base sm:text-lg md:text-xl text-main-text font-normal leading-relaxed mb-8 pb-8 border-b border-outline-variant/50">
+          <p className="text-base sm:text-lg md:text-xl text-main-text font-normal leading-relaxed mb-8 pb-8 border-b border-outline/50">
             {post.excerpt}
           </p>
 
@@ -273,7 +281,7 @@ export default async function BlogPostPage({ params }) {
                 <img
                   src={post.author_avatar_url}
                   alt={post.author_name}
-                  className="w-12 h-12 rounded-full object-cover border-2 border-outline-variant"
+                  className="w-12 h-12 rounded-full object-cover border-2 border-outline"
                   loading="lazy"
                   decoding="async"
                 />
@@ -308,7 +316,7 @@ export default async function BlogPostPage({ params }) {
 
           {/* Cover Photo */}
           {post.cover_image_url && (
-            <div className="mb-10 sm:mb-12 rounded-2xl overflow-hidden border border-outline-variant/60 shadow-md bg-surface">
+            <div className="mb-10 sm:mb-12 rounded-2xl overflow-hidden border border-outline shadow-md bg-surface">
               <img
                 src={post.cover_image_url}
                 alt={post.cover_image_alt || post.title}
@@ -317,7 +325,7 @@ export default async function BlogPostPage({ params }) {
                 fetchPriority="high"
               />
               {post.cover_image_alt && (
-                <div className="p-2.5 bg-surface-container-lowest text-center text-xs text-text-light italic border-t border-outline-variant/40">
+                <div className="p-2.5 bg-surface-container-lowest text-center text-xs text-text-light italic border-t border-outline/40">
                   {post.cover_image_alt}
                 </div>
               )}
@@ -325,18 +333,18 @@ export default async function BlogPostPage({ params }) {
           )}
 
           {/* Safe Markdown Content Body */}
-          <div className="pt-2 pb-10 border-b border-outline-variant/40">
+          <div className="pt-2 pb-10 border-b border-outline/40">
             <SafeMarkdownRenderer content={post.content_markdown} fallbackExcerpt={post.excerpt} />
           </div>
 
           {/* Tags & Social Share Footer */}
-          <div className="py-8 border-b border-outline-variant/40 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
+          <div className="py-8 border-b border-outline/40 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
             {/* Tags */}
             <div className="flex items-center gap-2 flex-wrap">
               {Array.isArray(post.tags) && post.tags.length > 0 && post.tags.map((t, idx) => (
                 <span
                   key={idx}
-                  className="inline-flex items-center gap-1 px-3 py-1 bg-surface-container-lowest border border-outline-variant/60 rounded-xl text-xs font-semibold text-text-light hover:text-primary transition-colors"
+                  className="inline-flex items-center gap-1 px-3 py-1 bg-surface-container-lowest border border-outline rounded-xl text-xs font-semibold text-text-light hover:text-primary transition-colors"
                 >
                   <TagIcon size={12} /> {t.name}
                 </span>
@@ -347,12 +355,15 @@ export default async function BlogPostPage({ params }) {
             <ShareButtons title={post.title} slug={post.slug} />
           </div>
 
-          <aside className="py-8"><h2 className="text-xl mb-3">Put these ideas into practice</h2><RelatedServices slugs={/seo/i.test(post.category_name || '') ? ['seo', 'web-development'] : /automat|ai|crm/i.test(post.category_name || '') ? ['ai-automation', 'crm-automation'] : /google|ads/i.test(post.category_name || '') ? ['google-ads', 'performance-marketing'] : /social/i.test(post.category_name || '') ? ['digital-marketing/social-media-marketing', 'meta-ads'] : /web/i.test(post.category_name || '') ? ['web-development', 'seo'] : ['digital-marketing', 'ai-automation']} /></aside>
+          <aside className="py-8">
+            <h2 className="text-xl font-heading font-bold mb-3 text-on-surface">Put these ideas into practice</h2>
+            <RelatedServices slugs={/seo/i.test(post.category_name || '') ? ['seo', 'web-development'] : /automat|ai|crm/i.test(post.category_name || '') ? ['ai-automation', 'crm-automation'] : /google|ads/i.test(post.category_name || '') ? ['google-ads', 'performance-marketing'] : /social/i.test(post.category_name || '') ? ['digital-marketing/social-media-marketing', 'meta-ads'] : /web/i.test(post.category_name || '') ? ['web-development', 'seo'] : ['digital-marketing', 'ai-automation']} />
+          </aside>
         </article>
 
         {/* Related Articles Section */}
         {relatedPosts.length > 0 && (
-          <section className="w-full py-12 sm:py-16 bg-surface-container-lowest border-t border-outline-variant/40">
+          <section className="w-full py-12 sm:py-16 bg-surface-container-lowest border-t border-outline/40">
             <div className="max-w-[1280px] mx-auto px-4 sm:px-6 md:px-12">
               <div className="mb-8">
                 <span className="text-xs font-bold uppercase tracking-widest text-primary mb-2 block">Keep Exploring</span>
@@ -366,7 +377,7 @@ export default async function BlogPostPage({ params }) {
                   <Link
                     key={rel.id}
                     href={`/blog/${rel.slug}`}
-                    className="group bg-surface border border-outline-variant/60 hover:border-primary/40 rounded-2xl p-5 hover:shadow-md transition-all flex flex-col justify-between"
+                    className="group bg-surface border border-outline hover:border-primary/40 rounded-2xl p-5 hover:shadow-md transition-all flex flex-col justify-between"
                   >
                     <div>
                       {rel.cover_image_url ? (
@@ -398,7 +409,7 @@ export default async function BlogPostPage({ params }) {
                       </p>
                     </div>
 
-                    <div className="pt-3 border-t border-outline-variant/40 flex items-center justify-between text-xs text-text-light">
+                    <div className="pt-3 border-t border-outline/40 flex items-center justify-between text-xs text-text-light">
                       <span>{rel.reading_time_minutes || 1} min read</span>
                       <span className="font-bold text-primary flex items-center gap-1 group-hover:translate-x-1 transition-transform">
                         Read <ArrowRight size={13} weight="bold" />

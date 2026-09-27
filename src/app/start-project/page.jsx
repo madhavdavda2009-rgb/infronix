@@ -10,8 +10,8 @@ import { formatTitleCase, formatEmail, isValidEmail } from '@/utils/formFormatte
 
 const TIMELINE_OPTIONS = ['As soon as possible', 'Within 1–2 weeks', 'Within 2–4 weeks', '1–2 months', 'Flexible'];
 
-const INPUT_CLASS = "w-full bg-surface text-on-surface font-body-md px-4 py-3.5 sm:py-4 rounded-lg border border-outline focus:outline-none focus:border-primary transition-all font-medium placeholder:text-text-light text-sm sm:text-base";
-const LABEL_CLASS = "font-label-caps uppercase tracking-widest text-on-surface font-bold text-xs";
+const INPUT_CLASS = "w-full bg-surface text-on-surface font-body px-4 py-3.5 sm:py-4 rounded-xl border border-outline focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all font-normal placeholder:text-text-light text-sm sm:text-base";
+const LABEL_CLASS = "font-heading uppercase tracking-wider text-on-surface font-semibold text-xs";
 
 export default function StartProjectPage() {
   const [loading, setLoading] = useState(false);
@@ -51,8 +51,8 @@ export default function StartProjectPage() {
   useGSAP(() => {
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
     gsap.fromTo(".fade-up",
-      { opacity: 0, y: 30 },
-      { opacity: 1, y: 0, duration: 0.8, stagger: 0.1, ease: "power3.out" }
+      { opacity: 0, y: 24 },
+      { opacity: 1, y: 0, duration: 0.7, stagger: 0.1, ease: "power3.out" }
     );
   }, { scope: containerRef });
 
@@ -136,24 +136,24 @@ export default function StartProjectPage() {
   if (success) {
     return (
       <main id="main-content" className="min-h-screen pt-24 sm:pt-32 pb-16 bg-surface flex items-center justify-center px-4" ref={containerRef}>
-        <div className="max-w-2xl mx-auto text-center fade-up">
+        <div className="max-w-2xl mx-auto text-center fade-up bg-surface-container-lowest p-8 sm:p-12 rounded-3xl border border-outline shadow-xl">
           <div className="w-16 h-16 sm:w-20 sm:h-20 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-6 sm:mb-8">
             <CheckCircle className="text-primary text-3xl sm:text-4xl" weight="fill" />
           </div>
-          <h1 className="font-headline-lg text-2xl sm:text-4xl md:text-5xl text-on-surface font-bold mb-4 sm:mb-6">Quote request received.</h1>
+          <h1 className="text-2xl sm:text-4xl md:text-5xl text-on-surface font-heading font-bold mb-4 sm:mb-6">Quote request received.</h1>
           
           {referenceId && (
-            <div className="inline-flex items-center gap-2 px-4 py-2 bg-surface-container-lowest border border-primary/30 rounded-xl mb-6 shadow-sm">
-              <span className="text-xs uppercase font-bold text-text-light tracking-wider">Reference ID:</span>
+            <div className="inline-flex items-center gap-2 px-4 py-2 bg-surface border border-primary/30 rounded-xl mb-6 shadow-xs">
+              <span className="text-xs uppercase font-semibold text-text-light tracking-wider">Reference ID:</span>
               <span className="text-sm font-mono font-bold text-primary">{referenceId}</span>
             </div>
           )}
 
-          <p className="font-body-md text-main-text text-sm sm:text-base md:text-lg mb-8 sm:mb-10 max-w-lg mx-auto">
+          <p className="text-main-text text-sm sm:text-base md:text-lg mb-8 sm:mb-10 max-w-lg mx-auto leading-relaxed">
             Your project details have been received. Keep your reference ID for follow-up. If an email verification link arrives, use it to confirm your address. You can also contact support@infronixweb.in for help.
           </p>
           <div className="flex flex-wrap gap-4 justify-center items-center">
-            <a href="/" className="inline-block bg-primary text-white font-label-caps uppercase tracking-widest px-6 py-3.5 sm:px-8 sm:py-4 hover:bg-primary-dark transition-all border border-primary font-bold shadow-md rounded-lg text-xs sm:text-sm">
+            <a href="/" className="inline-flex items-center justify-center bg-primary text-white font-semibold px-7 py-3.5 sm:px-8 sm:py-4 hover:bg-primary-dark transition-all shadow-md rounded-xl text-xs sm:text-sm">
               Back to Home
             </a>
             <button
@@ -174,7 +174,7 @@ export default function StartProjectPage() {
                   setIdempotencyKey(crypto.randomUUID());
                 }
               }}
-              className="inline-block bg-surface-container-lowest text-on-surface font-label-caps uppercase tracking-widest px-6 py-3.5 sm:px-8 sm:py-4 hover:bg-surface border border-outline-variant font-bold shadow-sm rounded-lg text-xs sm:text-sm"
+              className="inline-flex items-center justify-center bg-surface text-on-surface font-semibold px-7 py-3.5 sm:px-8 sm:py-4 hover:bg-surface-container-lowest border border-outline hover:border-primary/40 transition-all shadow-xs rounded-xl text-xs sm:text-sm"
             >
               Submit Another Request
             </button>
@@ -191,9 +191,9 @@ export default function StartProjectPage() {
 
         {/* Page Header */}
         <div className="text-center mb-10 sm:mb-12 md:mb-16 fade-up">
-          <span className="font-label-caps text-xs text-primary tracking-widest uppercase mb-2 block font-bold">Get a Quote</span>
-          <h1 className="font-headline-lg text-2xl sm:text-3xl md:text-4xl text-on-surface font-bold mb-3 sm:mb-4">Let&apos;s plan your next step.</h1>
-          <p className="font-body-md text-main-text text-xs sm:text-sm md:text-base max-w-2xl mx-auto leading-relaxed font-medium">
+          <span className="font-heading text-xs text-primary tracking-widest uppercase mb-2 block font-semibold">Get a Quote</span>
+          <h1 className="text-2xl sm:text-3xl md:text-4xl text-on-surface font-heading font-bold mb-3 sm:mb-4">Let&apos;s plan your next step.</h1>
+          <p className="text-main-text text-xs sm:text-sm md:text-base max-w-2xl mx-auto leading-relaxed">
             Tell us what you need so we can discuss a practical scope and proposal. Based in Ahmedabad, Gujarat, and working with businesses across India.
           </p>
         </div>
@@ -212,23 +212,23 @@ export default function StartProjectPage() {
           </div>
 
           {errorMsg && (
-            <div className="p-4 bg-primary/10 border border-primary/40 text-on-surface text-xs sm:text-sm flex items-start gap-3 rounded-xl shadow-sm">
+            <div className="p-4 bg-primary/10 border border-primary/40 text-on-surface text-xs sm:text-sm flex items-start gap-3 rounded-xl shadow-xs">
               <WarningCircle className="text-xl text-primary shrink-0 mt-0.5" weight="duotone" />
               <p className="font-normal text-on-surface">{errorMsg}</p>
             </div>
           )}
 
           {/* ═══ SECTION 1: SERVICES REQUIRED ═══ */}
-          <div className="bg-surface-container-lowest border border-outline-variant p-5 sm:p-8 md:p-10 shadow-md rounded-2xl">
-            <div className="flex items-center gap-3 mb-6 border-b border-outline-variant pb-4">
-              <span className="font-label-caps text-xs text-primary tracking-widest uppercase font-bold">01</span>
-              <h2 className="font-headline-md text-lg sm:text-xl text-on-surface font-bold">Select Services Required</h2>
+          <div className="bg-surface-container-lowest border border-outline p-5 sm:p-8 md:p-10 shadow-sm rounded-2xl">
+            <div className="flex items-center gap-3 mb-6 border-b border-outline pb-4">
+              <span className="font-mono text-xs text-primary font-bold">01</span>
+              <h2 className="text-lg sm:text-xl text-on-surface font-heading font-bold">Select Services Required</h2>
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
               {[
                 { id: 'Website Development', label: 'Website Development', desc: 'Custom Web Platforms, Web Apps & E-Commerce', icon: Globe },
-                { id: 'SEO', label: 'SEO', desc: 'Search Visibility & Local Discovery', icon: MagnifyingGlass },
+                { id: 'SEO', label: 'SEO Optimization', desc: 'Search Visibility & Local Discovery', icon: MagnifyingGlass },
                 { id: 'Digital Marketing', label: 'Digital Marketing & Ads', desc: 'Social Media, Meta & Google Paid Ads', icon: Megaphone },
                 { id: 'AI Automation', label: 'AI Automation', desc: '24/7 Chatbots & WhatsApp Automation', icon: Robot },
               ].map((svc) => {
@@ -242,8 +242,8 @@ export default function StartProjectPage() {
                     aria-pressed={isSelected}
                     className={`p-4 rounded-xl border text-left flex items-start gap-3.5 transition-all cursor-pointer ${
                       isSelected
-                        ? 'bg-primary/10 border-primary text-on-surface shadow-sm ring-1 ring-primary'
-                        : 'bg-surface border-outline-variant hover:border-outline text-main-text hover:text-on-surface'
+                        ? 'bg-primary/10 border-primary text-on-surface shadow-xs ring-1 ring-primary'
+                        : 'bg-surface border-outline hover:border-outline-variant text-main-text hover:text-on-surface'
                     }`}
                   >
                     <div className={`w-9 h-9 rounded-lg flex items-center justify-center shrink-0 mt-0.5 ${isSelected ? 'bg-primary text-white' : 'bg-surface-container-lowest text-text-light'}`}>
@@ -273,37 +273,37 @@ export default function StartProjectPage() {
           </div>
 
           {/* ═══ SECTION 2: YOUR DETAILS ═══ */}
-          <div className="bg-surface-container-lowest border border-outline-variant p-5 sm:p-8 md:p-10 shadow-md rounded-2xl">
-            <div className="flex items-center gap-3 mb-6 border-b border-outline-variant pb-4">
-              <span className="font-label-caps text-xs text-primary tracking-widest uppercase font-bold">02</span>
-              <h2 className="font-headline-md text-lg sm:text-xl text-on-surface font-bold">Your Details</h2>
+          <div className="bg-surface-container-lowest border border-outline p-5 sm:p-8 md:p-10 shadow-sm rounded-2xl">
+            <div className="flex items-center gap-3 mb-6 border-b border-outline pb-4">
+              <span className="font-mono text-xs text-primary font-bold">02</span>
+              <h2 className="text-lg sm:text-xl text-on-surface font-heading font-bold">Your Details</h2>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
               <div className="flex flex-col gap-2">
                 <label htmlFor="sp-fullName" className={LABEL_CLASS}>Full Name *</label>
-                <input id="sp-fullName" type="text" name="fullName" value={formData.fullName} onChange={handleChange} className={INPUT_CLASS} placeholder="Jane Doe" required />
+                <input id="sp-fullName" type="text" name="fullName" value={formData.fullName} onChange={handleChange} className={INPUT_CLASS} placeholder="Aarav Mehta" required />
               </div>
               <div className="flex flex-col gap-2">
                 <label htmlFor="sp-email" className={LABEL_CLASS}>Email *</label>
-                <input id="sp-email" type="email" name="email" value={formData.email} onChange={handleChange} className={INPUT_CLASS} placeholder="jane@company.com" required />
+                <input id="sp-email" type="email" name="email" value={formData.email} onChange={handleChange} className={INPUT_CLASS} placeholder="aarav@shreeindustries.in" required />
               </div>
               <div className="flex flex-col gap-2">
                 <label htmlFor="sp-phone" className={LABEL_CLASS}>Phone / WhatsApp *</label>
-                <input id="sp-phone" type="tel" name="phone" value={formData.phone} onChange={handleChange} className={INPUT_CLASS} placeholder="+91 XXXXX XXXXX" required />
+                <input id="sp-phone" type="tel" name="phone" value={formData.phone} onChange={handleChange} className={INPUT_CLASS} placeholder="+91 98250 12345" required />
               </div>
               <div className="flex flex-col gap-2">
                 <label htmlFor="sp-company" className={LABEL_CLASS}>Company / Business Name</label>
-                <input id="sp-company" type="text" name="companyName" value={formData.companyName} onChange={handleChange} className={INPUT_CLASS} placeholder="Acme Corp" />
+                <input id="sp-company" type="text" name="companyName" value={formData.companyName} onChange={handleChange} className={INPUT_CLASS} placeholder="Shree Logistics Pvt Ltd" />
               </div>
             </div>
           </div>
 
           {/* ═══ SECTION 3: PROJECT DETAILS ═══ */}
-          <div className="bg-surface-container-lowest border border-outline-variant p-5 sm:p-8 md:p-10 shadow-md rounded-2xl">
-            <div className="flex items-center gap-3 mb-6 border-b border-outline-variant pb-4">
-              <span className="font-label-caps text-xs text-primary tracking-widest uppercase font-bold">03</span>
-              <h2 className="font-headline-md text-lg sm:text-xl text-on-surface font-bold">Project Details</h2>
+          <div className="bg-surface-container-lowest border border-outline p-5 sm:p-8 md:p-10 shadow-sm rounded-2xl">
+            <div className="flex items-center gap-3 mb-6 border-b border-outline pb-4">
+              <span className="font-mono text-xs text-primary font-bold">03</span>
+              <h2 className="text-lg sm:text-xl text-on-surface font-heading font-bold">Project Details</h2>
             </div>
 
             <div className="flex flex-col gap-4 sm:gap-6">
@@ -315,14 +315,14 @@ export default function StartProjectPage() {
                   value={formData.projectDescription}
                   onChange={handleChange}
                   className={`${INPUT_CLASS} min-h-[120px] sm:min-h-[140px] resize-y`}
-                  placeholder="Describe your goals, requirements, target audience and anything else we should know about your project..."
+                  placeholder="Describe your goals, requirements, target audience, and current business challenges..."
                   required
                 ></textarea>
               </div>
 
               <div className="flex flex-col gap-2">
                 <label htmlFor="sp-websiteUrl" className={LABEL_CLASS}>Current Website URL <span className="text-text-light font-normal">(optional)</span></label>
-                <input id="sp-websiteUrl" type="url" name="websiteUrl" value={formData.websiteUrl} onChange={handleChange} className={INPUT_CLASS} placeholder="https://www.example.com" />
+                <input id="sp-websiteUrl" type="url" name="websiteUrl" value={formData.websiteUrl} onChange={handleChange} className={INPUT_CLASS} placeholder="https://shreelogistics.in" />
               </div>
 
               <div className="flex flex-col gap-2">
@@ -333,17 +333,17 @@ export default function StartProjectPage() {
                   value={formData.additionalNotes}
                   onChange={handleChange}
                   className={`${INPUT_CLASS} min-h-[80px] resize-y`}
-                  placeholder="Any other details, preferences, or references you'd like to share..."
+                  placeholder="Any other details, target timeline preferences, or reference links..."
                 ></textarea>
               </div>
             </div>
           </div>
 
-          {/* ═══ SECTION 3: TIMELINE ═══ */}
-          <div className="bg-surface-container-lowest border border-outline-variant p-5 sm:p-8 md:p-10 shadow-md rounded-2xl">
-            <div className="flex items-center gap-3 mb-6 border-b border-outline-variant pb-4">
-              <span className="font-label-caps text-xs text-primary tracking-widest uppercase font-bold">03</span>
-              <h2 className="font-headline-md text-lg sm:text-xl text-on-surface font-bold">Timeline</h2>
+          {/* ═══ SECTION 4: TIMELINE ═══ */}
+          <div className="bg-surface-container-lowest border border-outline p-5 sm:p-8 md:p-10 shadow-sm rounded-2xl">
+            <div className="flex items-center gap-3 mb-6 border-b border-outline pb-4">
+              <span className="font-mono text-xs text-primary font-bold">04</span>
+              <h2 className="text-lg sm:text-xl text-on-surface font-heading font-bold">Timeline</h2>
             </div>
 
             <div className="flex flex-col gap-6">
@@ -351,12 +351,12 @@ export default function StartProjectPage() {
                 <label className={LABEL_CLASS}>Target Timeline</label>
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2.5 sm:gap-3">
                   {TIMELINE_OPTIONS.map(tm => (
-                    <label key={tm} className={`flex items-center gap-3 p-3.5 sm:p-4 border rounded-lg cursor-pointer transition-all ${formData.timeline === tm
+                    <label key={tm} className={`flex items-center gap-3 p-3.5 sm:p-4 border rounded-xl cursor-pointer transition-all ${formData.timeline === tm
                       ? 'border-primary bg-primary/5 ring-1 ring-primary'
-                      : 'border-outline hover:border-primary/50'
+                      : 'border-outline hover:border-primary/40 bg-surface'
                       }`}>
                       <input type="radio" name="timeline" value={tm} checked={formData.timeline === tm} onChange={handleChange} className="accent-primary w-4 h-4 shrink-0" />
-                      <span className="text-xs sm:text-sm font-bold text-on-surface">{tm}</span>
+                      <span className="text-xs sm:text-sm font-semibold text-on-surface">{tm}</span>
                     </label>
                   ))}
                 </div>
@@ -365,14 +365,14 @@ export default function StartProjectPage() {
           </div>
 
           {/* ═══ SUBMIT ═══ */}
-          <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4 pt-4 pb-8 border-t border-outline-variant">
-            <p className="text-xs text-main-text max-w-md leading-relaxed font-medium">
-              We&apos;ll review your requirements and contact you to clarify the scope and next steps.
+          <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4 pt-4 pb-8 border-t border-outline">
+            <p className="text-xs text-main-text max-w-md leading-relaxed">
+              We&apos;ll review your requirements and contact you promptly to discuss your scope and provide a comprehensive proposal.
             </p>
             <button
               type="submit"
               disabled={loading}
-              className="flex items-center justify-center gap-2 px-8 py-3.5 sm:px-10 sm:py-4 bg-primary text-white hover:bg-primary-dark font-label-caps uppercase tracking-widest text-xs font-bold transition-all shadow-md disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer whitespace-nowrap border border-primary rounded-lg w-full sm:w-auto"
+              className="flex items-center justify-center gap-2 px-8 py-3.5 sm:px-10 sm:py-4 bg-primary text-white hover:bg-primary-dark font-semibold text-xs sm:text-sm transition-all shadow-md hover:shadow-lg hover:shadow-primary/25 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer whitespace-nowrap rounded-xl w-full sm:w-auto"
             >
               {loading ? (
                 <>

@@ -43,7 +43,9 @@ export default function BlogListClient({
         if (selectedTag !== 'all') params.append('tag', selectedTag);
         if (searchQuery.trim()) params.append('search', searchQuery.trim());
 
-        const res = await fetch(`/api/public/blogs?${params.toString()}`);
+        const res = await fetch(`/api/public/blogs?${params.toString()}`, {
+          cache: 'no-store'
+        });
         if (!res.ok) throw new Error('Articles are temporarily unavailable.');
         const data = await res.json();
         if (data.success && isMounted) {

@@ -4,7 +4,8 @@ import CTASection from '@/components/CTASection';
 import Breadcrumb from '@/components/Breadcrumb';
 import BlogListClient from '@/components/BlogListClient';
 
-export const revalidate = 300; // 5-minute ISR cache for fast page delivery
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
 
 export const metadata = pageMetadata(
   "Insights on Websites, SEO, Marketing & Automation",

@@ -142,7 +142,7 @@ export default function ClientLogin() {
   return (
     <main className="min-h-screen w-full bg-slate-50 flex items-center justify-center p-4 sm:p-6 relative overflow-hidden font-sans">
       {/* Background glow */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[550px] h-[550px] bg-violet-500/10 blur-[130px] rounded-full pointer-events-none" />
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[550px] h-[550px] bg-primary/[0.08] blur-[130px] rounded-full pointer-events-none" />
 
       <div className="relative z-10 w-full max-w-sm bg-white p-6 sm:p-8 border border-slate-200 rounded-3xl shadow-xl">
         {/* Logo */}
@@ -158,7 +158,7 @@ export default function ClientLogin() {
         </div>
 
         <div className="text-center mb-5">
-          <h1 className="text-lg font-bold text-slate-900 font-outfit tracking-tight">Client Portal Sign In</h1>
+          <h1 className="text-lg font-bold text-slate-900 font-heading tracking-tight">Client Portal Sign In</h1>
           <p className="text-xs text-slate-500 mt-1">Access your live project milestones &amp; staging preview</p>
         </div>
 
@@ -178,7 +178,7 @@ export default function ClientLogin() {
 
         {/* Error Message */}
         {error && !locked && (
-          <div className="mb-4 p-3 bg-rose-50 border border-rose-200 text-rose-900 text-xs rounded-xl flex items-start gap-2 animate-fadeIn">
+          <div className="mb-4 p-3 bg-rose-50 border border-rose-200 text-rose-900 text-xs rounded-xl flex items-start gap-2">
             <Warning className="text-rose-600 text-sm shrink-0 mt-0.5" weight="duotone" />
             <span className="font-medium leading-relaxed">{error}</span>
           </div>
@@ -205,10 +205,10 @@ export default function ClientLogin() {
                 autoComplete="username"
                 value={identifier}
                 onChange={(e) => setIdentifier(e.target.value)}
-                placeholder="e.g. IW-CL-7K9P2D or name@company.com"
+                placeholder="e.g. IW-CL-7K9P2D or client@company.in"
                 required
                 disabled={locked}
-                className="w-full bg-white text-slate-900 text-xs sm:text-sm pl-3.5 pr-3.5 py-2.5 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-violet-500/20 focus:border-violet-600 transition-colors placeholder:text-slate-400 font-normal disabled:opacity-50 disabled:cursor-not-allowed"
+                className="w-full bg-white text-slate-900 text-xs sm:text-sm pl-3.5 pr-3.5 py-2.5 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors placeholder:text-slate-400 font-normal disabled:opacity-50 disabled:cursor-not-allowed"
               />
             </div>
           </div>
@@ -220,7 +220,7 @@ export default function ClientLogin() {
               </label>
               <Link
                 href="/client/forgot-password"
-                className="text-[11px] text-violet-600 hover:text-violet-700 font-medium hover:underline"
+                className="text-[11px] text-primary hover:text-primary-dark font-medium hover:underline"
               >
                 Forgot password?
               </Link>
@@ -236,7 +236,7 @@ export default function ClientLogin() {
                 placeholder="Enter your password"
                 required
                 disabled={locked}
-                className="w-full bg-white text-slate-900 text-xs sm:text-sm pl-3.5 pr-3.5 py-2.5 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-violet-500/20 focus:border-violet-600 transition-colors placeholder:text-slate-400 font-normal disabled:opacity-50 disabled:cursor-not-allowed"
+                className="w-full bg-white text-slate-900 text-xs sm:text-sm pl-3.5 pr-3.5 py-2.5 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors placeholder:text-slate-400 font-normal disabled:opacity-50 disabled:cursor-not-allowed"
               />
             </div>
           </div>
@@ -244,7 +244,7 @@ export default function ClientLogin() {
           <button
             type="submit"
             disabled={loading || locked}
-            className="mt-2 w-full min-h-[44px] bg-violet-600 hover:bg-violet-700 text-white font-semibold py-2.5 rounded-xl transition-all shadow-md shadow-violet-600/20 flex items-center justify-center gap-2 text-xs disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer active:scale-98"
+            className="mt-2 w-full min-h-[44px] bg-primary hover:bg-primary-dark text-white font-semibold py-2.5 rounded-xl transition-all shadow-md hover:shadow-lg hover:shadow-primary/25 flex items-center justify-center gap-2 text-xs disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer active:scale-98"
           >
             {loading ? (
               <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />

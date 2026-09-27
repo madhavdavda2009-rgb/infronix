@@ -32,6 +32,7 @@ export default function TeamSection() {
     async function loadTeam() {
       try {
         const res = await fetch('/api/public/team?page=home', {
+          cache: 'no-store',
           signal: controller.signal
         });
         if (!res.ok) return;

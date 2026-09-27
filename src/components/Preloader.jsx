@@ -214,11 +214,11 @@ export default function Preloader() {
         animate={{ opacity: isTransitioning ? 0 : 1 }}
         transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
       >
-        {/* Soft Ambient Brand Mesh (Green & Purple) */}
+        {/* Soft Ambient Brand Mesh */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          {/* Top-Right Purple Aura */}
+          {/* Top-Right Ambient Aura */}
           <motion.div
-            className="absolute -top-20 -right-20 w-[450px] sm:w-[650px] h-[450px] sm:h-[650px] bg-[#8B5CF6]/12 rounded-full blur-[100px] sm:blur-[140px] pointer-events-none"
+            className="absolute -top-20 -right-20 w-[450px] sm:w-[650px] h-[450px] sm:h-[650px] bg-primary/[0.08] rounded-full blur-[100px] sm:blur-[140px] pointer-events-none"
             animate={{
               scale: [1, 1.08, 1],
               x: [0, -15, 0],
@@ -227,9 +227,9 @@ export default function Preloader() {
             transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
           />
 
-          {/* Bottom-Left Green Aura */}
+          {/* Bottom-Left Ambient Aura */}
           <motion.div
-            className="absolute -bottom-20 -left-20 w-[400px] sm:w-[600px] h-[400px] sm:h-[600px] bg-[#10B981]/12 rounded-full blur-[90px] sm:blur-[130px] pointer-events-none"
+            className="absolute -bottom-20 -left-20 w-[400px] sm:w-[600px] h-[400px] sm:h-[600px] bg-violet-400/[0.06] rounded-full blur-[90px] sm:blur-[130px] pointer-events-none"
             animate={{
               scale: [1, 1.1, 1],
               x: [0, 15, 0],
@@ -304,7 +304,7 @@ export default function Preloader() {
       >
         {/* Soft Ambient Halo behind the logo in preloader */}
         <motion.div
-          className="absolute inset-0 bg-gradient-to-r from-[#10B981]/20 via-[#8B5CF6]/25 to-[#6D28D9]/20 rounded-full blur-2xl pointer-events-none"
+          className="absolute inset-0 bg-gradient-to-r from-primary/15 via-violet-500/20 to-primary-dark/15 rounded-full blur-2xl pointer-events-none"
           animate={{
             opacity: isTransitioning ? 0 : 0.85,
             scale: isTransitioning ? 0.5 : [0.92, 1.08, 0.92],
@@ -390,7 +390,7 @@ export default function Preloader() {
       >
         {/* Soft glowing ambient aura behind hero image during preloader */}
         <motion.div
-          className="absolute inset-0 bg-gradient-to-tr from-[#10B981]/20 via-[#8B5CF6]/25 to-[#6D28D9]/20 rounded-full blur-3xl pointer-events-none"
+          className="absolute inset-0 bg-gradient-to-tr from-primary/15 via-violet-500/20 to-primary-dark/15 rounded-full blur-3xl pointer-events-none"
           animate={{
             scale: isTransitioning ? 0.7 : [0.95, 1.05, 0.95],
             opacity: isTransitioning ? 0 : [0.4, 0.65, 0.4],
@@ -403,8 +403,8 @@ export default function Preloader() {
 
         <Image
           src={heroImg}
-          alt="InfronixWeb Digital Marketing Hero"
-          className="w-full h-auto max-h-[360px] sm:max-h-[440px] lg:max-h-[500px] object-contain drop-shadow-2xl relative z-10"
+          alt="InfronixWeb Digital Agency"
+          className="w-full h-auto max-h-[360px] sm:max-h-[440px] lg:max-h-[500px] object-contain drop-shadow-xl relative z-10"
           priority={true}
           fetchPriority="high"
         />
@@ -422,27 +422,27 @@ export default function Preloader() {
           >
             {/* Tagline */}
             <p className="font-heading text-xs sm:text-sm font-semibold tracking-[0.25em] sm:tracking-[0.35em] text-slate-700 uppercase mb-3.5 sm:mb-4 flex items-center gap-2 sm:gap-3">
-              <span>INNOVATE</span>
-              <span className="w-1.5 h-1.5 rounded-full bg-[#10B981]" />
-              <span>AUTOMATE</span>
-              <span className="w-1.5 h-1.5 rounded-full bg-[#8B5CF6]" />
-              <span>ELEVATE</span>
+              <span>PRECISION</span>
+              <span className="w-1.5 h-1.5 rounded-full bg-primary" />
+              <span>CODE</span>
+              <span className="w-1.5 h-1.5 rounded-full bg-violet-400" />
+              <span>PERFORMANCE</span>
             </p>
 
             {/* Status & Numeric Counter */}
             <div className="w-64 sm:w-80 md:w-96 flex items-center justify-between text-xs sm:text-sm mb-2 font-mono">
               <span className="text-slate-500 font-medium tracking-wider uppercase text-[10px] sm:text-xs">
-                LOADING EXPERIENCE
+                INITIALIZING AGENCY
               </span>
-              <span className="font-bold text-[#6D28D9] tabular-nums">
+              <span className="font-bold text-primary tabular-nums">
                 {percent.toString().padStart(2, "0")}%
               </span>
             </div>
 
-            {/* Green-to-Purple Gradient Progress Bar */}
+            {/* Violet-to-Indigo Gradient Progress Bar */}
             <div className="w-64 sm:w-80 md:w-96 h-[3.5px] bg-slate-200/80 rounded-full overflow-hidden relative shadow-inner">
               <motion.div
-                className="absolute top-0 left-0 h-full bg-gradient-to-r from-[#10B981] via-[#8B5CF6] to-[#6D28D9] rounded-full origin-left"
+                className="absolute top-0 left-0 h-full bg-gradient-to-r from-primary via-violet-500 to-primary-dark rounded-full origin-left"
                 style={{ width: `${percent}%` }}
                 transition={{ ease: "easeOut", duration: 0.1 }}
               />

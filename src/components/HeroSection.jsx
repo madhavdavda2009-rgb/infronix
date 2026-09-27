@@ -18,43 +18,43 @@ export default function HeroSection() {
     visible: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.12,
+        staggerChildren: 0.1,
         delayChildren: isIntroActive ? 0.35 : 0.1
       }
     }
   };
 
   const itemVariants = {
-    hidden: { opacity: 0, y: 30 },
+    hidden: { opacity: 0, y: 24 },
     visible: {
       opacity: 1,
       y: 0,
-      transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] }
+      transition: { duration: 0.7, ease: [0.16, 1, 0.3, 1] }
     }
   };
 
   const imageVariants = {
-    hidden: { opacity: 0, scale: 0.94, y: 20 },
+    hidden: { opacity: 0, scale: 0.95, y: 16 },
     visible: {
       opacity: 1,
       scale: 1,
       y: 0,
-      transition: { duration: 0.9, ease: [0.16, 1, 0.3, 1], delay: 0.2 }
+      transition: { duration: 0.85, ease: [0.16, 1, 0.3, 1], delay: 0.15 }
     }
   };
 
   return (
-    <section className="relative w-full flex items-center justify-center pt-6 sm:pt-8 md:pt-10 lg:pt-12 pb-12 sm:pb-16 md:pb-20 overflow-hidden bg-surface-container-lowest">
-      {/* Background subtle elements - Warm Green & Purple Palette */}
+    <section className="relative w-full flex items-center justify-center pt-6 sm:pt-8 md:pt-12 lg:pt-14 pb-14 sm:pb-18 md:pb-24 overflow-hidden bg-surface-container-lowest">
+      {/* Background Subtle Ambient Lighting */}
       <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
-        <div className="absolute top-1/4 right-1/4 w-[300px] sm:w-[500px] h-[300px] sm:h-[500px] bg-[#8B5CF6]/15 rounded-full blur-[80px] sm:blur-[110px] mix-blend-multiply animate-pulse" style={{ animationDuration: '8s' }} />
-        <div className="absolute bottom-1/4 left-1/4 w-[250px] sm:w-[400px] h-[250px] sm:h-[400px] bg-[#10B981]/15 rounded-full blur-[60px] sm:blur-[90px] mix-blend-multiply" />
+        <div className="absolute top-1/4 right-1/4 w-[380px] sm:w-[540px] h-[380px] sm:h-[540px] bg-primary/[0.07] rounded-full blur-[100px] sm:blur-[130px]" />
+        <div className="absolute bottom-1/4 left-1/4 w-[300px] sm:w-[450px] h-[300px] sm:h-[450px] bg-violet-400/[0.05] rounded-full blur-[80px] sm:blur-[110px]" />
       </div>
 
       <div className="max-w-[1440px] w-full mx-auto px-4 sm:px-6 md:px-12 relative z-10">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-8 xl:gap-12 items-center">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 xl:gap-14 items-center">
 
-          {/* Left Column: Text & Content (7 Cols) - order-2 on mobile, order-1 on desktop */}
+          {/* Left Column: Text & Content (7 Cols) */}
           <motion.div
             className={`order-1 lg:col-span-7 xl:col-span-7 transition-all duration-700 ${
               isPreloading ? 'opacity-0 translate-y-6 pointer-events-none' : 'opacity-100 translate-y-0'
@@ -72,8 +72,8 @@ export default function HeroSection() {
             >
               Build, Grow &amp;<br />
               Automate<br />
-              <span className="text-text-light">your business with</span><br />
-              <span className="relative inline-block">
+              <span className="text-text-light font-normal">your business with</span><br />
+              <span className="relative inline-block text-on-surface">
                 InfronixWeb.
                 <svg className="absolute -bottom-1 sm:-bottom-2 left-0 w-full h-2 sm:h-3 text-primary" viewBox="0 0 100 10" preserveAspectRatio="none" aria-hidden="true">
                   <path d="M0 5 Q 50 10 100 5" fill="transparent" stroke="currentColor" strokeWidth="4" />
@@ -84,47 +84,47 @@ export default function HeroSection() {
             {/* Subtitle */}
             <motion.p
               variants={itemVariants}
-              className="text-base sm:text-lg md:text-xl text-main-text max-w-2xl mb-7 sm:mb-9 font-medium leading-relaxed"
+              className="text-base sm:text-lg md:text-xl text-main-text max-w-2xl mb-7 sm:mb-9 font-normal leading-relaxed"
             >
-              Your digital agency in Ahmedabad for websites, SEO, digital marketing and AI automation. We help businesses build their online presence, reach customers and simplify everyday work.
+              Your digital agency in Ahmedabad for bespoke web applications, search engine visibility, performance marketing, and automated customer workflows.
             </motion.p>
 
             {/* CTAs */}
-            <motion.div variants={itemVariants} className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 sm:gap-6 w-full sm:w-auto">
+            <motion.div variants={itemVariants} className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3.5 sm:gap-5 w-full sm:w-auto">
               <Link
                 href="/start-project"
-                className="group relative flex items-center justify-center gap-2 bg-primary text-white font-bold text-sm sm:text-base md:text-lg px-6 py-3.5 sm:px-8 sm:py-4 rounded-md overflow-hidden transition-transform hover:scale-[1.02] active:scale-[0.98] shadow-[0_0_20px_rgba(139,92,246,0.2)] text-center"
+                className="group relative inline-flex items-center justify-center gap-2.5 bg-primary text-white font-semibold text-sm sm:text-base md:text-lg px-7 py-3.5 sm:px-8 sm:py-4 rounded-xl overflow-hidden transition-all duration-300 hover:shadow-lg hover:shadow-primary/25 hover:-translate-y-0.5 active:translate-y-0 text-center"
               >
                 <span className="relative z-10 flex items-center justify-center gap-2">
-                  Get a Quote <ArrowRight className="group-hover:translate-x-1 transition-transform" />
+                  Get a Quote <ArrowRight weight="bold" className="group-hover:translate-x-1 transition-transform" />
                 </span>
                 <div className="absolute inset-0 bg-primary-dark transform scale-x-0 group-hover:scale-x-100 origin-left transition-transform duration-500 ease-out" />
               </Link>
 
               <Link
                 href="#services"
-                className="flex items-center justify-center gap-2 bg-transparent border border-outline-variant text-on-surface font-medium text-sm sm:text-base md:text-lg px-6 py-3.5 sm:px-8 sm:py-4 rounded-md hover:border-primary hover:bg-soft-violet/20 transition-colors text-center"
+                className="inline-flex items-center justify-center gap-2 bg-surface text-on-surface border border-outline hover:border-primary/50 hover:bg-surface-container-lowest font-medium text-sm sm:text-base md:text-lg px-7 py-3.5 sm:px-8 sm:py-4 rounded-xl transition-all hover:shadow-sm text-center"
               >
                 Explore Services
               </Link>
             </motion.div>
 
             {/* Key Service Highlights */}
-            <motion.div variants={itemVariants} className="mt-8 sm:mt-12 md:mt-14 pt-5 sm:pt-7 border-t border-outline-variant flex flex-wrap items-center gap-4 sm:gap-6 md:gap-10 opacity-80">
-              <div className="flex items-center gap-2 text-xs sm:text-sm font-bold text-on-surface tracking-wider uppercase">
+            <motion.div variants={itemVariants} className="mt-8 sm:mt-12 md:mt-14 pt-5 sm:pt-7 border-t border-outline flex flex-wrap items-center gap-4 sm:gap-6 md:gap-10">
+              <div className="flex items-center gap-2 text-xs sm:text-sm font-semibold text-on-surface tracking-wider uppercase">
                 <Code size={18} weight="bold" className="text-primary shrink-0" /> Custom Websites
               </div>
-              <div className="flex items-center gap-2 text-xs sm:text-sm font-bold text-on-surface tracking-wider uppercase">
+              <div className="flex items-center gap-2 text-xs sm:text-sm font-semibold text-on-surface tracking-wider uppercase">
                 <ChartLineUp size={18} weight="bold" className="text-primary shrink-0" /> SEO & Digital Marketing
               </div>
-              <div className="flex items-center gap-2 text-xs sm:text-sm font-bold text-on-surface tracking-wider uppercase">
+              <div className="flex items-center gap-2 text-xs sm:text-sm font-semibold text-on-surface tracking-wider uppercase">
                 <Robot size={18} weight="bold" className="text-primary shrink-0" /> Smart Automations
               </div>
             </motion.div>
 
           </motion.div>
 
-          {/* Right Column: Hero Visual Photo (5 Cols) - order-1 on mobile, order-2 on desktop */}
+          {/* Right Column: Hero Visual Photo (5 Cols) */}
           <motion.div
             id="hero-image-target"
             className="order-2 lg:col-span-5 xl:col-span-5 flex justify-center items-center relative mb-4 sm:mb-6 lg:mb-0"
@@ -134,16 +134,16 @@ export default function HeroSection() {
           >
             <div className="relative w-full max-w-[320px] sm:max-w-[420px] lg:max-w-[480px] mx-auto flex items-center justify-center">
 
-              {/* Background gradient decorative glow - Green and Purple brand mesh */}
-              <div className="absolute inset-0 bg-gradient-to-tr from-[#10B981]/20 via-[#8B5CF6]/30 to-[#6D28D9]/20 rounded-full blur-3xl transform scale-90 opacity-60 pointer-events-none" />
+              {/* Background gradient decorative glow */}
+              <div className="absolute inset-0 bg-gradient-to-tr from-primary/10 via-violet-500/15 to-transparent rounded-full blur-3xl transform scale-90 opacity-70 pointer-events-none" />
 
               {/* Clean Hero Person Image without overlays or borders */}
               <div className="relative w-full flex items-center justify-center">
                 <Image
                   id="hero-image-element"
                   src={heroImg}
-                  alt="InfronixWeb Digital Marketing Hero"
-                  className="w-full h-auto max-h-[420px] sm:max-h-[500px] lg:max-h-[540px] object-contain drop-shadow-2xl"
+                  alt="InfronixWeb Digital Agency"
+                  className="w-full h-auto max-h-[420px] sm:max-h-[500px] lg:max-h-[540px] object-contain drop-shadow-xl"
                   priority={true}
                   fetchPriority="high"
                   loading="eager"
@@ -164,4 +164,3 @@ export default function HeroSection() {
     </section>
   );
 }
-

@@ -3,11 +3,11 @@ import { motion, useScroll } from "framer-motion";
 import { useRef } from "react";
 
 const steps = [
-  { id: "01", title: "Discover", desc: "We learn about your business, your ideal customers, and your goals to create a clear plan for online growth." },
-  { id: "02", title: "Plan", desc: "We design clean visual layouts, organize your page content, and plan your Google search strategy." },
-  { id: "03", title: "Build", desc: "We build your custom website with clean, fast-loading code, easy navigation, and modern security." },
-  { id: "04", title: "Launch", desc: "Thorough testing on mobile phones, tablets, and desktop screens to ensure everything works smoothly before launch." },
-  { id: "05", title: "Grow", desc: "Ongoing Google ranking support, smart automation setup, and continuous improvements to help you win more customers." }
+  { id: "01", title: "Discover", desc: "We learn about your business, your ideal customers, and your growth goals to architect a tailored digital plan." },
+  { id: "02", title: "Plan", desc: "We design clean visual layouts, organize conversion-focused page hierarchy, and plan your organic search strategy." },
+  { id: "03", title: "Build", desc: "We engineer your custom web application with clean, high-performance Next.js code, robust APIs, and modern security." },
+  { id: "04", title: "Launch", desc: "Thorough testing on mobile, tablet, and desktop screens to ensure flawless responsiveness and performance before go-live." },
+  { id: "05", title: "Grow", desc: "Ongoing search ranking optimization, automated customer workflows, and continuous improvements to help you capture and convert more leads." }
 ];
 
 export default function ProcessSection() {
@@ -22,8 +22,8 @@ export default function ProcessSection() {
     <section className="py-16 sm:py-24 md:py-32 bg-surface-container-lowest" ref={containerRef}>
       <div className="max-w-[1000px] mx-auto px-4 sm:px-6 md:px-12">
         
-        <div className="text-center mb-12 sm:mb-16 md:mb-24">
-          <span className="block text-xs sm:text-sm font-bold tracking-widest uppercase text-text-light mb-3 sm:mb-4">Our Methodology</span>
+        <div className="text-center mb-12 sm:mb-16 md:mb-20">
+          <span className="block text-xs sm:text-sm font-semibold tracking-widest uppercase text-text-light mb-3 sm:mb-4">Our Methodology</span>
           <h2 className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-heading font-bold text-on-surface">
             How we <span className="text-primary">execute.</span>
           </h2>
@@ -31,7 +31,7 @@ export default function ProcessSection() {
 
         <div className="relative">
           {/* Vertical Progress Line (Background) */}
-          <div className="absolute left-4 sm:left-6 md:left-1/2 top-0 bottom-0 w-[1px] bg-outline-variant md:-translate-x-1/2" />
+          <div className="absolute left-4 sm:left-6 md:left-1/2 top-0 bottom-0 w-[1px] bg-outline md:-translate-x-1/2" />
           
           {/* Vertical Progress Line (Active) */}
           <motion.div 
@@ -45,7 +45,7 @@ export default function ProcessSection() {
               return (
                 <motion.div 
                   key={step.id}
-                  initial={{ opacity: 0, y: 30 }}
+                  initial={{ opacity: 0, y: 24 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true, margin: "-100px" }}
                   transition={{ duration: 0.6 }}
@@ -54,20 +54,20 @@ export default function ProcessSection() {
                   {/* Content */}
                   <div className={`w-full md:w-1/2 pl-10 sm:pl-16 md:pl-0 ${isEven ? 'md:pr-16 md:text-right' : 'md:pl-16'}`}>
                     <div className="md:hidden text-2xl sm:text-3xl font-heading font-bold text-primary/30 mb-1">{step.id}</div>
-                    <h3 className="text-xl sm:text-2xl md:text-3xl font-heading font-bold text-on-surface mb-2 sm:mb-4">
+                    <h3 className="text-xl sm:text-2xl md:text-3xl font-heading font-bold text-on-surface mb-2 sm:mb-3">
                       {step.title}
                     </h3>
-                    <p className="text-sm sm:text-base md:text-lg text-main-text leading-relaxed font-medium">
+                    <p className="text-sm sm:text-base md:text-lg text-main-text leading-relaxed font-normal">
                       {step.desc}
                     </p>
                   </div>
 
                   {/* Center Node */}
-                  <div className="absolute left-4 sm:left-6 md:left-1/2 w-3.5 h-3.5 sm:w-4 sm:h-4 rounded-full bg-surface-container-lowest border-2 border-primary -translate-x-[6px] sm:-translate-x-[7px] md:-translate-x-[7px] mt-1.5 sm:mt-2 md:mt-0 shadow-[0_0_10px_rgba(139,92,246,0.4)]" />
+                  <div className="absolute left-4 sm:left-6 md:left-1/2 w-4 h-4 rounded-full bg-white border-2 border-primary -translate-x-[7px] md:-translate-x-[8px] mt-1.5 sm:mt-2 md:mt-0 shadow-md ring-4 ring-primary/10" />
 
                   {/* Large Number (Desktop) */}
                   <div className={`hidden md:block w-1/2 ${isEven ? 'pl-16 text-left' : 'pr-16 text-right'}`}>
-                    <span className="text-[90px] lg:text-[120px] font-heading font-bold text-outline-variant/60 leading-none select-none">
+                    <span className="text-[90px] lg:text-[120px] font-heading font-bold text-outline/60 leading-none select-none">
                       {step.id}
                     </span>
                   </div>

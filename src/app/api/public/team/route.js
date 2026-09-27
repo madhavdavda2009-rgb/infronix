@@ -2,10 +2,11 @@ import { NextResponse } from 'next/server';
 import { query } from '@/lib/founder_os_db';
 
 export const dynamic = 'force-dynamic';
+export const revalidate = 0;
 
 export async function GET(request) {
   try {
-      const { searchParams } = new URL(request.url);
+    const { searchParams } = new URL(request.url);
     const page = searchParams.get('page'); // 'home', 'about', or null (all public)
 
     let sql = `
@@ -56,7 +57,7 @@ export async function GET(request) {
       },
       {
         headers: {
-          'Cache-Control': 'public, s-maxage=60, stale-while-revalidate=300'
+          'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate'
         }
       }
     );

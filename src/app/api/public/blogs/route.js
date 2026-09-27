@@ -2,10 +2,11 @@ import { NextResponse } from 'next/server';
 import { query } from '@/lib/founder_os_db';
 
 export const dynamic = 'force-dynamic';
+export const revalidate = 0;
 
 export async function GET(request) {
   try {
-      const { searchParams } = new URL(request.url);
+    const { searchParams } = new URL(request.url);
     const categorySlug = searchParams.get('category');
     const tagSlug = searchParams.get('tag');
     const search = searchParams.get('search');
@@ -115,7 +116,7 @@ export async function GET(request) {
       },
       {
         headers: {
-          'Cache-Control': 'public, s-maxage=120, stale-while-revalidate=600'
+          'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate'
         }
       }
     );

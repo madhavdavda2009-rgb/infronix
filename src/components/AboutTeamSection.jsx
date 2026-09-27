@@ -31,6 +31,7 @@ export default function AboutTeamSection() {
     async function loadTeam() {
       try {
         const res = await fetch('/api/public/team?page=about', {
+          cache: 'no-store',
           signal: controller.signal
         });
         if (!res.ok) return;
