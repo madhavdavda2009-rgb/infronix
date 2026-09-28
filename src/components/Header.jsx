@@ -106,7 +106,7 @@ export default function Header() {
     {
       title: 'Web Development',
       href: '/web-development',
-      desc: 'High-speed Next.js web applications, e-commerce & corporate sites.',
+      desc: 'High-speed modern web applications, e-commerce & corporate platforms.',
       icon: Globe
     },
     {

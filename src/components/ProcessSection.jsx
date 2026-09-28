@@ -5,7 +5,7 @@ import { useRef } from "react";
 const steps = [
   { id: "01", title: "Discover", desc: "We learn about your business, your ideal customers, and your growth goals to architect a tailored digital plan." },
   { id: "02", title: "Plan", desc: "We design clean visual layouts, organize conversion-focused page hierarchy, and plan your organic search strategy." },
-  { id: "03", title: "Build", desc: "We engineer your custom web application with clean, high-performance Next.js code, robust APIs, and modern security." },
+  { id: "03", title: "Build", desc: "We engineer your custom web application with clean, high-performance architecture, robust cloud APIs, and modern security standards." },
   { id: "04", title: "Launch", desc: "Thorough testing on mobile, tablet, and desktop screens to ensure flawless responsiveness and performance before go-live." },
   { id: "05", title: "Grow", desc: "Ongoing search ranking optimization, automated customer workflows, and continuous improvements to help you capture and convert more leads." }
 ];

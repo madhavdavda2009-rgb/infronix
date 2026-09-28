@@ -34,7 +34,7 @@ export default function AboutSection({ asH1 = false }) {
               </p>
               
               <p className="text-sm sm:text-base md:text-lg text-main-text leading-relaxed mb-6 sm:mb-9 font-normal">
-                We eliminate the friction of dealing with multiple disconnected vendors. From high-speed Next.js platforms to automated lead capture and Google rankings, we deliver everything your business needs under one accountable roof.
+                We eliminate the friction of dealing with multiple disconnected vendors. From high-speed modern web applications to automated lead capture and Google search rankings, we deliver everything your business needs under one accountable roof.
               </p>
               
               <Link 
