@@ -20,6 +20,8 @@ export default function StartProjectPage() {
   const [referenceId, setReferenceId] = useState('');
   const [honeypot, setHoneypot] = useState('');
   const [idempotencyKey, setIdempotencyKey] = useState('');
+  const [consentGiven, setConsentGiven] = useState(false);
+  const [consentError, setConsentError] = useState(false);
 
   const [selectedServices, setSelectedServices] = useState(['Website Development']);
   const [formData, setFormData] = useState({
@@ -88,6 +90,12 @@ export default function StartProjectPage() {
     const formattedEmail = formatEmail(email);
     if (!isValidEmail(formattedEmail)) {
       setErrorMsg('Please enter a valid email address.');
+      return;
+    }
+
+    if (!consentGiven) {
+      setConsentError(true);
+      setErrorMsg('Please accept the Privacy Policy to submit this form.');
       return;
     }
 
@@ -365,27 +373,76 @@ export default function StartProjectPage() {
           </div>
 
           {/* ═══ SUBMIT ═══ */}
-          <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4 pt-4 pb-8 border-t border-outline">
-            <p className="text-xs text-main-text max-w-md leading-relaxed">
-              We&apos;ll review your requirements and contact you promptly to discuss your scope and provide a comprehensive proposal.
-            </p>
-            <button
-              type="submit"
-              disabled={loading}
-              className="flex items-center justify-center gap-2 px-8 py-3.5 sm:px-10 sm:py-4 bg-primary text-white hover:bg-primary-dark font-semibold text-xs sm:text-sm transition-all shadow-md hover:shadow-lg hover:shadow-primary/25 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer whitespace-nowrap rounded-xl w-full sm:w-auto"
-            >
-              {loading ? (
-                <>
-                  <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
-                  <span>Submitting...</span>
-                </>
-              ) : (
-                <>
-                  <span>Get a Quote</span>
-                  <ArrowRight weight="bold" />
-                </>
+          <div className="flex flex-col gap-5 pt-4 pb-8 border-t border-outline">
+            {/* Privacy Policy Consent */}
+            <div className="flex flex-col gap-1.5">
+              <label
+                htmlFor="sp-consent"
+                className={`flex items-start gap-3 p-4 rounded-xl border cursor-pointer transition-all ${
+                  consentError
+                    ? 'border-red-400 bg-red-50'
+                    : consentGiven
+                    ? 'border-primary bg-primary/5 ring-1 ring-primary'
+                    : 'border-outline hover:border-primary/40 bg-surface'
+                }`}
+              >
+                <input
+                  id="sp-consent"
+                  type="checkbox"
+                  checked={consentGiven}
+                  onChange={(e) => {
+                    setConsentGiven(e.target.checked);
+                    if (e.target.checked) {
+                      setConsentError(false);
+                      if (errorMsg.includes('Privacy Policy')) setErrorMsg('');
+                    }
+                  }}
+                  className="accent-primary w-4 h-4 mt-0.5 shrink-0 cursor-pointer"
+                  required
+                />
+                <span className="text-xs text-main-text leading-relaxed">
+                  I agree to InfronixWeb&apos;s{' '}
+                  <a
+                    href="/privacy-policy"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-primary font-semibold underline underline-offset-2 hover:text-primary-dark"
+                  >
+                    Privacy Policy
+                  </a>
+                  {' '}and consent to being contacted regarding this project enquiry. My data will be used solely to respond to this request and will not be shared with third parties.
+                </span>
+              </label>
+              {consentError && (
+                <span className="text-xs text-red-600 font-semibold flex items-center gap-1">
+                  <WarningCircle size={13} weight="bold" />
+                  You must accept the Privacy Policy to submit this form.
+                </span>
               )}
-            </button>
+            </div>
+
+            <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4">
+              <p className="text-xs text-main-text max-w-md leading-relaxed">
+                We&apos;ll review your requirements and contact you promptly to discuss your scope and provide a comprehensive proposal.
+              </p>
+              <button
+                type="submit"
+                disabled={loading}
+                className="flex items-center justify-center gap-2 px-8 py-3.5 sm:px-10 sm:py-4 bg-primary text-white hover:bg-primary-dark font-semibold text-xs sm:text-sm transition-all shadow-md hover:shadow-lg hover:shadow-primary/25 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer whitespace-nowrap rounded-xl w-full sm:w-auto"
+              >
+                {loading ? (
+                  <>
+                    <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                    <span>Submitting...</span>
+                  </>
+                ) : (
+                  <>
+                    <span>Get a Quote</span>
+                    <ArrowRight weight="bold" />
+                  </>
+                )}
+              </button>
+            </div>
           </div>
         </form>
       </div>

@@ -16,6 +16,8 @@ export default function ConsultationForm() {
   const [honeypot, setHoneypot] = useState('');
   const [idempotencyKey, setIdempotencyKey] = useState('');
   const [submittedRefId, setSubmittedRefId] = useState('');
+  const [consentGiven, setConsentGiven] = useState(false);
+  const [consentError, setConsentError] = useState(false);
 
   const [loading, setLoading] = useState(false);
   const [isRateLimited, setIsRateLimited] = useState(false);
@@ -77,6 +79,12 @@ export default function ConsultationForm() {
     e.preventDefault();
     if (isRateLimited) {
       showToast('You have already submitted a request within the last 2 hours.', 'warning');
+      return;
+    }
+
+    if (!consentGiven) {
+      setConsentError(true);
+      showToast('Please accept the Privacy Policy to continue.', 'warning');
       return;
     }
 
@@ -276,6 +284,50 @@ export default function ConsultationForm() {
                 placeholder="Tell us about your goals, website requirements, and what you're looking to achieve..."
                 required
               ></textarea>
+            </div>
+
+            {/* Privacy Policy Consent */}
+            <div className="flex flex-col gap-1.5">
+              <label
+                htmlFor="cf-consent"
+                className={`flex items-start gap-3 p-4 rounded-xl border cursor-pointer transition-all ${
+                  consentError
+                    ? 'border-red-400 bg-red-50'
+                    : consentGiven
+                    ? 'border-primary bg-primary/5 ring-1 ring-primary'
+                    : 'border-outline hover:border-primary/40 bg-surface'
+                }`}
+              >
+                <input
+                  id="cf-consent"
+                  type="checkbox"
+                  checked={consentGiven}
+                  onChange={(e) => {
+                    setConsentGiven(e.target.checked);
+                    if (e.target.checked) setConsentError(false);
+                  }}
+                  className="accent-primary w-4 h-4 mt-0.5 shrink-0 cursor-pointer"
+                  required
+                />
+                <span className="text-xs text-main-text leading-relaxed">
+                  I agree to InfronixWeb&apos;s{' '}
+                  <a
+                    href="/privacy-policy"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-primary font-semibold underline underline-offset-2 hover:text-primary-dark"
+                  >
+                    Privacy Policy
+                  </a>
+                  {' '}and consent to being contacted regarding my enquiry. My data will be used solely to respond to this request and will not be shared with third parties.
+                </span>
+              </label>
+              {consentError && (
+                <span className="text-xs text-red-600 font-semibold flex items-center gap-1">
+                  <WarningCircle size={13} weight="bold" />
+                  You must accept the Privacy Policy to submit this form.
+                </span>
+              )}
             </div>
 
             <div className="mt-2 sm:mt-4 flex flex-col sm:flex-row gap-3 sm:gap-4 items-stretch sm:items-center">
