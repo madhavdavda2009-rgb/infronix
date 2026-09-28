@@ -62,10 +62,10 @@ export default function Footer() {
                 href="https://www.instagram.com/infronixwebagency2026"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2.5 px-3.5 py-2 rounded-xl bg-white/5 border border-white/10 hover:border-primary/50 text-slate-200 hover:text-primary transition-all group"
+                className="inline-flex items-center gap-2.5 px-3.5 py-2 rounded-xl bg-white/5 border border-white/10 hover:border-violet-400/50 text-slate-200 hover:text-white transition-all group"
                 aria-label="Follow InfronixWeb Digital Marketing on Instagram"
               >
-                <InstagramLogo size={20} weight="fill" className="text-white group-hover:text-primary transition-colors shrink-0" />
+                <InstagramLogo size={20} weight="fill" className="text-white group-hover:text-violet-300 transition-colors shrink-0" />
                 <span className="text-xs sm:text-sm font-medium">@infronixwebagency2026</span>
               </a>
             </div>
@@ -75,12 +75,12 @@ export default function Footer() {
           <div className="lg:col-span-2">
             <h3 className="font-bold tracking-widest uppercase text-xs sm:text-sm text-white mb-4 sm:mb-6">Services</h3>
             <ul className="flex flex-col gap-3 sm:gap-4 text-xs sm:text-sm">
-              <li><Link href="/services" className="text-[#9CA3AF] hover:text-violet-300 transition-colors">All Services</Link></li>
-              <li><Link href="/web-development" className="text-[#9CA3AF] hover:text-primary transition-colors">Web Development</Link></li>
-              <li><Link href="/seo" className="text-[#9CA3AF] hover:text-primary transition-colors">SEO Optimization</Link></li>
-              <li><Link href="/ai-automation" className="text-[#9CA3AF] hover:text-primary transition-colors">AI Automation</Link></li>
-              <li><Link href="/digital-marketing" className="text-[#9CA3AF] hover:text-primary transition-colors">Digital Marketing</Link></li>
-              <li><Link href="/projects" className="text-[#9CA3AF] hover:text-primary transition-colors">Our Work</Link></li>
+              <li><Link href="/services" className="text-slate-300 hover:text-white transition-colors">All Services</Link></li>
+              <li><Link href="/web-development" className="text-slate-300 hover:text-white transition-colors">Web Development</Link></li>
+              <li><Link href="/seo" className="text-slate-300 hover:text-white transition-colors">SEO Optimization</Link></li>
+              <li><Link href="/ai-automation" className="text-slate-300 hover:text-white transition-colors">AI Automation</Link></li>
+              <li><Link href="/digital-marketing" className="text-slate-300 hover:text-white transition-colors">Digital Marketing</Link></li>
+              <li><Link href="/projects" className="text-slate-300 hover:text-white transition-colors">Our Work</Link></li>
             </ul>
           </div>
 
@@ -88,11 +88,11 @@ export default function Footer() {
           <div className="lg:col-span-2">
             <h3 className="font-bold tracking-widest uppercase text-xs sm:text-sm text-white mb-4 sm:mb-6">Company</h3>
             <ul className="flex flex-col gap-3 sm:gap-4 text-xs sm:text-sm">
-              <li><Link href="/about" className="text-[#9CA3AF] hover:text-primary transition-colors">About Us</Link></li>
-              <li><Link href="/blog" className="text-[#9CA3AF] hover:text-primary transition-colors">Blog &amp; Insights</Link></li>
-              <li><Link href="/client/login" className="text-[#9CA3AF] hover:text-primary transition-colors">Client Portal</Link></li>
-              <li><Link href="/contact" className="text-[#9CA3AF] hover:text-primary transition-colors">Contact Us</Link></li>
-              <li><Link href="/start-project" className="text-[#9CA3AF] hover:text-primary transition-colors">Start a Project</Link></li>
+              <li><Link href="/about" className="text-slate-300 hover:text-white transition-colors">About Us</Link></li>
+              <li><Link href="/blog" className="text-slate-300 hover:text-white transition-colors">Blog &amp; Insights</Link></li>
+              <li><Link href="/client/login" className="text-slate-300 hover:text-white transition-colors">Client Portal</Link></li>
+              <li><Link href="/contact" className="text-slate-300 hover:text-white transition-colors">Contact Us</Link></li>
+              <li><Link href="/start-project" className="text-slate-300 hover:text-white transition-colors">Start a Project</Link></li>
             </ul>
           </div>
 
@@ -101,24 +101,24 @@ export default function Footer() {
             <h3 className="font-bold tracking-widest uppercase text-xs sm:text-sm text-white mb-4 sm:mb-6">Contact</h3>
             <ul className="flex flex-col gap-3 sm:gap-4 text-xs sm:text-sm">
               <li>
-                <a href="mailto:support@infronixweb.in" className="group flex items-center gap-1.5 text-[#9CA3AF] hover:text-primary transition-colors break-all">
+                <a href="mailto:support@infronixweb.in" className="group flex items-center gap-1.5 text-slate-300 hover:text-violet-300 transition-colors break-all">
                   support@infronixweb.in <ArrowUpRight className="group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform shrink-0" />
                 </a>
               </li>
               <li>
-                <a href="tel:+916355792936" className="text-[#9CA3AF] hover:text-white transition-colors block">
+                <a href="tel:+916355792936" className="text-slate-300 hover:text-white transition-colors block">
                   +91 63557 92936
                 </a>
               </li>
               <li>
-                <a href="tel:+919106291540" className="text-[#9CA3AF] hover:text-white transition-colors block">
+                <a href="tel:+919106291540" className="text-slate-300 hover:text-white transition-colors block">
                   +91 91062 91540
                 </a>
               </li>
               <li className="text-xs text-slate-300 font-medium">
                 Mon – Sat: 9:00 AM to 8:00 PM
               </li>
-              <li className="text-[#9CA3AF] mt-1 text-xs leading-relaxed">
+              <li className="text-slate-400 mt-1 text-xs leading-relaxed">
                 Shree Eklingji Residency 2, Sanand, Ahmedabad 382110, Gujarat, India
               </li>
             </ul>
@@ -128,16 +128,16 @@ export default function Footer() {
           <div className="sm:col-span-2 md:col-span-3 lg:col-span-3">
             <div className="flex items-center justify-between mb-3 sm:mb-4">
               <h3 className="font-bold tracking-widest uppercase text-xs sm:text-sm text-white flex items-center gap-1.5">
-                <MapPin size={16} weight="fill" className="text-primary" /> Office Location
+                <MapPin size={16} weight="fill" className="text-violet-400" /> Office Location
               </h3>
               <a
                 href={GOOGLE_MAPS_LINK}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-[11px] text-primary hover:underline flex items-center gap-1 font-semibold"
+                className="text-xs text-violet-300 hover:text-white hover:underline flex items-center gap-1 font-semibold transition-colors"
                 aria-label="Open InfronixWeb location in Google Maps"
               >
-                Directions <ArrowUpRight size={12} weight="bold" />
+                Directions <ArrowUpRight size={13} weight="bold" />
               </a>
             </div>
 
@@ -149,7 +149,7 @@ export default function Footer() {
                 <>
                   {!isMapLoaded && (
                     <div className="absolute inset-0 flex flex-col items-center justify-center bg-[#12151C] text-slate-400 text-xs gap-2 z-10">
-                      <SpinnerGap size={22} className="animate-spin text-primary" />
+                      <SpinnerGap size={22} className="animate-spin text-violet-400" />
                       <span>Loading map...</span>
                     </div>
                   )}
@@ -166,9 +166,9 @@ export default function Footer() {
                 </>
               ) : (
                 <div className="w-full h-full flex flex-col items-center justify-center bg-[#12151C] text-slate-400 p-4 text-center">
-                  <MapPin size={28} className="text-primary/70 mb-2 animate-bounce" />
+                  <MapPin size={28} className="text-violet-400 mb-2 animate-bounce" />
                   <span className="text-xs text-slate-300 font-medium">Shree Eklingji Residency 2, Sanand</span>
-                  <span className="text-[10px] text-slate-500 mt-0.5">Ahmedabad 382110</span>
+                  <span className="text-[11px] text-slate-400 mt-0.5">Ahmedabad 382110</span>
                 </div>
               )}
 
@@ -177,7 +177,7 @@ export default function Footer() {
                 Sanand, Ahmedabad
               </div>
             </div>
-            <p className="text-[11px] text-[#9CA3AF] mt-2 leading-relaxed">
+            <p className="text-xs text-slate-400 mt-2 leading-relaxed">
               Shree Eklingji Residency 2, Sanand, Ahmedabad 382110
             </p>
           </div>
