@@ -186,8 +186,8 @@ export default function Preloader() {
     ? logoTarget.y
     : (windowDims.width < 1024 ? 32 : 55);
   const finalLogoScale = logoTarget
-    ? (logoTarget.height / 56)
-    : (windowDims.width < 640 ? 0.52 : 0.72);
+    ? (logoTarget.height / 50)
+    : (windowDims.width < 640 ? 0.6 : 0.8);
 
   const finalHeroX = heroTarget
     ? heroTarget.x
@@ -325,10 +325,10 @@ export default function Preloader() {
             src="/light-web-logo.webp"
             alt="InfronixWeb Light Logo"
             width={210}
-            height={60}
+            height={50}
             priority
             style={{ width: "auto", height: "auto" }}
-            className="h-10 sm:h-12 md:h-14 w-auto object-contain drop-shadow-sm"
+            className="h-11 sm:h-13 md:h-14 w-auto object-contain drop-shadow-sm"
           />
         </motion.div>
 
@@ -343,10 +343,10 @@ export default function Preloader() {
             src="/dark-web-logo.webp"
             alt="InfronixWeb Dark Logo"
             width={210}
-            height={60}
+            height={50}
             priority
             style={{ width: "auto", height: "auto" }}
-            className="h-10 sm:h-12 md:h-14 w-auto object-contain drop-shadow-sm"
+            className="h-11 sm:h-13 md:h-14 w-auto object-contain drop-shadow-sm"
           />
         </motion.div>
       </motion.div>

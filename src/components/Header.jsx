@@ -196,8 +196,8 @@ export default function Header() {
                 id="header-logo-image"
                 src="/dark-web-logo.webp"
                 alt="InfronixWeb Digital Marketing"
-                width={160}
-                height={48}
+                width={210}
+                height={50}
                 priority
                 style={{
                   width: 'auto',
@@ -205,7 +205,7 @@ export default function Header() {
                   opacity: isLogoHidden ? 0 : 1,
                   transition: 'opacity 0.2s ease',
                 }}
-                className="h-8 sm:h-10 md:h-12 w-auto object-contain"
+                className="h-9 sm:h-11 md:h-12 lg:h-[50px] xl:h-[52px] max-w-[64vw] sm:max-w-none w-auto object-contain select-none"
               />
             </Link>
 
@@ -433,9 +433,9 @@ export default function Header() {
                 <img
                   src="/dark-web-logo.webp"
                   alt="InfronixWeb"
-                  width={120}
-                  height={36}
-                  className="h-7 sm:h-8 w-auto object-contain"
+                  width={180}
+                  height={42}
+                  className="h-8 sm:h-9 w-auto object-contain"
                 />
               </Link>
               <button

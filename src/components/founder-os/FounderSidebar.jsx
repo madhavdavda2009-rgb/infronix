@@ -57,18 +57,15 @@ export default function FounderSidebar({
       >
         {/* Brand Header with Exact Light Logo */}
         <div className="h-16 px-5 flex items-center justify-between border-b border-slate-100 shrink-0 bg-white">
-          <div className="flex items-center gap-2.5">
+          <div className="flex items-center">
             <img
               src="/light-web-logo.webp"
               alt="InfronixWeb"
-              width={140}
-              height={36}
+              width={160}
+              height={38}
               style={{ width: 'auto', height: 'auto' }}
-              className="h-7 w-auto object-contain"
+              className="h-8.5 max-h-9 w-auto object-contain"
             />
-            <span className="px-1.5 py-0.5 rounded bg-violet-50 border border-violet-200 text-[9px] font-bold text-violet-700 uppercase tracking-wider">
-              OS
-            </span>
           </div>
           <button
             onClick={onCloseMobile}

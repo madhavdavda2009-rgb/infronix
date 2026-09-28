@@ -150,10 +150,10 @@ export default function ClientLogin() {
           <img
             src="/light-web-logo.webp"
             alt="InfronixWeb"
-            width={160}
-            height={40}
+            width={200}
+            height={48}
             style={{ width: 'auto', height: 'auto' }}
-            className="h-9 w-auto object-contain"
+            className="h-11 sm:h-12 w-auto object-contain"
           />
         </div>
 

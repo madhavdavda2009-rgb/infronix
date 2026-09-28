@@ -57,10 +57,10 @@ export default function ClientSidebar({
             <img
               src="/light-web-logo.webp"
               alt="InfronixWeb"
-              width={140}
-              height={36}
+              width={160}
+              height={38}
               style={{ width: 'auto', height: 'auto' }}
-              className="h-7 w-auto object-contain"
+              className="h-8.5 max-h-9 w-auto object-contain"
             />
           </div>
           <button

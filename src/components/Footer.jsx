@@ -3,7 +3,7 @@ import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
-import { InstagramLogo, ArrowUpRight, MapPin, SpinnerGap } from "@phosphor-icons/react";
+import { InstagramLogo, LinkedinLogo, ArrowUpRight, MapPin, SpinnerGap } from "@phosphor-icons/react";
 
 const MAP_QUERY_URL = "https://maps.google.com/maps?q=Shree%20Eklingji%20Residency%202%2C%20Sanand%2C%20Ahmedabad%20382110%2C%20Gujarat%2C%20India&t=&z=15&ie=UTF8&iwloc=&output=embed";
 const GOOGLE_MAPS_LINK = "https://www.google.com/maps/search/?api=1&query=Shree+Eklingji+Residency+2,+Sanand,+Ahmedabad+382110";
@@ -48,16 +48,16 @@ export default function Footer() {
               <Image
                 src="/dark-web-logo.webp"
                 alt="InfronixWeb Digital Marketing"
-                width={160}
-                height={48}
+                width={210}
+                height={50}
                 style={{ width: 'auto', height: 'auto' }}
-                className="h-8 sm:h-10 md:h-12 w-auto object-contain hover:opacity-90 transition-opacity"
+                className="h-10 sm:h-12 md:h-14 w-auto object-contain hover:opacity-90 transition-opacity"
               />
             </Link>
             <p className="text-[#9CA3AF] max-w-sm mb-6 sm:mb-8 leading-relaxed text-sm sm:text-base">
               Build, grow and automate with InfronixWeb, your Ahmedabad digital agency for websites, SEO, digital marketing, advertising and business automation.
             </p>
-            <div className="flex items-center gap-4">
+            <div className="flex flex-wrap items-center gap-3">
               <a
                 href="https://www.instagram.com/infronixwebagency2026"
                 target="_blank"
@@ -67,6 +67,16 @@ export default function Footer() {
               >
                 <InstagramLogo size={20} weight="fill" className="text-white group-hover:text-violet-300 transition-colors shrink-0" />
                 <span className="text-xs sm:text-sm font-medium">@infronixwebagency2026</span>
+              </a>
+              <a
+                href="https://www.linkedin.com/company/infronixweb/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2.5 px-3.5 py-2 rounded-xl bg-white/5 border border-white/10 hover:border-violet-400/50 text-slate-200 hover:text-white transition-all group"
+                aria-label="Connect with InfronixWeb Digital Marketing on LinkedIn"
+              >
+                <LinkedinLogo size={20} weight="fill" className="text-[#0A66C2] group-hover:text-blue-400 transition-colors shrink-0" />
+                <span className="text-xs sm:text-sm font-medium">InfronixWeb</span>
               </a>
             </div>
           </div>

@@ -38,7 +38,17 @@ export const metadata = {
   ...pageMetadata('Digital Marketing, Websites & AI Automation Agency in Ahmedabad', 'InfronixWeb is a digital agency in Ahmedabad helping businesses with website development, SEO, digital marketing, advertising and AI automation solutions.'),
   metadataBase: new URL(SITE_URL),
   robots: { index: true, follow: true },
-  icons: { icon: '/favicon.ico', apple: '/apple-touch-icon.png' },
+  icons: {
+    icon: [
+      { url: '/favicon.ico' },
+      { url: '/favicon-48x48.png', sizes: '48x48', type: 'image/png' },
+      { url: '/favicon-96x96.png', sizes: '96x96', type: 'image/png' },
+      { url: '/favicon-192x192.png', sizes: '192x192', type: 'image/png' },
+    ],
+    apple: [
+      { url: '/apple-touch-icon.png', sizes: '180x180', type: 'image/png' },
+    ],
+  },
 };
 
 export default function RootLayout({ children }) {
@@ -59,7 +69,7 @@ export default function RootLayout({ children }) {
                   '@id': SITE_URL + '/#organization', 
                   name: 'InfronixWeb', 
                   url: SITE_URL,
-                  logo: SITE_URL + '/web-logo.webp', 
+                  logo: SITE_URL + '/light-web-logo.png', 
                   image: SITE_URL + '/opengraph-image.webp',
                   description: 'An Ahmedabad-based digital agency helping businesses build high-performance web applications, scale search visibility with SEO, manage digital ads, and automate operations.',
                   telephone: '+91-6355792936', 
@@ -93,6 +103,7 @@ export default function RootLayout({ children }) {
                   ],
                   sameAs: [
                     'https://www.instagram.com/infronixwebagency2026', 
+                    'https://www.linkedin.com/company/infronixweb/',
                     'https://github.com/madhavdavda2009-rgb'
                   ] 
                 },
