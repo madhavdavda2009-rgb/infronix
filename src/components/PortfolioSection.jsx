@@ -20,7 +20,7 @@ export default function PortfolioSection({ asH1 = false }) {
   return (
     <section className="py-16 sm:py-20 md:py-24 bg-surface-container-lowest">
       <div className="max-w-[1440px] mx-auto px-4 sm:px-6 md:px-12">
-        
+
         {/* Header */}
         <div className="mb-10 sm:mb-16 md:mb-20 flex flex-col md:flex-row md:items-end justify-between gap-6 md:gap-8">
           <div>
@@ -33,11 +33,11 @@ export default function PortfolioSection({ asH1 = false }) {
               Engineered for ambitious businesses across Ahmedabad, Gujarat, and nationwide.
             </p>
           </div>
-          <Link 
-            href="/projects" 
+          <Link
+            href="/projects"
             className="group flex items-center gap-2 text-on-surface font-semibold text-sm sm:text-base md:text-lg hover:text-primary transition-colors"
           >
-            View All Projects 
+            View All Projects
             <ArrowUpRight weight="bold" className="group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
           </Link>
         </div>
@@ -45,7 +45,7 @@ export default function PortfolioSection({ asH1 = false }) {
         {/* Projects Grid */}
         <div className="flex flex-col gap-12 sm:gap-16 md:gap-20">
           {projects.map((project, index) => (
-            <motion.div 
+            <motion.div
               key={project.id}
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -56,8 +56,8 @@ export default function PortfolioSection({ asH1 = false }) {
               {/* Project Image */}
               <div className={`w-full lg:w-3/5 overflow-hidden rounded-2xl bg-surface border border-outline shadow-sm ${index % 2 !== 0 ? 'lg:order-2' : ''}`}>
                 <div className="block relative aspect-[16/10] sm:aspect-[4/3] w-full overflow-hidden">
-                  <Image 
-                    src={project.image} 
+                  <Image
+                    src={project.image}
                     alt={project.title}
                     fill
                     sizes="(max-width: 640px) 100vw, (max-width: 1024px) 60vw, 700px"
@@ -77,19 +77,19 @@ export default function PortfolioSection({ asH1 = false }) {
                   </span>
                   <span className="w-8 sm:w-12 h-[1px] bg-outline"></span>
                 </div>
-                
+
                 <h3 className="text-2xl sm:text-3xl md:text-4xl font-heading font-bold text-on-surface mb-3 sm:mb-4 transition-colors group-hover:text-primary">
                   {project.title}
                 </h3>
-                
+
                 <p className="text-sm sm:text-base md:text-lg text-main-text mb-6 sm:mb-7 leading-relaxed max-w-md font-normal">
                   {project.desc}
                 </p>
 
                 <div className="flex flex-wrap gap-2 sm:gap-2.5">
                   {project.tech.map((t, i) => (
-                    <span 
-                      key={i} 
+                    <span
+                      key={i}
                       className="px-3.5 py-1.5 border border-outline text-on-surface text-xs sm:text-sm font-medium rounded-lg bg-surface shadow-2xs"
                     >
                       {t}

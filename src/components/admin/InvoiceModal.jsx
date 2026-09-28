@@ -485,12 +485,12 @@ ${enableUpi && upiId ? `Pay via UPI VPA: ${upiId}\n` : ''}Online Invoice & Terms
       */}
       <div 
         className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-0 md:p-6 print:hidden animate-fadeIn overflow-y-auto"
-        data-lenis-prevent="true"
+
         onWheel={(e) => e.stopPropagation()}
       >
         <div 
           className="bg-white border border-slate-200 w-full max-w-7xl h-full md:h-[92vh] md:max-h-[92vh] shadow-2xl flex flex-col overflow-hidden my-auto rounded-none md:rounded-2xl"
-          data-lenis-prevent="true"
+
         >
           {/* Top Bar Header */}
           <div className="bg-white border-b border-slate-200 px-4 md:px-6 py-3.5 flex flex-wrap justify-between items-center gap-3 shrink-0 z-10">
@@ -560,12 +560,12 @@ ${enableUpi && upiId ? `Pay via UPI VPA: ${upiId}\n` : ''}Online Invoice & Terms
           {/* Main Dual-Pane Studio Body */}
           <div 
             className="flex-1 min-h-0 h-[calc(100vh-56px)] md:h-[calc(92vh-70px)] grid grid-cols-1 lg:grid-cols-12 overflow-y-auto lg:overflow-hidden"
-            data-lenis-prevent="true"
+
           >
             {/* LEFT PANE: Invoice Configurator (5 cols) */}
             <div 
               className="lg:col-span-5 border-r border-slate-200 p-4 md:p-5 overflow-y-auto h-auto lg:h-full lg:max-h-[calc(92vh-70px)] space-y-4 md:space-y-5 bg-slate-50 text-xs text-slate-800 overscroll-contain"
-              data-lenis-prevent="true"
+
               onWheel={(e) => e.stopPropagation()}
             >
               {/* Metadata row */}
@@ -850,13 +850,13 @@ ${enableUpi && upiId ? `Pay via UPI VPA: ${upiId}\n` : ''}Online Invoice & Terms
             {/* RIGHT PANE: Live A4 Document Preview (7 cols - Scrollable) */}
             <div 
               className="lg:col-span-7 bg-slate-100/70 p-4 md:p-8 overflow-y-auto h-auto lg:h-full lg:max-h-[calc(92vh-70px)] flex items-start justify-center overscroll-contain"
-              data-lenis-prevent="true"
+
               onWheel={(e) => e.stopPropagation()}
             >
               {/* Paper simulation */}
               <div 
                 className="w-full max-w-[760px] bg-white text-slate-900 p-5 md:p-10 shadow-lg rounded-xl border border-slate-200/80 font-sans my-auto"
-                data-lenis-prevent="true"
+
               >
                 {/* Paper Header */}
                 <div className="flex flex-col sm:flex-row justify-between items-start pb-5 md:pb-6 border-b-2 border-slate-900 gap-3 md:gap-4">
@@ -1082,12 +1082,12 @@ ${enableUpi && upiId ? `Pay via UPI VPA: ${upiId}\n` : ''}Online Invoice & Terms
       {isEmailModalOpen && (
         <div 
           className="fixed inset-0 z-[60] bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-4 print:hidden animate-fadeIn overflow-y-auto"
-          data-lenis-prevent="true"
+
           onWheel={(e) => e.stopPropagation()}
         >
           <div 
             className="bg-white border border-slate-200 w-full max-w-lg shadow-2xl rounded-2xl overflow-hidden flex flex-col my-auto max-h-[90vh]"
-            data-lenis-prevent="true"
+
           >
             <div className="bg-white border-b border-slate-200 p-5 flex justify-between items-center shrink-0">
               <div className="flex items-center gap-2">
@@ -1107,7 +1107,7 @@ ${enableUpi && upiId ? `Pay via UPI VPA: ${upiId}\n` : ''}Online Invoice & Terms
 
             <div 
               className="p-6 space-y-4 text-xs text-slate-800 overflow-y-auto max-h-[calc(90vh-140px)]"
-              data-lenis-prevent="true"
+
               onWheel={(e) => e.stopPropagation()}
             >
               {emailStatusMessage.text && (

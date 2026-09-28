@@ -1,57 +1,13 @@
 "use client";
-import { useEffect, useRef } from "react";
-import Lenis from "lenis";
-import "lenis/dist/lenis.css";
+import { useEffect } from "react";
 import { usePathname } from "next/navigation";
 
+// Native anchor smooth-scroll — no Lenis, no external library.
+// Browser handles smooth scrolling via CSS scroll-behavior: smooth.
 export default function SmoothScroll({ children }) {
-  const lenisRef = useRef(null);
   const pathname = usePathname();
 
   useEffect(() => {
-    // Completely disable Lenis on Admin routes to prevent scroll hijacking on admin tables & modals
-    if (pathname && pathname.startsWith('/admin')) {
-      if (lenisRef.current) {
-        lenisRef.current.destroy();
-        lenisRef.current = null;
-        window.lenis = null;
-      }
-      return;
-    }
-
-    // Completely bypass Lenis for search engine and LLM crawlers to ensure 100% native crawler accessibility
-    const isCrawler = typeof navigator !== "undefined" && /bot|crawler|spider|googlebot|bingbot|yandex|duckduckbot|slurp|baiduspider|facebookexternalhit|twitterbot|linkedinbot|embedly|quora|whatsapp|slackbot|claude|chatgpt|gptbot|perplexity/i.test(navigator.userAgent);
-    if (isCrawler) return;
-
-    // Respect user's motion preferences
-    const prefersReducedMotion = typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (prefersReducedMotion) return;
-
-    // Keep mobile touch scrolling 100% native to avoid touch stutter or viewport locking
-    const isMobile = typeof window !== "undefined" && window.matchMedia("(max-width: 768px)").matches;
-
-    const lenis = new Lenis({
-      duration: 1.2,
-      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-      orientation: "vertical",
-      gestureOrientation: "vertical",
-      smoothWheel: !isMobile, // Use smooth wheel on desktop; keep mobile touch native
-      wheelMultiplier: 1,
-      touchMultiplier: 1,
-      syncTouch: false,
-      infinite: false,
-    });
-
-    lenisRef.current = lenis;
-
-    let rafId;
-    function raf(time) {
-      lenis.raf(time);
-      rafId = requestAnimationFrame(raf);
-    }
-    rafId = requestAnimationFrame(raf);
-
-    // Smooth scroll for anchor tags (#id and /#id) across the site
     const handleAnchorClick = (e) => {
       const anchor = e.target.closest("a");
       if (!anchor) return;
@@ -69,49 +25,22 @@ export default function SmoothScroll({ children }) {
         const target = document.querySelector(targetSelector);
         if (target) {
           e.preventDefault();
-          if (lenisRef.current) {
-            lenisRef.current.scrollTo(target, { offset: -80 });
-          } else {
-            target.scrollIntoView({ behavior: "smooth" });
-          }
+          target.scrollIntoView({ behavior: "smooth", block: "start" });
+          // Offset for fixed header (~80px)
+          const y = target.getBoundingClientRect().top + window.scrollY - 80;
+          window.scrollTo({ top: y, behavior: "smooth" });
         }
       }
     };
 
     document.addEventListener("click", handleAnchorClick);
-
-    // Scroll to initial hash target if present in URL on direct load
-    if (typeof window !== "undefined" && window.location.hash) {
-      const target = document.querySelector(window.location.hash);
-      if (target) {
-        setTimeout(() => {
-          if (lenisRef.current) {
-            lenisRef.current.scrollTo(target, { offset: -80 });
-          } else {
-            target.scrollIntoView({ behavior: "smooth" });
-          }
-        }, 150);
-      }
-    }
-
-    // Expose lenis globally for any component needing custom scrollTo
-    window.lenis = lenis;
-
-    return () => {
-      document.removeEventListener("click", handleAnchorClick);
-      if (rafId) cancelAnimationFrame(rafId);
-      lenis.destroy();
-      lenisRef.current = null;
-      window.lenis = null;
-    };
+    return () => document.removeEventListener("click", handleAnchorClick);
   }, [pathname]);
 
-  // Reset scroll to top on route change (unless navigating to a specific hash)
+  // Scroll to top on route change (unless hash present)
   useEffect(() => {
-    if (lenisRef.current && (!pathname || !pathname.startsWith('/admin'))) {
-      if (typeof window !== 'undefined' && !window.location.hash) {
-        lenisRef.current.scrollTo(0, { immediate: true });
-      }
+    if (typeof window !== "undefined" && !window.location.hash) {
+      window.scrollTo({ top: 0, behavior: "instant" });
     }
   }, [pathname]);
 

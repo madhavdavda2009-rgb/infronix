@@ -8,7 +8,6 @@ import ErrorBoundary from '@/components/ErrorBoundary';
 import { ToastProvider } from '@/context/ToastContext';
 import { IntroProvider } from '@/context/IntroContext';
 import Preloader from '@/components/Preloader';
-import SmoothScroll from '@/components/SmoothScroll';
 import { Inter, Outfit } from 'next/font/google';
 import { GoogleAnalytics } from '@next/third-parties/google';
 
@@ -119,11 +118,11 @@ export default function RootLayout({ children }) {
       </head>
       <body className={`${inter.variable} ${outfit.variable} bg-[var(--color-light-bg)] text-[var(--color-deep-space)] antialiased`}>
         <a href="#main-content" className="skip-link">Skip to main content</a>
-        <MotionPreferences><IntroProvider>
-          <Preloader />
-          <ErrorBoundary>
-            <ToastProvider>
-              <SmoothScroll>
+        <MotionPreferences>
+          <IntroProvider>
+            <Preloader />
+            <ErrorBoundary>
+              <ToastProvider>
                 <div className="flex flex-col min-h-screen relative">
                   <Header />
                   <div className="flex-grow">
@@ -133,10 +132,10 @@ export default function RootLayout({ children }) {
                   <WhatsAppWidget />
                   <CookieBanner />
                 </div>
-              </SmoothScroll>
-            </ToastProvider>
-          </ErrorBoundary>
-        </IntroProvider></MotionPreferences>
+              </ToastProvider>
+            </ErrorBoundary>
+          </IntroProvider>
+        </MotionPreferences>
         <GoogleAnalytics gaId={gaId} />
       </body>
     </html>

@@ -21,7 +21,6 @@
     "hostinger-mail-api-sdk": "^1.19.0",
     "html2pdf.js": "^0.14.0",
     "jsonwebtoken": "^9.0.3",
-    "lenis": "^1.3.26",
     "next": "^16.3.3",
     "nodemailer": "^9.0.6",
     "pg": "^8.11.3",
