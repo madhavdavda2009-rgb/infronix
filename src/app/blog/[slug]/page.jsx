@@ -43,9 +43,9 @@ const getBlogPost = cache(async function getBlogPost(slug) {
         b.*,
         c.name as category_name,
         c.slug as category_slug,
-        u.name as author_name,
-        u.role as author_role,
-        u.avatar_url as author_avatar_url,
+        b.author_name,
+        b.author_role,
+        b.author_avatar_url,
         COALESCE(
           json_agg(
             json_build_object('id', t.id, 'name', t.name, 'slug', t.slug)
@@ -53,12 +53,11 @@ const getBlogPost = cache(async function getBlogPost(slug) {
         ) as tags
       FROM founder_os_blogs b
       LEFT JOIN founder_os_blog_categories c ON b.category_id = c.id
-      LEFT JOIN founder_os_users u ON b.author_id = u.id
-      LEFT JOIN founder_os_blog_tag_relations tr ON b.id = tr.blog_id
-      LEFT JOIN founder_os_blog_tags t ON tr.tag_id = t.id
+      LEFT JOIN founder_os_blog_posts_tags pt ON pt.post_id = b.id
+      LEFT JOIN founder_os_blog_tags t ON pt.tag_id = t.id
       WHERE LOWER(b.slug) = $1 
         AND (b.status = 'Published' OR (b.status = 'Scheduled' AND b.scheduled_for <= NOW()))
-      GROUP BY b.id, c.name, c.slug, u.name, u.role, u.avatar_url
+      GROUP BY b.id, c.name, c.slug
       LIMIT 1
     `, [cleanSlug]);
 
@@ -66,15 +65,16 @@ const getBlogPost = cache(async function getBlogPost(slug) {
       return { post: res.rows[0], redirected: false, targetSlug: null };
     }
 
-    // 2. Check redirect table
+    // 2. Check previous_slugs_json for old slugs (redirect)
     const redirRes = await query(`
-      SELECT target_slug FROM founder_os_blog_redirects
-      WHERE LOWER(source_slug) = $1
+      SELECT slug FROM founder_os_blogs
+      WHERE previous_slugs_json @> $1::jsonb
+        AND (status = 'Published' OR (status = 'Scheduled' AND scheduled_for <= NOW()))
       LIMIT 1
-    `, [cleanSlug]);
+    `, [JSON.stringify([cleanSlug])]);
 
     if (redirRes.rows.length > 0) {
-      return { post: null, redirected: true, targetSlug: redirRes.rows[0].target_slug };
+      return { post: null, redirected: true, targetSlug: redirRes.rows[0].slug };
     }
 
     return { post: null, redirected: false, targetSlug: null };
@@ -94,7 +94,7 @@ async function getRelatedPosts(postId, categoryId, limit = 3) {
       FROM founder_os_blogs b
       LEFT JOIN founder_os_blog_categories c ON b.category_id = c.id
       WHERE b.id != $1
-        AND ($2::uuid IS NULL OR b.category_id = $2)
+        AND ($2::int IS NULL OR b.category_id = $2)
         AND (b.status = 'Published' OR (b.status = 'Scheduled' AND b.scheduled_for <= NOW()))
       ORDER BY b.published_at DESC
       LIMIT $3
