@@ -17,7 +17,7 @@ import {
 export default function LivePreviewFrame({
   projectId,
   previewUrl,
-  previewLabel = 'Live Staging Preview',
+  previewLabel = 'Live Website Preview',
   previewStatus = 'Available',
   previewInstructions = '',
   projectName = '',
@@ -59,10 +59,10 @@ export default function LivePreviewFrame({
           <Eye size={28} weight="duotone" />
         </div>
         <h3 className="text-base font-bold text-slate-900 font-outfit mb-1">
-          {previewStatus === 'Preparing' ? 'Staging Preview is Being Prepared' : 'Live Preview Not Active Yet'}
+          {previewStatus === 'Preparing' ? 'Your Preview is Being Prepared' : 'Live Preview Not Active Yet'}
         </h3>
         <p className="text-xs text-slate-500 max-w-md mx-auto leading-relaxed mb-4">
-          {previewInstructions || 'Our engineering team is actively developing and testing this project. Once the staging build passes QA validation, your interactive preview will be enabled right here.'}
+          {previewInstructions || 'We are building and checking your website. Your preview will appear here when it is ready to review.'}
         </p>
         <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-slate-100 text-slate-600 text-xs font-medium">
           <span className="w-2 h-2 rounded-full bg-amber-500 animate-pulse" />
@@ -204,7 +204,7 @@ export default function LivePreviewFrame({
             <div className="absolute inset-0 bg-white/95 backdrop-blur-xs flex items-center justify-center z-10">
               <div className="flex flex-col items-center gap-2.5 text-center p-6">
                 <div className="w-7 h-7 border-2 border-violet-600 border-t-transparent rounded-full animate-spin" />
-                <span className="text-xs text-slate-700 font-semibold font-outfit">Connecting to staging preview...</span>
+                <span className="text-xs text-slate-700 font-semibold font-outfit">Opening your preview...</span>
                 <span className="text-[11px] text-slate-400">Loading interactive sandbox</span>
               </div>
             </div>
@@ -218,10 +218,10 @@ export default function LivePreviewFrame({
                   <Globe size={24} weight="duotone" />
                 </div>
                 <h4 className="text-sm font-bold text-slate-900 font-outfit">
-                  Staging Server Frame Restrictions Detected
+                  Open Your Preview in a New Tab
                 </h4>
                 <p className="text-xs text-slate-500 leading-relaxed">
-                  The staging deployment host enforces browser frame restrictions (<code>X-Frame-Options</code>). You can launch and test the full live staging website directly in a new tab:
+                  This preview cannot be displayed inside the portal. Open it in a new tab to review your website:
                 </p>
                 <a
                   href={previewUrl}
@@ -239,7 +239,7 @@ export default function LivePreviewFrame({
             <iframe
               key={iframeKey}
               src={activeSrc}
-              title={`${projectName} Staging Preview`}
+              title={`${projectName} Website Preview`}
               className="w-full h-full border-0 flex-1 bg-white"
               sandbox="allow-scripts allow-same-origin allow-forms allow-popups allow-modals"
               onLoad={() => setIframeLoaded(true)}

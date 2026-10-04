@@ -25,13 +25,13 @@ export default function Error({ error, reset }) {
 
         <div className="space-y-2">
           <span className="text-[11px] text-primary font-mono tracking-widest uppercase block font-normal">
-            Application Error
+            Unable to load this page
           </span>
           <h1 className="text-2xl sm:text-3xl text-white font-light font-heading tracking-tight">
-            Unexpected Exception
+            Something went wrong
           </h1>
           <p className="text-xs sm:text-sm text-slate-300 leading-relaxed font-light">
-            We encountered an unexpected error while loading this page. You can try refreshing the component or return to home.
+            This page could not load. Please try again or return to the homepage.
           </p>
           {error?.message && process.env.NODE_ENV !== 'production' && (
             <div className="mt-4 p-3 bg-[#1A1F2C] border border-primary/30 text-left rounded-xl text-xs font-mono text-purple-200 overflow-x-auto">

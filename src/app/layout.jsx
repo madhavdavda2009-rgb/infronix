@@ -8,24 +8,25 @@ import ErrorBoundary from '@/components/ErrorBoundary';
 import { ToastProvider } from '@/context/ToastContext';
 import { IntroProvider } from '@/context/IntroContext';
 import Preloader from '@/components/Preloader';
-import { Inter, Outfit } from 'next/font/google';
+import localFont from 'next/font/local';
 import { GoogleAnalytics } from '@next/third-parties/google';
 
 const WhatsAppWidget = dynamic(() => import('@/components/WhatsAppWidget'));
 const CookieBanner = dynamic(() => import('@/components/CookieBanner'));
 
-const inter = Inter({ 
-  subsets: ['latin'], 
-  variable: '--font-inter',
-  weight: ['300', '400', '500', '600', '700'],
-  display: 'swap'
+const general = localFont({
+  src: [
+    { path: '../assets/fonts/GeneralSans-400.woff2', weight: '400', style: 'normal' },
+    { path: '../assets/fonts/GeneralSans-500.woff2', weight: '500', style: 'normal' },
+    { path: '../assets/fonts/GeneralSans-600.woff2', weight: '600', style: 'normal' },
+    { path: '../assets/fonts/GeneralSans-700.woff2', weight: '700', style: 'normal' },
+  ],
+  variable: '--font-general', display: 'swap', adjustFontFallback: 'Arial',
 });
 
-const outfit = Outfit({ 
-  subsets: ['latin'], 
-  variable: '--font-outfit',
-  weight: ['400', '500', '600', '700', '800'],
-  display: 'swap'
+const cabinet = localFont({
+  src: '../assets/fonts/CabinetGrotesk-Variable.woff2', weight: '100 900',
+  variable: '--font-cabinet', display: 'swap', adjustFontFallback: 'Arial',
 });
 
 export const viewport = {
@@ -55,7 +56,7 @@ export default function RootLayout({ children }) {
   const gaId = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID || 'G-T99V9E650K';
 
   return (
-    <html lang="en">
+    <html lang="en" className={`${general.variable} ${cabinet.variable}`}>
       <head>
         {/* Unified LocalBusiness, ProfessionalService & WebSite JSON-LD Schema */}
         <script
@@ -71,7 +72,7 @@ export default function RootLayout({ children }) {
                   url: SITE_URL,
                   logo: SITE_URL + '/light-web-logo.png', 
                   image: SITE_URL + '/opengraph-image.webp',
-                  description: 'An Ahmedabad-based digital agency helping businesses build high-performance web applications, scale search visibility with SEO, manage digital ads, and automate operations.',
+                  description: 'An Ahmedabad-based digital agency helping businesses build websites, reach customers through Google and online advertising, and save time on everyday work.',
                   telephone: '+91-6355792936', 
                   email: 'support@infronixweb.in',
                   address: {
@@ -112,7 +113,7 @@ export default function RootLayout({ children }) {
           }}
         />
       </head>
-      <body className={`${inter.variable} ${outfit.variable} bg-[var(--color-light-bg)] text-[var(--color-deep-space)] antialiased`}>
+      <body className="bg-[var(--color-light-bg)] text-[var(--color-deep-space)] antialiased">
         <a href="#main-content" className="skip-link">Skip to main content</a>
         <MotionPreferences>
           <IntroProvider>

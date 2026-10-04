@@ -237,7 +237,7 @@ export default function BlogListClient({
             <p className="text-sm text-main-text leading-relaxed mb-6">
               {loadError ? 'Please try reloading this page. You can still contact us to discuss your project.' : searchQuery || selectedCategory !== 'all' || selectedTag !== 'all'
                 ? 'No published articles matched your search query or topic filters. Try clearing your filters.'
-                : 'Our digital insights, engineering guides, and automation strategies are being written. Check back soon!'}
+                : 'New advice on websites, marketing and business tools is on the way. Check back soon!'}
             </p>
             {(searchQuery || selectedCategory !== 'all' || selectedTag !== 'all') && (
               <button

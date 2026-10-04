@@ -8,8 +8,8 @@ const projects = [
   {
     id: 1,
     title: "Toyon Industry Pvt Ltd",
-    desc: "Interactive 3D visual showcases, real-time product configurators, and modern digital platforms engineered for high-growth industrial operations.",
-    tech: ["Interactive 3D", "Custom Web Platform", "Fast Loading"],
+    desc: "An interactive product website that helps visitors explore the range and choose the options they need.",
+    tech: ["Product Exploration", "Made for the Brand", "Fast Loading"],
     image: "/img-2.avif",
     category: "Website Development"
   }
@@ -30,7 +30,7 @@ export default function PortfolioSection({ asH1 = false }) {
               perform and inspire.
             </Heading>
             <p className="text-sm sm:text-base text-main-text font-normal mt-3 max-w-xl">
-              Engineered for ambitious businesses across Ahmedabad, Gujarat, and nationwide.
+              Created for businesses in Ahmedabad, across Gujarat and throughout India.
             </p>
           </div>
           <Link

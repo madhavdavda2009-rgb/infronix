@@ -25,7 +25,7 @@ export default function CTASection() {
             </h2>
             
             <p className="text-base sm:text-xl md:text-3xl text-slate-300 font-normal mb-8 sm:mb-14">
-              Let&apos;s engineer what comes next.
+              Let&apos;s build your next step.
             </p>
             
             <Link 

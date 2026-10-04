@@ -8,7 +8,7 @@ const entries = [
     slug: 'ai-seo-generative-search',
     cover_image_alt: 'Glass lens over connected content tiles on a light desk, illustrating AI search discovery',
     title: 'AI SEO & Generative Search: A Guide for Ahmedabad Businesses',
-    excerpt: 'Understand AI search, useful content and technical accessibility, and decide what to improve without promises of guaranteed AI citations.',
+    excerpt: 'Understand AI search, useful content and pages that are easy to find and read, and decide what to improve without promises of guaranteed AI citations.',
     category_name: 'Local SEO', category_slug: 'local-seo',
     content_markdown: `## What is AI SEO?
 
@@ -26,7 +26,7 @@ Traditional search often presents links for a visitor to compare. Generative sea
 
 Use descriptive headings, direct answers and examples with enough context to be useful. Explain terms before using them. A page about a service should state the deliverables, constraints and next step, rather than repeat a list of related phrases.
 
-Consistent names help identify entities such as your business, services and locations. Keep the organization name and contact details accurate across your website and genuine profiles. Schema can describe visible information, but it does not create authority or replace the content.
+Use your business and service names consistently. Keep contact details accurate across your website and genuine business profiles. Extra information for search engines should describe what visitors can actually see; it cannot replace helpful content.
 
 ## Content optimization with human review
 
@@ -34,11 +34,11 @@ AI can assist with an outline or identify unanswered questions. Check every gene
 
 An FAQ format helps when visitors actually have those questions. It is not a requirement to rewrite every page as questions and answers. Build topical depth by connecting distinct guides to the service they support, rather than repeating the same material across articles.
 
-## Technical accessibility still matters
+## Make your pages easy to find and read
 
-Check that key content appears in rendered HTML, important pages return successful responses, internal links are crawlable and canonicals point to the intended URL. Review robots directives and indexing restrictions deliberately. A fast mobile page with stable layouts benefits visitors regardless of the search interface.
+Check that your main content appears when a page opens, important pages load correctly and links lead to the right place. Make sure Google can find the pages you want customers to see. Fast loading and a layout that stays steady help people on every screen.
 
-Use the [technical SEO guide](/blog/technical-seo) to check crawling, indexing and page performance before adding more content.
+Use the [website health guide](/blog/technical-seo) to check whether Google can find your pages and whether they load well before adding more content.
 
 ## Brand mentions and citations
 
@@ -123,11 +123,11 @@ InfronixWeb scopes engagements after reviewing the site and requirements. This g
 
 An audit should identify the pages reviewed, the evidence behind each issue, its likely impact and the proposed fix. Ask who implements the recommendations. A report alone will not correct a broken redirect or improve a form.
 
-The [technical SEO guide](/blog/technical-seo) explains checks for crawling, indexing, mobile layouts and performance. Search Console access helps distinguish a genuine search issue from a generic tool warning.
+The [website health guide](/blog/technical-seo) explains how to check search visibility, mobile use and loading speed. Search Console access helps distinguish a genuine search issue from a generic tool warning.
 
 ## What does ongoing support mean?
 
-An ongoing engagement can review Search Console, improve existing pages, maintain technical health and plan a small number of useful articles. The proposal should state review frequency, implementation capacity, content responsibilities and how work is prioritized.
+An ongoing engagement can review Search Console, improve existing pages, keep the website working well and plan a small number of useful articles. The proposal should state review frequency, implementation capacity, content responsibilities and how work is prioritized.
 
 For a local business, check whether Google Business Profile review and consistent business information are in scope. Only real eligible locations should be represented. Reviews must come from genuine customers, not a package supplier.
 
@@ -139,7 +139,7 @@ For a local business, check whether Google Business Profile review and consisten
 - Which access permissions are needed, and who retains account ownership?
 - How are migrations, new pages and redirects approved and checked?
 - What reporting connects relevant traffic with qualified enquiries?
-- What happens when a platform changes or a technical problem appears?
+- What happens when a platform changes or a website problem appears?
 
 ## Avoid misleading comparisons
 
@@ -153,7 +153,7 @@ Use relevant landing pages, non-branded clicks and qualified enquiries. Average 
 
 ## Choose the next step
 
-An audit and implementation plan suits an unclear problem. Ongoing support suits a site that needs regular improvements and review. A defined technical or content project suits a specific migration, indexing issue or topic gap.
+An audit and implementation plan suits an unclear problem. Ongoing support suits a site that needs regular improvements and review. A focused website or content project suits a website move, a search visibility problem or a missing topic.
 
 See [SEO engagement options at InfronixWeb](/seo), then [request a scoped proposal](/start-project?service=seo) with your website, goals and current concerns.`,
   },
@@ -161,7 +161,7 @@ See [SEO engagement options at InfronixWeb](/seo), then [request a scoped propos
 
 export const editorialGuides = entries.map(entry => ({
   ...entry, id: `guide-${entry.slug}`, author_name: 'Madhav Davda', author_type: 'Person',
-  author_role: 'Founder & Lead Engineer',
+  author_role: 'Founder',
   ...madhavBlogProfile,
   cover_image_url: `/blog-images/${entry.slug}.webp`,
   published_at: '2026-10-04T00:00:00+05:30', updated_at: '2026-10-04T00:00:00+05:30',

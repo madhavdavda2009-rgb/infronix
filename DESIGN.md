@@ -53,38 +53,38 @@ colors:
   ink-black: '#050814'
 typography:
   display:
-    fontFamily: Playfair Display
+    fontFamily: Cabinet Grotesk
     fontSize: 64px
     fontWeight: '700'
     lineHeight: '1.1'
     letterSpacing: -0.01em
   headline-lg:
-    fontFamily: Playfair Display
+    fontFamily: Cabinet Grotesk
     fontSize: 40px
     fontWeight: '700'
     lineHeight: '1.2'
   headline-lg-mobile:
-    fontFamily: Playfair Display
+    fontFamily: Cabinet Grotesk
     fontSize: 32px
     fontWeight: '700'
     lineHeight: '1.2'
   headline-md:
-    fontFamily: Playfair Display
+    fontFamily: Cabinet Grotesk
     fontSize: 28px
     fontWeight: '600'
     lineHeight: '1.3'
   body-lg:
-    fontFamily: Hanken Grotesk
+    fontFamily: General Sans
     fontSize: 18px
     fontWeight: '400'
     lineHeight: '1.7'
   body-md:
-    fontFamily: Hanken Grotesk
+    fontFamily: General Sans
     fontSize: 16px
     fontWeight: '400'
     lineHeight: '1.7'
   label-caps:
-    fontFamily: Hanken Grotesk
+    fontFamily: General Sans
     fontSize: 12px
     fontWeight: '600'
     lineHeight: '1'
@@ -108,9 +108,9 @@ The palette is a classic study in contrast. **Midnight Navy** (#0A1128) serves a
 The neutral system shifts from cold grays to a warm **Champagne/Off-White** (#F8F5F0) base. This warmer neutral creates a "paper-like" luxury feel, avoiding the clinical nature of pure white. Secondary interactions utilize "Navy Muted" for hover states, while "Ink Black" is reserved for high-contrast display typography.
 
 ## Typography
-The typographic hierarchy relies on a sharp contrast between serif and sans-serif. **Playfair Display** provides a literary, authoritative voice for headlines. It should be typeset with generous vertical space to allow its high-contrast strokes to breathe.
+Use exactly two self-hosted families across the website, client portal and admin: **Cabinet Grotesk** for headings and display navigation; **General Sans** for paragraphs, forms, labels, buttons and data. Both come from Fontshare; original files and the ITF license are kept in src/assets/fonts.
 
-**Hanken Grotesk** is the body typeface, chosen for its modern, clean, and understated professional feel. It acts as the functional anchor to the decorative serif. For metadata and small headers, use `label-caps` with increased letter spacing (0.15em) to mimic the engraving style of luxury branding.
+Cabinet headings use medium to bold weights, balanced wrapping and restrained tracking (-0.025em). General Sans uses 400 for reading, 500 for controls and 600–700 for emphasis. Preserve readable line spacing and check real text on mobile. Existing sans and mono utilities resolve to General Sans, and legacy heading utilities resolve to Cabinet; do not introduce a third family.
 
 ## Layout & Spacing
 The layout follows a **Fixed Grid** philosophy on desktop to maintain a sense of controlled, intentional composition. The content is centered within a 1200px container, flanked by expansive 80px margins. 

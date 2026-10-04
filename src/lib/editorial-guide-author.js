@@ -2,6 +2,7 @@ import { query } from './founder_os_db.js';
 import { publicImageUrl } from './blog-images.js';
 import { madhavBlogProfile } from './blog-authors.js';
 import { getEditorialGuide } from './editorial-guides.js';
+import { publicRole } from './public-copy.js';
 
 export async function getGuideAuthor() {
   try {
@@ -12,7 +13,7 @@ export async function getGuideAuthor() {
     const person = rows[0];
     if (!person) return null;
     const avatar = publicImageUrl(person.profile_image_url, 'team', person.id) || madhavBlogProfile.author_avatar_url;
-    return { author_name: person.name, author_role: person.role, author_avatar_url: avatar,
+    return { author_name: person.name, author_role: publicRole(person.role), author_avatar_url: avatar,
       author_avatar_position: avatar === madhavBlogProfile.author_avatar_url ? madhavBlogProfile.author_avatar_position : 'center',
       author_revision: person.updated_at ? new Date(person.updated_at).toISOString() : '' };
   } catch (error) {

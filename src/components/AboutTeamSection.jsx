@@ -13,9 +13,9 @@ const myImage = { src: madhavBlogProfile.author_avatar_url };
 const DEFAULT_FOUNDER = {
   id: "founder-canonical",
   name: "Madhav Davda",
-  role: "Founder & Lead Engineer",
-  public_role: "Founder & Lead Engineer",
-  public_bio: "Leading engineering and technical architecture at InfronixWeb. Focused on building high-performance web applications, AI automation pipelines, and scalable digital solutions for growing businesses.",
+  role: "Founder",
+  public_role: "Founder",
+  public_bio: "Helping businesses create useful websites, reach customers and simplify everyday work.",
   profile_image_url: myImage.src,
   instagram_url: "https://www.instagram.com/madhavdavda09",
   is_founder: true,
@@ -35,11 +35,11 @@ export default function AboutTeamSection({ initialTeam = null }) {
         <div className="max-w-3xl mb-12 sm:mb-16">
           <h2 className="text-xs sm:text-sm font-bold tracking-widest uppercase text-text-light mb-3">The People Behind InfronixWeb</h2>
           <h3 className="text-2xl sm:text-4xl md:text-5xl font-heading font-bold text-on-surface leading-tight mb-4">
-            Engineering excellence, <br className="hidden sm:block" />
+            Thoughtful work, <br className="hidden sm:block" />
             driven by specialists.
           </h3>
           <p className="text-sm sm:text-base md:text-lg text-main-text font-medium leading-relaxed">
-            Our team brings together full-stack engineering, performance optimization, UX architecture, and modern automation to deliver exceptional digital outcomes.
+            Meet the people who design your website, plan your marketing and help make everyday work easier.
           </p>
         </div>
 

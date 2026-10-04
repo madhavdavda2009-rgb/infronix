@@ -1,6 +1,7 @@
 import { query } from './founder_os_db.js';
 import { publicImageUrl } from './blog-images.js';
 import { madhavBlogProfile } from './blog-authors.js';
+import { publicRole, publicBio } from './public-copy.js';
 
 export async function getPublicTeam(page) {
   const pageCondition = page === 'home' ? 'AND show_on_homepage IS TRUE' : page === 'about' ? 'AND show_on_about_page IS TRUE' : '';
@@ -14,7 +15,7 @@ export async function getPublicTeam(page) {
     ORDER BY CASE WHEN is_founder IS TRUE OR employment_type = 'Founder' THEN 0 WHEN employment_type = 'Co-Founder' THEN 1 ELSE 2 END,
       display_order ASC, id ASC
   `);
-  return rows.map(person => ({ ...person, profile_image_url: publicImageUrl(person.profile_image_url, 'team', person.id) ||
+  return rows.map(person => ({ ...person, role: publicRole(person.role), public_role: publicRole(person.public_role), public_bio: publicBio(person.public_bio), profile_image_url: publicImageUrl(person.profile_image_url, 'team', person.id) ||
     (person.name?.trim().toLowerCase() === 'madhav davda' ? madhavBlogProfile.author_avatar_url : null) }));
 }
 

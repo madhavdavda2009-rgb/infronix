@@ -46,7 +46,7 @@ export default async function Home() {
                   A clearer next step for your business.
                 </h2>
                 <p className="text-main-text text-sm sm:text-base leading-relaxed">
-                  Explore our practical analyses on web performance, Google organic search visibility, conversion architecture, and AI automation before deciding where to invest.
+                  Practical advice on websites, Google search, advertising and saving time at work—so you can decide where to invest.
                 </p>
               </div>
               <Link 

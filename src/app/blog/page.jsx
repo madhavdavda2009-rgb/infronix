@@ -99,7 +99,7 @@ export default async function BlogPage() {
                 Strategies & Insights for Modern Digital Growth
               </h1>
               <p className="text-sm sm:text-base md:text-lg text-main-text leading-relaxed">
-                Practical guides, architecture breakdowns, and actionable blueprints for high-performing web platforms, search rankings, and business automation.
+                Straightforward advice to improve your website, reach customers and make everyday business tasks easier.
               </p>
             </div>
           </div>

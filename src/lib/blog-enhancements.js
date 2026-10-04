@@ -1,3 +1,42 @@
+import { publicRole } from './public-copy.js';
+import { calculateReadingTime } from './blog_utils.js';
+
+const websiteHealthGuide = `## Help Google find your useful pages
+
+Start with the pages customers need: your services, products, contact information and useful advice. In Google Search Console, check which of these pages appear in search. If an important page is missing, investigate why before adding more content.
+
+Some pages do not need a separate search listing. Filtered product views, duplicate pages and different versions of the same enquiry form may be better kept together. The goal is to make the right page easy to find.
+
+## Keep page addresses and links clear
+
+Give each important page one main address. If you move or rename a page, make sure its old link sends visitors to the new location. Check links in your menu, service pages and articles so customers do not reach a dead end.
+
+For a redesign, record the useful existing pages before making changes. A new design should preserve helpful content and keep established links working wherever possible.
+
+## Check the experience on a phone
+
+Open your website on a small screen. Can you read the text, use the menu and complete an enquiry without zooming or sideways scrolling? Check that buttons are easy to tap and that images do not hide important information.
+
+Watch for content that jumps as the page loads. A steady layout helps visitors read and use the page comfortably.
+
+## Find what makes pages slow
+
+Large images, extra effects and tools loaded in the background can delay a page. Test important pages more than once on a phone and investigate the causes of slow loading.
+
+A single speed test is only a snapshot. Reports based on real visitor experiences build up over time. Use both to understand the problem; do not treat one good test as proof that every visitor has a fast experience.
+
+## Keep business information accurate
+
+Your service descriptions, contact details and business profiles should agree. Any extra information provided for Google should describe the real business and content visible on the page. Avoid invented ratings, locations or claims.
+
+## Agree a practical improvement plan
+
+Ask for a review that explains which pages were checked, what the problem is, how it affects people and who will fix it. Start with issues that block important pages or prevent customers from getting in touch.
+
+After a change, check the page again and review Search Console over time. Better website health supports visitors and search discovery, but nobody can guarantee a ranking.
+
+Explore [InfronixWeb's SEO services](/seo), or read the [AI search guide](/blog/ai-seo-generative-search) for advice on making your content useful across search experiences.`;
+
 export const blogEnhancements = {
   'web-development-in-ahmedabad': {
     originalTitle: 'Web Development in Ahmedabad: A Complete Guide For Businesses in 2026',
@@ -20,21 +59,10 @@ For implementation rather than planning advice, see [website development at Infr
   },
   'technical-seo': {
     originalTitle: 'Technical SEO: A Complete Guide to Improve Your Website Performance in 2026',
-    title: 'Technical SEO Checklist for Ahmedabad Businesses',
-    service: 'seo', serviceLabel: 'Discuss a technical SEO audit',
-    content: `## Prioritize technical SEO from Search Console evidence
-
-Start with important pages that already receive relevant impressions. Check their HTTP responses, canonical URLs, indexing directives and rendered main content. Investigate an excluded page before assuming every exclusion is a fault: duplicate filters and form variations may not deserve independent indexing.
-
-## Check JavaScript rendering and internal links
-
-Compare the initial HTML with what a browser displays. Important service copy and links should be accessible without waiting for an interaction. Test broken destinations, redirect chains and query-parameter variants. A successful build alone does not establish that a search engine can understand the page.
-
-## Separate lab tests from Core Web Vitals
-
-Use repeatable mobile tests to diagnose image loading, JavaScript work and layout shifts. Field data represents real visits over time; one local test is not a field Core Web Vitals pass. Keep useful visual experiences and optimize the causes of delay before removing them.
-
-Explore [technical SEO support](/seo) or continue with the [AI search guide](/blog/ai-seo-generative-search).`,
+    title: 'Website Health Checklist for Ahmedabad Businesses',
+    excerpt: 'Check that Google can find your important pages, links work correctly and customers can use your website comfortably on a phone.',
+    replacementMarkdown: websiteHealthGuide,
+    service: 'seo', serviceLabel: 'Discuss a website health review',
   },
   'seo-company-in-ahmedabad': {
     originalTitle: 'SEO Company in Ahmedabad: SEO Guide for Businesses in 2026',
@@ -51,13 +79,18 @@ Service pages should explain what the business actually does and how a customer 
 
 ## Evaluate the proposed work
 
-Ask how technical fixes, content improvements and reporting will be prioritized. Compare scope and responsibilities before price. Read [what to look for in SEO packages](/blog/seo-packages-guide), then explore [InfronixWeb's SEO services](/seo).`,
+Ask how website fixes, content improvements and reporting will be prioritized. Compare scope and responsibilities before price. Read [what to look for in SEO packages](/blog/seo-packages-guide), then explore [InfronixWeb's SEO services](/seo).`,
   },
 };
 
 export function enhanceBlogPost(post) {
+  post = { ...post, author_role: publicRole(post.author_role) };
   const enhancement = blogEnhancements[post.slug];
   // Preserve future CMS title edits and any explicit SEO overrides.
   if (!enhancement || post.title !== enhancement.originalTitle) return post;
-  return { ...post, title: enhancement.title, seo_title: post.seo_title || `${enhancement.title} | InfronixWeb Insights`, seo_description: post.seo_description || enhancement.excerpt || post.excerpt };
+  return { ...post, title: enhancement.title, excerpt: enhancement.excerpt || post.excerpt,
+    ...(enhancement.replacementMarkdown ? { content_markdown: enhancement.replacementMarkdown,
+      reading_time_minutes: calculateReadingTime(enhancement.replacementMarkdown) } : {}),
+    editorial_enhancement: true,
+    seo_title: post.seo_title || `${enhancement.title} | InfronixWeb Insights`, seo_description: post.seo_description || enhancement.excerpt || post.excerpt };
 }

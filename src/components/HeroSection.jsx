@@ -86,7 +86,7 @@ export default function HeroSection() {
               variants={itemVariants}
               className="text-base sm:text-lg md:text-xl text-main-text max-w-2xl mb-7 sm:mb-9 font-normal leading-relaxed"
             >
-              Your digital agency in Ahmedabad for bespoke web applications, search engine visibility, performance marketing, and automated customer workflows.
+              We build websites, help customers find you online and simplify everyday work for your business. Based in Ahmedabad, working across India.
             </motion.p>
 
             {/* CTAs */}

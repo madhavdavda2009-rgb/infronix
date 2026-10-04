@@ -30,7 +30,7 @@ export default function AboutSection({ asH1 = false }) {
               <div className="w-16 sm:w-20 h-1 bg-primary mb-6 sm:mb-8 rounded-full" />
               
               <p className="text-base sm:text-xl md:text-2xl text-on-surface font-medium leading-relaxed mb-4 sm:mb-6">
-                Your website, marketing channels, and customer workflows must work together. InfronixWeb unifies web engineering, search visibility, performance advertising, and smart automation into one cohesive growth plan.
+                Your website, marketing and customer follow-up should work together. We help you bring them into one clear plan, so people can find your business and easily get in touch.
               </p>
               
               <p className="text-sm sm:text-base md:text-lg text-main-text leading-relaxed mb-6 sm:mb-9 font-normal">

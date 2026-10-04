@@ -347,7 +347,7 @@ export default function PrivacyPolicy() {
                 <li>Authentication</li>
                 <li>Environment-variable based secret management</li>
                 <li>Encryption where appropriate</li>
-                <li>Secure API practices</li>
+                <li>Secure connections between our services</li>
                 <li>Database access restrictions</li>
                 <li>Logging and monitoring</li>
                 <li>Regular maintenance</li>

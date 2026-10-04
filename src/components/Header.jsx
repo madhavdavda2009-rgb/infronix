@@ -29,7 +29,7 @@ export default function Header() {
   
   const [menuOpen, setMenuOpen] = useState(false);
   const [desktopServicesOpen, setDesktopServicesOpen] = useState(false);
-  const [mobileServicesOpen, setMobileServicesOpen] = useState(true);
+  const [mobileServicesOpen, setMobileServicesOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   
   const pathname = usePathname();
@@ -49,9 +49,7 @@ export default function Header() {
   useEffect(() => {
     setMenuOpen(false);
     setDesktopServicesOpen(false);
-    if (pathname.startsWith('/digital-marketing') || pathname === '/web-development' || pathname === '/seo' || pathname === '/ai-automation') {
-      setMobileServicesOpen(true);
-    }
+    setMobileServicesOpen(false);
   }, [pathname]);
 
   // Click outside to close desktop services dropdown
@@ -106,13 +104,13 @@ export default function Header() {
     {
       title: 'Web Development',
       href: '/web-development',
-      desc: 'High-speed modern web applications, e-commerce & corporate platforms.',
+      desc: 'Business websites, online stores and easy-to-use customer portals.',
       icon: Globe
     },
     {
       title: 'SEO Optimization',
       href: '/seo',
-      desc: 'Top Google search rankings & local Maps visibility.',
+      desc: 'Help customers find your business on Google and Maps.',
       icon: MagnifyingGlass
     },
     {
@@ -124,13 +122,13 @@ export default function Header() {
     {
       title: 'Digital Marketing',
       href: '/digital-marketing',
-      desc: 'Comprehensive growth marketing & conversion strategies.',
+      desc: 'A clear plan to reach customers and bring in enquiries.',
       icon: ChartLineUp
     },
     {
       title: 'Paid Advertising',
       href: '/digital-marketing/paid-advertising',
-      desc: 'High-ROI Google Ads, Meta Ads & retargeting campaigns.',
+      desc: 'Google and social media ads planned around your goals.',
       icon: Megaphone
     },
     {
@@ -289,7 +287,7 @@ export default function Header() {
                       {/* View All Services Footer */}
                       <div className="col-span-2 pt-2 mt-1 border-t border-white/10 flex items-center justify-between px-1">
                         <span className="text-[11px] text-slate-400">
-                          Looking for full bespoke digital architectures?
+                          Not sure which service you need?
                         </span>
                         <Link
                           href="/services"
@@ -385,7 +383,7 @@ export default function Header() {
                 ref={menuButtonRef}
                 aria-controls="navigation-drawer"
                 aria-expanded={menuOpen}
-                className="lg:hidden group flex items-center gap-2 px-3 py-2 rounded-xl bg-white/[0.04] hover:bg-white/[0.08] border border-white/10 hover:border-primary/40 transition-all cursor-pointer z-[60]"
+                className="lg:hidden group flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-white/[0.04] hover:bg-white/[0.08] border border-white/10 hover:border-primary/40 transition-colors cursor-pointer z-[60]"
               >
                 <div className="w-5 h-4 flex flex-col justify-between items-end py-0.5">
                   <span className={`h-[1.5px] bg-white transition-all duration-300 ${menuOpen ? 'w-5 translate-y-[6px] rotate-45' : 'w-5'}`} />
@@ -425,13 +423,13 @@ export default function Header() {
             animate={{ x: 0 }}
             exit={{ x: "100%" }}
             transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
-            className="lg:hidden fixed top-0 right-0 z-50 bg-[#0B0D12] text-white flex flex-col justify-between px-5 sm:px-8 py-6 sm:py-8 overflow-y-auto w-[88vw] sm:w-[380px] max-w-[400px] h-[100dvh] border-l border-primary/20 shadow-2xl custom-scrollbar font-sans select-none"
+            className="lg:hidden fixed top-0 right-0 z-[80] mobile-navigation bg-surface text-on-surface flex flex-col px-5 sm:px-8 w-full sm:w-[420px] h-[100dvh] shadow-2xl font-body"
           >
             {/* Top Bar */}
-            <div className="flex items-center justify-between pb-5 border-b border-white/10">
+            <div className="flex shrink-0 items-center justify-between py-5 border-b border-outline">
               <Link href="/" onClick={() => setMenuOpen(false)}>
                 <img
-                  src="/dark-web-logo.webp"
+                  src="/light-web-logo.webp"
                   alt="InfronixWeb"
                   width={180}
                   height={42}
@@ -440,7 +438,7 @@ export default function Header() {
               </Link>
               <button
                 onClick={() => setMenuOpen(false)}
-                className="p-2 text-slate-400 hover:text-white transition-colors cursor-pointer"
+                className="flex h-11 w-11 items-center justify-center rounded-full bg-white text-on-surface hover:bg-outline transition-colors cursor-pointer"
                 aria-label="Close menu"
               >
                 <X size={20} />
@@ -448,15 +446,15 @@ export default function Header() {
             </div>
 
             {/* Pure Navigation Links */}
-            <div className="py-5 flex flex-col gap-1.5 flex-grow">
+            <div className="mobile-navigation-links py-4 flex min-h-0 flex-1 flex-col gap-1 overflow-y-auto overscroll-contain">
               {/* Home */}
               <Link
                 href="/"
                 onClick={() => setMenuOpen(false)}
-                className={`py-2.5 px-3 rounded-xl text-base font-light transition-all flex items-center justify-between ${
+                className={`min-h-12 py-2.5 px-3 rounded-lg text-2xl font-heading font-semibold tracking-tight transition-colors flex items-center justify-between ${
                   pathname === '/'
-                    ? 'text-primary bg-primary/10 font-normal'
-                    : 'text-slate-200 hover:text-white hover:bg-white/5'
+                    ? 'text-primary bg-primary/5'
+                    : 'text-on-surface hover:text-primary hover:bg-white'
                 }`}
               >
                 <span>Home</span>
@@ -468,15 +466,16 @@ export default function Header() {
                   type="button"
                   onClick={() => setMobileServicesOpen(!mobileServicesOpen)}
                   aria-expanded={mobileServicesOpen}
-                  className={`w-full py-2.5 px-3 rounded-xl text-base font-light transition-all flex items-center justify-between cursor-pointer ${
+                  aria-controls="mobile-services-links"
+                  className={`w-full min-h-12 py-2.5 px-3 rounded-lg text-2xl font-heading font-semibold tracking-tight transition-colors flex items-center justify-between cursor-pointer ${
                     isServicesActive
                       ? 'text-primary'
-                      : 'text-slate-200 hover:text-white hover:bg-white/5'
+                      : 'text-on-surface hover:text-primary hover:bg-white'
                   }`}
                 >
                   <span>Services</span>
                   <motion.div animate={{ rotate: mobileServicesOpen ? 180 : 0 }} transition={{ duration: 0.2 }}>
-                    <CaretDown size={14} className="text-slate-400" />
+                    <CaretDown size={14} className="text-main-text" />
                   </motion.div>
                 </button>
 
@@ -488,22 +487,23 @@ export default function Header() {
                       animate={{ height: "auto", opacity: 1 }}
                       exit={{ height: 0, opacity: 0 }}
                       transition={{ duration: 0.2 }}
-                      className="pl-4 pr-1 py-1 flex flex-col gap-1 border-l border-primary/20 ml-3.5 my-1"
+                      id="mobile-services-links"
+                      className="overflow-hidden pl-3 pr-1 py-1 flex flex-col gap-1 ml-3 my-1"
                     >
                       <Link
                         href="/services"
                         onClick={() => setMenuOpen(false)}
-                        className={`py-1.5 px-2.5 rounded-lg text-xs font-semibold transition-colors text-violet-400 hover:text-violet-300`}
+                        className={`min-h-11 flex items-center py-2.5 px-3 rounded-lg text-sm font-semibold transition-colors text-primary hover:bg-white`}
                       >
-                        All Services Overview →
+                        Explore all services →
                       </Link>
                       {servicesList.map((svc) => (
                         <Link
                           key={svc.href}
                           href={svc.href}
                           onClick={() => setMenuOpen(false)}
-                          className={`py-1.5 px-2.5 rounded-lg text-sm font-light transition-colors ${
-                            pathname === svc.href ? 'text-primary font-normal bg-primary/10' : 'text-slate-300 hover:text-white'
+                          className={`min-h-11 flex items-center py-2.5 px-3 rounded-lg text-base font-medium transition-colors ${
+                            pathname === svc.href ? 'text-primary font-normal bg-primary/10' : 'text-main-text hover:text-primary hover:bg-white'
                           }`}
                         >
                           {svc.title}
@@ -518,10 +518,10 @@ export default function Header() {
               <Link
                 href="/projects"
                 onClick={() => setMenuOpen(false)}
-                className={`py-2.5 px-3 rounded-xl text-base font-light transition-all flex items-center justify-between ${
+                className={`min-h-12 py-2.5 px-3 rounded-lg text-2xl font-heading font-semibold tracking-tight transition-colors flex items-center justify-between ${
                   pathname === '/projects'
-                    ? 'text-primary bg-primary/10 font-normal'
-                    : 'text-slate-200 hover:text-white hover:bg-white/5'
+                    ? 'text-primary bg-primary/5'
+                    : 'text-on-surface hover:text-primary hover:bg-white'
                 }`}
               >
                 <span>Our Work</span>
@@ -531,10 +531,10 @@ export default function Header() {
               <Link
                 href="/about"
                 onClick={() => setMenuOpen(false)}
-                className={`py-2.5 px-3 rounded-xl text-base font-light transition-all flex items-center justify-between ${
+                className={`min-h-12 py-2.5 px-3 rounded-lg text-2xl font-heading font-semibold tracking-tight transition-colors flex items-center justify-between ${
                   pathname === '/about'
-                    ? 'text-primary bg-primary/10 font-normal'
-                    : 'text-slate-200 hover:text-white hover:bg-white/5'
+                    ? 'text-primary bg-primary/5'
+                    : 'text-on-surface hover:text-primary hover:bg-white'
                 }`}
               >
                 <span>About Us</span>
@@ -544,10 +544,10 @@ export default function Header() {
               <Link
                 href="/blog"
                 onClick={() => setMenuOpen(false)}
-                className={`py-2.5 px-3 rounded-xl text-base font-light transition-all flex items-center justify-between ${
+                className={`min-h-12 py-2.5 px-3 rounded-lg text-2xl font-heading font-semibold tracking-tight transition-colors flex items-center justify-between ${
                   pathname.startsWith('/blog')
-                    ? 'text-primary bg-primary/10 font-normal'
-                    : 'text-slate-200 hover:text-white hover:bg-white/5'
+                    ? 'text-primary bg-primary/5'
+                    : 'text-on-surface hover:text-primary hover:bg-white'
                 }`}
               >
                 <span>Blog &amp; Insights</span>
@@ -557,10 +557,10 @@ export default function Header() {
               <Link
                 href="/contact"
                 onClick={() => setMenuOpen(false)}
-                className={`py-2.5 px-3 rounded-xl text-base font-light transition-all flex items-center justify-between ${
+                className={`min-h-12 py-2.5 px-3 rounded-lg text-2xl font-heading font-semibold tracking-tight transition-colors flex items-center justify-between ${
                   pathname === '/contact'
-                    ? 'text-primary bg-primary/10 font-normal'
-                    : 'text-slate-200 hover:text-white hover:bg-white/5'
+                    ? 'text-primary bg-primary/5'
+                    : 'text-on-surface hover:text-primary hover:bg-white'
                 }`}
               >
                 <span>Contact Us</span>
@@ -570,10 +570,10 @@ export default function Header() {
               <Link
                 href="/client/login"
                 onClick={() => setMenuOpen(false)}
-                className={`py-2.5 px-3 rounded-xl text-base font-light transition-all flex items-center justify-between ${
+                className={`min-h-12 py-2.5 px-3 rounded-lg text-2xl font-heading font-semibold tracking-tight transition-colors flex items-center justify-between ${
                   pathname.startsWith('/client')
-                    ? 'text-primary bg-primary/10 font-normal'
-                    : 'text-slate-200 hover:text-white hover:bg-white/5'
+                    ? 'text-primary bg-primary/5'
+                    : 'text-on-surface hover:text-primary hover:bg-white'
                 }`}
               >
                 <span>Client Portal</span>
@@ -581,20 +581,20 @@ export default function Header() {
             </div>
 
             {/* Bottom Actions */}
-            <div className="pt-4 border-t border-white/10 space-y-3">
+            <div className="shrink-0 pt-4 pb-5 border-t border-outline space-y-3">
               <Link
                 href="/start-project"
                 onClick={() => setMenuOpen(false)}
-                className="w-full inline-flex items-center justify-center py-3 px-4 rounded-xl bg-primary hover:bg-primary-dark text-white text-sm font-medium tracking-wide transition-all shadow-[0_0_20px_rgba(139,92,246,0.25)]"
+                className="w-full inline-flex items-center justify-center py-3 px-4 rounded-xl bg-primary hover:bg-primary-dark text-white text-base font-semibold transition-colors"
               >
                 <span>Get a Quote</span>
               </Link>
 
-              <div className="flex items-center justify-between text-xs text-slate-400 font-light pt-1">
-                <a href="tel:+916355792936" className="hover:text-primary transition-colors">
+              <div className="flex flex-col items-start gap-1 text-sm text-main-text font-medium">
+                <a href="tel:+916355792936" className="inline-flex min-h-11 items-center hover:text-primary transition-colors">
                   +91 6355 792 936
                 </a>
-                <a href="mailto:support@infronixweb.in" className="hover:text-primary transition-colors">
+                <a href="mailto:support@infronixweb.in" className="inline-flex min-h-11 items-center hover:text-primary transition-colors">
                   support@infronixweb.in
                 </a>
               </div>

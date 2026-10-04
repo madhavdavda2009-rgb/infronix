@@ -3,11 +3,11 @@
 const FAQS = [
   {
     "question": "What can InfronixWeb help our business with?",
-    "answer": "We help businesses build high-performance web applications, scale search visibility through SEO, run high-ROI digital advertising campaigns, and automate customer workflows like lead capture, CRM synchronization, and WhatsApp follow-ups."
+    "answer": "We build business websites, help customers find you on Google, manage online advertising and save time on enquiries, customer records and WhatsApp follow-ups."
   },
   {
     "question": "Can we start with just one specific service?",
-    "answer": "Yes. We can scope a standalone web application, a technical SEO audit, a targeted advertising campaign, or an automation pipeline tailored around your immediate business priority."
+    "answer": "Yes. Start with a website, a search visibility review, an advertising campaign or help with one repetitive task. We agree the work around your current priority."
   },
   {
     "question": "Do you work with businesses in Ahmedabad and across India?",
@@ -15,15 +15,15 @@ const FAQS = [
   },
   {
     "question": "How are project costs and timelines determined?",
-    "answer": "We review your functional requirements, architecture scope, integrations, and deliverables before delivering a detailed proposal. Ad spend and third-party software licenses are always scoped transparently."
+    "answer": "We review the pages, features, tools and support you need before sharing a proposal. Advertising budgets and any paid tools are listed separately."
   },
   {
     "question": "Do you guarantee search rankings or ad results?",
-    "answer": "We set measurable performance benchmarks and track conversions rigorously. While search algorithms and market competition dictate natural variations, we focus on engineering strategies that deliver measurable commercial ROI."
+    "answer": "No. Search rankings and advertising results depend on competition, your offer and changes made by the platforms. We agree useful goals, measure enquiries and explain the results clearly."
   },
   {
-    "question": "Can you integrate with our existing software stack?",
-    "answer": "Yes. We evaluate your current tools, APIs, webhooks, and database infrastructure to build seamless automations with proper error boundaries and human-in-the-loop controls."
+    "question": "Can you work with the tools we already use?",
+    "answer": "We first check which connections your tools support, what access is needed and how your information is handled. We include review steps and alerts for anything that needs a person to follow up."
   }
 ];
 

@@ -148,7 +148,7 @@ export async function generateMetadata({ params }) {
       siteName: 'InfronixWeb',
       type: 'article',
       publishedTime: post.published_at,
-      modifiedTime: blogEnhancements[post.slug] ? '2026-10-04T00:00:00+05:30' : post.updated_at,
+      modifiedTime: post.editorial_enhancement ? '2026-10-04T00:00:00+05:30' : post.updated_at,
       authors: [post.author_name || 'InfronixWeb Editorial Team'],
       images: [
         {
@@ -183,7 +183,7 @@ export default async function BlogPostPage({ params }) {
 
   const isRepositoryGuide = String(post.id).startsWith('guide-');
   const relatedPosts = (await getRelatedPosts(isRepositoryGuide ? null : post.id, post.category_id, 3, isRepositoryGuide ? post.category_slug : null)).map(p => normalizeBlogImages(enhanceBlogPost(p)));
-  const enhancement = blogEnhancements[post.slug];
+  const enhancement = post.editorial_enhancement ? blogEnhancements[post.slug] : null;
   const articleUrl = post.canonical_url || `https://www.infronixweb.in/blog/${post.slug}`;
 
   // Structured Data Schema
@@ -353,7 +353,7 @@ export default async function BlogPostPage({ params }) {
           {/* Safe Markdown Content Body */}
           <div className="pt-2 pb-10 border-b border-outline/40">
             <SafeMarkdownRenderer content={post.content_markdown?.replace(/^\s*#\s+[^\n]+\n/, '')} fallbackExcerpt={post.excerpt} />
-            {enhancement && <SafeMarkdownRenderer content={enhancement.content} />}
+            {enhancement && !enhancement.replacementMarkdown && <SafeMarkdownRenderer content={enhancement.content} />}
           </div>
 
           {/* Tags & Social Share Footer */}

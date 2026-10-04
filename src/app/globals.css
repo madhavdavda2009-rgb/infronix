@@ -27,8 +27,13 @@
   --color-ink-black: var(--color-deep-space);
 
   /* Typography */
-  --font-heading: var(--font-outfit), sans-serif;
-  --font-body: var(--font-inter), sans-serif;
+  --font-heading: var(--font-cabinet), sans-serif;
+  --font-body: var(--font-general), sans-serif;
+  --font-sans: var(--font-general), sans-serif;
+  --font-serif: var(--font-cabinet), sans-serif;
+  --font-mono: var(--font-general), sans-serif;
+  --font-outfit: var(--font-cabinet), sans-serif;
+  --font-inter: var(--font-general), sans-serif;
 }
 
 @layer base {
@@ -75,16 +80,29 @@
     font-family: var(--font-heading);
     color: var(--color-deep-space);
     letter-spacing: -0.025em;
+    text-wrap: balance;
   }
   
   p {
     color: var(--color-main-text);
+    text-wrap: pretty;
   }
 
   ::selection {
     background-color: var(--color-primary);
     color: #ffffff;
   }
+}
+
+/* The navigation shares the site's paper surface, display type and violet action. */
+.mobile-navigation {
+  padding-top: env(safe-area-inset-top);
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+.mobile-navigation-links > a,
+.mobile-navigation-links > div > button {
+  border-bottom: 1px solid var(--color-outline);
 }
 
 /* Luxury Agency Visual Polish & Micro-Interactions */

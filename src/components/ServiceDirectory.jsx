@@ -5,8 +5,8 @@ import { services } from '@/lib/services';
 const pillars = [
   {
     pillar: 'Build',
-    heading: 'Establish authority with bespoke digital architecture.',
-    description: 'Websites, web applications, and custom platforms engineered to help customers understand your offer and take high-value action.',
+    heading: 'A website that makes your business easy to choose.',
+    description: 'Clear, easy-to-use websites and online stores that help customers understand your offer and get in touch.',
   },
   {
     pillar: 'Grow',
@@ -16,7 +16,7 @@ const pillars = [
   {
     pillar: 'Automate',
     heading: 'Eliminate repetitive workflows & scale capacity.',
-    description: 'Practical automation pipelines for lead intake, WhatsApp responses, and CRM synchronization scoped around your tech stack.',
+    description: 'Save time on enquiries, WhatsApp replies and customer records, using the tools your team already works with.',
   },
 ];
 

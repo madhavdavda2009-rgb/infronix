@@ -10,7 +10,7 @@ const services = [
     title: "Website Development",
     short: "Custom websites designed to win customers.",
     desc: "We build modern, fast, and easy-to-use websites and web apps that showcase your brand and make it easier for interested visitors to enquire or buy.",
-    features: ["Bespoke Brand Design", "High-Performance Speed", "Intuitive UX Architecture", "E-Commerce & Portals"],
+    features: ["Design That Fits Your Brand", "Fast Loading", "Easy Navigation", "Online Stores & Customer Portals"],
     icon: Globe,
     link: "/web-development",
   },

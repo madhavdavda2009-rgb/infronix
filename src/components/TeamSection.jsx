@@ -14,9 +14,9 @@ const myImage = { src: madhavBlogProfile.author_avatar_url };
 const DEFAULT_FOUNDER = {
   id: "founder-canonical",
   name: "Madhav Davda",
-  role: "Founder & Lead Engineer",
-  public_role: "Founder & Lead Engineer",
-  public_bio: "We intentionally keep our operations direct. You work closely with the expert engineering and designing your product.",
+  role: "Founder",
+  public_role: "Founder",
+  public_bio: "Work directly with the person planning, designing and building your website.",
   profile_image_url: myImage.src,
   instagram_url: "https://www.instagram.com/madhavdavda09",
   is_founder: true,
@@ -34,14 +34,14 @@ export default function TeamSection({ initialTeam = null }) {
         
         <div className="mb-12 sm:mb-16 md:mb-20 flex flex-col md:flex-row md:items-end justify-between gap-6 md:gap-8">
           <div className="max-w-2xl">
-            <span className="block text-xs sm:text-sm font-bold tracking-widest uppercase text-text-light mb-3 sm:mb-4">Leadership & Engineering</span>
+            <span className="block text-xs sm:text-sm font-bold tracking-widest uppercase text-text-light mb-3 sm:mb-4">Meet the team</span>
             <h2 className="text-2xl sm:text-4xl md:text-5xl font-heading font-bold text-on-surface leading-tight">
               Direct access. <br className="hidden md:block" />
               Massive impact.
             </h2>
           </div>
           <p className="text-sm sm:text-base md:text-lg text-main-text max-w-md md:text-right font-medium leading-relaxed">
-            We intentionally keep our operations direct. You work closely with the experts engineering and designing your digital product.
+            Work directly with the people planning, designing and building your website.
           </p>
         </div>
 

@@ -67,7 +67,9 @@ export default function Preloader() {
     return () => clearTimeout(timer);
   }, [isIntroActive, transitioning, setIntroPhase]);
 
-  if (!isIntroActive || reduceMotion) return null;
+  // Keep the initial server and browser markup identical. The effect above
+  // completes the intro immediately for visitors who prefer reduced motion.
+  if (!isIntroActive) return null;
 
   return (
     <div data-site-intro className="fixed inset-0 z-[9999] pointer-events-none select-none" aria-hidden="true">

@@ -42,7 +42,7 @@ export default function TermsAndConditions() {
                 <li>AI automation</li>
                 <li>AI chatbot development</li>
                 <li>Business workflow automation</li>
-                <li>API integrations</li>
+                  <li>Connections to other software services</li>
                 <li>Software development</li>
                 <li>Digital consulting</li>
                 <li>Related technology services</li>
@@ -77,7 +77,7 @@ export default function TermsAndConditions() {
                   <p><strong className="text-on-surface">&quot;Deliverables&quot;</strong> means the websites, applications, designs, software, automation workflows, documentation, configurations, or other outputs agreed for a project.</p>
                 </div>
                 <div className="bg-surface-container-low p-4 rounded-lg border border-outline-variant/60">
-                  <p><strong className="text-on-surface">&quot;Third-Party Services&quot;</strong> means services, APIs, platforms, software, hosting providers, AI providers, messaging platforms, payment providers, or other external services not owned or controlled by the Agency.</p>
+                  <p><strong className="text-on-surface">&quot;Third-Party Services&quot;</strong> means services, connections between software services, platforms, software, hosting providers, AI providers, messaging platforms, payment providers, or other external services not owned or controlled by the Agency.</p>
                 </div>
               </div>
             </section>
@@ -147,7 +147,7 @@ export default function TermsAndConditions() {
                 The Agency does not knowingly provide services for unlawful activities.
               </p>
               <p>
-                You must not use our services, websites, software, automation, APIs, or delivered systems to:
+                You must not use our services, websites, software, automation, connections between software services, or delivered systems to:
               </p>
 
               <div className="bg-error-container/10 border border-error/30 rounded-lg p-5 space-y-2">
@@ -227,7 +227,7 @@ export default function TermsAndConditions() {
                 7. Client Authorization and Access
               </h2>
               <p>
-                When a Client provides access to websites, servers, hosting accounts, domains, APIs, databases, social media accounts, advertising accounts, analytics accounts, messaging platforms, or business systems, the Client represents that it has the legal authority to provide such access.
+                When a Client provides access to websites, servers, hosting accounts, domains, connections between software services, databases, social media accounts, advertising accounts, analytics accounts, messaging platforms, or business systems, the Client represents that it has the legal authority to provide such access.
               </p>
               <p>
                 The Agency will not intentionally access systems outside the agreed scope.
@@ -311,7 +311,7 @@ export default function TermsAndConditions() {
                 <li>Work indefinitely with third-party AI providers</li>
               </ul>
               <p className="pt-2">
-                AI services may depend on third-party APIs, models, infrastructure, pricing, usage limits, and policies.
+                AI services may depend on third-party connections between software services, models, infrastructure, pricing, usage limits, and policies.
               </p>
               <p>
                 Changes made by third-party providers may affect an automation.
@@ -406,11 +406,11 @@ export default function TermsAndConditions() {
                 14. Third-Party Services
               </h2>
               <p>
-                Projects may rely on third-party services including AI providers, cloud platforms, hosting providers, payment processors, messaging platforms, APIs, CRM platforms, analytics platforms, domain providers, email providers, and software libraries.
+                Projects may rely on third-party services including AI providers, cloud platforms, hosting providers, payment processors, messaging platforms, connections between software services, CRM platforms, analytics platforms, domain providers, email providers, and software libraries.
               </p>
               <p>Third-party services may:</p>
               <ul className="list-disc pl-6 space-y-1.5 marker:text-on-surface">
-                <li>Change their APIs</li>
+                <li>Change their connections between software services</li>
                 <li>Change pricing</li>
                 <li>Change policies</li>
                 <li>Limit usage</li>
@@ -467,7 +467,7 @@ export default function TermsAndConditions() {
               <div className="bg-surface-container-low p-6 rounded-lg border border-outline-variant/60 space-y-2">
                 <h3 className="text-lg font-semibold text-on-surface">Third-Party Materials</h3>
                 <p>
-                  Third-party libraries, fonts, images, APIs, software, frameworks, and other assets remain subject to their respective licenses.
+                  Third-party libraries, fonts, images, connections between software services, software, reusable software foundations, and other assets remain subject to their respective licenses.
                 </p>
               </div>
 
@@ -477,7 +477,7 @@ export default function TermsAndConditions() {
                   Ownership and licensing of custom deliverables will be determined by the applicable project agreement.
                 </p>
                 <p>
-                  The Agency may retain ownership of general-purpose development techniques, frameworks, libraries, templates, internal tools, reusable components, and general know-how, provided that doing so does not disclose the Client&apos;s confidential information.
+                  The Agency may retain ownership of general-purpose development techniques, reusable software foundations, libraries, templates, internal tools, reusable components, and general know-how, provided that doing so does not disclose the Client&apos;s confidential information.
                 </p>
               </div>
             </section>
@@ -680,7 +680,7 @@ export default function TermsAndConditions() {
                 <li>Maintenance</li>
                 <li>Hosting failures</li>
                 <li>Internet failures</li>
-                <li>Third-party API outages</li>
+                <li>Unavailable connections to third-party services</li>
                 <li>Cloud infrastructure failures</li>
                 <li>Security incidents</li>
                 <li>DNS issues</li>
@@ -722,7 +722,7 @@ export default function TermsAndConditions() {
                 <li>AI errors</li>
                 <li>Search-engine changes</li>
                 <li>Platform restrictions</li>
-                <li>API changes</li>
+                <li>Changes to connections between software services</li>
               </ul>
               <p className="pt-2">
                 Nothing in these Terms excludes or limits liability that cannot legally be excluded or limited.
@@ -875,7 +875,7 @@ export default function TermsAndConditions() {
                 36. Important Notice
               </h2>
               <p>
-                These Terms and Conditions are intended as a general framework for the use of our website and services.
+                These Terms and Conditions are intended as a general set of rules for the use of our website and services.
               </p>
               <p>
                 A separate Client Service Agreement may contain additional terms concerning:
