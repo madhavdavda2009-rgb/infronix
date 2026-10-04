@@ -1,6 +1,8 @@
 "use client";
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useMemo } from 'react';
+import { usePublicData } from '@/hooks/usePublicData';
 import Link from 'next/link';
+import Image from 'next/image';
 import { 
   MagnifyingGlass, 
   CalendarBlank, 
@@ -17,7 +19,11 @@ export default function BlogListClient({
   initialTags = [], 
   initialError = false 
 }) {
-  const categories = initialCategories;
+  const initialData = useMemo(() => ({ success: !initialError, posts: initialPosts, categories: initialCategories, tags: initialTags }), [initialError, initialPosts, initialCategories, initialTags]);
+  const data = usePublicData('/api/public/blogs', initialData);
+  const posts = data?.posts || initialPosts;
+  const categories = data?.categories || initialCategories;
+  const loadError = !data?.success;
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [selectedTag, setSelectedTag] = useState('all');
   const [searchQuery, setSearchQuery] = useState('');
@@ -25,7 +31,7 @@ export default function BlogListClient({
   // Instant 0ms In-Memory Filter for 60fps real-time search without network roundtrip
   const filteredPosts = React.useMemo(() => {
     const q = searchQuery.trim().toLowerCase();
-    return initialPosts.filter((post) => {
+    return posts.filter((post) => {
       // Category filter
       if (selectedCategory !== 'all' && post.category_slug !== selectedCategory) {
         return false;
@@ -48,7 +54,7 @@ export default function BlogListClient({
       }
       return true;
     });
-  }, [initialPosts, selectedCategory, selectedTag, searchQuery]);
+  }, [posts, selectedCategory, selectedTag, searchQuery]);
 
   // Featured post (if any in the current result set)
   const featuredPost = selectedCategory === 'all' && selectedTag === 'all' && !searchQuery.trim()
@@ -141,8 +147,11 @@ export default function BlogListClient({
               {/* Cover Image */}
               <div className="lg:col-span-6 overflow-hidden rounded-xl sm:rounded-2xl aspect-[16/10] bg-surface relative">
                 {featuredPost.cover_image_url ? (
-                  <img
+                  <Image
                     src={featuredPost.cover_image_url}
+                    fill
+                    sizes="(min-width: 1024px) 600px, 100vw"
+                    loading="eager"
                     alt={featuredPost.cover_image_alt || featuredPost.title}
                     className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                     decoding="async"
@@ -182,8 +191,10 @@ export default function BlogListClient({
                 <div className="flex items-center justify-between pt-4 border-t border-outline-variant/40 mt-auto">
                   <div className="flex items-center gap-2.5">
                     {featuredPost.author_avatar_url ? (
-                      <img 
+                      <Image
                         src={featuredPost.author_avatar_url} 
+                        style={{ objectPosition: featuredPost.author_avatar_position || 'center' }}
+                        width={32} height={32}
                         alt="" 
                         className="w-8 h-8 rounded-full object-cover border border-outline-variant"
                         loading="lazy"
@@ -221,10 +232,10 @@ export default function BlogListClient({
               <Article size={32} />
             </div>
             <h3 className="text-xl sm:text-2xl font-heading font-bold text-on-surface mb-2">
-              {initialError ? 'Articles are temporarily unavailable' : 'No articles found'}
+              {loadError ? 'Articles are temporarily unavailable' : 'No articles found'}
             </h3>
             <p className="text-sm text-main-text leading-relaxed mb-6">
-              {initialError ? 'Please try reloading this page. You can still contact us to discuss your project.' : searchQuery || selectedCategory !== 'all' || selectedTag !== 'all'
+              {loadError ? 'Please try reloading this page. You can still contact us to discuss your project.' : searchQuery || selectedCategory !== 'all' || selectedTag !== 'all'
                 ? 'No published articles matched your search query or topic filters. Try clearing your filters.'
                 : 'Our digital insights, engineering guides, and automation strategies are being written. Check back soon!'}
             </p>
@@ -249,8 +260,10 @@ export default function BlogListClient({
                   {/* Article Thumbnail */}
                   <div className="aspect-[16/10] w-full rounded-xl overflow-hidden bg-surface mb-4 relative">
                     {post.cover_image_url ? (
-                      <img
+                      <Image
                         src={post.cover_image_url}
+                        fill
+                        sizes="(min-width: 1024px) 400px, (min-width: 640px) 50vw, 100vw"
                         alt={post.cover_image_alt || post.title}
                         className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                         loading="lazy"
@@ -295,8 +308,10 @@ export default function BlogListClient({
                 <div className="pt-3.5 border-t border-outline-variant/40 flex items-center justify-between text-xs mt-auto">
                   <div className="flex items-center gap-2">
                     {post.author_avatar_url ? (
-                      <img 
+                      <Image
                         src={post.author_avatar_url} 
+                        style={{ objectPosition: post.author_avatar_position || 'center' }}
+                        width={24} height={24}
                         alt="" 
                         className="w-6 h-6 rounded-full object-cover border border-outline-variant"
                         loading="lazy"

@@ -3,6 +3,10 @@ import { pageMetadata } from '@/lib/site-seo';
 import CTASection from '@/components/CTASection';
 import Breadcrumb from '@/components/Breadcrumb';
 import BlogListClient from '@/components/BlogListClient';
+import { buildBlogCatalog } from '@/lib/blog-catalog';
+import { enhanceBlogPost } from '@/lib/blog-enhancements';
+import { normalizeBlogImages } from '@/lib/blog-images';
+import { getGuideAuthor } from '@/lib/editorial-guide-author';
 
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
@@ -14,6 +18,7 @@ export const metadata = pageMetadata(
 );
 
 export default async function BlogPage() {
+  const guideAuthorPromise = getGuideAuthor();
   let initialPosts = [];
   let initialCategories = [];
   let initialTags = [];
@@ -68,13 +73,16 @@ export default async function BlogPage() {
       `)
     ]);
 
-    initialPosts = JSON.parse(JSON.stringify(postsRes.rows || []));
+    initialPosts = JSON.parse(JSON.stringify((postsRes.rows || []).map(p => normalizeBlogImages(enhanceBlogPost(p)))));
     initialCategories = JSON.parse(JSON.stringify(catsRes.rows || []));
     initialTags = JSON.parse(JSON.stringify(tagsRes.rows || []));
   } catch (err) {
     console.error('Failed to load initial blog data:', err?.message);
     initialError = true;
   }
+  const catalog = buildBlogCatalog(initialPosts, initialCategories, {}, initialPosts.map(p => p.slug), await guideAuthorPromise);
+  initialPosts = catalog.posts;
+  initialCategories = catalog.categories;
 
   return (
     <>

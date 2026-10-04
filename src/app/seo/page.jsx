@@ -59,10 +59,10 @@ export default function SEOPage() {
                 <span className="w-8 sm:w-12 h-[2px] bg-primary" /> SEO Optimization
               </span>
               <h1 className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-heading font-bold text-on-surface leading-tight tracking-tight">
-                SEO Services That Improve Your Business Visibility
+                {service.heading}
               </h1>
               <p className="text-base sm:text-lg md:text-xl text-main-text font-medium max-w-2xl leading-relaxed">
-                InfronixWeb is a digital marketing agency helping businesses improve their search engine visibility, reach relevant customers, and build a stronger online presence.
+                InfronixWeb helps Ahmedabad businesses improve search visibility through technical SEO, useful content and local search strategy. We prioritize work from your site and Search Console evidence.
               </p>
               <p className="text-sm sm:text-base text-text-light font-medium max-w-2xl leading-relaxed">
                 Our SEO optimization services focus on technical improvements, relevant content, keyword research, and local search strategies designed around your business goals.

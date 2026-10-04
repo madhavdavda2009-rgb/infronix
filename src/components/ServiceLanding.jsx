@@ -17,7 +17,7 @@ export default function ServiceLanding({ slug }) {
     </section>
     <section className="py-12 sm:py-16 bg-surface">
       <div className="max-w-[1280px] mx-auto px-4 sm:px-6 md:px-12">
-        <h2 className="text-2xl sm:text-3xl mb-6">What we can help with</h2>
+        <h2 className="text-2xl sm:text-3xl mb-6">{slug === 'google-ads' ? 'Search Ads, campaign setup and optimization' : 'What we can help with'}</h2>
         <ul className="grid sm:grid-cols-2 gap-x-12 gap-y-4">{service.includes.map(item => <li key={item} className="py-4 border-b border-outline-variant leading-relaxed">{item}</li>)}</ul>
         <p className="mt-6 text-sm text-text-light">Your proposal defines the deliverables, access requirements, costs and support included in the agreed scope.</p>
       </div>

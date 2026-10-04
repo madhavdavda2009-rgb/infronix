@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server';
+import { revalidatePath } from 'next/cache';
 import { query, initFounderOSDb } from '@/lib/founder_os_db';
 import { verifyAdminAuth } from '@/lib/auth';
 import { logActivity } from '@/lib/audit_logger';
@@ -52,6 +53,8 @@ export async function PUT(request, { params }) {
 
     const updated = res.rows[0];
     await logActivity(auth.username, 'BlogTag', id, 'Updated', `Updated tag: ${updated.name}`);
+    revalidatePath('/blog');
+    revalidatePath('/blog/[slug]', 'page');
 
     return NextResponse.json({ success: true, tag: updated });
   } catch (err) {
@@ -79,6 +82,8 @@ export async function DELETE(request, { params }) {
 
     await query('DELETE FROM founder_os_blog_tags WHERE id = $1', [id]);
     await logActivity(auth.username, 'BlogTag', id, 'Deleted', `Deleted tag: ${tag.name}`);
+    revalidatePath('/blog');
+    revalidatePath('/blog/[slug]', 'page');
 
     return NextResponse.json({ success: true });
   } catch (err) {

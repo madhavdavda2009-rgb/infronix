@@ -40,7 +40,8 @@ export default function StartProjectPage() {
 
   useEffect(() => {
     const requestedService = new URLSearchParams(window.location.search).get('service');
-    if (services.some(service => service.name === requestedService)) setSelectedServices([requestedService]);
+    const matchedService = services.find(service => service.slug === requestedService?.toLowerCase() || service.name.toLowerCase() === requestedService?.toLowerCase());
+    if (matchedService) setSelectedServices([matchedService.name]);
     const savedRef = localStorage.getItem('infronixweb_project_ref');
     if (savedRef) {
       setReferenceId(savedRef);

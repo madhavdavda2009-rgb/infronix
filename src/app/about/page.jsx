@@ -3,10 +3,14 @@ import AboutSection from '@/components/AboutSection';
 import AboutTeamSection from '@/components/AboutTeamSection';
 import CTASection from '@/components/CTASection';
 import Breadcrumb from '@/components/Breadcrumb';
+import { getInitialPublicTeam } from '@/lib/public-team';
 
 export const metadata = pageMetadata("About Our Ahmedabad Digital Agency", "Meet InfronixWeb, an Ahmedabad-based agency helping businesses with websites, SEO, digital marketing, advertising and automation.", '/about');
 
-export default function AboutPage() {
+export const revalidate = 0;
+
+export default async function AboutPage() {
+  const team = await getInitialPublicTeam('about');
   return (
     <>
       <main className="w-full pt-20 sm:pt-28 md:pt-32" id="main-content">
@@ -16,7 +20,7 @@ export default function AboutPage() {
         <AboutSection asH1={true} />
 
         {/* Leadership and Team Section */}
-        <AboutTeamSection />
+        <AboutTeamSection initialTeam={team} />
 
         {/* Local Context */}
         <section className="w-full py-12 sm:py-16 bg-surface border-b border-outline-variant/30">

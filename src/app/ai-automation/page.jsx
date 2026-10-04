@@ -69,7 +69,7 @@ export default function AIAutomationPage() {
                 <span className="w-8 sm:w-12 h-[2px] bg-primary" /> AI Automation
               </span>
               <h1 className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-heading font-bold text-on-surface leading-tight tracking-tight">
-                Work Smarter. Automate the Busywork.
+                {service.heading}
               </h1>
               <p className="text-base sm:text-lg md:text-xl text-main-text font-medium max-w-2xl leading-relaxed">
                 InfronixWeb is a digital marketing agency based in Ahmedabad that helps businesses use AI automation to simplify repetitive tasks, improve customer communication, and streamline everyday operations.

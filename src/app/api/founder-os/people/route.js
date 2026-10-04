@@ -3,6 +3,7 @@ import { revalidatePath } from 'next/cache';
 import { query, initFounderOSDb } from '@/lib/founder_os_db';
 import { verifyAdminAuth } from '@/lib/auth';
 import { logActivity } from '@/lib/audit_logger';
+import { EMPLOYMENT_TYPES } from '@/lib/team-types';
 
 function generateSlug(name) {
   if (!name) return `member-${Date.now()}`;
@@ -42,7 +43,7 @@ export async function GET(request) {
 
     sql += `
       ORDER BY 
-        CASE WHEN employment_type = 'Founder' OR is_founder = TRUE THEN 0 ELSE 1 END,
+        CASE WHEN employment_type = 'Founder' OR is_founder = TRUE THEN 0 WHEN employment_type = 'Co-Founder' THEN 1 ELSE 2 END,
         display_order ASC,
         created_at DESC
     `;
@@ -89,6 +90,9 @@ export async function POST(request) {
 
     if (!name || !role) {
       return NextResponse.json({ success: false, error: 'Name and role are required.' }, { status: 400 });
+    }
+    if (employment_type && !EMPLOYMENT_TYPES.includes(employment_type)) {
+      return NextResponse.json({ success: false, error: 'Invalid employment type.' }, { status: 400 });
     }
 
     const cleanName = name.trim();
@@ -164,4 +168,3 @@ export async function POST(request) {
     return NextResponse.json({ success: false, error: err.message }, { status: 500 });
   }
 }
-

@@ -74,7 +74,6 @@ export default function RootLayout({ children }) {
                   description: 'An Ahmedabad-based digital agency helping businesses build high-performance web applications, scale search visibility with SEO, manage digital ads, and automate operations.',
                   telephone: '+91-6355792936', 
                   email: 'support@infronixweb.in',
-                  priceRange: '₹₹',
                   address: {
                     '@type': 'PostalAddress',
                     streetAddress: 'Shree Eklingji Residency 2',
@@ -83,17 +82,12 @@ export default function RootLayout({ children }) {
                     postalCode: '382110',
                     addressCountry: 'IN'
                   },
-                  geo: {
-                    '@type': 'GeoCoordinates',
-                    latitude: 22.9868,
-                    longitude: 72.3814
-                  },
                   openingHoursSpecification: [
                     {
                       '@type': 'OpeningHoursSpecification',
                       dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
                       opens: '09:00',
-                      closes: '19:00'
+                      closes: '20:00'
                     }
                   ],
                   areaServed: [
@@ -103,8 +97,7 @@ export default function RootLayout({ children }) {
                   ],
                   sameAs: [
                     'https://www.instagram.com/infronixwebagency2026', 
-                    'https://www.linkedin.com/company/infronixweb/',
-                    'https://github.com/madhavdavda2009-rgb'
+                    'https://www.linkedin.com/company/infronixweb/'
                   ] 
                 },
                 { 
@@ -112,15 +105,7 @@ export default function RootLayout({ children }) {
                   '@id': SITE_URL + '/#website', 
                   url: SITE_URL, 
                   name: 'InfronixWeb', 
-                  publisher: { '@id': SITE_URL + '/#organization' },
-                  potentialAction: {
-                    '@type': 'SearchAction',
-                    target: {
-                      '@type': 'EntryPoint',
-                      urlTemplate: `${SITE_URL}/blog?search={search_term_string}`
-                    },
-                    'query-input': 'required name=search_term_string'
-                  }
+                  publisher: { '@id': SITE_URL + '/#organization' }
                 }
               ]
             })

@@ -2,9 +2,9 @@
 export const services = [
   {
     slug: 'web-development', pillar: 'Build', name: 'Website Development',
-    title: 'Website Design & Development in Ahmedabad',
+    title: 'Web Development Company in Ahmedabad',
     description: 'Business websites, e-commerce stores, landing pages and custom web applications from InfronixWeb in Ahmedabad. Plan a new website or a careful redesign.',
-    heading: 'Websites built around your customers and your business.',
+    heading: 'Web Development Company in Ahmedabad',
     intro: 'A useful website makes your offer easy to understand and the next step easy to take. We plan, design and develop responsive websites for businesses in Ahmedabad and beyond.',
     includes: ['Business and corporate websites with clear service navigation', 'E-commerce catalogues, product pages and checkout integrations', 'Campaign landing pages and enquiry forms', 'Custom web applications and business integrations', 'Website redesign with URL and content migration planning', 'Responsive testing, image optimization and technical SEO foundations'],
     problems: 'Unclear navigation, slow pages and hard-to-use mobile forms can prevent interested visitors from getting in touch. We identify those gaps before deciding what to rebuild or retain.',
@@ -16,9 +16,9 @@ export const services = [
     related: ['seo', 'digital-marketing', 'crm-automation'], proof: true,
   },
   {
-    slug: 'seo', pillar: 'Grow', name: 'SEO', title: 'SEO & Local SEO Services in Ahmedabad',
+    slug: 'seo', pillar: 'Grow', name: 'SEO', title: 'SEO Services in Ahmedabad | Technical & Local SEO',
     description: 'Technical SEO, local SEO, keyword research and content optimization for Ahmedabad businesses. Start with an audit and a measurable improvement plan.',
-    heading: 'SEO Services That Improve Your Business Visibility',
+    heading: 'SEO Services in Ahmedabad',
     intro: 'Help people find useful answers and relevant services through organic search. Our SEO work connects technical fixes, page content and local business information to your actual customer needs.',
     includes: ['SEO audit and prioritized technical recommendations', 'Search-intent research and a page-to-keyword map', 'Titles, headings, content improvements and internal linking', 'Crawlability, indexing, canonicals and performance checks', 'Google Business Profile review and consistent local information', 'Relevant off-page opportunities and reporting on organic enquiries'],
     problems: 'A site may be difficult to crawl, target the same query on several pages, or omit the information a customer needs. We diagnose the cause instead of repeating keywords across every page.',
@@ -44,9 +44,9 @@ export const services = [
     related: ['seo', 'digital-marketing/social-media-marketing', 'google-ads', 'meta-ads', 'performance-marketing'],
   },
   {
-    slug: 'ai-automation', pillar: 'Automate', name: 'AI Automation', title: 'AI Automation Services in Ahmedabad',
+    slug: 'ai-automation', pillar: 'Automate', name: 'AI Automation', title: 'AI Automation Agency in Ahmedabad',
     description: 'Practical AI and workflow automation for Ahmedabad businesses: lead capture, chatbots, WhatsApp, CRM, email and operations integrations scoped to your tools.',
-    heading: 'AI Automation Solutions for Smarter Business Operations',
+    heading: 'AI Automation Agency in Ahmedabad',
     intro: 'Reduce repetitive work while keeping people responsible for important decisions. We map your workflow, check integration feasibility and build automations around the tools your team uses.',
     includes: ['Automatic lead capture and qualification workflows', 'Customer-support chatbots with human handoff', 'WhatsApp enquiries and appointment reminders', 'CRM updates, sales follow-ups and email automation', 'Document and data-processing workflows with review steps', 'Integration testing, failure alerts and handover documentation'],
     problems: 'Copying enquiries between tools, missing follow-ups and repeatedly answering the same questions take time away from customers. Start with a specific workflow and a clear owner.',
@@ -58,9 +58,9 @@ export const services = [
     related: ['ai-chatbot', 'whatsapp-automation', 'crm-automation'],
   },
   {
-    slug: 'google-ads', pillar: 'Grow', name: 'Google Ads', title: 'Google Ads Management in Ahmedabad',
-    description: 'Google Ads strategy, search campaigns, keyword research, conversion tracking and budget monitoring for Ahmedabad businesses. Plan campaigns around relevant enquiries.',
-    heading: 'Reach customers when they are searching for your services.',
+    slug: 'google-ads', pillar: 'Grow', name: 'Google Ads', title: 'Google Ads Management Company in Ahmedabad',
+    description: 'Google Ads management for Ahmedabad businesses. Plan PPC search campaigns, audit existing ads, track conversions and optimize budgets with InfronixWeb.',
+    heading: 'Google Ads Management Company in Ahmedabad',
     intro: 'Google Search campaigns can connect a clear offer with people already looking for it. We align keywords, ad copy and landing pages so the click leads to a useful next step.',
     includes: ['Demand and keyword research, including negative keywords', 'Campaign structure, ad groups and search ad copy', 'Location targeting and budget planning', 'Landing-page alignment and conversion tracking checks', 'Search-term review, testing and budget monitoring', 'Reporting on spend, enquiries and lead quality'],
     problems: 'Broad targeting and untracked forms can spend money without showing which enquiries are relevant. We check measurement and intent before expanding campaigns.',
@@ -68,7 +68,7 @@ export const services = [
     process: ['Review demand, account access, goals and an affordable test budget.', 'Build tightly related ad groups and align the destination pages.', 'Validate conversion events and launch the agreed campaigns.', 'Review search terms, costs and sales feedback; test changes deliberately.'],
     example: 'Illustrative campaign: a local B2B service could target specific service searches within its service area and send visitors to a page with relevant examples and a short enquiry form.',
     measure: 'Track spend, click-through rate, cost per enquiry and qualified lead rate. Clicks are not sales; results depend on competition, offer, landing page and follow-up.',
-    faqs: [['What budget should we start with?', 'We review search demand and click costs before proposing a test budget. Media spend is separate from management fees.'], ['Can you work with an existing account?', 'Yes, with appropriate access. Existing campaign history and tracking are reviewed before changes.'], ['Do you guarantee leads?', 'No. We define the measurement plan and review results, but cannot guarantee enquiries, sales or acquisition costs.']],
+    faqs: [['What does Google Ads management include?', 'The agreed scope can include an account audit, keyword and negative-keyword research, search campaign setup, ad copy, conversion tracking checks, optimization and reporting. Landing-page development and media spend are scoped separately.'], ['How much should a business spend on Google Ads?', 'We review search demand, likely click costs, your service area and the value of a qualified enquiry before proposing a test budget. Media spend is separate from management fees; there is no suitable fixed budget for every business.'], ['Do you manage existing Google Ads campaigns?', 'Yes, with appropriate account access. We review campaign history, search terms, budgets, targeting and tracking before recommending changes. Google AdWords is the former name of Google Ads, so older accounts can be reviewed too.'], ['How do you track Google Ads conversions?', 'We agree which actions matter, such as a completed enquiry or purchase, then check the relevant Google Ads or analytics events. A button click is reported separately from a confirmed lead, and offline sales feedback is included when reliable data is available.'], ['How long does it take to optimize a campaign?', 'Setup and tracking checks come first. Optimization continues as search terms, conversions and sales feedback accumulate. The review schedule depends on traffic and budget; we do not promise a fixed date for profitable results.'], ['Do you guarantee leads?', 'No. We define the measurement plan and review results, but cannot guarantee enquiries, sales or acquisition costs.']],
     related: ['seo', 'meta-ads', 'performance-marketing', 'web-development'],
   },
   {

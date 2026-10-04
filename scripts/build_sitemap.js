@@ -1,7 +1,6 @@
 import dotenv from 'dotenv';
 dotenv.config();
 
-import fs from 'fs';
 import { getDynamicSitemapEntries } from '../src/lib/sitemap_generator.js';
 
 async function build() {
@@ -9,13 +8,13 @@ async function build() {
     const entries = await getDynamicSitemapEntries();
     let xml = '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n';
     for (const e of entries) {
-      const dateStr = (new Date(e.lastModified)).toISOString().split('T')[0];
-      xml += `  <url>\n    <loc>${e.url}</loc>\n    <lastmod>${dateStr}</lastmod>\n    <changefreq>${e.changeFrequency}</changefreq>\n    <priority>${e.priority}</priority>\n  </url>\n`;
+      const lastmod = e.lastModified ? `    <lastmod>${new Date(e.lastModified).toISOString()}</lastmod>\n` : '';
+      xml += `  <url>\n    <loc>${e.url}</loc>\n${lastmod}  </url>\n`;
     }
     xml += '</urlset>\n';
 
-    fs.writeFileSync('public/sitemap.xml', xml);
-    console.log(`✓ Successfully generated permanent public/sitemap.xml with ${entries.length} URLs.`);
+    // Print a diagnostic snapshot; the production sitemap is src/app/sitemap.js.
+    console.log(xml);
     process.exit(0);
   } catch (err) {
     console.error('Failed to generate sitemap.xml:', err);

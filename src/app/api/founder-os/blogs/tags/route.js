@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server';
+import { revalidatePath } from 'next/cache';
 import { query, initFounderOSDb } from '@/lib/founder_os_db';
 import { verifyAdminAuth } from '@/lib/auth';
 import { logActivity } from '@/lib/audit_logger';
@@ -71,6 +72,8 @@ export async function POST(request) {
 
     const tag = res.rows[0];
     await logActivity(auth.username, 'BlogTag', tag.id, 'Created', `Created blog tag: ${tag.name}`);
+    revalidatePath('/blog');
+    revalidatePath('/blog/[slug]', 'page');
 
     return NextResponse.json({ success: true, tag });
   } catch (err) {

@@ -1,5 +1,6 @@
 'use client';
 import { useState } from 'react';
+import { EMPLOYMENT_TYPES } from '@/lib/team-types';
 
 export default function CreateTeamMember({ onCreated }) {
   const [open, setOpen] = useState(false);
@@ -32,7 +33,7 @@ export default function CreateTeamMember({ onCreated }) {
     </label>)}
     <label className="block text-slate-700">Employment type
       <select value={fields.employment_type} onChange={event => setFields({ ...fields, employment_type: event.target.value })} className="mt-1 w-full rounded-lg border border-slate-300 bg-white p-2">
-        {['Founder', 'Employee', 'Freelancer', 'Contractor', 'Intern'].map(type => <option key={type}>{type}</option>)}
+        {EMPLOYMENT_TYPES.map(type => <option key={type}>{type}</option>)}
       </select>
     </label>
     {error && <p role="alert" className="text-red-700">{error}</p>}

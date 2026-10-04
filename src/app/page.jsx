@@ -5,6 +5,7 @@ import HeroSection from '@/components/HeroSection';
 import ServicesSection from '@/components/ServicesSection';
 import PortfolioSection from '@/components/PortfolioSection';
 import AboutSection from '@/components/AboutSection';
+import { getInitialPublicTeam } from '@/lib/public-team';
 import { ArrowRight, BookOpen } from '@phosphor-icons/react/dist/ssr';
 
 const ProcessSection = dynamic(() => import('@/components/ProcessSection'));
@@ -12,7 +13,10 @@ const TeamSection = dynamic(() => import('@/components/TeamSection'));
 const FAQSection = dynamic(() => import('@/components/FAQSection'));
 const CTASection = dynamic(() => import('@/components/CTASection'));
 
-export default function Home() {
+export const revalidate = 0;
+
+export default async function Home() {
+  const team = await getInitialPublicTeam('home');
   return (
     <>
       <main className="w-full pt-20 sm:pt-24 md:pt-28 lg:pt-32" id="main-content">
@@ -28,7 +32,7 @@ export default function Home() {
         <PortfolioSection />
         <AboutSection />
         <ProcessSection />
-        <TeamSection />
+        <TeamSection initialTeam={team} />
 
         {/* Executive Blog / Insights Teaser Banner */}
         <section className="py-16 sm:py-20 bg-surface-container-lowest">

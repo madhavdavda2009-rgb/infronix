@@ -1,8 +1,9 @@
 import React, { cache } from 'react';
-import { serializeJsonLd } from '@/lib/site-seo';
+import { serializeJsonLd, SITE_URL } from '@/lib/site-seo';
 import { RelatedServices } from '@/components/ServiceDetails';
 import Link from 'next/link';
-import { notFound, redirect } from 'next/navigation';
+import Image from 'next/image';
+import { notFound, permanentRedirect } from 'next/navigation';
 import { 
   CalendarBlank, 
   Clock, 
@@ -15,6 +16,11 @@ import { query } from '@/lib/founder_os_db';
 import { SafeMarkdownRenderer } from '@/lib/markdown_parser';
 import CTASection from '@/components/CTASection';
 import ShareButtons from '@/components/ShareButtons';
+import { getPublicEditorialGuide } from '@/lib/editorial-guide-author';
+import { blogEnhancements, enhanceBlogPost } from '@/lib/blog-enhancements';
+import { normalizeBlogImages } from '@/lib/blog-images';
+import { blogRevision } from '@/lib/blog-revision';
+import PublicArticleRefresh from '@/components/PublicArticleRefresh';
 
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
@@ -62,7 +68,7 @@ const getBlogPost = cache(async function getBlogPost(slug) {
     `, [cleanSlug]);
 
     if (res.rows.length > 0) {
-      return { post: res.rows[0], redirected: false, targetSlug: null };
+      return { post: normalizeBlogImages(enhanceBlogPost(res.rows[0])), redirected: false, targetSlug: null };
     }
 
     // 2. Check previous_slugs_json for old slugs (redirect)
@@ -77,14 +83,14 @@ const getBlogPost = cache(async function getBlogPost(slug) {
       return { post: null, redirected: true, targetSlug: redirRes.rows[0].slug };
     }
 
-    return { post: null, redirected: false, targetSlug: null };
+    return { post: await getPublicEditorialGuide(cleanSlug), redirected: false, targetSlug: null };
   } catch (err) {
     console.error('Error fetching blog post:', err);
-    return { post: null, redirected: false, targetSlug: null };
+    return { post: await getPublicEditorialGuide(cleanSlug), redirected: false, targetSlug: null };
   }
 });
 
-async function getRelatedPosts(postId, categoryId, limit = 3) {
+async function getRelatedPosts(postId, categoryId, limit = 3, categorySlug = null) {
   try {
     const res = await query(`
       SELECT 
@@ -93,12 +99,13 @@ async function getRelatedPosts(postId, categoryId, limit = 3) {
         c.name as category_name, c.slug as category_slug
       FROM founder_os_blogs b
       LEFT JOIN founder_os_blog_categories c ON b.category_id = c.id
-      WHERE b.id != $1
+      WHERE ($1::int IS NULL OR b.id != $1)
         AND ($2::int IS NULL OR b.category_id = $2)
+        AND ($4::text IS NULL OR c.slug = $4)
         AND (b.status = 'Published' OR (b.status = 'Scheduled' AND b.scheduled_for <= NOW()))
       ORDER BY b.published_at DESC
       LIMIT $3
-    `, [postId, categoryId || null, limit]);
+    `, [postId, categoryId || null, limit, categorySlug]);
     return res.rows;
   } catch {
     return [];
@@ -141,7 +148,7 @@ export async function generateMetadata({ params }) {
       siteName: 'InfronixWeb',
       type: 'article',
       publishedTime: post.published_at,
-      modifiedTime: post.updated_at,
+      modifiedTime: blogEnhancements[post.slug] ? '2026-10-04T00:00:00+05:30' : post.updated_at,
       authors: [post.author_name || 'InfronixWeb Editorial Team'],
       images: [
         {
@@ -167,14 +174,16 @@ export default async function BlogPostPage({ params }) {
   const { post, redirected, targetSlug } = await getBlogPost(slug);
 
   if (redirected && targetSlug) {
-    redirect(`/blog/${targetSlug}`);
+    permanentRedirect(`/blog/${targetSlug}`);
   }
 
   if (!post) {
     notFound();
   }
 
-  const relatedPosts = await getRelatedPosts(post.id, post.category_id, 3);
+  const isRepositoryGuide = String(post.id).startsWith('guide-');
+  const relatedPosts = (await getRelatedPosts(isRepositoryGuide ? null : post.id, post.category_id, 3, isRepositoryGuide ? post.category_slug : null)).map(p => normalizeBlogImages(enhanceBlogPost(p)));
+  const enhancement = blogEnhancements[post.slug];
   const articleUrl = post.canonical_url || `https://www.infronixweb.in/blog/${post.slug}`;
 
   // Structured Data Schema
@@ -183,12 +192,12 @@ export default async function BlogPostPage({ params }) {
     '@type': 'BlogPosting',
     headline: post.title,
     description: post.excerpt,
-    image: post.cover_image_url ? [post.cover_image_url] : ['https://www.infronixweb.in/opengraph-image.webp'],
+    image: [new URL(post.cover_image_url || '/opengraph-image.webp', SITE_URL).href],
     datePublished: post.published_at,
-    dateModified: post.updated_at,
+    dateModified: enhancement ? '2026-10-04T00:00:00+05:30' : post.updated_at,
     author: {
-      '@type': post.author_name ? 'Person' : 'Organization',
-      name: post.author_name || 'InfronixWeb Editorial Team',
+      '@type': post.author_type || (post.author_name ? 'Person' : 'Organization'),
+      name: post.author_name || 'InfronixWeb',
       ...(post.author_role ? { jobTitle: post.author_role } : {})
     },
     publisher: {
@@ -233,6 +242,7 @@ export default async function BlogPostPage({ params }) {
 
   return (
     <>
+      <PublicArticleRefresh slug={post.slug} revision={blogRevision(post)} />
       {/* Schema.org Structured Data */}
       <script
         type="application/ld+json"
@@ -273,14 +283,17 @@ export default async function BlogPostPage({ params }) {
           <p className="text-base sm:text-lg md:text-xl text-main-text font-normal leading-relaxed mb-8 pb-8 border-b border-outline/50">
             {post.excerpt}
           </p>
+          {enhancement && <p className="mb-6 leading-relaxed"><Link href={`/${enhancement.service}`} className="text-primary underline underline-offset-4">{enhancement.serviceLabel}</Link></p>}
 
           {/* Author & Meta Row */}
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
             <div className="flex items-center gap-3">
               {post.author_avatar_url ? (
-                <img
+                <Image
                   src={post.author_avatar_url}
-                  alt={post.author_name}
+                  style={{ objectPosition: post.author_avatar_position || 'center' }}
+                  alt={post.author_name || ''}
+                  width={48} height={48}
                   className="w-12 h-12 rounded-full object-cover border-2 border-outline"
                   loading="lazy"
                   decoding="async"
@@ -302,6 +315,7 @@ export default async function BlogPostPage({ params }) {
               <span className="flex items-center gap-1">
                 <CalendarBlank size={15} />
                 {new Date(post.published_at).toLocaleDateString('en-IN', {
+                  timeZone: 'Asia/Kolkata',
                   month: 'long',
                   day: 'numeric',
                   year: 'numeric'
@@ -313,12 +327,16 @@ export default async function BlogPostPage({ params }) {
               </span>
             </div>
           </div>
+          {enhancement && <p className="text-xs text-text-light mb-6">Guide updated on 4 October 2026.</p>}
 
           {/* Cover Photo */}
           {post.cover_image_url && (
             <div className="mb-10 sm:mb-12 rounded-2xl overflow-hidden border border-outline shadow-md bg-surface">
-              <img
+              <Image
                 src={post.cover_image_url}
+                width={1600} height={900}
+                sizes="(min-width: 880px) 880px, 100vw"
+                loading="eager"
                 alt={post.cover_image_alt || post.title}
                 className="w-full aspect-[16/9] object-cover"
                 decoding="async"
@@ -334,7 +352,8 @@ export default async function BlogPostPage({ params }) {
 
           {/* Safe Markdown Content Body */}
           <div className="pt-2 pb-10 border-b border-outline/40">
-            <SafeMarkdownRenderer content={post.content_markdown} fallbackExcerpt={post.excerpt} />
+            <SafeMarkdownRenderer content={post.content_markdown?.replace(/^\s*#\s+[^\n]+\n/, '')} fallbackExcerpt={post.excerpt} />
+            {enhancement && <SafeMarkdownRenderer content={enhancement.content} />}
           </div>
 
           {/* Tags & Social Share Footer */}
@@ -382,8 +401,10 @@ export default async function BlogPostPage({ params }) {
                     <div>
                       {rel.cover_image_url ? (
                         <div className="aspect-[16/10] rounded-xl overflow-hidden mb-4">
-                          <img
+                          <Image
                             src={rel.cover_image_url}
+                            width={640} height={400}
+                            sizes="(min-width: 1024px) 400px, (min-width: 640px) 50vw, 100vw"
                             alt={rel.cover_image_alt || rel.title}
                             className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                             loading="lazy"

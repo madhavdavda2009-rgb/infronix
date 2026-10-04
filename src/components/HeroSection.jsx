@@ -11,7 +11,7 @@ export default function HeroSection() {
   const { introPhase, isIntroActive } = useIntro();
 
   const isPreloading = isIntroActive && introPhase === 'loading';
-  const isImageHidden = isIntroActive && introPhase !== 'completed';
+  const isImageHidden = isPreloading;
 
   const containerVariants = {
     hidden: { opacity: 0 },

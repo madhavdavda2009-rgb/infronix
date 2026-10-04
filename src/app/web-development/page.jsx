@@ -54,7 +54,7 @@ export default function WebDevelopmentPage() {
                 <span className="w-8 sm:w-12 h-[2px] bg-primary" /> Web Development
               </span>
               <h1 className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-heading font-bold text-on-surface leading-tight tracking-tight">
-                Websites That Make Your Business Stand Out.
+                {service.heading}
               </h1>
               <p className="text-base sm:text-lg md:text-xl text-main-text font-medium max-w-2xl leading-relaxed">
                 At InfronixWeb, we build modern, responsive websites that help businesses establish a strong digital presence, attract customers, and grow online.

@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { getService } from '@/lib/services';
 import { SITE_URL, serializeJsonLd } from '@/lib/site-seo';
+import ServiceContent from '@/components/ServiceContent';
 
 export function RelatedServices({ slugs }) {
   return <nav aria-label="Related services" className="flex flex-wrap gap-3 mt-8">{slugs.map(slug => {
@@ -21,29 +22,14 @@ export default function ServiceDetails({ slug }) {
     areaServed: { '@type': 'City', name: 'Ahmedabad' },
   };
 
-  const faqSchema = service.faqs && service.faqs.length > 0 ? {
-    '@context': 'https://schema.org',
-    '@type': 'FAQPage',
-    mainEntity: service.faqs.map(([question, answer]) => ({
-      '@type': 'Question',
-      name: question,
-      acceptedAnswer: {
-        '@type': 'Answer',
-        text: answer
-      }
-    }))
-  } : null;
-
   return <>
     <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: serializeJsonLd(schema) }} />
-    {faqSchema && (
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: serializeJsonLd(faqSchema) }} />
-    )}
+    <ServiceContent slug={slug} />
     {service.process && <>
       <section className="py-12 sm:py-20 bg-surface border-b border-outline-variant/40">
         <div className="max-w-[1280px] mx-auto px-4 sm:px-6 md:px-12 grid md:grid-cols-2 gap-10 md:gap-16">
           <div><h2 className="text-2xl sm:text-3xl mb-5">Where this service helps</h2><p className="leading-relaxed mb-5">{service.problems}</p><p className="leading-relaxed">{service.fit}</p></div>
-          <div><h2 className="text-2xl sm:text-3xl mb-5">How the work happens</h2><ol className="list-decimal pl-5 space-y-4 text-main-text">{service.process.map(step => <li key={step} className="pl-2 leading-relaxed">{step}</li>)}</ol></div>
+          <div><h2 className="text-2xl sm:text-3xl mb-5">{slug === 'google-ads' ? 'Our Google Ads process' : 'How the work happens'}</h2><ol className="list-decimal pl-5 space-y-4 text-main-text">{service.process.map(step => <li key={step} className="pl-2 leading-relaxed">{step}</li>)}</ol></div>
         </div>
       </section>
       <section className="py-12 sm:py-16 bg-surface-container-lowest">

@@ -1,12 +1,15 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { useMemo } from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import Image from "next/image";
 import { 
   InstagramLogo, LinkedinLogo, GithubLogo, LinkSimple, ArrowRight, User 
 } from "@phosphor-icons/react";
-import myImage from "@/assets/my-image.webp";
+import { madhavBlogProfile } from '@/lib/blog-authors';
+import { usePublicData } from '@/hooks/usePublicData';
+import { leadershipLabel } from '@/lib/team-types';
+const myImage = { src: madhavBlogProfile.author_avatar_url };
 
 const DEFAULT_FOUNDER = {
   id: "founder-canonical",
@@ -20,50 +23,10 @@ const DEFAULT_FOUNDER = {
   employment_type: "Founder"
 };
 
-export default function TeamSection() {
-  const [teamMembers, setTeamMembers] = useState([DEFAULT_FOUNDER]);
-  const [hasLoaded, setHasLoaded] = useState(false);
-
-  useEffect(() => {
-    let isMounted = true;
-    const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), 12000);
-
-    async function loadTeam() {
-      try {
-        const res = await fetch('/api/public/team?page=home', {
-          cache: 'no-store',
-          signal: controller.signal
-        });
-        if (!res.ok) return;
-        const data = await res.json();
-        if (data.success && Array.isArray(data.team) && data.team.length > 0 && isMounted) {
-          const formatted = data.team.map((m) => {
-            const isFounder = Boolean(m.is_founder || m.employment_type === 'Founder' || m.name?.toLowerCase().includes('madhav'));
-            return {
-              ...m,
-              image: m.profile_image_url || (isFounder ? myImage.src : null),
-              role: m.public_role || m.role || "Team Member"
-            };
-          });
-          setTeamMembers(formatted);
-        }
-      } catch (err) {
-        if (err.name !== 'AbortError') {
-          console.warn('Team fetch notice:', err.message);
-        }
-      } finally {
-        clearTimeout(timeoutId);
-        if (isMounted) setHasLoaded(true);
-      }
-    }
-    loadTeam();
-    return () => {
-      isMounted = false;
-      controller.abort();
-      clearTimeout(timeoutId);
-    };
-  }, []);
+export default function TeamSection({ initialTeam = null }) {
+  const initialData = useMemo(() => initialTeam === null ? null : { success: true, team: initialTeam }, [initialTeam]);
+  const data = usePublicData('/api/public/team?page=home', initialData);
+  const teamMembers = data?.team ?? [DEFAULT_FOUNDER];
 
   return (
     <section className="py-16 sm:py-20 md:py-24 bg-surface" id="leadership">
@@ -84,8 +47,8 @@ export default function TeamSection() {
 
         <div className="max-w-sm sm:max-w-md md:max-w-none grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
           {teamMembers.map((member, index) => {
-            const isFounder = member.is_founder || member.employment_type === 'Founder' || member.name.toLowerCase().includes('madhav');
-            const memberImage = member.image || member.profile_image_url || (isFounder ? myImage.src : null);
+            const badge = leadershipLabel(member);
+            const memberImage = member.image || member.profile_image_url || (member.name?.trim().toLowerCase() === 'madhav davda' ? myImage.src : null);
 
             return (
               <motion.div 

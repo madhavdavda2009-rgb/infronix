@@ -8,14 +8,7 @@ import {
 import EmptyState from './EmptyState';
 import { ConfirmModal } from './ConfirmModal';
 import { useToast } from '@/context/ToastContext';
-
-const EMPLOYMENT_TYPES = [
-  'Founder',
-  'Employee',
-  'Freelancer',
-  'Contractor',
-  'Intern'
-];
+import { EMPLOYMENT_TYPES, leadershipLabel } from '@/lib/team-types';
 
 export default function PeopleModule({ settings = {}, onRefreshDashboard }) {
   const [people, setPeople] = useState([]);
@@ -321,9 +314,9 @@ export default function PeopleModule({ settings = {}, onRefreshDashboard }) {
                           <h3 className="text-sm font-bold text-slate-900 font-outfit">
                             {person.name}
                           </h3>
-                          {isFounder && (
+                          {leadershipLabel(person) && (
                             <span className="inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded text-[9px] font-bold bg-violet-100 text-violet-800 uppercase tracking-wider">
-                              <ShieldCheck size={11} weight="fill" /> Founder
+                              <ShieldCheck size={11} weight="fill" /> {leadershipLabel(person)}
                             </span>
                           )}
                         </div>

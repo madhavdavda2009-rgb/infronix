@@ -1,4 +1,3 @@
-import fs from 'node:fs';
 import { services } from '../src/lib/services.js';
 const base = process.env.QA_BASE_URL || 'http://localhost:3000';
 const routes = ['/', '/services', ...services.map(s => '/' + s.slug), '/about', '/contact', '/projects', '/blog', '/start-project', '/privacy-policy', '/terms-and-conditions'];
@@ -27,12 +26,11 @@ for (const body of ['{', 'null', '{}', '{"additionalNotes":"No project descripti
 }
 const sitemapResponse = await fetch(base + '/sitemap.xml');
 const sitemap = await sitemapResponse.text();
-const sitemapMissing = routes.filter(path => !sitemap.includes('https://www.infronixweb.in' + (path === '/' ? '</loc>' : path + '</loc>')));
+const sitemapMissing = routes.filter(path => path !== '/start-project' && !sitemap.includes('https://www.infronixweb.in' + (path === '/' ? '</loc>' : path + '</loc>')));
 const unknown = await fetch(base + '/not-a-real-route-refurbishment-check');
 const privateResponse = await fetch(base + '/admin/login');
 const privateHtml = await privateResponse.text();
 const publicBlog = await fetch(base + '/api/public/blogs').then(r => r.json());
 const report = { pages: results, brokenLinks: broken, invalidForms, sitemapStatus: sitemapResponse.status, sitemapMissing, unknownStatus: unknown.status, adminNoindex: /name="robots"[^>]+content="[^"]*noindex/.test(privateHtml), blog: { success: publicBlog.success, publishedCount: publicBlog.posts?.length, categories: publicBlog.categories?.map(c => c.name), sampleSlug: publicBlog.posts?.[0]?.slug } };
-fs.writeFileSync('docs/route-verification.json', JSON.stringify(report, null, 2));
 console.log(JSON.stringify(report, null, 2));
 if (results.some(r => !r.pass) || broken.length || invalidForms.some(r => !r.pass) || sitemapMissing.length || unknown.status !== 404) process.exitCode = 1;

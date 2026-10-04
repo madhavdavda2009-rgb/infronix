@@ -3,6 +3,7 @@ import { revalidatePath } from 'next/cache';
 import { query, initFounderOSDb } from '@/lib/founder_os_db';
 import { verifyAdminAuth } from '@/lib/auth';
 import { logActivity } from '@/lib/audit_logger';
+import { EMPLOYMENT_TYPES } from '@/lib/team-types';
 
 function generateSlug(name) {
   if (!name) return `member-${Date.now()}`;
@@ -58,6 +59,9 @@ export async function PUT(request, { params }) {
     } = body;
 
     const isFounder = current.is_founder || current.employment_type === 'Founder' || employment_type === 'Founder';
+    if (employment_type !== undefined && !EMPLOYMENT_TYPES.includes(employment_type)) {
+      return NextResponse.json({ success: false, error: 'Invalid employment type.' }, { status: 400 });
+    }
     const targetEmploymentType = isFounder ? 'Founder' : (employment_type !== undefined ? employment_type : current.employment_type);
     const targetSlug = public_slug !== undefined ? generateSlug(public_slug || name || current.name) : current.public_slug;
     const targetOrder = display_order !== undefined && Number.isInteger(Number(display_order)) && Number(display_order) >= 0
@@ -119,6 +123,10 @@ export async function PUT(request, { params }) {
     ]);
 
     const person = updateRes.rows[0];
+    // Refresh the public author snapshot when its linked team profile changes.
+    await query(`UPDATE founder_os_blogs SET author_name = $1, author_role = $2,
+      author_avatar_url = $3, updated_at = NOW() WHERE author_person_id = $4`,
+    [person.name, person.public_role || person.role, person.profile_image_url, person.id]);
     await logActivity(
       auth.username,
       'Person',
@@ -131,6 +139,9 @@ export async function PUT(request, { params }) {
     try {
       revalidatePath('/');
       revalidatePath('/about');
+      revalidatePath('/blog');
+      revalidatePath('/blog/[slug]', 'page');
+      revalidatePath('/sitemap.xml');
     } catch (e) {
       console.warn('Revalidation notice:', e.message);
     }
@@ -189,4 +200,3 @@ export async function DELETE(request, { params }) {
     return NextResponse.json({ success: false, error: err.message }, { status: 500 });
   }
 }
-
