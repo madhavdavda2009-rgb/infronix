@@ -1,7 +1,7 @@
 "use client";
 import React, { useMemo } from "react";
 import { motion } from "framer-motion";
-import Image from "next/image";
+import Image from "@/components/CmsImage";
 import { 
   InstagramLogo, LinkedinLogo, GithubLogo, LinkSimple, ShieldCheck 
 } from "@phosphor-icons/react";

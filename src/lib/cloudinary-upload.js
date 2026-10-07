@@ -23,7 +23,14 @@ export async function storeContentImage(bytes, kind) {
   const response = await fetch(`https://api.cloudinary.com/v1_1/${cloudName}/image/upload`, {
     method: 'POST', body: form, signal: AbortSignal.timeout(25000),
   });
-  if (!response.ok) throw new Error('Image storage upload failed.');
+  if (!response.ok) {
+    const details = await response.json().catch(() => ({}));
+    const message = details.error?.message || '';
+    // Never include provider messages, credentials or signatures in logs/errors.
+    const reason = /signature/i.test(message) ? 'signature rejected' : /api.?key/i.test(message) ? 'API key rejected' :
+      /cloud.?name/i.test(message) ? 'cloud name rejected' : response.status === 401 ? 'credentials rejected' : 'provider rejected upload';
+    throw new Error(`Cloudinary upload failed (${response.status}; ${reason}).`);
+  }
   const result = await response.json();
   const url = new URL(result.secure_url);
   if (url.protocol !== 'https:' || url.hostname !== 'res.cloudinary.com' || !url.pathname.startsWith(`/${cloudName}/`)) {

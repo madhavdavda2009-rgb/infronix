@@ -2,7 +2,7 @@
 import React, { useMemo } from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
-import Image from "next/image";
+import Image from "@/components/CmsImage";
 import { 
   InstagramLogo, LinkedinLogo, GithubLogo, LinkSimple, ArrowRight, User 
 } from "@phosphor-icons/react";

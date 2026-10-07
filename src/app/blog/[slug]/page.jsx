@@ -2,7 +2,7 @@ import React, { cache } from 'react';
 import { serializeJsonLd, SITE_URL } from '@/lib/site-seo';
 import { RelatedServices } from '@/components/ServiceDetails';
 import Link from 'next/link';
-import Image from 'next/image';
+import Image from '@/components/CmsImage';
 import { notFound, permanentRedirect } from 'next/navigation';
 import {
   CalendarBlank,

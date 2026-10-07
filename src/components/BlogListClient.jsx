@@ -2,7 +2,7 @@
 import React, { useState, useMemo } from 'react';
 import { usePublicData } from '@/hooks/usePublicData';
 import Link from 'next/link';
-import Image from 'next/image';
+import Image from '@/components/CmsImage';
 import { 
   MagnifyingGlass, 
   CalendarBlank, 
