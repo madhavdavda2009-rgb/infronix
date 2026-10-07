@@ -1,6 +1,7 @@
 User-agent: *
 Allow: /
 Disallow: /api/
+Allow: /api/public/media
 Disallow: /admin
 Disallow: /admin/
 Disallow: /founder-os
