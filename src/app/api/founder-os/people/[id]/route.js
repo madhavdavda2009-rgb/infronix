@@ -4,6 +4,7 @@ import { query, initFounderOSDb } from '@/lib/founder_os_db';
 import { verifyAdminAuth } from '@/lib/auth';
 import { logActivity } from '@/lib/audit_logger';
 import { EMPLOYMENT_TYPES } from '@/lib/team-types';
+import { normalizeImageCrop } from '@/lib/image-crop';
 
 function generateSlug(name) {
   if (!name) return `member-${Date.now()}`;
@@ -93,6 +94,7 @@ export async function PUT(request, { params }) {
         portfolio_url = $20,
         instagram_url = $21,
         is_founder = $22,
+        profile_image_crop = $24::jsonb,
         updated_at = NOW()
       WHERE id = $23
       RETURNING *
@@ -119,7 +121,8 @@ export async function PUT(request, { params }) {
       portfolio_url !== undefined ? (portfolio_url ? portfolio_url.trim() : null) : current.portfolio_url,
       instagram_url !== undefined ? (instagram_url ? instagram_url.trim() : null) : current.instagram_url,
       isFounder,
-      id
+      id,
+      JSON.stringify(normalizeImageCrop(body.profile_image_crop !== undefined ? body.profile_image_crop : current.profile_image_crop))
     ]);
 
     const person = updateRes.rows[0];

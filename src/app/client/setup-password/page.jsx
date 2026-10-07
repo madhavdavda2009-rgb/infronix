@@ -100,7 +100,7 @@ function SetupPasswordContent() {
       <div className="relative z-10 w-full max-w-sm bg-white p-6 sm:p-8 border border-slate-200 rounded-3xl shadow-xl">
         <div className="flex justify-center mb-6">
           <img
-            src="/light-web-logo.webp"
+            src="/brand-light.webp"
             alt="InfronixWeb"
             width={200}
             height={48}

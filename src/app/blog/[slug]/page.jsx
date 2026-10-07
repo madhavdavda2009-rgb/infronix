@@ -4,11 +4,11 @@ import { RelatedServices } from '@/components/ServiceDetails';
 import Link from 'next/link';
 import Image from 'next/image';
 import { notFound, permanentRedirect } from 'next/navigation';
-import { 
-  CalendarBlank, 
-  Clock, 
-  ArrowLeft, 
-  Tag as TagIcon, 
+import {
+  CalendarBlank,
+  Clock,
+  ArrowLeft,
+  Tag as TagIcon,
   Article,
   ArrowRight
 } from '@phosphor-icons/react/dist/ssr';
@@ -16,8 +16,6 @@ import { query } from '@/lib/founder_os_db';
 import { SafeMarkdownRenderer } from '@/lib/markdown_parser';
 import CTASection from '@/components/CTASection';
 import ShareButtons from '@/components/ShareButtons';
-import { getPublicEditorialGuide } from '@/lib/editorial-guide-author';
-import { blogEnhancements, enhanceBlogPost } from '@/lib/blog-enhancements';
 import { normalizeBlogImages } from '@/lib/blog-images';
 import { blogRevision } from '@/lib/blog-revision';
 import PublicArticleRefresh from '@/components/PublicArticleRefresh';
@@ -28,9 +26,9 @@ export const revalidate = 0;
 export async function generateStaticParams() {
   try {
     const res = await query(`
-      SELECT slug FROM founder_os_blogs 
+      SELECT slug FROM founder_os_blogs
       WHERE status = 'Published' OR (status = 'Scheduled' AND scheduled_for <= NOW())
-      ORDER BY COALESCE(published_at, created_at) DESC 
+      ORDER BY COALESCE(published_at, created_at) DESC
       LIMIT 50
     `);
     return (res.rows || []).map((row) => ({ slug: row.slug }));
@@ -45,7 +43,7 @@ const getBlogPost = cache(async function getBlogPost(slug) {
   try {
     // 1. Direct match on current slug
     let res = await query(`
-      SELECT 
+      SELECT
         b.*,
         c.name as category_name,
         c.slug as category_slug,
@@ -61,14 +59,14 @@ const getBlogPost = cache(async function getBlogPost(slug) {
       LEFT JOIN founder_os_blog_categories c ON b.category_id = c.id
       LEFT JOIN founder_os_blog_posts_tags pt ON pt.post_id = b.id
       LEFT JOIN founder_os_blog_tags t ON pt.tag_id = t.id
-      WHERE LOWER(b.slug) = $1 
+      WHERE LOWER(b.slug) = $1
         AND (b.status = 'Published' OR (b.status = 'Scheduled' AND b.scheduled_for <= NOW()))
       GROUP BY b.id, c.name, c.slug
       LIMIT 1
     `, [cleanSlug]);
 
     if (res.rows.length > 0) {
-      return { post: normalizeBlogImages(enhanceBlogPost(res.rows[0])), redirected: false, targetSlug: null };
+      return { post: normalizeBlogImages(res.rows[0]), redirected: false, targetSlug: null };
     }
 
     // 2. Check previous_slugs_json for old slugs (redirect)
@@ -83,17 +81,17 @@ const getBlogPost = cache(async function getBlogPost(slug) {
       return { post: null, redirected: true, targetSlug: redirRes.rows[0].slug };
     }
 
-    return { post: await getPublicEditorialGuide(cleanSlug), redirected: false, targetSlug: null };
+    return { post: null, redirected: false, targetSlug: null };
   } catch (err) {
     console.error('Error fetching blog post:', err);
-    return { post: await getPublicEditorialGuide(cleanSlug), redirected: false, targetSlug: null };
+    return { post: null, redirected: false, targetSlug: null };
   }
 });
 
 async function getRelatedPosts(postId, categoryId, limit = 3, categorySlug = null) {
   try {
     const res = await query(`
-      SELECT 
+      SELECT
         b.id, b.title, b.slug, b.excerpt, b.cover_image_url, b.cover_image_alt,
         b.reading_time_minutes, b.published_at,
         c.name as category_name, c.slug as category_slug
@@ -148,7 +146,7 @@ export async function generateMetadata({ params }) {
       siteName: 'InfronixWeb',
       type: 'article',
       publishedTime: post.published_at,
-      modifiedTime: post.editorial_enhancement ? '2026-10-04T00:00:00+05:30' : post.updated_at,
+      modifiedTime: post.updated_at,
       authors: [post.author_name || 'InfronixWeb Editorial Team'],
       images: [
         {
@@ -181,9 +179,7 @@ export default async function BlogPostPage({ params }) {
     notFound();
   }
 
-  const isRepositoryGuide = String(post.id).startsWith('guide-');
-  const relatedPosts = (await getRelatedPosts(isRepositoryGuide ? null : post.id, post.category_id, 3, isRepositoryGuide ? post.category_slug : null)).map(p => normalizeBlogImages(enhanceBlogPost(p)));
-  const enhancement = post.editorial_enhancement ? blogEnhancements[post.slug] : null;
+  const relatedPosts = (await getRelatedPosts(post.id, post.category_id, 3)).map(normalizeBlogImages);
   const articleUrl = post.canonical_url || `https://www.infronixweb.in/blog/${post.slug}`;
 
   // Structured Data Schema
@@ -194,7 +190,7 @@ export default async function BlogPostPage({ params }) {
     description: post.excerpt,
     image: [new URL(post.cover_image_url || '/opengraph-image.webp', SITE_URL).href],
     datePublished: post.published_at,
-    dateModified: enhancement ? '2026-10-04T00:00:00+05:30' : post.updated_at,
+    dateModified: post.updated_at,
     author: {
       '@type': post.author_type || (post.author_name ? 'Person' : 'Organization'),
       name: post.author_name || 'InfronixWeb',
@@ -206,7 +202,7 @@ export default async function BlogPostPage({ params }) {
       url: 'https://www.infronixweb.in',
       logo: {
         '@type': 'ImageObject',
-        url: 'https://www.infronixweb.in/light-web-logo.png'
+        url: 'https://www.infronixweb.in/brand-light.png'
       }
     },
     mainEntityOfPage: {
@@ -254,10 +250,10 @@ export default async function BlogPostPage({ params }) {
       />
 
       <main className="w-full pt-20 sm:pt-28 md:pt-32 min-h-screen bg-surface" id="main-content">
-        
+
         {/* Article Header Container */}
         <article className="max-w-[880px] mx-auto px-4 sm:px-6 md:px-8 py-8 sm:py-12">
-          
+
           {/* Breadcrumbs & Back Link */}
           <div className="flex items-center justify-between gap-4 mb-6">
             <Link
@@ -283,7 +279,6 @@ export default async function BlogPostPage({ params }) {
           <p className="text-base sm:text-lg md:text-xl text-main-text font-normal leading-relaxed mb-8 pb-8 border-b border-outline/50">
             {post.excerpt}
           </p>
-          {enhancement && <p className="mb-6 leading-relaxed"><Link href={`/${enhancement.service}`} className="text-primary underline underline-offset-4">{enhancement.serviceLabel}</Link></p>}
 
           {/* Author & Meta Row */}
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
@@ -327,7 +322,6 @@ export default async function BlogPostPage({ params }) {
               </span>
             </div>
           </div>
-          {enhancement && <p className="text-xs text-text-light mb-6">Guide updated on 4 October 2026.</p>}
 
           {/* Cover Photo */}
           {post.cover_image_url && (
@@ -353,7 +347,6 @@ export default async function BlogPostPage({ params }) {
           {/* Safe Markdown Content Body */}
           <div className="pt-2 pb-10 border-b border-outline/40">
             <SafeMarkdownRenderer content={post.content_markdown?.replace(/^\s*#\s+[^\n]+\n/, '')} fallbackExcerpt={post.excerpt} />
-            {enhancement && !enhancement.replacementMarkdown && <SafeMarkdownRenderer content={enhancement.content} />}
           </div>
 
           {/* Tags & Social Share Footer */}
@@ -376,7 +369,7 @@ export default async function BlogPostPage({ params }) {
 
           <aside className="py-8">
             <h2 className="text-xl font-heading font-bold mb-3 text-on-surface">Put these ideas into practice</h2>
-            <RelatedServices slugs={/seo/i.test(post.category_name || '') ? ['seo', 'web-development'] : /automat|ai|crm/i.test(post.category_name || '') ? ['ai-automation', 'crm-automation'] : /google|ads/i.test(post.category_name || '') ? ['google-ads', 'performance-marketing'] : /social/i.test(post.category_name || '') ? ['digital-marketing/social-media-marketing', 'meta-ads'] : /web/i.test(post.category_name || '') ? ['web-development', 'seo'] : ['digital-marketing', 'ai-automation']} />
+            <RelatedServices slugs={/seo/i.test(post.category_name || '') ? ['seo', 'web-development'] : /google|ads/i.test(post.category_name || '') ? ['google-ads', 'performance-marketing'] : /social/i.test(post.category_name || '') ? ['digital-marketing/social-media-marketing', 'meta-ads'] : /web/i.test(post.category_name || '') ? ['web-development', 'seo'] : ['digital-marketing', 'seo']} />
           </aside>
         </article>
 

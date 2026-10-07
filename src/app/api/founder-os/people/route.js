@@ -4,6 +4,7 @@ import { query, initFounderOSDb } from '@/lib/founder_os_db';
 import { verifyAdminAuth } from '@/lib/auth';
 import { logActivity } from '@/lib/audit_logger';
 import { EMPLOYMENT_TYPES } from '@/lib/team-types';
+import { normalizeImageCrop } from '@/lib/image-crop';
 
 function generateSlug(name) {
   if (!name) return `member-${Date.now()}`;
@@ -109,7 +110,7 @@ export async function POST(request) {
         show_on_website, show_on_homepage, show_on_about_page,
         display_order, public_role,
         linkedin_url, github_url, portfolio_url, instagram_url,
-        is_founder, created_at, updated_at
+        is_founder, profile_image_crop, created_at, updated_at
       ) VALUES (
         $1, $2, $3, $4, $5, $6,
         $7, $8, $9,
@@ -117,7 +118,7 @@ export async function POST(request) {
         $13, $14, $15,
         $16, $17,
         $18, $19, $20, $21,
-        $22, NOW(), NOW()
+        $22, $23::jsonb, NOW(), NOW()
       )
       RETURNING *
     `, [
@@ -142,7 +143,8 @@ export async function POST(request) {
       github_url ? github_url.trim() : null,
       portfolio_url ? portfolio_url.trim() : null,
       instagram_url ? instagram_url.trim() : null,
-      isFounder
+      isFounder,
+      JSON.stringify(normalizeImageCrop(body.profile_image_crop))
     ]);
 
     const person = insertRes.rows[0];

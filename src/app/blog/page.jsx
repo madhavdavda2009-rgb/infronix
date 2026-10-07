@@ -3,22 +3,18 @@ import { pageMetadata } from '@/lib/site-seo';
 import CTASection from '@/components/CTASection';
 import Breadcrumb from '@/components/Breadcrumb';
 import BlogListClient from '@/components/BlogListClient';
-import { buildBlogCatalog } from '@/lib/blog-catalog';
-import { enhanceBlogPost } from '@/lib/blog-enhancements';
 import { normalizeBlogImages } from '@/lib/blog-images';
-import { getGuideAuthor } from '@/lib/editorial-guide-author';
 
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
 
 export const metadata = pageMetadata(
-  "Insights on Websites, SEO, Marketing & Automation",
-  "Practical insights on websites, SEO, digital marketing and business automation for Ahmedabad businesses.",
+  "Insights on Websites, Digital Marketing & SEO",
+  "Practical insights on website development, digital marketing and SEO for Ahmedabad businesses.",
   '/blog'
 );
 
 export default async function BlogPage() {
-  const guideAuthorPromise = getGuideAuthor();
   let initialPosts = [];
   let initialCategories = [];
   let initialTags = [];
@@ -73,16 +69,13 @@ export default async function BlogPage() {
       `)
     ]);
 
-    initialPosts = JSON.parse(JSON.stringify((postsRes.rows || []).map(p => normalizeBlogImages(enhanceBlogPost(p)))));
+    initialPosts = JSON.parse(JSON.stringify((postsRes.rows || []).map(p => normalizeBlogImages(p))));
     initialCategories = JSON.parse(JSON.stringify(catsRes.rows || []));
     initialTags = JSON.parse(JSON.stringify(tagsRes.rows || []));
   } catch (err) {
     console.error('Failed to load initial blog data:', err?.message);
     initialError = true;
   }
-  const catalog = buildBlogCatalog(initialPosts, initialCategories, {}, initialPosts.map(p => p.slug), await guideAuthorPromise);
-  initialPosts = catalog.posts;
-  initialCategories = catalog.categories;
 
   return (
     <>
@@ -99,7 +92,7 @@ export default async function BlogPage() {
                 Strategies & Insights for Modern Digital Growth
               </h1>
               <p className="text-sm sm:text-base md:text-lg text-main-text leading-relaxed">
-                Straightforward advice to improve your website, reach customers and make everyday business tasks easier.
+                Straightforward advice on website development, digital marketing and SEO to help customers discover your business.
               </p>
             </div>
           </div>

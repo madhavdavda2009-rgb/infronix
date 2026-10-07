@@ -2,7 +2,7 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
-import { ArrowRight, Globe, MagnifyingGlass, Robot, Megaphone } from "@phosphor-icons/react";
+import { ArrowRight, Globe, MagnifyingGlass, Megaphone } from "@phosphor-icons/react";
 
 const services = [
   {
@@ -16,7 +16,7 @@ const services = [
   },
   {
     id: "02",
-    title: "SEO Optimization",
+    title: "SEO",
     short: "Help local and national customers find you on Google.",
     desc: "Get your business discovered on Google search and maps. We improve your organic visibility and rankings so relevant customers discover your services.",
     features: ["Google Search Rankings", "Google Maps & Local SEO", "Content & Keyword Strategy", "Technical SEO Audits"],
@@ -25,15 +25,6 @@ const services = [
   },
   {
     id: "03",
-    title: "AI Automation",
-    short: "Automate daily tasks & save team hours.",
-    desc: "Connect supported tools to reduce repeated data entry, route enquiries intelligently, and help your team follow up on every lead instantly.",
-    features: ["24/7 AI Chat Assistants", "WhatsApp Workflow Replies", "Instant Lead Routing", "Custom App Integrations"],
-    icon: Robot,
-    link: "/ai-automation",
-  },
-  {
-    id: "04",
     title: "Digital Marketing",
     short: "Reach targeted buyers on social media & Google.",
     desc: "Reach more high-intent customers with attractive social media campaigns and data-driven advertising built around your target audience and conversion funnel.",

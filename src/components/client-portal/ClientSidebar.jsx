@@ -55,7 +55,7 @@ export default function ClientSidebar({
         <div className="h-16 px-5 flex items-center justify-between border-b border-slate-100 shrink-0 bg-white">
           <div className="flex items-center">
             <img
-              src="/light-web-logo.webp"
+              src="/brand-light.webp"
               alt="InfronixWeb"
               width={160}
               height={38}
@@ -78,7 +78,7 @@ export default function ClientSidebar({
           </div>
           {NAV_ITEMS.map((item) => {
             const Icon = item.icon;
-            const isActive = item.exact 
+            const isActive = item.exact
               ? pathname === item.href.split('?')[0].split('#')[0]
               : pathname.startsWith(item.href.split('?')[0].split('#')[0]);
 

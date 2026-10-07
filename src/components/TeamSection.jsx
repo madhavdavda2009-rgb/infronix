@@ -6,27 +6,13 @@ import Image from "next/image";
 import { 
   InstagramLogo, LinkedinLogo, GithubLogo, LinkSimple, ArrowRight, User 
 } from "@phosphor-icons/react";
-import { madhavBlogProfile } from '@/lib/blog-authors';
 import { usePublicData } from '@/hooks/usePublicData';
 import { leadershipLabel } from '@/lib/team-types';
-const myImage = { src: madhavBlogProfile.author_avatar_url };
-
-const DEFAULT_FOUNDER = {
-  id: "founder-canonical",
-  name: "Madhav Davda",
-  role: "Founder",
-  public_role: "Founder",
-  public_bio: "Work directly with the person planning, designing and building your website.",
-  profile_image_url: myImage.src,
-  instagram_url: "https://www.instagram.com/madhavdavda09",
-  is_founder: true,
-  employment_type: "Founder"
-};
-
+import { imageCropStyle } from '@/lib/image-crop';
 export default function TeamSection({ initialTeam = null }) {
   const initialData = useMemo(() => initialTeam === null ? null : { success: true, team: initialTeam }, [initialTeam]);
   const data = usePublicData('/api/public/team?page=home', initialData);
-  const teamMembers = data?.team ?? [DEFAULT_FOUNDER];
+  const teamMembers = data?.team ?? [];
 
   return (
     <section className="py-16 sm:py-20 md:py-24 bg-surface" id="leadership">
@@ -48,7 +34,7 @@ export default function TeamSection({ initialTeam = null }) {
         <div className="max-w-sm sm:max-w-md md:max-w-none grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
           {teamMembers.map((member, index) => {
             const badge = leadershipLabel(member);
-            const memberImage = member.image || member.profile_image_url || (member.name?.trim().toLowerCase() === 'madhav davda' ? myImage.src : null);
+            const memberImage = member.profile_image_url;
 
             return (
               <motion.div 
@@ -67,7 +53,8 @@ export default function TeamSection({ initialTeam = null }) {
                         alt={`${member.name} - ${member.role}`} 
                         fill
                         sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 380px"
-                        className="object-cover transition-transform duration-500 group-hover:scale-[1.02]"
+                        className="object-cover"
+                        style={imageCropStyle(member.profile_image_crop)}
                         loading="lazy"
                       />
                     ) : (
@@ -164,4 +151,3 @@ export default function TeamSection({ initialTeam = null }) {
     </section>
   );
 }
-

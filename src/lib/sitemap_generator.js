@@ -1,8 +1,6 @@
 import { query } from './founder_os_db.js';
 import { services } from './services.js';
 import { SITE_URL } from './site-seo.js';
-import { editorialGuides } from './editorial-guides.js';
-import { blogEnhancements } from './blog-enhancements.js';
 
 export const STATIC_PAGES = [
   '',
@@ -52,15 +50,14 @@ export async function getDynamicSitemapEntries() {
 
     const blogEntries = (res.rows || []).map(post => ({
       url: SITE_URL + '/blog/' + encodeURIComponent(post.slug),
-      ...(blogEnhancements[post.slug] ? { lastModified: new Date(Math.max(new Date(post.last_modified || 0).getTime(), new Date('2026-10-04T00:00:00+05:30').getTime())) } : post.last_modified ? { lastModified: new Date(post.last_modified) } : {}),
+      ...(post.last_modified ? { lastModified: new Date(post.last_modified) } : {}),
       changeFrequency: 'weekly',
       priority: 0.8
     }));
 
-    const guideEntries = editorialGuides.filter(p => !res.rows.some(row => row.slug === p.slug)).map(p => ({ url: `${SITE_URL}/blog/${p.slug}`, lastModified: new Date(p.updated_at) }));
-    return [...staticEntries, ...blogEntries, ...guideEntries];
+    return [...staticEntries, ...blogEntries];
   } catch (error) {
     console.error('Sitemap article lookup failed:', error.message);
-    return [...staticEntries, ...editorialGuides.map(p => ({ url: `${SITE_URL}/blog/${p.slug}`, lastModified: new Date(p.updated_at) }))];
+    return staticEntries;
   }
 }

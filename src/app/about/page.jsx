@@ -5,7 +5,7 @@ import CTASection from '@/components/CTASection';
 import Breadcrumb from '@/components/Breadcrumb';
 import { getInitialPublicTeam } from '@/lib/public-team';
 
-export const metadata = pageMetadata("About Our Ahmedabad Digital Agency", "Meet InfronixWeb, an Ahmedabad-based agency helping businesses with websites, SEO, digital marketing, advertising and automation.", '/about');
+export const metadata = pageMetadata("About Our Ahmedabad Digital Agency", "Meet InfronixWeb, an Ahmedabad-based agency helping businesses with website development, digital marketing and SEO.", '/about');
 
 export const revalidate = 0;
 

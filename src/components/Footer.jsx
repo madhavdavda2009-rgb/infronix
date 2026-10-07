@@ -41,12 +41,12 @@ export default function Footer() {
       <div className="max-w-[1440px] mx-auto px-4 sm:px-6 md:px-12">
 
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-12 gap-8 sm:gap-10 lg:gap-8 mb-12 sm:mb-16 md:mb-20">
-          
+
           {/* Brand & Socials (lg:col-span-3) */}
           <div className="sm:col-span-2 md:col-span-3 lg:col-span-3">
             <Link href="/" className="inline-block mb-4 sm:mb-6" aria-label="InfronixWeb Home">
               <Image
-                src="/dark-web-logo.webp"
+                src="/brand-dark.webp"
                 alt="InfronixWeb Digital Marketing"
                 width={210}
                 height={50}
@@ -55,7 +55,7 @@ export default function Footer() {
               />
             </Link>
             <p className="text-[#9CA3AF] max-w-sm mb-6 sm:mb-8 leading-relaxed text-sm sm:text-base">
-              Build, grow and automate with InfronixWeb, your Ahmedabad digital agency for websites, SEO, digital marketing, advertising and business automation.
+              Build your website and grow your business with InfronixWeb—your Ahmedabad agency for website development, digital marketing and SEO.
             </p>
             <div className="flex flex-wrap items-center gap-3">
               <a
@@ -88,7 +88,6 @@ export default function Footer() {
               <li><Link href="/services" className="text-slate-300 hover:text-white transition-colors">All Services</Link></li>
               <li><Link href="/web-development" className="text-slate-300 hover:text-white transition-colors">Web Development</Link></li>
               <li><Link href="/seo" className="text-slate-300 hover:text-white transition-colors">SEO Optimization</Link></li>
-              <li><Link href="/ai-automation" className="text-slate-300 hover:text-white transition-colors">AI Automation</Link></li>
               <li><Link href="/digital-marketing" className="text-slate-300 hover:text-white transition-colors">Digital Marketing</Link></li>
               <li><Link href="/projects" className="text-slate-300 hover:text-white transition-colors">Our Work</Link></li>
             </ul>
@@ -151,7 +150,7 @@ export default function Footer() {
               </a>
             </div>
 
-            <div 
+            <div
               ref={mapContainerRef}
               className="relative w-full h-44 sm:h-48 rounded-2xl overflow-hidden border border-white/15 bg-[#12151C] shadow-md group"
             >

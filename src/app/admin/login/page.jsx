@@ -119,8 +119,8 @@ export default function AdminLogin() {
         } else {
           setAttemptsLeft(remaining);
           const friendlyMsg = getFriendlyErrorMessage(data.error, 'Invalid ID or Password.');
-          const attemptMsg = remaining > 0 
-            ? `${friendlyMsg} ${remaining} attempt${remaining !== 1 ? 's' : ''} remaining.` 
+          const attemptMsg = remaining > 0
+            ? `${friendlyMsg} ${remaining} attempt${remaining !== 1 ? 's' : ''} remaining.`
             : friendlyMsg;
           setError(attemptMsg);
           showToast(friendlyMsg, 'error');
@@ -145,7 +145,7 @@ export default function AdminLogin() {
           {/* Exact Logo for light background */}
           <div className="flex justify-center mb-6">
             <img
-              src="/light-web-logo.webp"
+              src="/brand-light.webp"
               alt="InfronixWeb"
               width={200}
               height={48}

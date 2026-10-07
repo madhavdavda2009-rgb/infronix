@@ -43,6 +43,24 @@ To run the InfronixWeb platform locally:
    npm run dev
    ```
 
+## Team and blog image storage
+
+Team profiles and articles use the image saved in the admin CMS. Local files do
+not override an uploaded photo. Until Cloudinary is configured, uploads remain
+in the database and are served through the versioned public media endpoint.
+
+To enable Cloudinary, create a product environment, open Console Settings → API
+Keys, and set `CLOUDINARY_CLOUD_NAME`, `CLOUDINARY_API_KEY` and
+`CLOUDINARY_API_SECRET` in the local server environment and the hosting provider's
+server environment. Restart or redeploy after changing these values. Keep the
+secret on the server; never use a `NEXT_PUBLIC_` name or paste it into a blog form.
+No unsigned upload preset is needed. Authenticated admin uploads are signed on
+the server and use a new asset ID for each image, preventing overwrite and cache
+collisions. Save the profile or article after the upload finishes.
+
+Existing database images continue to work when Cloudinary is enabled. New uploads
+use Cloudinary; migrating old images requires a configured account first.
+
 ## Project Principles
 
 - **Architecture:** Strict frontend/backend separation with no duplicate code.

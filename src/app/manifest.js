@@ -2,7 +2,7 @@ export default function manifest() {
   return {
     name: 'InfronixWeb Digital Marketing',
     short_name: 'InfronixWeb',
-    description: 'Build, grow and automate with InfronixWeb in Ahmedabad: websites, SEO, digital marketing, advertising and business automation.',
+    description: 'Website development, digital marketing and SEO from InfronixWeb in Ahmedabad.',
     start_url: '/',
     display: 'standalone',
     background_color: '#080c14',

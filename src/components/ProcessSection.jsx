@@ -7,7 +7,7 @@ const steps = [
   { id: "02", title: "Plan", desc: "We design clean visual layouts, organize conversion-focused page hierarchy, and plan your organic search strategy." },
   { id: "03", title: "Build", desc: "We build your website, connect the tools you need and check that everything works smoothly on phones and computers." },
   { id: "04", title: "Launch", desc: "Thorough testing on mobile, tablet, and desktop screens to ensure flawless responsiveness and performance before go-live." },
-  { id: "05", title: "Grow", desc: "Ongoing search ranking optimization, automated customer workflows, and continuous improvements to help you capture and convert more leads." }
+  { id: "05", title: "Grow", desc: "Review your website, search visibility and marketing results, then agree useful improvements that help customers find you and get in touch." }
 ];
 
 export default function ProcessSection() {

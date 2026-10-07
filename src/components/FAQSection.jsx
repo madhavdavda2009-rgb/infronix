@@ -3,11 +3,11 @@
 const FAQS = [
   {
     "question": "What can InfronixWeb help our business with?",
-    "answer": "We build business websites, help customers find you on Google, manage online advertising and save time on enquiries, customer records and WhatsApp follow-ups."
+    "answer": "We build business websites, help customers find you on Google, manage online advertising and improve your visibility in search."
   },
   {
     "question": "Can we start with just one specific service?",
-    "answer": "Yes. Start with a website, a search visibility review, an advertising campaign or help with one repetitive task. We agree the work around your current priority."
+    "answer": "Yes. Start with a website, a search visibility review, an advertising campaign or a digital marketing plan. We agree the work around your current priority."
   },
   {
     "question": "Do you work with businesses in Ahmedabad and across India?",
@@ -23,7 +23,7 @@ const FAQS = [
   },
   {
     "question": "Can you work with the tools we already use?",
-    "answer": "We first check which connections your tools support, what access is needed and how your information is handled. We include review steps and alerts for anything that needs a person to follow up."
+    "answer": "We review the tools you already use for your website, marketing and reporting, and agree what access is needed. Your accounts and information remain under your control."
   }
 ];
 
@@ -60,7 +60,7 @@ export default function FAQSection() {
             Working with InfronixWeb
           </h2>
           <p className="font-body text-xs sm:text-sm md:text-base text-main-text max-w-xl mx-auto mt-2 leading-relaxed">
-            Everything you need to know about partnering with our Ahmedabad digital agency for your website, marketing, and automation needs.
+            Everything you need to know about partnering with our Ahmedabad digital agency for website development, digital marketing and SEO.
           </p>
         </div>
 

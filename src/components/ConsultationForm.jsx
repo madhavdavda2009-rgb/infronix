@@ -161,7 +161,7 @@ export default function ConsultationForm() {
           <span className="font-heading text-xs text-primary tracking-widest uppercase mb-2 block font-semibold">Contact Us</span>
           <h1 id="consultation-form-title" className="font-heading text-2xl sm:text-3xl md:text-4xl text-on-surface font-bold">Get a Quote</h1>
           <p className="font-body text-xs sm:text-sm md:text-base text-main-text font-normal mt-2 max-w-2xl mx-auto leading-relaxed">
-            Tell us about your website, marketing or automation needs. Our Ahmedabad-based team will review your enquiry and discuss the next steps.
+            Tell us about your website development, digital marketing or SEO needs. Our Ahmedabad-based team will review your enquiry and discuss the next steps.
           </p>
         </div>
 

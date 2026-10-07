@@ -3,21 +3,9 @@ import { ArrowRight } from '@phosphor-icons/react/dist/ssr';
 import { services } from '@/lib/services';
 
 const pillars = [
-  {
-    pillar: 'Build',
-    heading: 'A website that makes your business easy to choose.',
-    description: 'Clear, easy-to-use websites and online stores that help customers understand your offer and get in touch.',
-  },
-  {
-    pillar: 'Grow',
-    heading: 'Reach targeted buyers with measurable intent.',
-    description: 'Organic search optimization, technical SEO, and conversion-focused paid advertising aligned with your market opportunities.',
-  },
-  {
-    pillar: 'Automate',
-    heading: 'Eliminate repetitive workflows & scale capacity.',
-    description: 'Save time on enquiries, WhatsApp replies and customer records, using the tools your team already works with.',
-  },
+  { pillar: 'Website Development', heading: 'A website that makes your business easy to choose.', description: 'Clear business websites and online stores that help people understand your offer and get in touch.' },
+  { pillar: 'Digital Marketing', heading: 'Reach the people who need what you offer.', description: 'Social media, Google Ads and Meta Ads with a clear plan, useful content and meaningful reporting.' },
+  { pillar: 'SEO', heading: 'Help customers discover you on Google.', description: 'Improve your website, answer customer questions and keep your local business information accurate.' },
 ];
 
 export default function ServiceDirectory({ compact = false }) {
@@ -30,7 +18,7 @@ export default function ServiceDirectory({ compact = false }) {
         >
           <div>
             <span className="text-xs font-semibold uppercase tracking-widest text-primary mb-2 block">
-              Core Pillar
+              Our services
             </span>
             <h2 className="text-2xl sm:text-3xl font-heading font-bold text-on-surface mb-2">
               {pillar}

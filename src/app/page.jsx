@@ -22,7 +22,7 @@ export default async function Home() {
       <main className="w-full pt-20 sm:pt-24 md:pt-28 lg:pt-32" id="main-content">
         <HeroSection />
         
-        <section className="py-14 sm:py-18 bg-surface border-y border-outline/50" aria-label="Build, Grow and Automate services">
+        <section className="py-14 sm:py-18 bg-surface border-y border-outline/50" aria-label="Website Development, Digital Marketing and SEO services">
           <div className="max-w-[1440px] mx-auto px-4 sm:px-6 md:px-12">
             <ServiceDirectory compact />
           </div>
@@ -46,7 +46,7 @@ export default async function Home() {
                   A clearer next step for your business.
                 </h2>
                 <p className="text-main-text text-sm sm:text-base leading-relaxed">
-                  Practical advice on websites, Google search, advertising and saving time at work—so you can decide where to invest.
+                  Practical advice on websites, Google search and online advertising—so you can decide where to invest.
                 </p>
               </div>
               <Link 

@@ -7,7 +7,7 @@ export default function InvoiceModal({ client, onClose }) {
   // Extract initial defaults from client / consultation
   const initialServiceName = client?.service || 'Website Development';
   const initialPackagePrice = parseFloat((client?.packagePrice || '').replace(/[^0-9.]/g, '')) || 30000;
-  
+
   // Line items state
   const [items, setItems] = useState([
     {
@@ -25,7 +25,7 @@ export default function InvoiceModal({ client, onClose }) {
   const [taxRate, setTaxRate] = useState(18); // Default 18% GST
   const [amountPaid, setAmountPaid] = useState(0);
   const [manualStatus, setManualStatus] = useState('AUTO'); // AUTO | PAID | PENDING | PARTIALLY PAID
-  
+
   // Payment Details
   const [paymentMethod, setPaymentMethod] = useState('UPI / Bank Transfer');
   const [transactionId, setTransactionId] = useState('');
@@ -103,8 +103,8 @@ export default function InvoiceModal({ client, onClose }) {
   const balanceDue = Math.max(0, total - paidVal);
 
   // Derive dynamic payment status
-  const derivedStatus = manualStatus !== 'AUTO' 
-    ? manualStatus 
+  const derivedStatus = manualStatus !== 'AUTO'
+    ? manualStatus
     : (paidVal >= total && total > 0 ? 'PAID' : (paidVal > 0 ? 'PARTIALLY PAID' : 'PENDING'));
 
   // UPI deep link string for instant QR Code generation
@@ -245,7 +245,7 @@ ${enableUpi && upiId ? `Pay via UPI VPA: ${upiId}\n` : ''}Online Invoice & Terms
 
   return (
     <>
-      {/* 
+      {/*
         A4 PRINT / PDF CONTAINER (Targeted when triggering PDF save)
       */}
       <div className="hidden print:block fixed inset-0 z-[99999] bg-white text-slate-900 p-0 m-0 print-invoice-root">
@@ -276,9 +276,9 @@ ${enableUpi && upiId ? `Pay via UPI VPA: ${upiId}\n` : ''}Online Invoice & Terms
           <div className="flex justify-between items-start pb-6 border-b-2 border-slate-900">
             <div className="flex items-start gap-4">
               <div className="w-14 h-14 bg-slate-100 flex items-center justify-center p-2 rounded shrink-0 border border-slate-200">
-                <img 
-                  src="/light-web-logo.webp" 
-                  alt="InfronixWeb" 
+                <img
+                  src="/brand-light.webp"
+                  alt="InfronixWeb"
                   width={56}
                   height={56}
                   className="w-full h-full object-contain"
@@ -289,7 +289,7 @@ ${enableUpi && upiId ? `Pay via UPI VPA: ${upiId}\n` : ''}Online Invoice & Terms
                   INFRONIXWEB DIGITAL MARKETING
                 </h1>
                 <p className="text-xs text-slate-500 font-semibold tracking-wider uppercase mt-0.5">
-                  Web Development &middot; SEO &middot; AI Automation
+                  Website Development &middot; Digital Marketing &middot; SEO
                 </p>
                 <p className="text-xs text-slate-600 mt-1">
                   www.infronixweb.in &middot; support@infronixweb.in
@@ -480,15 +480,15 @@ ${enableUpi && upiId ? `Pay via UPI VPA: ${upiId}\n` : ''}Online Invoice & Terms
         </div>
       </div>
 
-      {/* 
+      {/*
         INTERACTIVE ADMIN MODAL STUDIO (Screen view with independent smooth scrolling panes)
       */}
-      <div 
+      <div
         className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-0 md:p-6 print:hidden animate-fadeIn overflow-y-auto"
 
         onWheel={(e) => e.stopPropagation()}
       >
-        <div 
+        <div
           className="bg-white border border-slate-200 w-full max-w-7xl h-full md:h-[92vh] md:max-h-[92vh] shadow-2xl flex flex-col overflow-hidden my-auto rounded-none md:rounded-2xl"
 
         >
@@ -536,8 +536,8 @@ ${enableUpi && upiId ? `Pay via UPI VPA: ${upiId}\n` : ''}Online Invoice & Terms
                 onClick={handleDownloadPdf}
                 disabled={generatingPdf}
                 className={`px-4 py-2 font-bold text-xs uppercase tracking-wider rounded-xl transition-all flex items-center gap-2 shadow-xs ${
-                  generatingPdf 
-                    ? 'bg-slate-200 text-slate-500 cursor-wait' 
+                  generatingPdf
+                    ? 'bg-slate-200 text-slate-500 cursor-wait'
                     : 'bg-violet-600 hover:bg-violet-700 text-white cursor-pointer'
                 }`}
                 title="Download or Save Invoice as PDF"
@@ -546,9 +546,9 @@ ${enableUpi && upiId ? `Pay via UPI VPA: ${upiId}\n` : ''}Online Invoice & Terms
                 <span className="hidden sm:inline">{generatingPdf ? 'Generating...' : 'Download PDF'}</span>
               </button>
 
-              <button 
+              <button
                 type="button"
-                onClick={onClose} 
+                onClick={onClose}
                 className="text-slate-400 hover:text-slate-700 p-2 hover:bg-slate-100 rounded-xl transition-colors cursor-pointer ml-1"
                 title="Close"
               >
@@ -558,12 +558,12 @@ ${enableUpi && upiId ? `Pay via UPI VPA: ${upiId}\n` : ''}Online Invoice & Terms
           </div>
 
           {/* Main Dual-Pane Studio Body */}
-          <div 
+          <div
             className="flex-1 min-h-0 h-[calc(100vh-56px)] md:h-[calc(92vh-70px)] grid grid-cols-1 lg:grid-cols-12 overflow-y-auto lg:overflow-hidden"
 
           >
             {/* LEFT PANE: Invoice Configurator (5 cols) */}
-            <div 
+            <div
               className="lg:col-span-5 border-r border-slate-200 p-4 md:p-5 overflow-y-auto h-auto lg:h-full lg:max-h-[calc(92vh-70px)] space-y-4 md:space-y-5 bg-slate-50 text-xs text-slate-800 overscroll-contain"
 
               onWheel={(e) => e.stopPropagation()}
@@ -848,13 +848,13 @@ ${enableUpi && upiId ? `Pay via UPI VPA: ${upiId}\n` : ''}Online Invoice & Terms
             </div>
 
             {/* RIGHT PANE: Live A4 Document Preview (7 cols - Scrollable) */}
-            <div 
+            <div
               className="lg:col-span-7 bg-slate-100/70 p-4 md:p-8 overflow-y-auto h-auto lg:h-full lg:max-h-[calc(92vh-70px)] flex items-start justify-center overscroll-contain"
 
               onWheel={(e) => e.stopPropagation()}
             >
               {/* Paper simulation */}
-              <div 
+              <div
                 className="w-full max-w-[760px] bg-white text-slate-900 p-5 md:p-10 shadow-lg rounded-xl border border-slate-200/80 font-sans my-auto"
 
               >
@@ -862,9 +862,9 @@ ${enableUpi && upiId ? `Pay via UPI VPA: ${upiId}\n` : ''}Online Invoice & Terms
                 <div className="flex flex-col sm:flex-row justify-between items-start pb-5 md:pb-6 border-b-2 border-slate-900 gap-3 md:gap-4">
                   <div className="flex items-start gap-3">
                     <div className="w-12 h-12 bg-slate-100 rounded-xl flex items-center justify-center p-2 shrink-0 border border-slate-200 shadow-xs">
-                      <img 
-                        src="/light-web-logo.webp" 
-                        alt="InfronixWeb Logo" 
+                      <img
+                        src="/brand-light.webp"
+                        alt="InfronixWeb Logo"
                         width={48}
                         height={48}
                         className="w-full h-full object-contain"
@@ -875,7 +875,7 @@ ${enableUpi && upiId ? `Pay via UPI VPA: ${upiId}\n` : ''}Online Invoice & Terms
                         INFRONIXWEB DIGITAL MARKETING
                       </h3>
                       <p className="text-[10px] md:text-[11px] text-slate-500 font-semibold tracking-wider uppercase mt-1">
-                        Web Development &middot; SEO &middot; AI Automation
+                        Website Development &middot; Digital Marketing &middot; SEO
                       </p>
                       <p className="text-[10px] md:text-[11px] text-slate-600 mt-0.5">
                         www.infronixweb.in &middot; support@infronixweb.in
@@ -1076,16 +1076,16 @@ ${enableUpi && upiId ? `Pay via UPI VPA: ${upiId}\n` : ''}Online Invoice & Terms
         </div>
       </div>
 
-      {/* 
+      {/*
         EMAIL INVOICE MODAL DIALOG
       */}
       {isEmailModalOpen && (
-        <div 
+        <div
           className="fixed inset-0 z-[60] bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-4 print:hidden animate-fadeIn overflow-y-auto"
 
           onWheel={(e) => e.stopPropagation()}
         >
-          <div 
+          <div
             className="bg-white border border-slate-200 w-full max-w-lg shadow-2xl rounded-2xl overflow-hidden flex flex-col my-auto max-h-[90vh]"
 
           >
@@ -1096,7 +1096,7 @@ ${enableUpi && upiId ? `Pay via UPI VPA: ${upiId}\n` : ''}Online Invoice & Terms
                   Send Invoice via Hostinger
                 </h3>
               </div>
-              <button 
+              <button
                 type="button"
                 onClick={() => setIsEmailModalOpen(false)}
                 className="text-slate-400 hover:text-slate-700 p-1 rounded-lg hover:bg-slate-100 transition-colors cursor-pointer"
@@ -1105,15 +1105,15 @@ ${enableUpi && upiId ? `Pay via UPI VPA: ${upiId}\n` : ''}Online Invoice & Terms
               </button>
             </div>
 
-            <div 
+            <div
               className="p-6 space-y-4 text-xs text-slate-800 overflow-y-auto max-h-[calc(90vh-140px)]"
 
               onWheel={(e) => e.stopPropagation()}
             >
               {emailStatusMessage.text && (
                 <div className={`p-3 rounded-xl border text-xs flex items-center gap-2 font-medium ${
-                  emailStatusMessage.type === 'success' 
-                    ? 'bg-emerald-50 border-emerald-200 text-emerald-800' 
+                  emailStatusMessage.type === 'success'
+                    ? 'bg-emerald-50 border-emerald-200 text-emerald-800'
                     : 'bg-rose-50 border-rose-200 text-rose-800'
                 }`}>
                   {emailStatusMessage.type === 'success' ? <CheckCircle size={16} weight="bold" /> : <Info size={16} weight="bold" />}

@@ -393,6 +393,7 @@ async function initializeSchema() {
       ADD COLUMN IF NOT EXISTS public_slug VARCHAR(255),
       ADD COLUMN IF NOT EXISTS public_bio TEXT,
       ADD COLUMN IF NOT EXISTS profile_image_url VARCHAR(1000),
+      ADD COLUMN IF NOT EXISTS profile_image_crop JSONB DEFAULT '{"x":50,"y":50,"zoom":1}'::jsonb,
       ADD COLUMN IF NOT EXISTS show_on_website BOOLEAN DEFAULT FALSE,
       ADD COLUMN IF NOT EXISTS show_on_homepage BOOLEAN DEFAULT FALSE,
       ADD COLUMN IF NOT EXISTS show_on_about_page BOOLEAN DEFAULT FALSE,

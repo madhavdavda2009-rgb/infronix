@@ -7,7 +7,7 @@ import fs from 'fs';
  */
 function getLogoAttachment() {
   try {
-    const logoPath = path.join(process.cwd(), 'public', 'dark-web-logo.png');
+    const logoPath = path.join(process.cwd(), 'public', 'brand-dark.png');
     if (fs.existsSync(logoPath)) {
       return [
         {
@@ -43,7 +43,7 @@ export function getMailConfig() {
   const host = (process.env.SMTP_HOST || process.env.HOSTINGER_EMAIL_HOST || 'smtp.hostinger.com').trim();
   const portStr = (process.env.SMTP_PORT || process.env.HOSTINGER_EMAIL_PORT || '465').trim();
   const port = parseInt(portStr, 10);
-  
+
   const secureEnv = process.env.SMTP_SECURE ? process.env.SMTP_SECURE.trim().toLowerCase() : undefined;
   const isSecure = secureEnv !== undefined ? secureEnv === 'true' : (port === 465);
 
@@ -142,7 +142,7 @@ export async function sendVerificationEmail(enquiry, plainTextToken, baseUrl = '
                     <a href="https://infronixweb.in" target="_blank" style="text-decoration: none; display: inline-block;">
                       <img src="cid:infronix_logo" alt="InfronixWeb" style="height: 38px; max-height: 44px; width: auto; display: block; border: 0;" />
                     </a>
-                    <div style="font-size: 11px; color: #94a3b8; margin-top: 6px; letter-spacing: 0.5px; text-transform: uppercase;">Web Development • Digital Marketing • AI Automation</div>
+                    <div style="font-size: 11px; color: #94a3b8; margin-top: 6px; letter-spacing: 0.5px; text-transform: uppercase;">Web Development • Digital Marketing • SEO</div>
                   </td>
                 </tr>
               </table>
@@ -156,15 +156,15 @@ export async function sendVerificationEmail(enquiry, plainTextToken, baseUrl = '
               <p style="margin: 0 0 20px 0; font-size: 15px; line-height: 1.6; color: #334155;">
                 Please verify your email address to complete your enquiry with <strong>InfronixWeb</strong>.
               </p>
-              
+
               <div style="margin: 30px 0; text-align: center;">
                 <a href="${verifyUrl}" style="display: inline-block; padding: 14px 28px; background-color: #4f46e5; color: #ffffff; font-weight: 600; text-decoration: none; border-radius: 8px; font-size: 15px;">Verify Email Address</a>
               </div>
-              
+
               <p style="margin: 0 0 16px 0; font-size: 14px; color: #64748b;">
                 ${expiryText}
               </p>
-              
+
               <p style="margin: 0 0 0 0; font-size: 13px; color: #64748b; line-height: 1.5;">
                 If you did not submit this enquiry, you can safely ignore this email.
               </p>
@@ -257,7 +257,7 @@ export function generateCustomerEmailTemplate(enquiry) {
                     <a href="https://infronixweb.in" target="_blank" style="text-decoration: none; display: inline-block;">
                       <img src="cid:infronix_logo" alt="InfronixWeb" style="height: 38px; max-height: 44px; width: auto; display: block; border: 0;" />
                     </a>
-                    <div style="font-size: 11px; color: #94a3b8; margin-top: 6px; letter-spacing: 0.5px; text-transform: uppercase;">Web Development • Digital Marketing • AI Automation</div>
+                    <div style="font-size: 11px; color: #94a3b8; margin-top: 6px; letter-spacing: 0.5px; text-transform: uppercase;">Web Development • Digital Marketing • SEO</div>
                   </td>
                 </tr>
               </table>
@@ -306,7 +306,7 @@ export function generateCustomerEmailTemplate(enquiry) {
               <div style="border-top: 1px solid #e2e8f0; padding-top: 20px; font-size: 14px; color: #64748b; line-height: 1.5;">
                 Best regards,<br>
                 <strong style="color: #0f172a;">InfronixWeb Team</strong><br>
-                <span style="font-size: 12px; color: #94a3b8;">Web Development • Digital Marketing • AI Automation</span>
+                <span style="font-size: 12px; color: #94a3b8;">Web Development • Digital Marketing • SEO</span>
               </div>
             </td>
           </tr>
@@ -340,7 +340,7 @@ If you need to add more information, simply reply directly to this email.
 
 Regards,
 InfronixWeb Team
-Web Development, Digital Marketing and AI Automation
+Website Development, Digital Marketing and SEO
 https://infronixweb.in
   `.trim();
 

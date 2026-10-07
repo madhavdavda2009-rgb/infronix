@@ -7,7 +7,7 @@ import Link from 'next/link';
 function VerifyEnquiryContent() {
   const searchParams = useSearchParams();
   const token = searchParams.get('token');
-  
+
   const [status, setStatus] = useState('loading'); // loading, success, error
   const [errorMessage, setErrorMessage] = useState('');
 
@@ -25,9 +25,9 @@ function VerifyEnquiryContent() {
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ token })
         });
-        
+
         const data = await res.json();
-        
+
         if (data.success) {
           setStatus('success');
         } else {
@@ -53,7 +53,7 @@ function VerifyEnquiryContent() {
         <div className="flex justify-center mb-8">
           <Link href="/" aria-label="InfronixWeb Home">
             <img
-              src="/dark-web-logo.webp"
+              src="/brand-dark.webp"
               alt="InfronixWeb"
               width={200}
               height={48}

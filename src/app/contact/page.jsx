@@ -3,7 +3,7 @@ import ConsultationForm from '@/components/ConsultationForm';
 import FAQSection from '@/components/FAQSection';
 import Breadcrumb from '@/components/Breadcrumb';
 
-export const metadata = pageMetadata("Contact Our Digital Agency in Ahmedabad", "Discuss websites, SEO, digital marketing, ads or automation with InfronixWeb in Ahmedabad. Tell us what your business needs.", '/contact');
+export const metadata = pageMetadata("Contact Our Digital Agency in Ahmedabad", "Discuss website development, digital marketing or SEO with InfronixWeb in Ahmedabad. Tell us what your business needs.", '/contact');
 
 export default function ContactPage() {
   return (

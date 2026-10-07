@@ -22,7 +22,7 @@ export function usePublicData(url, initialData) {
       finally { pending = false; }
     }
     if (!initialData?.success) refresh();
-    const interval = setInterval(refresh, 15000);
+    const interval = setInterval(refresh, 5000);
     window.addEventListener('focus', refresh);
     document.addEventListener('visibilitychange', refresh);
     return () => {

@@ -51,24 +51,12 @@ const SERVICE_PROFILES = {
       (company) => `Open to connecting for a quick introductory conversation next week?`
     ]
   },
-  ai_automation: {
-    name: 'AI Automation & Smart Workflows',
-    observations: [
-      (company, website, location, industry) => `with growing client inquiries in the ${industry || 'business'} space, having an instant, 24/7 automated qualification system could help ${company} capture leads that might otherwise bounce`,
-      (company) => `I noticed ${company} handles customer interactions that could be streamlined through intelligent AI automation—saving your team hours every week`,
-      (company) => `many businesses in your sector lose high-value prospects outside standard hours; an automated intake workflow ensures no lead is missed`
-    ],
-    valueProps: [
-      `We build custom AI chatbots and lead automation pipelines that qualify prospects and book consultations around the clock.`,
-      `We implement intelligent workflow automations that eliminate repetitive admin work and instantly respond to prospective clients.`,
-      `Our AI automation solutions integrate directly into your existing channels to capture, qualify, and route leads effortlessly.`
-    ],
-    ctas: [
-      (company) => `Would you be open to a quick 5-minute demo of how this automated workflow could work for ${company}?`,
-      (company) => `Are you open to a brief chat next Tuesday to see how automated qualification could fit your process?`,
-      (company) => `Would you mind if I shared a short 60-second example of an automated booking flow built for businesses like ${company}?`
-    ]
-  }
+  digital_marketing: {
+    name: 'Digital Marketing',
+    observations: [(company) => `I came across ${company} and wanted to ask how you currently plan your online marketing`],
+    valueProps: [`We help businesses plan social media content, Google Ads and Meta Ads around their audience, budget and goals.`],
+    ctas: [(company) => `Would you be open to a short conversation about the marketing priorities for ${company}?`],
+  },
 };
 
 /**
@@ -103,11 +91,9 @@ function generateSubjectLines(companyName, serviceKey) {
       `${companyName} - organic search opportunity`,
       `Question for ${companyName}`
     ],
-    ai_automation: [
-      `Automating client intake for ${companyName}`,
-      `Quick idea for ${companyName}'s workflow`,
-      `24/7 lead capture for ${companyName}`,
-      `Question regarding ${companyName}`
+    digital_marketing: [
+      `Digital marketing priorities for ${companyName}`,
+      `A quick question for ${companyName}`
     ]
   };
 
@@ -155,7 +141,7 @@ export function generatePersonalizedEmail(lead, options = {}) {
   let serviceKey = options.targetService || 'website_development';
   if (!options.targetService) {
     if (industry && /tech|software|saas|ai|automation/i.test(industry)) {
-      serviceKey = 'ai_automation';
+      serviceKey = 'digital_marketing';
     } else if (location && !website) {
       serviceKey = 'website_development';
     } else if (industry && /clinic|dental|law|legal|realty|real estate|hotel|restaurant/i.test(industry)) {
@@ -225,6 +211,6 @@ export function getAvailableServices() {
   return [
     { key: 'website_development', label: 'Website Development & Redesign' },
     { key: 'seo_optimization', label: 'SEO & Search Optimization' },
-    { key: 'ai_automation', label: 'AI Automation & Smart Workflows' }
+    { key: 'digital_marketing', label: 'Digital Marketing' }
   ];
 }

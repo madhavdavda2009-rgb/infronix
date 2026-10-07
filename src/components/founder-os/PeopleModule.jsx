@@ -9,6 +9,8 @@ import EmptyState from './EmptyState';
 import { ConfirmModal } from './ConfirmModal';
 import { useToast } from '@/context/ToastContext';
 import { EMPLOYMENT_TYPES, leadershipLabel } from '@/lib/team-types';
+import ImageCropEditor from './ImageCropEditor';
+import { DEFAULT_IMAGE_CROP, normalizeImageCrop } from '@/lib/image-crop';
 
 export default function PeopleModule({ settings = {}, onRefreshDashboard }) {
   const [people, setPeople] = useState([]);
@@ -28,6 +30,7 @@ export default function PeopleModule({ settings = {}, onRefreshDashboard }) {
   const [showOnHomepage, setShowOnHomepage] = useState(false);
   const [showOnAboutPage, setShowOnAboutPage] = useState(false);
   const [profileImageUrl, setProfileImageUrl] = useState('');
+  const [profileImageCrop, setProfileImageCrop] = useState({ ...DEFAULT_IMAGE_CROP });
   const [bioCharCount, setBioCharCount] = useState(0);
   const [uploadingImage, setUploadingImage] = useState(false);
   const fileInputRef = useRef(null);
@@ -70,6 +73,7 @@ export default function PeopleModule({ settings = {}, onRefreshDashboard }) {
       setShowOnHomepage(Boolean(person.show_on_homepage));
       setShowOnAboutPage(Boolean(person.show_on_about_page));
       setProfileImageUrl(person.profile_image_url || '');
+      setProfileImageCrop(normalizeImageCrop(person.profile_image_crop));
       setBioCharCount((person.public_bio || '').length);
     } else {
       setResponsibilities([]);
@@ -77,6 +81,7 @@ export default function PeopleModule({ settings = {}, onRefreshDashboard }) {
       setShowOnHomepage(false);
       setShowOnAboutPage(false);
       setProfileImageUrl('');
+      setProfileImageCrop({ ...DEFAULT_IMAGE_CROP });
       setBioCharCount(0);
     }
     setNewRespInput('');
@@ -115,6 +120,7 @@ export default function PeopleModule({ settings = {}, onRefreshDashboard }) {
       const data = await res.json();
       if (data.success && data.imageUrl) {
         setProfileImageUrl(data.imageUrl);
+        setProfileImageCrop({ ...DEFAULT_IMAGE_CROP });
         showToast('Profile image uploaded successfully', 'success');
       } else {
         showToast(data.error || 'Failed to upload image', 'error');
@@ -153,6 +159,7 @@ export default function PeopleModule({ settings = {}, onRefreshDashboard }) {
       public_slug: form.public_slug?.value || null,
       public_bio: form.public_bio?.value || null,
       profile_image_url: profileImageUrl || null,
+      profile_image_crop: profileImageCrop,
       display_order: parseInt(form.display_order?.value || '0', 10),
       linkedin_url: form.linkedin_url?.value || null,
       github_url: form.github_url?.value || null,
@@ -714,13 +721,15 @@ export default function PeopleModule({ settings = {}, onRefreshDashboard }) {
                       <input
                         type="url"
                         value={profileImageUrl}
-                        onChange={(e) => setProfileImageUrl(e.target.value)}
-                        placeholder="Or paste image URL (e.g. /my-image.jpeg or https://...)"
+                        onChange={(e) => { setProfileImageUrl(e.target.value); setProfileImageCrop({ ...DEFAULT_IMAGE_CROP }); }}
+                        placeholder="Or paste a hosted image URL (https://...)"
                         className="w-full bg-white border border-slate-300 rounded-lg px-2.5 py-1 text-[11px] text-slate-800 placeholder:text-slate-400 focus:outline-none focus:border-violet-600"
                       />
                     </div>
                   </div>
                 </div>
+
+                {profileImageUrl && <ImageCropEditor src={profileImageUrl} value={profileImageCrop} onChange={setProfileImageCrop} />}
 
                 {/* Public Biography */}
                 <div>

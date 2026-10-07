@@ -92,10 +92,10 @@ export default function Preloader() {
           transition={{ duration: transitioning ? 0.8 : 0.45, ease: [0.22, 1, 0.36, 1] }}
         >
           <motion.div className="absolute inset-0" animate={{ opacity: transitioning ? 0 : 1 }} transition={{ duration: 0.45 }}>
-            <Image src="/light-web-logo.webp" alt="" fill sizes="(max-width: 460px) 70vw, 320px" className="object-contain" priority />
+            <Image src="/brand-light.webp" alt="" fill sizes="(max-width: 460px) 70vw, 320px" className="object-contain" priority />
           </motion.div>
           <motion.div className="absolute inset-0" initial={{ opacity: 0 }} animate={{ opacity: transitioning ? 1 : 0 }} transition={{ duration: 0.55, delay: 0.1 }}>
-            <Image src="/dark-web-logo.webp" alt="" fill sizes="(max-width: 460px) 70vw, 320px" className="object-contain" priority />
+            <Image src="/brand-dark.webp" alt="" fill sizes="(max-width: 460px) 70vw, 320px" className="object-contain" priority />
           </motion.div>
         </motion.div>
       </div>

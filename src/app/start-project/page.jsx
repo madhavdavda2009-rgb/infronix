@@ -2,7 +2,7 @@
 import { useState, useRef, useEffect } from 'react';
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
-import { ArrowRight, CheckCircle, WarningCircle, Globe, MagnifyingGlass, Robot, Megaphone } from "@phosphor-icons/react";
+import { ArrowRight, CheckCircle, WarningCircle, Globe, MagnifyingGlass, Megaphone } from "@phosphor-icons/react";
 import { services } from '@/lib/services';
 import Breadcrumb from '@/components/Breadcrumb';
 import { getFriendlyErrorMessage, parseJsonResponse } from '@/utils/errorHandler';
@@ -234,12 +234,11 @@ export default function StartProjectPage() {
               <h2 className="text-lg sm:text-xl text-on-surface font-heading font-bold">Select Services Required</h2>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4">
               {[
                 { id: 'Website Development', label: 'Website Development', desc: 'Custom Web Platforms, Web Apps & E-Commerce', icon: Globe },
                 { id: 'SEO', label: 'SEO Optimization', desc: 'Search Visibility & Local Discovery', icon: MagnifyingGlass },
                 { id: 'Digital Marketing', label: 'Digital Marketing & Ads', desc: 'Social Media, Meta & Google Paid Ads', icon: Megaphone },
-                { id: 'AI Automation', label: 'AI Automation', desc: '24/7 Chatbots & WhatsApp Automation', icon: Robot },
               ].map((svc) => {
                 const Icon = svc.icon;
                 const isSelected = selectedServices.includes(svc.id);
@@ -271,12 +270,12 @@ export default function StartProjectPage() {
             </div>
             <div className="mt-6">
               <label htmlFor="sp-specialty" className={LABEL_CLASS}>Specific service (optional)</label>
-              <select id="sp-specialty" className={`${INPUT_CLASS} mt-2`} value={selectedServices.find(name => !['Website Development', 'SEO', 'Digital Marketing', 'AI Automation'].includes(name)) || ''} onChange={event => {
-                const core = selectedServices.filter(name => ['Website Development', 'SEO', 'Digital Marketing', 'AI Automation'].includes(name));
+              <select id="sp-specialty" className={`${INPUT_CLASS} mt-2`} value={selectedServices.find(name => !['Website Development', 'SEO', 'Digital Marketing'].includes(name)) || ''} onChange={event => {
+                const core = selectedServices.filter(name => ['Website Development', 'SEO', 'Digital Marketing'].includes(name));
                 setSelectedServices(event.target.value ? [...core, event.target.value] : core.length ? core : ['Website Development']);
               }}>
                 <option value="">Help me define the scope</option>
-                {services.filter(service => !['Website Development', 'SEO', 'Digital Marketing', 'AI Automation', 'Paid Advertising'].includes(service.name)).map(service => <option key={service.slug} value={service.name}>{service.name}</option>)}
+                {services.filter(service => !['Website Development', 'SEO', 'Digital Marketing', 'Paid Advertising'].includes(service.name)).map(service => <option key={service.slug} value={service.name}>{service.name}</option>)}
               </select>
             </div>
           </div>

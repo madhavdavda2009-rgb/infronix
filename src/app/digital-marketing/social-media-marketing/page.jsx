@@ -154,7 +154,7 @@ const whyChooseUs = [
   },
   {
     title: 'One Agency. Multiple Solutions.',
-    desc: 'From websites and SEO to social media marketing and AI automation, InfronixWeb brings your digital needs together.'
+    desc: 'From websites and SEO to social media and online advertising, InfronixWeb brings your digital presence together.'
   }
 ];
 
@@ -202,7 +202,7 @@ const faqs = [
   },
   {
     question: 'Can you manage social media along with our website?',
-    answer: 'Yes. InfronixWeb also offers Website Development, SEO Optimization, and AI Automation, allowing us to support multiple parts of your digital presence.'
+    answer: 'Yes. InfronixWeb also offers Website Development and SEO, allowing us to support multiple parts of your digital presence.'
   }
 ];
 
@@ -437,7 +437,7 @@ export default function SocialMediaMarketingPage() {
                 More Than Content. A Digital Growth Partner.
               </h2>
               <p className="text-main-text text-lg">
-                We combine design, development, marketing, and automation to help businesses build a stronger digital presence.
+                We combine website design, digital marketing and SEO to help businesses build a stronger digital presence.
               </p>
             </div>
 

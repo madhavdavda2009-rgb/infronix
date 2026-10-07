@@ -6,7 +6,7 @@ import SendConfirmModal from './SendConfirmModal';
 const SERVICES = [
   { id: 'website_development', name: 'Website Development & Redesign' },
   { id: 'seo_optimization', name: 'SEO & Search Optimization' },
-  { id: 'ai_automation', name: 'AI Automation & Smart Workflows' }
+  { id: 'digital_marketing', name: 'Digital Marketing' }
 ];
 
 export default function EmailStudioModal({ isOpen, onClose, lead, onEmailSent, showToast }) {
@@ -34,7 +34,7 @@ export default function EmailStudioModal({ isOpen, onClose, lead, onEmailSent, s
       // Auto pick best service if not set
       const ind = (lead.industry || lead.category || '').toLowerCase();
       if (ind.includes('tech') || ind.includes('saas') || ind.includes('software')) {
-        setSelectedService('ai_automation');
+        setSelectedService('digital_marketing');
       } else if (ind.includes('clinic') || ind.includes('law') || ind.includes('real estate') || ind.includes('restaurant')) {
         setSelectedService('seo_optimization');
       } else {

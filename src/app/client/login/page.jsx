@@ -148,7 +148,7 @@ export default function ClientLogin() {
         {/* Logo */}
         <div className="flex justify-center mb-6">
           <img
-            src="/light-web-logo.webp"
+            src="/brand-light.webp"
             alt="InfronixWeb"
             width={200}
             height={48}

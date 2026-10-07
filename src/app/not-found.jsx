@@ -71,9 +71,7 @@ export default function NotFound() {
           <Link href="/seo" className="hover:text-primary transition-colors flex items-center gap-1.5">
             <ArrowRight className="text-[10px] text-primary" /> SEO Services
           </Link>
-          <Link href="/ai-automation" className="hover:text-primary transition-colors flex items-center gap-1.5">
-            <ArrowRight className="text-[10px] text-primary" /> AI Automation
-          </Link>
+          <Link href="/digital-marketing" className="hover:text-primary transition-colors flex items-center gap-1.5"><ArrowRight className="text-[10px] text-primary" /> Digital Marketing</Link>
           <Link href="/contact" className="hover:text-primary transition-colors flex items-center gap-1.5">
             <EnvelopeSimple className="text-xs text-primary" /> Contact
           </Link>

@@ -1,17 +1,16 @@
 "use client";
-import { 
-  X, 
-  CaretDown, 
-  Envelope, 
-  Phone, 
-  MapPin, 
-  Clock, 
-  Globe, 
-  MagnifyingGlass, 
-  Robot, 
-  ShieldCheck, 
-  ChartLineUp, 
-  Megaphone, 
+import {
+  X,
+  CaretDown,
+  Envelope,
+  Phone,
+  MapPin,
+  Clock,
+  Globe,
+  MagnifyingGlass,
+  ShieldCheck,
+  ChartLineUp,
+  Megaphone,
   ArrowUpRight,
   Sparkle
 } from "@phosphor-icons/react";
@@ -26,12 +25,12 @@ export default function Header() {
   const drawerRef = useRef(null);
   const menuButtonRef = useRef(null);
   const dropdownRef = useRef(null);
-  
+
   const [menuOpen, setMenuOpen] = useState(false);
   const [desktopServicesOpen, setDesktopServicesOpen] = useState(false);
   const [mobileServicesOpen, setMobileServicesOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  
+
   const pathname = usePathname();
   const { introPhase, isIntroActive } = useIntro();
   const { scrollYProgress } = useScroll();
@@ -101,48 +100,14 @@ export default function Header() {
   const isLogoHidden = isIntroActive && introPhase !== 'completed';
 
   const servicesList = [
-    {
-      title: 'Web Development',
-      href: '/web-development',
-      desc: 'Business websites, online stores and easy-to-use customer portals.',
-      icon: Globe
-    },
-    {
-      title: 'SEO Optimization',
-      href: '/seo',
-      desc: 'Help customers find your business on Google and Maps.',
-      icon: MagnifyingGlass
-    },
-    {
-      title: 'AI Automation',
-      href: '/ai-automation',
-      desc: 'Custom AI chatbots, lead capture & CRM automation.',
-      icon: Robot
-    },
-    {
-      title: 'Digital Marketing',
-      href: '/digital-marketing',
-      desc: 'A clear plan to reach customers and bring in enquiries.',
-      icon: ChartLineUp
-    },
-    {
-      title: 'Paid Advertising',
-      href: '/digital-marketing/paid-advertising',
-      desc: 'Google and social media ads planned around your goals.',
-      icon: Megaphone
-    },
-    {
-      title: 'Social Media Marketing',
-      href: '/digital-marketing/social-media-marketing',
-      desc: 'Engaging content creation, reels & social brand presence.',
-      icon: Sparkle
-    }
+    { title: 'Website Development', href: '/web-development', desc: 'Business websites, online stores and customer portals.', icon: Globe },
+    { title: 'Digital Marketing', href: '/digital-marketing', desc: 'Social media, Google Ads and Meta Ads planned around your business.', icon: ChartLineUp },
+    { title: 'SEO', href: '/seo', desc: 'Help customers find your business on Google and Maps.', icon: MagnifyingGlass },
   ];
 
-  const isServicesActive = 
+  const isServicesActive =
     pathname.startsWith('/web-development') ||
     pathname.startsWith('/seo') ||
-    pathname.startsWith('/ai-automation') ||
     pathname.startsWith('/digital-marketing') ||
     pathname === '/services';
 
@@ -192,7 +157,7 @@ export default function Header() {
             <Link href="/" className="flex items-center gap-3 group shrink-0" aria-label="InfronixWeb Home">
               <Image
                 id="header-logo-image"
-                src="/dark-web-logo.webp"
+                src="/brand-dark.webp"
                 alt="InfronixWeb Digital Marketing"
                 width={210}
                 height={50}
@@ -222,7 +187,7 @@ export default function Header() {
               </Link>
 
               {/* Services with Desktop Dropdown */}
-              <div 
+              <div
                 ref={dropdownRef}
                 className="relative"
                 onMouseEnter={() => setDesktopServicesOpen(true)}
@@ -239,9 +204,9 @@ export default function Header() {
                   }`}
                 >
                   <span>Services</span>
-                  <CaretDown 
-                    size={14} 
-                    className={`transition-transform duration-200 ${desktopServicesOpen ? 'rotate-180 text-primary' : 'text-slate-400'}`} 
+                  <CaretDown
+                    size={14}
+                    className={`transition-transform duration-200 ${desktopServicesOpen ? 'rotate-180 text-primary' : 'text-slate-400'}`}
                   />
                 </button>
 
@@ -429,7 +394,7 @@ export default function Header() {
             <div className="flex shrink-0 items-center justify-between py-5 border-b border-outline">
               <Link href="/" onClick={() => setMenuOpen(false)}>
                 <img
-                  src="/light-web-logo.webp"
+                  src="/brand-light.webp"
                   alt="InfronixWeb"
                   width={180}
                   height={42}

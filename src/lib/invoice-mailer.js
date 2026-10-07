@@ -91,7 +91,7 @@ export function generateInvoiceEmailHtml({ client, invoice }) {
                       Web Agency
                     </div>
                     <div style="font-size: 11px; color: #94a3b8; margin-top: 6px;">
-                      Web Development &middot; SEO &middot; AI Automation
+                      Website Development &middot; Digital Marketing &middot; SEO
                     </div>
                   </td>
                   <td align="right" style="vertical-align: top;">

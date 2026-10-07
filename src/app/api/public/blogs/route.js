@@ -1,9 +1,6 @@
 import { NextResponse } from 'next/server';
 import { query } from '@/lib/founder_os_db';
 import { normalizeBlogImages } from '@/lib/blog-images';
-import { enhanceBlogPost } from '@/lib/blog-enhancements';
-import { buildBlogCatalog } from '@/lib/blog-catalog';
-import { getGuideAuthor } from '@/lib/editorial-guide-author';
 
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
@@ -91,7 +88,7 @@ export async function GET(request) {
     const postsRes = await query(sql, params);
 
     // Fetch categories and tags for filtering
-    const [catsRes, tagsRes, slugsRes, guideAuthor] = await Promise.all([
+    const [catsRes, tagsRes] = await Promise.all([
       query(`
         SELECT c.id, c.name, c.slug, c.description, COUNT(b.id)::int AS post_count
         FROM founder_os_blog_categories c
@@ -108,17 +105,15 @@ export async function GET(request) {
         WHERE (b.status = 'Published' OR (b.status = 'Scheduled' AND b.scheduled_for <= NOW()))
         GROUP BY t.id
         ORDER BY t.name ASC
-      `),
-      query("SELECT slug FROM founder_os_blogs WHERE status = 'Published' OR (status = 'Scheduled' AND scheduled_for <= NOW())"),
-      getGuideAuthor()
+      `)
     ]);
-    const catalog = buildBlogCatalog(postsRes.rows.map(p => normalizeBlogImages(enhanceBlogPost(p))), catsRes.rows, {category:categorySlug, tag:tagSlug, search, featured}, slugsRes.rows.map(p => p.slug), guideAuthor);
+    const posts = postsRes.rows.map(normalizeBlogImages);
 
     return NextResponse.json(
       {
         success: true,
-        posts: catalog.posts,
-        categories: catalog.categories,
+        posts,
+        categories: catsRes.rows,
         tags: tagsRes.rows
       },
       {

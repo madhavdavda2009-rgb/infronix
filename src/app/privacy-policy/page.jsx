@@ -17,7 +17,7 @@ export default function PrivacyPolicy() {
               Privacy Policy
             </h1>
             <p className="text-sm font-medium text-on-surface-variant">
-              <strong className="text-on-surface">Last Updated:</strong> August 14, 2026
+              <strong className="text-on-surface">Last Updated:</strong> October 7, 2026
             </p>
           </header>
 
@@ -30,10 +30,10 @@ export default function PrivacyPolicy() {
                 1. Introduction
               </h2>
               <p>
-                This Privacy Policy explains how we collect, use, store, process, disclose, and protect personal information when you visit our website, contact us, use our chatbot, or interact with our services.
+                This Privacy Policy explains how we collect, use, store, process, disclose, and protect personal information when you visit our website, contact us, or interact with our services.
               </p>
               <p>
-                Our services may include website development, SEO services, AI automation, AI chatbot development, digital solutions, and related technology services.
+                Our services include website development, digital marketing and SEO.
               </p>
               <p>
                 By using our website, you acknowledge this Privacy Policy.
@@ -70,7 +70,7 @@ export default function PrivacyPolicy() {
                   <li>Website or business information</li>
                   <li>Messages and enquiries</li>
                   <li>Information submitted through contact forms</li>
-                  <li>Information submitted through our AI chatbot</li>
+                  <li>Information submitted through our enquiry form</li>
                   <li>Information provided during consultations</li>
                   <li>Information required for project delivery</li>
                 </ul>
@@ -122,16 +122,16 @@ export default function PrivacyPolicy() {
 
             <hr className="border-outline-variant opacity-50" />
 
-            {/* 3. Information Collected Through Our Chatbot */}
+            {/* 3. Information Collected Through Our Enquiry Form */}
             <section aria-labelledby="section-3" className="space-y-4">
               <h2 id="section-3" className="font-headline-md text-2xl font-semibold text-on-surface border-l-4 border-on-surface pl-4">
-                3. Information Collected Through Our Chatbot
+                3. Information Collected Through Our Enquiry Form
               </h2>
               <p>
-                Our website may contain an AI-powered chatbot.
+                Our website may contain an enquiry form.
               </p>
               <p>
-                Information entered into the chatbot may include:
+                Information entered into the enquiry form may include:
               </p>
               <ul className="list-disc pl-6 space-y-1.5 marker:text-on-surface">
                 <li>Name</li>
@@ -145,7 +145,7 @@ export default function PrivacyPolicy() {
               </ul>
 
               <p className="pt-2">
-                Chatbot information may be processed to:
+                Enquiry Form information may be processed to:
               </p>
               <ul className="list-disc pl-6 space-y-1.5 marker:text-on-surface">
                 <li>Answer questions</li>
@@ -167,7 +167,7 @@ export default function PrivacyPolicy() {
                   Important
                 </h4>
                 <p className="text-sm font-medium text-on-surface">
-                  Do not submit highly sensitive information through the chatbot unless specifically requested through an appropriate secure process.
+                  Do not submit highly sensitive information through the enquiry form unless specifically requested through an appropriate secure process.
                 </p>
                 <p className="text-sm text-on-surface-variant">
                   This may include:
@@ -203,8 +203,6 @@ export default function PrivacyPolicy() {
                 <li>Provide customer support</li>
                 <li>Deliver websites and software</li>
                 <li>Provide SEO services</li>
-                <li>Develop and operate AI automation</li>
-                <li>Operate AI chatbots</li>
                 <li>Maintain business records</li>
                 <li>Improve our website</li>
                 <li>Analyze website performance</li>
@@ -248,34 +246,10 @@ export default function PrivacyPolicy() {
 
             <hr className="border-outline-variant opacity-50" />
 
-            {/* 6. AI Processing */}
+            {/* 7. Third-Party Service Providers */}
             <section aria-labelledby="section-6" className="space-y-4">
               <h2 id="section-6" className="font-headline-md text-2xl font-semibold text-on-surface border-l-4 border-on-surface pl-4">
-                6. AI Processing
-              </h2>
-              <p>
-                We may use third-party AI services to provide chatbot, automation, analysis, or other AI-related functionality.
-              </p>
-              <p>
-                Information submitted to an AI-powered feature may be processed by the relevant technology provider where necessary to provide that functionality.
-              </p>
-              <p>
-                We take reasonable measures to avoid sending unnecessary personal information to AI services.
-              </p>
-              <p>
-                AI-generated responses may contain errors.
-              </p>
-              <p className="font-medium text-on-surface">
-                AI-generated information should not automatically be relied upon for legal, financial, medical, security, or other high-risk decisions.
-              </p>
-            </section>
-
-            <hr className="border-outline-variant opacity-50" />
-
-            {/* 7. Third-Party Service Providers */}
-            <section aria-labelledby="section-7" className="space-y-4">
-              <h2 id="section-7" className="font-headline-md text-2xl font-semibold text-on-surface border-l-4 border-on-surface pl-4">
-                7. Third-Party Service Providers
+                6. Third-Party Service Providers
               </h2>
               <p>
                 We may use trusted third-party providers for:
@@ -286,7 +260,7 @@ export default function PrivacyPolicy() {
                   "Cloud infrastructure",
                   "Databases",
                   "Analytics",
-                  "AI services",
+                  "Marketing and analytics services",
                   "Email delivery",
                   "Communication",
                   "WhatsApp or messaging integrations",
@@ -314,9 +288,9 @@ export default function PrivacyPolicy() {
             <hr className="border-outline-variant opacity-50" />
 
             {/* 8. Client Data */}
-            <section aria-labelledby="section-8" className="space-y-4">
-              <h2 id="section-8" className="font-headline-md text-2xl font-semibold text-on-surface border-l-4 border-on-surface pl-4">
-                8. Client Data
+            <section aria-labelledby="section-7" className="space-y-4">
+              <h2 id="section-7" className="font-headline-md text-2xl font-semibold text-on-surface border-l-4 border-on-surface pl-4">
+                7. Client Data
               </h2>
               <p>
                 When we provide services to a client, we may process information belonging to that client or the client&apos;s customers.
@@ -332,9 +306,9 @@ export default function PrivacyPolicy() {
             <hr className="border-outline-variant opacity-50" />
 
             {/* 9. Data Security */}
-            <section aria-labelledby="section-9" className="space-y-4">
-              <h2 id="section-9" className="font-headline-md text-2xl font-semibold text-on-surface border-l-4 border-on-surface pl-4">
-                9. Data Security
+            <section aria-labelledby="section-8" className="space-y-4">
+              <h2 id="section-8" className="font-headline-md text-2xl font-semibold text-on-surface border-l-4 border-on-surface pl-4">
+                8. Data Security
               </h2>
               <p>
                 We implement reasonable technical and organizational safeguards designed to protect information against unauthorized access, misuse, alteration, disclosure, loss, or destruction.
@@ -361,9 +335,9 @@ export default function PrivacyPolicy() {
             <hr className="border-outline-variant opacity-50" />
 
             {/* 10. Data Retention */}
-            <section aria-labelledby="section-10" className="space-y-4">
-              <h2 id="section-10" className="font-headline-md text-2xl font-semibold text-on-surface border-l-4 border-on-surface pl-4">
-                10. Data Retention
+            <section aria-labelledby="section-9" className="space-y-4">
+              <h2 id="section-9" className="font-headline-md text-2xl font-semibold text-on-surface border-l-4 border-on-surface pl-4">
+                9. Data Retention
               </h2>
               <p>
                 We retain personal information only for as long as reasonably necessary for the purposes for which it was collected, including:
@@ -385,9 +359,9 @@ export default function PrivacyPolicy() {
             <hr className="border-outline-variant opacity-50" />
 
             {/* 11. Data Deletion */}
-            <section aria-labelledby="section-11" className="space-y-4">
-              <h2 id="section-11" className="font-headline-md text-2xl font-semibold text-on-surface border-l-4 border-on-surface pl-4">
-                11. Data Deletion
+            <section aria-labelledby="section-10" className="space-y-4">
+              <h2 id="section-10" className="font-headline-md text-2xl font-semibold text-on-surface border-l-4 border-on-surface pl-4">
+                10. Data Deletion
               </h2>
               <p>
                 Where applicable, you may request deletion of personal information that we hold about you.
@@ -400,9 +374,9 @@ export default function PrivacyPolicy() {
             <hr className="border-outline-variant opacity-50" />
 
             {/* 12. Your Rights */}
-            <section aria-labelledby="section-12" className="space-y-4">
-              <h2 id="section-12" className="font-headline-md text-2xl font-semibold text-on-surface border-l-4 border-on-surface pl-4">
-                12. Your Rights
+            <section aria-labelledby="section-11" className="space-y-4">
+              <h2 id="section-11" className="font-headline-md text-2xl font-semibold text-on-surface border-l-4 border-on-surface pl-4">
+                11. Your Rights
               </h2>
               <p>
                 Depending on applicable law, you may have rights relating to your personal information, including:
@@ -427,9 +401,9 @@ export default function PrivacyPolicy() {
             <hr className="border-outline-variant opacity-50" />
 
             {/* 13. Children's Privacy */}
-            <section aria-labelledby="section-13" className="space-y-4">
-              <h2 id="section-13" className="font-headline-md text-2xl font-semibold text-on-surface border-l-4 border-on-surface pl-4">
-                13. Children&apos;s Privacy
+            <section aria-labelledby="section-12" className="space-y-4">
+              <h2 id="section-12" className="font-headline-md text-2xl font-semibold text-on-surface border-l-4 border-on-surface pl-4">
+                12. Children&apos;s Privacy
               </h2>
               <p>
                 Our website is not intentionally designed to collect personal information from children.
@@ -445,9 +419,9 @@ export default function PrivacyPolicy() {
             <hr className="border-outline-variant opacity-50" />
 
             {/* 14. International Data Processing */}
-            <section aria-labelledby="section-14" className="space-y-4">
-              <h2 id="section-14" className="font-headline-md text-2xl font-semibold text-on-surface border-l-4 border-on-surface pl-4">
-                14. International Data Processing
+            <section aria-labelledby="section-13" className="space-y-4">
+              <h2 id="section-13" className="font-headline-md text-2xl font-semibold text-on-surface border-l-4 border-on-surface pl-4">
+                13. International Data Processing
               </h2>
               <p>
                 Some third-party service providers used by us may process information outside India.
@@ -460,9 +434,9 @@ export default function PrivacyPolicy() {
             <hr className="border-outline-variant opacity-50" />
 
             {/* 15. Data Breaches and Security Incidents */}
-            <section aria-labelledby="section-15" className="space-y-4">
-              <h2 id="section-15" className="font-headline-md text-2xl font-semibold text-on-surface border-l-4 border-on-surface pl-4">
-                15. Data Breaches and Security Incidents
+            <section aria-labelledby="section-14" className="space-y-4">
+              <h2 id="section-14" className="font-headline-md text-2xl font-semibold text-on-surface border-l-4 border-on-surface pl-4">
+                14. Data Breaches and Security Incidents
               </h2>
               <p>
                 If a personal-data breach or security incident occurs, we will take reasonable steps to investigate, contain, mitigate, and respond to the incident.
@@ -475,9 +449,9 @@ export default function PrivacyPolicy() {
             <hr className="border-outline-variant opacity-50" />
 
             {/* 16. Fraud, Abuse, and Security Monitoring */}
-            <section aria-labelledby="section-16" className="space-y-4">
-              <h2 id="section-16" className="font-headline-md text-2xl font-semibold text-on-surface border-l-4 border-on-surface pl-4">
-                16. Fraud, Abuse, and Security Monitoring
+            <section aria-labelledby="section-15" className="space-y-4">
+              <h2 id="section-15" className="font-headline-md text-2xl font-semibold text-on-surface border-l-4 border-on-surface pl-4">
+                15. Fraud, Abuse, and Security Monitoring
               </h2>
               <p>
                 We may process technical and usage information to detect:
@@ -500,9 +474,9 @@ export default function PrivacyPolicy() {
             <hr className="border-outline-variant opacity-50" />
 
             {/* 17. Marketing Communications */}
-            <section aria-labelledby="section-17" className="space-y-4">
-              <h2 id="section-17" className="font-headline-md text-2xl font-semibold text-on-surface border-l-4 border-on-surface pl-4">
-                17. Marketing Communications
+            <section aria-labelledby="section-16" className="space-y-4">
+              <h2 id="section-16" className="font-headline-md text-2xl font-semibold text-on-surface border-l-4 border-on-surface pl-4">
+                16. Marketing Communications
               </h2>
               <p>
                 Where required, we will obtain appropriate consent before sending promotional communications.
@@ -518,9 +492,9 @@ export default function PrivacyPolicy() {
             <hr className="border-outline-variant opacity-50" />
 
             {/* 18. Third-Party Links */}
-            <section aria-labelledby="section-18" className="space-y-4">
-              <h2 id="section-18" className="font-headline-md text-2xl font-semibold text-on-surface border-l-4 border-on-surface pl-4">
-                18. Third-Party Links
+            <section aria-labelledby="section-17" className="space-y-4">
+              <h2 id="section-17" className="font-headline-md text-2xl font-semibold text-on-surface border-l-4 border-on-surface pl-4">
+                17. Third-Party Links
               </h2>
               <p>
                 Our website may contain links to third-party websites and services.
@@ -536,9 +510,9 @@ export default function PrivacyPolicy() {
             <hr className="border-outline-variant opacity-50" />
 
             {/* 19. Changes to This Privacy Policy */}
-            <section aria-labelledby="section-19" className="space-y-4">
-              <h2 id="section-19" className="font-headline-md text-2xl font-semibold text-on-surface border-l-4 border-on-surface pl-4">
-                19. Changes to This Privacy Policy
+            <section aria-labelledby="section-18" className="space-y-4">
+              <h2 id="section-18" className="font-headline-md text-2xl font-semibold text-on-surface border-l-4 border-on-surface pl-4">
+                18. Changes to This Privacy Policy
               </h2>
               <p>
                 We may update this Privacy Policy when our services, technology, legal requirements, or business practices change.
@@ -551,9 +525,9 @@ export default function PrivacyPolicy() {
             <hr className="border-outline-variant opacity-50" />
 
             {/* 20. Applicable Law */}
-            <section aria-labelledby="section-20" className="space-y-4">
-              <h2 id="section-20" className="font-headline-md text-2xl font-semibold text-on-surface border-l-4 border-on-surface pl-4">
-                20. Applicable Law
+            <section aria-labelledby="section-19" className="space-y-4">
+              <h2 id="section-19" className="font-headline-md text-2xl font-semibold text-on-surface border-l-4 border-on-surface pl-4">
+                19. Applicable Law
               </h2>
               <p>
                 This Privacy Policy is intended to operate in accordance with applicable laws and regulations governing privacy, data protection, information technology, consumer protection, and electronic communications.
@@ -566,9 +540,9 @@ export default function PrivacyPolicy() {
             <hr className="border-outline-variant opacity-50" />
 
             {/* 21. Contact and Privacy Requests */}
-            <section aria-labelledby="section-21" className="space-y-4">
-              <h2 id="section-21" className="font-headline-md text-2xl font-semibold text-on-surface border-l-4 border-on-surface pl-4">
-                21. Contact and Privacy Requests
+            <section aria-labelledby="section-20" className="space-y-4">
+              <h2 id="section-20" className="font-headline-md text-2xl font-semibold text-on-surface border-l-4 border-on-surface pl-4">
+                20. Contact and Privacy Requests
               </h2>
               <p>
                 For privacy-related questions, requests, complaints, or concerns, contact our compliance team at InfronixWeb Digital Marketing, based in Ahmedabad, Gujarat, India, through the official contact information published on our website.
@@ -581,9 +555,9 @@ export default function PrivacyPolicy() {
             <hr className="border-outline-variant opacity-50" />
 
             {/* 22. Important Disclaimer */}
-            <section aria-labelledby="section-22" className="bg-surface-container-high/60 p-6 rounded-xl border border-outline-variant space-y-3">
-              <h2 id="section-22" className="font-headline-md text-2xl font-semibold text-on-surface">
-                22. Important Disclaimer
+            <section aria-labelledby="section-21" className="bg-surface-container-high/60 p-6 rounded-xl border border-outline-variant space-y-3">
+              <h2 id="section-21" className="font-headline-md text-2xl font-semibold text-on-surface">
+                21. Important Disclaimer
               </h2>
               <p>
                 This Privacy Policy provides general information about our data-handling practices.

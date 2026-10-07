@@ -36,7 +36,7 @@ export const viewport = {
 };
 
 export const metadata = {
-  ...pageMetadata('Digital Marketing, Websites & AI Automation Agency in Ahmedabad', 'InfronixWeb is a digital agency in Ahmedabad helping businesses with website development, SEO, digital marketing, advertising and AI automation solutions.'),
+  ...pageMetadata('Website Development, Digital Marketing & SEO Agency in Ahmedabad', 'InfronixWeb is a digital agency in Ahmedabad providing website development, digital marketing and SEO services.'),
   metadataBase: new URL(SITE_URL),
   robots: { index: true, follow: true },
   icons: {
@@ -65,15 +65,15 @@ export default function RootLayout({ children }) {
             __html: serializeJsonLd({
               '@context': 'https://schema.org',
               '@graph': [
-                { 
-                  '@type': ['Organization', 'LocalBusiness', 'ProfessionalService'], 
-                  '@id': SITE_URL + '/#organization', 
-                  name: 'InfronixWeb', 
+                {
+                  '@type': ['Organization', 'LocalBusiness', 'ProfessionalService'],
+                  '@id': SITE_URL + '/#organization',
+                  name: 'InfronixWeb',
                   url: SITE_URL,
-                  logo: SITE_URL + '/light-web-logo.png', 
+                  logo: SITE_URL + '/brand-light.png',
                   image: SITE_URL + '/opengraph-image.webp',
-                  description: 'An Ahmedabad-based digital agency helping businesses build websites, reach customers through Google and online advertising, and save time on everyday work.',
-                  telephone: '+91-6355792936', 
+                  description: 'An Ahmedabad-based digital agency helping businesses build websites, reach customers through Google and online advertising, and improve their search visibility.',
+                  telephone: '+91-6355792936',
                   email: 'support@infronixweb.in',
                   address: {
                     '@type': 'PostalAddress',
@@ -97,15 +97,15 @@ export default function RootLayout({ children }) {
                     { '@type': 'Country', name: 'India' }
                   ],
                   sameAs: [
-                    'https://www.instagram.com/infronixwebagency2026', 
+                    'https://www.instagram.com/infronixwebagency2026',
                     'https://www.linkedin.com/company/infronixweb/'
-                  ] 
+                  ]
                 },
-                { 
-                  '@type': 'WebSite', 
-                  '@id': SITE_URL + '/#website', 
-                  url: SITE_URL, 
-                  name: 'InfronixWeb', 
+                {
+                  '@type': 'WebSite',
+                  '@id': SITE_URL + '/#website',
+                  url: SITE_URL,
+                  name: 'InfronixWeb',
                   publisher: { '@id': SITE_URL + '/#organization' }
                 }
               ]

@@ -5,8 +5,8 @@ import { ArrowRight, Sparkle } from '@phosphor-icons/react/dist/ssr';
 import { pageMetadata } from '@/lib/site-seo';
 
 export const metadata = pageMetadata(
-  'Website, Marketing & Automation Services in Ahmedabad',
-  'Explore InfronixWeb services across Build, Grow and Automate: websites, SEO, digital marketing, advertising, AI chatbots and business workflows.',
+  'Website Development, Digital Marketing & SEO Services in Ahmedabad',
+  'Explore InfronixWeb website development, digital marketing and SEO services, including online stores, social media and Google and Meta Ads.',
   '/services'
 );
 
@@ -22,10 +22,10 @@ export default function ServicesPage() {
             <Sparkle size={15} weight="bold" /> Our services
           </span>
           <h1 className="text-3xl sm:text-5xl md:text-6xl font-heading font-bold text-on-surface max-w-3xl leading-tight mb-5">
-            Build, grow and automate with one digital agency.
+            Website Development. Digital Marketing. SEO.
           </h1>
           <p className="text-base sm:text-lg text-main-text max-w-2xl leading-relaxed">
-            Based in Ahmedabad, we build business websites, help you reach customers through Google and social media, and save your team time on repetitive work.
+            Based in Ahmedabad, we build business websites, help you reach customers through Google and social media, and improve your visibility in search.
           </p>
         </div>
 

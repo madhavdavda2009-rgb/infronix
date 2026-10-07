@@ -2,6 +2,7 @@ import sharp from 'sharp';
 import { randomUUID } from 'node:crypto';
 import { NextResponse } from 'next/server';
 import { verifyAdminAuth } from './auth.js';
+import { storeContentImage } from './cloudinary-upload.js';
 
 export async function uploadContentImage(request, kind, maxWidth) {
   if (!verifyAdminAuth(request)) {
@@ -19,9 +20,12 @@ export async function uploadContentImage(request, kind, maxWidth) {
     const bytes = await sharp(Buffer.from(await file.arrayBuffer()), { limitInputPixels: 40000000 })
       .rotate().resize({ width: maxWidth, height: maxWidth, fit: 'inside', withoutEnlargement: true })
       .webp({ quality: 82 }).toBuffer();
-    // Saving the profile/article persists the optimized image in its existing DB field.
-    // No deployment-local filesystem path that disappears after a restart.
-    return NextResponse.json({ success: true, imageUrl: `data:image/webp;base64,${bytes.toString('base64')}`,
+    // The CMS saves one image URL. Every cloud upload has a new ID, so replacing
+    // a photo never overwrites another profile or returns an old cached image.
+    let stored;
+    try { stored = await storeContentImage(bytes, kind); }
+    catch { return NextResponse.json({ success: false, error: 'Image storage is unavailable. Check the Cloudinary settings or try again.' }, { status: 502 }); }
+    return NextResponse.json({ success: true, ...stored,
       filename: `${kind}-${randomUUID()}.webp` });
   } catch {
     return NextResponse.json({ success: false, error: 'Unable to read this image. Try JPG, PNG, WebP or AVIF.' }, { status: 400 });

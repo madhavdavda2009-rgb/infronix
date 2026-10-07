@@ -1,6 +1,5 @@
 import { NextResponse } from 'next/server';
 import { query } from '@/lib/founder_os_db';
-import { getPublicEditorialGuide } from '@/lib/editorial-guide-author';
 import { blogRevision } from '@/lib/blog-revision';
 
 export const dynamic = 'force-dynamic';
@@ -14,7 +13,7 @@ export async function GET(request) {
       LEFT JOIN founder_os_blog_posts_tags pt ON pt.post_id = b.id LEFT JOIN founder_os_blog_tags t ON t.id = pt.tag_id
       WHERE LOWER(b.slug) = $1 AND (b.status = 'Published' OR (b.status = 'Scheduled' AND b.scheduled_for <= NOW()))
       GROUP BY b.id, c.name, c.slug`, [slug]);
-    return NextResponse.json({ success: true, revision: blogRevision(rows[0] || await getPublicEditorialGuide(slug)) }, {
+    return NextResponse.json({ success: true, revision: blogRevision(rows[0]) }, {
       headers: { 'Cache-Control': 'no-store' },
     });
   } catch (error) {

@@ -203,7 +203,7 @@ const whyChooseUs = [
   },
   {
     title: 'Connected Digital Solutions',
-    desc: 'With Website Development, SEO Optimization, Social Media Marketing, and AI Automation, InfronixWeb can support different parts of your digital marketing journey.'
+    desc: 'With Website Development, SEO and Social Media Marketing, InfronixWeb can support different parts of your digital marketing journey.'
   }
 ];
 
@@ -249,12 +249,6 @@ const ecosystemServices = [
     icon: Megaphone,
     link: '/digital-marketing/social-media-marketing'
   },
-  {
-    title: 'AI Automation',
-    desc: 'Connect lead capture and follow-up workflows to help manage enquiries more efficiently.',
-    icon: Robot,
-    link: '/ai-automation'
-  }
 ];
 
 const faqs = [
@@ -288,7 +282,7 @@ const faqs = [
   },
   {
     question: 'Can you manage our ads along with our website and SEO?',
-    answer: 'Yes. InfronixWeb offers Website Development, SEO Optimization, Social Media Marketing, and AI Automation to support your wider digital marketing requirements.'
+    answer: 'Yes. InfronixWeb offers Website Development, SEO and Social Media Marketing to support your wider digital marketing requirements.'
   }
 ];
 

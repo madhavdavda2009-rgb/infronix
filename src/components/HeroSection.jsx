@@ -2,7 +2,7 @@
 import { motion } from "framer-motion";
 import Link from "next/link";
 import Image from "next/image";
-import { ArrowRight, Code, ChartLineUp, Robot } from "@phosphor-icons/react";
+import { ArrowRight, Code, ChartLineUp, Megaphone } from "@phosphor-icons/react";
 import heroImg from "@/assets/hero-section.webp";
 import Breadcrumb from "@/components/Breadcrumb";
 import { useIntro } from "@/context/IntroContext";
@@ -70,9 +70,9 @@ export default function HeroSection() {
               variants={itemVariants}
               className="text-3xl sm:text-5xl md:text-6xl lg:text-6xl xl:text-7xl leading-[1.1] sm:leading-[1.05] font-heading font-bold text-on-surface tracking-tight mb-5 sm:mb-7"
             >
-              Build, Grow &amp;<br />
-              Automate<br />
-              <span className="text-text-light font-normal">your business with</span><br />
+              Build your website.<br />
+              Grow your business.<br />
+              <span className="text-text-light font-normal">with</span><br />
               <span className="relative inline-block text-on-surface">
                 InfronixWeb.
                 <svg className="absolute -bottom-1 sm:-bottom-2 left-0 w-full h-2 sm:h-3 text-primary" viewBox="0 0 100 10" preserveAspectRatio="none" aria-hidden="true">
@@ -86,7 +86,7 @@ export default function HeroSection() {
               variants={itemVariants}
               className="text-base sm:text-lg md:text-xl text-main-text max-w-2xl mb-7 sm:mb-9 font-normal leading-relaxed"
             >
-              We build websites, help customers find you online and simplify everyday work for your business. Based in Ahmedabad, working across India.
+              Websites, digital marketing and SEO that help customers discover your business. Based in Ahmedabad, working across India.
             </motion.p>
 
             {/* CTAs */}
@@ -115,10 +115,10 @@ export default function HeroSection() {
                 <Code size={18} weight="bold" className="text-primary shrink-0" /> Custom Websites
               </div>
               <div className="flex items-center gap-2 text-xs sm:text-sm font-semibold text-on-surface tracking-wider uppercase">
-                <ChartLineUp size={18} weight="bold" className="text-primary shrink-0" /> SEO & Digital Marketing
+                <ChartLineUp size={18} weight="bold" className="text-primary shrink-0" /> SEO &amp; Search Visibility
               </div>
               <div className="flex items-center gap-2 text-xs sm:text-sm font-semibold text-on-surface tracking-wider uppercase">
-                <Robot size={18} weight="bold" className="text-primary shrink-0" /> Smart Automations
+                <Megaphone size={18} weight="bold" className="text-primary shrink-0" /> Digital Marketing
               </div>
             </motion.div>
 
