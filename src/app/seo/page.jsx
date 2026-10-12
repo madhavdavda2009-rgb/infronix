@@ -1,4 +1,5 @@
 import ServiceDetails from '@/components/ServiceDetails';
+import ServiceBrief from '@/components/ServiceBrief';
 import { getService } from '@/lib/services';
 import { pageMetadata } from '@/lib/site-seo';
 import Breadcrumb from '@/components/Breadcrumb';
@@ -62,7 +63,7 @@ export default function SEOPage() {
                 {service.heading}
               </h1>
               <p className="text-base sm:text-lg md:text-xl text-main-text font-medium max-w-2xl leading-relaxed">
-                InfronixWeb helps Ahmedabad businesses improve search visibility through technical SEO, useful content and local search strategy. We prioritize work from your site and Search Console evidence.
+                InfronixWeb provides SEO services in Ahmedabad, including website reviews, customer keyword research, useful content and local search improvements. We choose the first changes from your website and Search Console evidence.
               </p>
               <p className="text-sm sm:text-base text-text-light font-medium max-w-2xl leading-relaxed">
                 Our SEO optimization services focus on technical improvements, relevant content, keyword research, and local search strategies designed around your business goals.
@@ -79,6 +80,8 @@ export default function SEOPage() {
             </div>
           </div>
         </section>
+
+        <ServiceBrief slug='seo' />
 
         {/* Our SEO Services — Services Grid */}
         <section className="w-full py-12 sm:py-16 md:py-24 bg-surface border-b border-outline-variant/30">

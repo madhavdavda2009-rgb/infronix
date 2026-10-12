@@ -12,14 +12,19 @@ export function RelatedServices({ slugs }) {
 
 export default function ServiceDetails({ slug }) {
   const service = getService(slug);
+  const pageUrl = `${SITE_URL}/${slug}`;
   const schema = {
-    '@context': 'https://schema.org', 
-    '@type': 'Service', 
-    name: service.name,
-    description: service.description, 
-    url: `${SITE_URL}/${slug}`,
-    provider: { '@id': `${SITE_URL}/#organization` }, 
-    areaServed: { '@type': 'City', name: 'Ahmedabad' },
+    '@context': 'https://schema.org',
+    '@graph': [
+      { '@type': 'Service', '@id': `${pageUrl}#service`, name: service.name,
+        serviceType: service.name, description: service.description, url: pageUrl,
+        provider: { '@id': `${SITE_URL}/#organization` },
+        areaServed: { '@type': 'City', name: 'Ahmedabad' } },
+      { '@type': 'WebPage', '@id': `${pageUrl}#webpage`, url: pageUrl,
+        name: service.title, description: service.description, inLanguage: 'en-IN',
+        isPartOf: { '@id': `${SITE_URL}/#website` },
+        mainEntity: { '@id': `${pageUrl}#service` } },
+    ],
   };
 
   return <>

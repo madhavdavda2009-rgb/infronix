@@ -1,4 +1,5 @@
 import ServiceDetails from '@/components/ServiceDetails';
+import ServiceBrief from '@/components/ServiceBrief';
 import { getService } from '@/lib/services';
 import { pageMetadata } from '@/lib/site-seo';
 import Breadcrumb from '@/components/Breadcrumb';
@@ -59,7 +60,7 @@ export default function DigitalMarketingPage() {
                 <span className="w-8 sm:w-12 h-[2px] bg-primary" /> Digital Marketing
               </span>
               <h1 className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-heading font-bold text-on-surface leading-tight tracking-tight">
-                Results-Driven Digital Marketing Agency
+                {service.heading}
               </h1>
               <p className="text-base sm:text-lg md:text-xl text-main-text font-medium max-w-2xl leading-relaxed">
                 We create targeted social media content and focused advertising campaigns on Google, Instagram, and Facebook to help your business reach more paying customers.
@@ -76,6 +77,8 @@ export default function DigitalMarketingPage() {
             </div>
           </div>
         </section>
+
+        <ServiceBrief slug='digital-marketing' />
 
         {/* Sub-Services Grid */}
         <section className="w-full py-12 sm:py-16 md:py-24 bg-surface border-b border-outline-variant/30">

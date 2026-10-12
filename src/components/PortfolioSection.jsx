@@ -11,12 +11,14 @@ const projects = [
     desc: "An interactive product website that helps visitors explore the range and choose the options they need.",
     tech: ["Product Exploration", "Made for the Brand", "Fast Loading"],
     image: "/img-2.avif",
+    liveUrl: "https://toyonindustry.com/",
     category: "Website Development"
   }
 ];
 
 export default function PortfolioSection({ asH1 = false }) {
   const Heading = asH1 ? "h1" : "h2";
+  const ProjectHeading = asH1 ? "h2" : "h3";
   return (
     <section className="py-16 sm:py-20 md:py-24 bg-surface-container-lowest">
       <div className="max-w-[1440px] mx-auto px-4 sm:px-6 md:px-12">
@@ -54,7 +56,7 @@ export default function PortfolioSection({ asH1 = false }) {
               className="group flex flex-col lg:flex-row gap-6 sm:gap-8 lg:gap-14 items-start lg:items-center"
             >
               {/* Project Image */}
-              <div className={`w-full lg:w-3/5 overflow-hidden rounded-2xl bg-surface border border-outline shadow-sm ${index % 2 !== 0 ? 'lg:order-2' : ''}`}>
+              <a href={project.liveUrl} target="_blank" rel="noopener noreferrer" aria-label={`Visit ${project.title} live website (opens in a new tab)`} className={`block w-full lg:w-3/5 overflow-hidden rounded-2xl bg-surface border border-outline shadow-sm focus-visible:outline-primary focus-visible:outline-offset-4 ${index % 2 !== 0 ? 'lg:order-2' : ''}`}>
                 <div className="block relative aspect-[16/10] sm:aspect-[4/3] w-full overflow-hidden">
                   <Image
                     src={project.image}
@@ -67,7 +69,7 @@ export default function PortfolioSection({ asH1 = false }) {
                   {/* Subtle hover overlay */}
                   <div className="absolute inset-0 bg-black/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                 </div>
-              </div>
+              </a>
 
               {/* Project Info */}
               <div className={`w-full lg:w-2/5 flex flex-col justify-center ${index % 2 !== 0 ? 'lg:order-1' : ''}`}>
@@ -78,9 +80,9 @@ export default function PortfolioSection({ asH1 = false }) {
                   <span className="w-8 sm:w-12 h-[1px] bg-outline"></span>
                 </div>
 
-                <h3 className="text-2xl sm:text-3xl md:text-4xl font-heading font-bold text-on-surface mb-3 sm:mb-4 transition-colors group-hover:text-primary">
+                <ProjectHeading className="text-2xl sm:text-3xl md:text-4xl font-heading font-bold text-on-surface mb-3 sm:mb-4 transition-colors group-hover:text-primary">
                   {project.title}
-                </h3>
+                </ProjectHeading>
 
                 <p className="text-sm sm:text-base md:text-lg text-main-text mb-6 sm:mb-7 leading-relaxed max-w-md font-normal">
                   {project.desc}
@@ -96,6 +98,9 @@ export default function PortfolioSection({ asH1 = false }) {
                     </span>
                   ))}
                 </div>
+                <a href={project.liveUrl} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-11 self-start items-center gap-2 mt-5 font-semibold text-primary hover:underline underline-offset-4">
+                  Visit live website <ArrowUpRight aria-hidden="true" size={18} />
+                </a>
               </div>
             </motion.div>
           ))}

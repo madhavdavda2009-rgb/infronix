@@ -1,4 +1,5 @@
 import ServiceDetails from '@/components/ServiceDetails';
+import ServiceBrief from '@/components/ServiceBrief';
 import { getService } from '@/lib/services';
 import { pageMetadata } from '@/lib/site-seo';
 import Breadcrumb from '@/components/Breadcrumb';
@@ -57,7 +58,7 @@ export default function WebDevelopmentPage() {
                 {service.heading}
               </h1>
               <p className="text-base sm:text-lg md:text-xl text-main-text font-medium max-w-2xl leading-relaxed">
-                At InfronixWeb, we build modern, responsive websites that help businesses establish a strong digital presence, attract customers, and grow online.
+                InfronixWeb builds business websites, online stores and landing pages for Ahmedabad businesses. We plan the pages, design, enquiry forms and mobile experience around your customers.
               </p>
               <p className="text-sm sm:text-base text-text-light font-medium max-w-2xl leading-relaxed">
                 From business websites and landing pages to e-commerce stores and custom web applications, our website development services combine creative design, smooth user experiences, and reliable technology.
@@ -74,6 +75,8 @@ export default function WebDevelopmentPage() {
             </div>
           </div>
         </section>
+
+        <ServiceBrief slug='web-development' />
 
         {/* What We Build — Services Grid */}
         <section className="w-full py-12 sm:py-16 md:py-24 bg-surface border-b border-outline-variant/30">

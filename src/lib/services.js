@@ -16,8 +16,8 @@ export const services = [
     related: ['seo', 'digital-marketing'], proof: true,
   },
   {
-    slug: 'seo', pillar: 'SEO', name: 'SEO', title: 'SEO Services in Ahmedabad | Website & Local Search',
-    description: 'Website health checks, local search, customer keyword research and useful content for Ahmedabad businesses. Start with an audit and a measurable improvement plan.',
+    slug: 'seo', pillar: 'SEO', name: 'SEO', title: 'SEO Services in Ahmedabad',
+    description: 'SEO services in Ahmedabad: website reviews, local search, keyword research and useful content. Get a clear plan and scoped quote from InfronixWeb.',
     heading: 'SEO Services in Ahmedabad',
     intro: 'Help people find useful answers and relevant services through organic search. Our SEO work connects website fixes, page content and local business information to your actual customer needs.',
     includes: ['Search visibility review with a clear list of improvements', 'Research into what customers search for and which pages answer them', 'Titles, headings, content improvements and internal linking', 'Checks that Google can find your pages and visitors can use them easily', 'Google Business Profile review and consistent local information', 'Genuine opportunities to promote your business and reporting on search enquiries'],
@@ -32,7 +32,7 @@ export const services = [
   {
     slug: 'digital-marketing', pillar: 'Digital Marketing', name: 'Digital Marketing', title: 'Digital Marketing Agency in Ahmedabad',
     description: 'Plan organic content, social media and paid advertising with InfronixWeb in Ahmedabad. Connect campaigns, landing pages and lead follow-up to business goals.',
-    heading: 'Digital Marketing Strategies Built to Reach and Convert More Customers',
+    heading: 'Digital Marketing Agency in Ahmedabad',
     intro: 'Bring your website, content, social channels and advertising into one practical plan. We help businesses choose the channels that fit their customers, offer and available budget.',
     includes: ['Audience research, positioning and channel strategy', 'Content planning for organic search and social media', 'Google Ads and Meta Ads campaign planning', 'Landing-page and enquiry-journey recommendations', 'Lead capture, follow-up coordination and funnel review', 'Reporting, experiments and ongoing optimization'],
     problems: 'Posting without a clear offer or running ads to an unclear landing page makes it difficult to learn what works. A shared strategy connects customer acquisition with the sales process.',
