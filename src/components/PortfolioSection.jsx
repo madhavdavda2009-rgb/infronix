@@ -3,18 +3,7 @@ import { motion } from "framer-motion";
 import Link from "next/link";
 import Image from "next/image";
 import { ArrowUpRight } from "@phosphor-icons/react";
-
-const projects = [
-  {
-    id: 1,
-    title: "Toyon Industry Pvt Ltd",
-    desc: "An interactive product website that helps visitors explore the range and choose the options they need.",
-    tech: ["Product Exploration", "Made for the Brand", "Fast Loading"],
-    image: "/img-2.avif",
-    liveUrl: "https://toyonindustry.com/",
-    category: "Website Development"
-  }
-];
+import { publicProjects as projects } from '@/lib/projects';
 
 export default function PortfolioSection({ asH1 = false }) {
   const Heading = asH1 ? "h1" : "h2";
@@ -60,7 +49,7 @@ export default function PortfolioSection({ asH1 = false }) {
                 <div className="block relative aspect-[16/10] sm:aspect-[4/3] w-full overflow-hidden">
                   <Image
                     src={project.image}
-                    alt={project.title}
+                    alt={project.imageAlt}
                     fill
                     sizes="(max-width: 640px) 100vw, (max-width: 1024px) 60vw, 700px"
                     className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
@@ -81,7 +70,7 @@ export default function PortfolioSection({ asH1 = false }) {
                 </div>
 
                 <ProjectHeading className="text-2xl sm:text-3xl md:text-4xl font-heading font-bold text-on-surface mb-3 sm:mb-4 transition-colors group-hover:text-primary">
-                  {project.title}
+                  <Link href={`/projects/${project.slug}`} className="focus-visible:outline-primary focus-visible:outline-offset-4">{project.title}</Link>
                 </ProjectHeading>
 
                 <p className="text-sm sm:text-base md:text-lg text-main-text mb-6 sm:mb-7 leading-relaxed max-w-md font-normal">
@@ -101,6 +90,9 @@ export default function PortfolioSection({ asH1 = false }) {
                 <a href={project.liveUrl} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-11 self-start items-center gap-2 mt-5 font-semibold text-primary hover:underline underline-offset-4">
                   Visit live website <ArrowUpRight aria-hidden="true" size={18} />
                 </a>
+                <Link href={`/projects/${project.slug}`} className="inline-flex min-h-11 self-start items-center font-semibold text-on-surface hover:underline underline-offset-4">
+                  Read the Toyon Industry project
+                </Link>
               </div>
             </motion.div>
           ))}

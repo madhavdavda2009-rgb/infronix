@@ -148,3 +148,6 @@ The "Signature Divider" is a thin Gold line. It is used to separate sections or 
 
 ### Lists
 Lists should be understated. Instead of bullets, use a small Gold dash or a high-contrast `label-caps` number. Ensure line heights for list items are significantly higher than standard body text to emphasize exclusivity and readability.
+
+### Project detail pages
+Use a restrained reading layout with Cabinet Grotesk headings and General Sans body text. One H1 identifies the client and website creator; factual project details use a definition list beside the introduction on desktop and below it on mobile. Show an actual project screenshot linked to the live website, followed by plain text sections and a direct enquiry link. In portfolio listings, the image opens the live site while the title and project-reading link open the internal detail page. Preserve readable primary-button contrast with white text. Describe verified work without invented results, proof or customer-facing framework names.

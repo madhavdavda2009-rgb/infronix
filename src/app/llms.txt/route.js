@@ -1,5 +1,6 @@
 import { query } from '@/lib/founder_os_db';
 import { SITE_URL } from '@/lib/site-seo';
+import { publicProjects } from '@/lib/projects';
 
 export const dynamic = 'force-dynamic';
 
@@ -32,6 +33,9 @@ export async function GET() {
     link('Selected work', '/projects', 'Projects shown in the public portfolio.'),
     link('Contact', '/contact', 'Business enquiries and contact information.'),
     link('Discuss a project', '/start-project', 'Share website, digital marketing or SEO requirements.'),
+    '',
+    '## Website Projects',
+    ...publicProjects.map(project => link(project.title, `/projects/${project.slug}`, project.desc)),
     '',
     '## Articles',
     link('Blog', '/blog', 'Current published articles from the admin CMS.'),

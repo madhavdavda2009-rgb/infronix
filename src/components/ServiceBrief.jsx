@@ -8,7 +8,7 @@ const briefs = {
       ['How is the quote prepared?', 'Page count, content, design requirements and features determine the scope. Hosting, maintenance and future updates are agreed separately.'],
       ['What happens before launch?', 'We review mobile layouts, navigation, enquiry forms, loading speed and important links. The handover confirms account access and who handles future updates.'],
     ],
-    href: 'https://toyonindustry.com/', label: 'Explore the live Toyon Industry website',
+    href: '/projects/toyon-industry', label: 'See the Toyon Industry website project',
   },
   seo: {
     title: 'What your SEO plan should answer',
