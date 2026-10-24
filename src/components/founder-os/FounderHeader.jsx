@@ -22,6 +22,7 @@ const TAB_TITLES = {
   sales: 'Sales CRM & Pipeline',
   delivery: 'Delivery & Projects',
   documents: 'Client Documents & E-Sign',
+  reviews: 'Reviews & Website Trust',
   mailbox: 'Mailbox · support@infronixweb.in',
   sops: 'SOPs Standard Operating Procedures',
   finance: 'Finance & Profitability',

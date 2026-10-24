@@ -2,12 +2,12 @@
 import { motion } from "framer-motion";
 import Link from "next/link";
 import Image from "next/image";
-import { ArrowRight, Code, ChartLineUp, Megaphone } from "@phosphor-icons/react";
+import { ArrowRight, Code, ChartLineUp, Megaphone, Star } from "@phosphor-icons/react";
 import heroImg from "@/assets/hero-section.webp";
 import Breadcrumb from "@/components/Breadcrumb";
 import { useIntro } from "@/context/IntroContext";
 
-export default function HeroSection() {
+export default function HeroSection({ rating = null }) {
   const { introPhase, isIntroActive } = useIntro();
 
   const isPreloading = isIntroActive && introPhase === 'loading';
@@ -108,6 +108,27 @@ export default function HeroSection() {
                 Explore Services
               </Link>
             </motion.div>
+
+            {/* Client rating (only when published reviews exist) */}
+            {rating?.count > 0 && (
+              <motion.a
+                variants={itemVariants}
+                href="#reviews"
+                className="group mt-5 sm:mt-6 inline-flex items-center gap-2.5 self-start text-sm text-main-text"
+                aria-label={`Rated ${rating.average.toFixed(1)} out of 5 from ${rating.count} client reviews`}
+              >
+                <span className="flex items-center gap-0.5" aria-hidden="true">
+                  {[1, 2, 3, 4, 5].map(n => (
+                    <Star key={n} size={16} weight="fill" className={n <= Math.round(rating.average) ? 'text-amber-400' : 'text-outline-variant'} />
+                  ))}
+                </span>
+                <span className="font-semibold text-on-surface">{rating.average.toFixed(1)}</span>
+                <span className="text-text-light">·</span>
+                <span className="group-hover:text-primary transition-colors underline-offset-4 group-hover:underline">
+                  {rating.count} client review{rating.count === 1 ? '' : 's'}
+                </span>
+              </motion.a>
+            )}
 
             {/* Key Service Highlights */}
             <motion.div variants={itemVariants} className="mt-8 sm:mt-12 md:mt-14 pt-5 sm:pt-7 border-t border-outline flex flex-wrap items-center gap-4 sm:gap-6 md:gap-10">

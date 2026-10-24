@@ -10,6 +10,7 @@ import ClientsModule from './ClientsModule';
 import DeliveryModule from './DeliveryModule';
 import DocumentsModule from './DocumentsModule';
 import MailboxModule from './MailboxModule';
+import ReviewsModule from './ReviewsModule';
 import SOPModule from './SOPModule';
 import FinanceModule from './FinanceModule';
 import PeopleModule from './PeopleModule';
@@ -88,7 +89,7 @@ export default function FounderOSShell() {
   // Sync tab with URL search params
   useEffect(() => {
     const tab = searchParams.get('tab') || 'dashboard';
-    const tabs = ['dashboard', 'sales', 'clients', 'delivery', 'documents', 'mailbox', 'sops', 'finance', 'people', 'blog', 'security', 'activity', 'settings'];
+    const tabs = ['dashboard', 'sales', 'clients', 'delivery', 'documents', 'mailbox', 'sops', 'finance', 'people', 'blog', 'reviews', 'security', 'activity', 'settings'];
     setActiveTab(tabs.includes(tab) ? tab : 'dashboard');
     setSubTab(searchParams.get('sub') || '');
     setInitialProjectId(searchParams.get('projectId') || null);
@@ -261,6 +262,8 @@ export default function FounderOSShell() {
               onRefreshDashboard={loadDashboardData}
             />
           )}
+
+          {activeTab === 'reviews' && <ReviewsModule />}
 
           {activeTab === 'security' && (
             <SecurityModule

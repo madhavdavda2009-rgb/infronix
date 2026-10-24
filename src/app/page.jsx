@@ -6,22 +6,26 @@ import ServicesSection from '@/components/ServicesSection';
 import PortfolioSection from '@/components/PortfolioSection';
 import AboutSection from '@/components/AboutSection';
 import { getInitialPublicTeam } from '@/lib/public-team';
+import { getPublicTrust } from '@/lib/website_trust';
+import TrustBar from '@/components/TrustBar';
 import { ArrowRight, BookOpen } from '@phosphor-icons/react/dist/ssr';
 
 const ProcessSection = dynamic(() => import('@/components/ProcessSection'));
 const TeamSection = dynamic(() => import('@/components/TeamSection'));
 const FAQSection = dynamic(() => import('@/components/FAQSection'));
 const CTASection = dynamic(() => import('@/components/CTASection'));
+const ReviewsSection = dynamic(() => import('@/components/ReviewsSection'));
 
 export const revalidate = 0;
 
 export default async function Home() {
-  const team = await getInitialPublicTeam('home');
+  const [team, trust] = await Promise.all([getInitialPublicTeam('home'), getPublicTrust()]);
   return (
     <>
       <main className="w-full pt-20 sm:pt-24 md:pt-28 lg:pt-32" id="main-content">
-        <HeroSection />
-        
+        <HeroSection rating={trust.show_rating_strip ? trust.rating : null} />
+        <TrustBar rating={trust.rating} stats={trust.stats} showRating={trust.show_rating_strip} />
+
         <section className="py-14 sm:py-18 bg-surface border-y border-outline/50" aria-label="Website Development, Digital Marketing and SEO services">
           <div className="max-w-[1440px] mx-auto px-4 sm:px-6 md:px-12">
             <ServiceDirectory compact />
@@ -30,6 +34,7 @@ export default async function Home() {
 
         <ServicesSection />
         <PortfolioSection />
+        <ReviewsSection reviews={trust.reviews} rating={trust.rating} badges={trust.badges} />
         <AboutSection />
         <ProcessSection />
         <TeamSection initialTeam={team} />
