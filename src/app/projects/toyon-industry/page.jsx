@@ -14,7 +14,7 @@ const baseMetadata = pageMetadata(title, description, path);
 export const metadata = {
   ...baseMetadata,
   title: { absolute: title },
-  openGraph: { ...baseMetadata.openGraph, title, images: [{ url: `${SITE_URL}${toyonProject.image}`, width: 1280, height: 720, alt: toyonProject.imageAlt }] },
+  openGraph: { ...baseMetadata.openGraph, title, images: [{ url: `${SITE_URL}${toyonProject.image}`, width: 1200, height: 630, alt: toyonProject.imageAlt }] },
   twitter: { ...baseMetadata.twitter, title, images: [`${SITE_URL}${toyonProject.image}`] },
 };
 
@@ -76,7 +76,7 @@ export default function ToyonIndustryProjectPage() {
 
         <figure>
           <a href={`${toyonProject.liveUrl}products`} target="_blank" rel="noopener noreferrer" aria-label="Explore the live Toy-On product catalogue (opens in a new tab)" className="block overflow-hidden rounded-2xl border border-outline/40 focus-visible:outline-primary focus-visible:outline-offset-4">
-            <Image src={toyonProject.image} alt={toyonProject.imageAlt} width={1280} height={720} sizes="(max-width: 1280px) 100vw, 1184px" className="w-full h-auto" />
+            <Image src={toyonProject.image} alt={toyonProject.imageAlt} width={1200} height={630} sizes="(max-width: 1280px) 100vw, 1184px" className="w-full h-auto" />
           </a>
           <figcaption className="text-main-text text-sm leading-relaxed mt-3">A view of the live Toy-On product catalogue. The preview opens the actual website.</figcaption>
         </figure>

@@ -5,7 +5,7 @@ export const publicProjects = [
     title: 'Toyon Industry Pvt Ltd',
     desc: 'An interactive product website created by InfronixWeb, with collection browsing, individual designs and business enquiries.',
     tech: ['Product Exploration', 'Made for the Brand', 'Business Enquiries'],
-    image: '/projects/toyon-industry-website.jpg',
+    image: '/projects/toyon-industry-og.jpg',
     imageAlt: 'Toy-On product catalogue website created by InfronixWeb',
     liveUrl: 'https://www.toyonindustry.com/',
     category: 'Website Development',
