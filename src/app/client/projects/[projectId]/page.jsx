@@ -7,6 +7,7 @@ import CreateChangeRequestModal from '@/components/client-portal/CreateChangeReq
 import ChangeRequestDrawer from '@/components/client-portal/ChangeRequestDrawer';
 import UploadRequirementModal from '@/components/client-portal/UploadRequirementModal';
 import DeliverableApprovalModal from '@/components/client-portal/DeliverableApprovalModal';
+import ClientAgreementsSection from '@/components/client-portal/ClientAgreementsSection';
 import { useClientPortal } from '@/context/ClientPortalContext';
 import {
   FolderSimple,
@@ -33,6 +34,7 @@ function ProjectWorkspaceContent() {
   const adminPreviewClientId = searchParams?.get('admin_preview_client_id');
   const initialTab = searchParams?.get('tab') || 'overview';
   const initialCrId = searchParams?.get('crId');
+  const initialDocId = searchParams?.get('doc');
 
   const { getProjectBundleCached, invalidateCache } = useClientPortal();
 
@@ -566,6 +568,10 @@ function ProjectWorkspaceContent() {
         )}
 
         {/* 8. DOCUMENTS TAB */}
+        {activeTab === 'documents' && (
+          <ClientAgreementsSection projectId={projectId} initialDocId={initialDocId} />
+        )}
+
         {activeTab === 'documents' && (
           <div className="bg-white border border-slate-200 rounded-3xl p-6 space-y-4">
             <h3 className="font-bold text-sm text-slate-900 font-outfit">Deliverables & Documents</h3>
