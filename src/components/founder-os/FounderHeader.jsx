@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useCallback } from 'react';
 import {
   List,
   MagnifyingGlass,
@@ -16,6 +16,9 @@ import {
   FileText
 } from '@phosphor-icons/react';
 import NotificationsPopover from './NotificationsPopover';
+import { useToast } from '@/context/ToastContext';
+
+const NOTIFICATION_POLL_MS = 60000;
 
 const TAB_TITLES = {
   dashboard: 'Business Overview',
@@ -45,6 +48,67 @@ export default function FounderHeader({
   const [showNotifications, setShowNotifications] = useState(false);
   const [showQuickMenu, setShowQuickMenu] = useState(false);
   const quickMenuRef = useRef(null);
+  const [notifications, setNotifications] = useState([]);
+  const [unreadCount, setUnreadCount] = useState(0);
+  const knownKeys = useRef(null);
+  const { showToast } = useToast();
+
+  // Poll the admin feed so new website leads and client actions show up without a refresh.
+  const loadNotifications = useCallback(async () => {
+    try {
+      const res = await fetch('/api/founder-os/notifications', { cache: 'no-store' });
+      if (!res.ok) return;
+      const json = await res.json();
+      if (!json.success) return;
+      const items = json.notifications || [];
+      if (knownKeys.current) {
+        const fresh = items.filter(i => i.unread && !knownKeys.current.has(i.key));
+        const leads = fresh.filter(i => i.kind === 'lead');
+        if (leads.length === 1) showToast(`🎉 ${leads[0].title}`, 'success', 8000);
+        else if (leads.length > 1) showToast(`🎉 ${leads.length} new website leads`, 'success', 8000);
+        const actions = fresh.filter(i => i.kind === 'client');
+        if (actions.length) showToast(actions.length === 1 ? actions[0].title : `${actions.length} new client updates`, 'success', 6000);
+      }
+      knownKeys.current = new Set(items.map(i => i.key));
+      setNotifications(items);
+      setUnreadCount(json.unreadCount || 0);
+    } catch {
+      // Network hiccup: keep the last known list.
+    }
+  }, [showToast]);
+
+  useEffect(() => {
+    loadNotifications();
+    const timer = setInterval(() => { if (document.visibilityState === 'visible') loadNotifications(); }, NOTIFICATION_POLL_MS);
+    const onVisible = () => { if (document.visibilityState === 'visible') loadNotifications(); };
+    document.addEventListener('visibilitychange', onVisible);
+    return () => { clearInterval(timer); document.removeEventListener('visibilitychange', onVisible); };
+  }, [loadNotifications]);
+
+  // Show the unread count in the browser tab title.
+  // Next.js sets the page title after mount, so apply the prefix again shortly after.
+  useEffect(() => {
+    const apply = () => {
+      const base = document.title.replace(/^\(\d+\+?\)\s*/, '');
+      document.title = unreadCount ? `(${unreadCount > 9 ? '9+' : unreadCount}) ${base}` : base;
+    };
+    apply();
+    const timer = setTimeout(apply, 800);
+    return () => clearTimeout(timer);
+  }, [unreadCount, activeTab]);
+
+  async function markRead(item) {
+    if (!item.unread || item.kind !== 'client') return;
+    setNotifications(list => list.map(n => (n.key === item.key ? { ...n, unread: false } : n)));
+    setUnreadCount(c => Math.max(0, c - 1));
+    fetch('/api/founder-os/notifications', { method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ action: 'read', key: item.key }) }).catch(() => {});
+  }
+
+  async function markAllRead() {
+    setNotifications(list => list.map(n => ({ ...n, unread: false })));
+    setUnreadCount(0);
+    await fetch('/api/founder-os/notifications', { method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ action: 'read_all' }) }).catch(() => {});
+  }
 
   useEffect(() => {
     function handleClickOutside(event) {
@@ -120,20 +184,28 @@ export default function FounderHeader({
         {/* Notifications Trigger & Popover */}
         <div className="relative">
           <button
-            onClick={() => setShowNotifications(!showNotifications)}
+            onClick={() => { if (!showNotifications) loadNotifications(); setShowNotifications(!showNotifications); }}
             title="Notifications"
             className="p-2 rounded-xl text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition-colors relative cursor-pointer min-w-[40px] min-h-[40px] flex items-center justify-center"
           >
             <Bell size={19} />
-            {alerts.length > 0 && (
-              <span className="absolute top-2 right-2 w-2 h-2 rounded-full bg-violet-600 ring-2 ring-white animate-pulse" />
-            )}
+            {unreadCount > 0 ? (
+              <span className="absolute -top-0.5 -right-0.5 min-w-[18px] h-[18px] px-1 rounded-full bg-rose-500 text-white text-[10px] font-bold leading-[18px] text-center ring-2 ring-white">
+                {unreadCount > 9 ? '9+' : unreadCount}
+              </span>
+            ) : alerts.length > 0 ? (
+              <span className="absolute top-2 right-2 w-2 h-2 rounded-full bg-violet-600 ring-2 ring-white" />
+            ) : null}
           </button>
 
           <NotificationsPopover
             isOpen={showNotifications}
             onClose={() => setShowNotifications(false)}
             alerts={alerts}
+            notifications={notifications}
+            unreadCount={unreadCount}
+            onMarkRead={markRead}
+            onMarkAllRead={markAllRead}
             onNavigate={onNavigate}
           />
         </div>
