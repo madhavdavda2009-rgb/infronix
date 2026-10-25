@@ -9,6 +9,8 @@ const ROUTE_LABELS = {
   'services': 'Services',
   'google-ads': 'Google Ads',
   'meta-ads': 'Meta Ads',
+  'chatgpt-ads': 'ChatGPT Ads',
+  'pricing': 'Pricing',
   'performance-marketing': 'Performance Marketing',
   'seo': 'SEO Optimization',
   'digital-marketing': 'Digital Marketing',

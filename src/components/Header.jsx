@@ -280,6 +280,18 @@ export default function Header() {
                 Our Work
               </Link>
 
+              {/* Pricing */}
+              <Link
+                href="/pricing"
+                className={`hidden xl:inline-flex px-3.5 py-2 rounded-lg text-sm font-medium transition-all ${
+                  pathname === '/pricing'
+                    ? 'text-white bg-white/[0.08] shadow-2xs font-semibold'
+                    : 'text-slate-300 hover:text-white hover:bg-white/[0.04]'
+                }`}
+              >
+                Pricing
+              </Link>
+
               {/* About Us */}
               <Link
                 href="/about"
@@ -490,6 +502,19 @@ export default function Header() {
                 }`}
               >
                 <span>Our Work</span>
+              </Link>
+
+              {/* Pricing */}
+              <Link
+                href="/pricing"
+                onClick={() => setMenuOpen(false)}
+                className={`min-h-12 py-2.5 px-3 rounded-lg text-2xl font-heading font-semibold tracking-tight transition-colors flex items-center justify-between ${
+                  pathname === '/pricing'
+                    ? 'text-primary bg-primary/5'
+                    : 'text-on-surface hover:text-primary hover:bg-white'
+                }`}
+              >
+                <span>Pricing</span>
               </Link>
 
               {/* About Us */}

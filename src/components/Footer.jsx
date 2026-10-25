@@ -90,6 +90,7 @@ export default function Footer() {
               <li><Link href="/seo" className="text-slate-300 hover:text-white transition-colors">SEO Optimization</Link></li>
               <li><Link href="/digital-marketing" className="text-slate-300 hover:text-white transition-colors">Digital Marketing</Link></li>
               <li><Link href="/projects" className="text-slate-300 hover:text-white transition-colors">Our Work</Link></li>
+              <li><Link href="/pricing" className="text-slate-300 hover:text-white transition-colors">Pricing</Link></li>
             </ul>
           </div>
 

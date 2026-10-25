@@ -55,7 +55,7 @@ export const services = [
     example: 'Illustrative campaign: a local B2B service could target specific service searches within its service area and send visitors to a page with relevant examples and a short enquiry form.',
     measure: 'Track spend, click-through rate, cost per enquiry and qualified lead rate. Clicks are not sales; results depend on competition, offer, landing page and follow-up.',
     faqs: [['What does Google Ads management include?', 'The agreed scope can include an account audit, keyword and negative-keyword research, search campaign setup, ad copy, conversion tracking checks, optimization and reporting. Landing-page development and media spend are scoped separately.'], ['How much should a business spend on Google Ads?', 'We review search demand, likely click costs, your service area and the value of a qualified enquiry before proposing a test budget. Media spend is separate from management fees; there is no suitable fixed budget for every business.'], ['Do you manage existing Google Ads campaigns?', 'Yes, with appropriate account access. We review campaign history, search terms, budgets, targeting and tracking before recommending changes. Google AdWords is the former name of Google Ads, so older accounts can be reviewed too.'], ['How do you track Google Ads conversions?', 'We agree which actions matter, such as a completed enquiry or purchase, then check the relevant Google Ads or analytics events. A button click is reported separately from a confirmed lead, and offline sales feedback is included when reliable data is available.'], ['How long does it take to optimize a campaign?', 'Setup and tracking checks come first. Optimization continues as search terms, conversions and sales feedback accumulate. The review schedule depends on traffic and budget; we do not promise a fixed date for profitable results.'], ['Do you guarantee leads?', 'No. We define the measurement plan and review results, but cannot guarantee enquiries, sales or acquisition costs.']],
-    related: ['seo', 'meta-ads', 'performance-marketing', 'web-development'],
+    related: ['seo', 'meta-ads', 'chatgpt-ads', 'performance-marketing', 'web-development'],
   },
   {
     slug: 'meta-ads', pillar: 'Digital Marketing', name: 'Meta Ads', title: 'Meta Ads Management in Ahmedabad',
@@ -69,7 +69,21 @@ export const services = [
     example: 'Illustrative campaign: a service business could test two creative approaches, ask relevant qualifying questions and route responses to a salesperson with their source attached.',
     measure: 'Review reach, click-through rate, cost per lead and qualified lead rate. Remarketing depends on available audiences, consent and platform requirements.',
     faqs: [['Do we need video?', 'Not for every campaign. Creative format depends on the message, placement and assets available; static and video approaches can be tested.'], ['Are cheap leads always better?', 'No. Lead quality, response rates and eventual customer acquisition matter more than the form-submission cost alone.'], ['Who owns the ad account?', 'Campaign work should use your business account with agreed partner access, keeping ownership and billing clear.']],
-    related: ['digital-marketing/social-media-marketing', 'google-ads', 'performance-marketing'],
+    related: ['digital-marketing/social-media-marketing', 'google-ads', 'chatgpt-ads', 'performance-marketing'],
+  },
+  {
+    slug: 'chatgpt-ads', pillar: 'Digital Marketing', name: 'ChatGPT Ads', title: 'ChatGPT Ads Management in Ahmedabad',
+    description: 'ChatGPT Ads management for businesses in Ahmedabad and across India. Plan sponsored placements in ChatGPT conversations, write ads, set up tracking and report on real enquiries with InfronixWeb.',
+    heading: 'Reach customers while they ask ChatGPT for help.',
+    intro: 'People now ask ChatGPT what to buy, which service to choose and how to solve a problem. ChatGPT Ads let a relevant business appear as a clearly labelled sponsored suggestion in those moments. We plan the offer, the ad and the landing page so that interest turns into a real enquiry.',
+    includes: ['ChatGPT Ads account setup and business verification support', 'Offer, audience and conversation-context planning', 'Ad headlines, descriptions and image creative', 'Landing-page alignment and conversion tracking checks', 'Budget planning, bidding and pacing reviews', 'Reporting on spend, clicks, enquiries and lead quality'],
+    problems: 'ChatGPT Ads match ads to the context of a conversation rather than to exact keywords, and the platform is still new. Copying a Google Ads setup or launching without tracking can spend budget without showing which conversations bring useful customers. We start with a small, measured test.',
+    fit: 'Suitable for businesses with a clear offer that people research or compare before buying, a landing page that answers their questions, and a team that follows up on enquiries quickly. Some categories and sensitive topics are restricted by the platform, so eligibility is checked first.',
+    process: ['Review your offer, customers, landing page and platform eligibility.', 'Describe the conversations and needs where your business is genuinely helpful, then write the ads.', 'Check conversion tracking and follow-up, then launch an agreed test budget.', 'Review which placements bring qualified enquiries and adjust copy, context and budget.'],
+    example: 'Illustrative campaign: a coaching institute could appear when someone asks ChatGPT how to prepare for an entrance exam, with an ad leading to a page that explains its batches and offers a free counselling call.',
+    measure: 'Track spend, impressions, click-through rate, cost per enquiry and qualified lead rate. ChatGPT Ads are an emerging channel; results depend on your category, offer, landing page and follow-up, and platform features may change.',
+    faqs: [['What are ChatGPT Ads?', 'They are sponsored placements shown inside ChatGPT, clearly labelled as sponsored and kept separate from ChatGPT’s answers. Ads are matched to the topic of the conversation, and advertisers do not see users’ conversations.'], ['Who sees ChatGPT Ads?', 'According to OpenAI, ads are shown to adult users on selected ChatGPT plans, and paid plans such as Plus and Pro remain ad-free. We check current availability and policies before planning a campaign.'], ['How is this different from Google Ads?', 'Google Search Ads respond to the keywords someone types. ChatGPT Ads are matched to the context of a conversation, so the message should help with the question being asked rather than repeat a keyword.'], ['How much budget do we need?', 'Pricing is auction-based and depends on your category and competition. We propose a small test budget after reviewing your offer; advertising spend is paid to the platform and kept separate from our management fee.'], ['Should we stop Google or Meta Ads?', 'Usually not. ChatGPT Ads are a new channel to test alongside proven ones. We compare enquiries and lead quality across channels before moving budget.'], ['Do you guarantee results?', 'No. ChatGPT Ads are still new, and no agency can guarantee leads or sales. We define the measurement plan, run a controlled test and report honestly on what it shows.']],
+    related: ['google-ads', 'meta-ads', 'performance-marketing'],
   },
   {
     slug: 'performance-marketing', pillar: 'Digital Marketing', name: 'Performance Marketing', title: 'Performance Marketing Agency in Ahmedabad',
@@ -93,7 +107,7 @@ export const services = [
   {
     slug: 'digital-marketing/paid-advertising', pillar: 'Digital Marketing', name: 'Paid Advertising', title: 'Paid Advertising Services in Ahmedabad',
     description: 'Explore Google Ads and Meta Ads for your business. Compare channels, landing-page needs, tracking and campaign management with InfronixWeb in Ahmedabad.',
-    related: ['google-ads', 'meta-ads', 'performance-marketing'],
+    related: ['google-ads', 'meta-ads', 'chatgpt-ads', 'performance-marketing'],
   },
 ];
 export const getService = (slug) => services.find(service => service.slug === slug);

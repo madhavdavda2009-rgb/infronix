@@ -9,6 +9,7 @@ export const STATIC_PAGES = [
   ...services.map(service => '/' + service.slug),
   '/projects',
   ...publicProjects.map(project => `/projects/${project.slug}`),
+  '/pricing',
   '/about',
   '/contact',
   '/blog',
