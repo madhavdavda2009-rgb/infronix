@@ -240,7 +240,7 @@ export default function SocialMediaMarketingPage() {
             <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 mt-2 sm:mt-4 w-full sm:w-auto">
               <Link
                 href="/start-project"
-                className="bg-primary text-white font-bold text-xs sm:text-sm px-6 py-3.5 sm:px-8 sm:py-4 rounded-md hover:bg-primary-dark transition-all hover:scale-[1.02] active:scale-[0.98] shadow-[0_0_20px_rgba(139, 92, 246,0.3)] text-center flex items-center justify-center gap-2 w-full sm:w-auto"
+                className="bg-primary text-white font-semibold text-sm sm:text-base md:text-lg px-7 py-3.5 sm:px-8 sm:py-4 rounded-xl hover:bg-primary-dark transition-all hover:scale-[1.02] active:scale-[0.98] shadow-[0_0_20px_rgba(139, 92, 246,0.3)] text-center flex items-center justify-center gap-2 w-full sm:w-auto"
               >
                 Get a Quote <ArrowRight size={16} weight="bold" />
               </Link>
@@ -587,7 +587,7 @@ export default function SocialMediaMarketingPage() {
             <div className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto">
               <Link
                 href="/start-project"
-                className="bg-primary text-white font-bold text-base px-9 py-4 rounded-lg hover:bg-primary-dark transition-all hover:scale-[1.02] active:scale-[0.98] shadow-[0_0_25px_rgba(139, 92, 246,0.35)] text-center flex items-center justify-center gap-2"
+                className="bg-primary text-white font-semibold text-sm sm:text-base md:text-lg px-7 py-3.5 sm:px-8 sm:py-4 rounded-xl hover:bg-primary-dark transition-all hover:scale-[1.02] active:scale-[0.98] shadow-[0_0_25px_rgba(139, 92, 246,0.35)] text-center flex items-center justify-center gap-2"
               >
                 Get a Quote <ArrowRight size={18} weight="bold" />
               </Link>

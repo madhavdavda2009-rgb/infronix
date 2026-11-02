@@ -13,6 +13,10 @@ const ROUTE_LABELS = {
   'pricing': 'Pricing',
   'performance-marketing': 'Performance Marketing',
   'seo': 'SEO Optimization',
+  'digital-marketing-agency': 'Areas We Serve',
+  'local-seo-services-ahmedabad': 'Local SEO',
+  'ecommerce-website-development-ahmedabad': 'E-commerce Website',
+  'digital-marketing-for-manufacturers': 'Manufacturers',
   'digital-marketing': 'Digital Marketing',
   'social-media-marketing': 'Social Media Marketing',
   'paid-advertising': 'Paid Advertising',
@@ -35,7 +39,7 @@ function formatSlug(slug) {
 
 import { SITE_URL, serializeJsonLd } from '@/lib/site-seo';
 
-export default function Breadcrumb({ className = "" }) {
+export default function Breadcrumb({ className = "", currentLabel }) {
   const pathname = usePathname() || '/';
 
   // Split path segments ignoring empty strings
@@ -52,10 +56,10 @@ export default function Breadcrumb({ className = "" }) {
   ];
 
   let accumulatedPath = '';
-  segments.forEach((segment) => {
+  segments.forEach((segment, index) => {
     accumulatedPath += `/${segment}`;
     breadcrumbs.push({
-      label: formatSlug(segment),
+      label: (index === segments.length - 1 && currentLabel) || formatSlug(segment),
       href: accumulatedPath
     });
   });

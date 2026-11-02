@@ -16,7 +16,7 @@ export default function PortfolioSection({ asH1 = false }) {
         <div className="mb-10 sm:mb-16 md:mb-20 flex flex-col md:flex-row md:items-end justify-between gap-6 md:gap-8">
           <div>
             <span className="block text-xs sm:text-sm font-semibold tracking-widest uppercase text-text-light mb-3 sm:mb-4">Selected Work</span>
-            <Heading className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-heading font-bold text-on-surface leading-tight">
+            <Heading className={`${asH1 ? 'text-3xl sm:text-5xl md:text-6xl lg:text-7xl' : 'text-2xl sm:text-4xl md:text-5xl lg:text-6xl'} font-heading font-bold text-on-surface leading-tight`}>
               Digital products that <br className="hidden md:block" />
               perform and inspire.
             </Heading>

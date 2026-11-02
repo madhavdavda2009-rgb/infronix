@@ -13,10 +13,10 @@ export default function PrivacyPolicy() {
             <span className="text-xs font-semibold tracking-widest uppercase text-on-surface/70 mb-2 block">
               Legal &amp; Compliance
             </span>
-            <h1 className="font-headline-lg text-2xl sm:text-4xl md:text-5xl font-bold text-on-surface mb-3 sm:mb-4">
+            <h1 className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-headline-lg font-bold text-on-surface mb-3 sm:mb-4">
               Privacy Policy
             </h1>
-            <p className="text-sm font-medium text-on-surface-variant">
+            <p className="text-base font-medium text-on-surface-variant">
               <strong className="text-on-surface">Last Updated:</strong> October 7, 2026
             </p>
           </header>
@@ -26,7 +26,7 @@ export default function PrivacyPolicy() {
 
             {/* 1. Introduction */}
             <section aria-labelledby="section-1" className="space-y-4">
-              <h2 id="section-1" className="font-headline-md text-2xl font-semibold text-on-surface border-l-4 border-on-surface pl-4">
+              <h2 id="section-1" className="font-headline-md text-2xl font-bold text-on-surface border-l-4 border-on-surface pl-4">
                 1. Introduction
               </h2>
               <p>
@@ -47,7 +47,7 @@ export default function PrivacyPolicy() {
 
             {/* 2. Information We Collect */}
             <section aria-labelledby="section-2" className="space-y-6">
-              <h2 id="section-2" className="font-headline-md text-2xl font-semibold text-on-surface border-l-4 border-on-surface pl-4">
+              <h2 id="section-2" className="font-headline-md text-2xl font-bold text-on-surface border-l-4 border-on-surface pl-4">
                 2. Information We Collect
               </h2>
               <p>
@@ -56,7 +56,7 @@ export default function PrivacyPolicy() {
 
               {/* 2.1 Information You Provide */}
               <div className="bg-surface-container-low p-6 rounded-lg border border-outline-variant/60 space-y-3">
-                <h3 className="text-lg font-semibold text-on-surface">
+                <h3 className="text-lg font-bold text-on-surface">
                   2.1 Information You Provide
                 </h3>
                 <ul className="list-disc pl-6 space-y-1.5 marker:text-on-surface">
@@ -78,7 +78,7 @@ export default function PrivacyPolicy() {
 
               {/* 2.2 Technical Information */}
               <div className="bg-surface-container-low p-6 rounded-lg border border-outline-variant/60 space-y-3">
-                <h3 className="text-lg font-semibold text-on-surface">
+                <h3 className="text-lg font-bold text-on-surface">
                   2.2 Technical Information
                 </h3>
                 <p>
@@ -100,7 +100,7 @@ export default function PrivacyPolicy() {
 
               {/* 2.3 Cookies and Similar Technologies */}
               <div className="bg-surface-container-low p-6 rounded-lg border border-outline-variant/60 space-y-3">
-                <h3 className="text-lg font-semibold text-on-surface">
+                <h3 className="text-lg font-bold text-on-surface">
                   2.3 Cookies and Similar Technologies
                 </h3>
                 <p>
@@ -114,7 +114,7 @@ export default function PrivacyPolicy() {
                   <li>Remembering preferences</li>
                   <li>Understanding how visitors use our website</li>
                 </ul>
-                <p className="pt-2 italic text-sm text-on-surface-variant">
+                <p className="pt-2 italic text-base text-on-surface-variant">
                   You may control cookies through your browser settings where technically possible.
                 </p>
               </div>
@@ -124,7 +124,7 @@ export default function PrivacyPolicy() {
 
             {/* 3. Information Collected Through Our Enquiry Form */}
             <section aria-labelledby="section-3" className="space-y-4">
-              <h2 id="section-3" className="font-headline-md text-2xl font-semibold text-on-surface border-l-4 border-on-surface pl-4">
+              <h2 id="section-3" className="font-headline-md text-2xl font-bold text-on-surface border-l-4 border-on-surface pl-4">
                 3. Information Collected Through Our Enquiry Form
               </h2>
               <p>
@@ -166,13 +166,13 @@ export default function PrivacyPolicy() {
                   </svg>
                   Important
                 </h4>
-                <p className="text-sm font-medium text-on-surface">
+                <p className="text-base font-medium text-on-surface">
                   Do not submit highly sensitive information through the enquiry form unless specifically requested through an appropriate secure process.
                 </p>
-                <p className="text-sm text-on-surface-variant">
+                <p className="text-base text-on-surface-variant">
                   This may include:
                 </p>
-                <ul className="list-disc pl-6 text-sm space-y-1 text-on-surface-variant">
+                <ul className="list-disc pl-6 text-base space-y-1 text-on-surface-variant">
                   <li>Passwords</li>
                   <li>Banking credentials</li>
                   <li>Credit/debit card details</li>
@@ -188,7 +188,7 @@ export default function PrivacyPolicy() {
 
             {/* 4. How We Use Personal Information */}
             <section aria-labelledby="section-4" className="space-y-4">
-              <h2 id="section-4" className="font-headline-md text-2xl font-semibold text-on-surface border-l-4 border-on-surface pl-4">
+              <h2 id="section-4" className="font-headline-md text-2xl font-bold text-on-surface border-l-4 border-on-surface pl-4">
                 4. How We Use Personal Information
               </h2>
               <p>
@@ -222,7 +222,7 @@ export default function PrivacyPolicy() {
 
             {/* 5. Legal Basis and Consent */}
             <section aria-labelledby="section-5" className="space-y-4">
-              <h2 id="section-5" className="font-headline-md text-2xl font-semibold text-on-surface border-l-4 border-on-surface pl-4">
+              <h2 id="section-5" className="font-headline-md text-2xl font-bold text-on-surface border-l-4 border-on-surface pl-4">
                 5. Legal Basis and Consent
               </h2>
               <p>
@@ -248,7 +248,7 @@ export default function PrivacyPolicy() {
 
             {/* 7. Third-Party Service Providers */}
             <section aria-labelledby="section-6" className="space-y-4">
-              <h2 id="section-6" className="font-headline-md text-2xl font-semibold text-on-surface border-l-4 border-on-surface pl-4">
+              <h2 id="section-6" className="font-headline-md text-2xl font-bold text-on-surface border-l-4 border-on-surface pl-4">
                 6. Third-Party Service Providers
               </h2>
               <p>
@@ -271,7 +271,7 @@ export default function PrivacyPolicy() {
                   "Domain and DNS services",
                   "Software development infrastructure"
                 ].map((item, idx) => (
-                  <div key={idx} className="bg-surface-container-low px-4 py-2.5 rounded border border-outline-variant/40 flex items-center gap-2 text-sm">
+                  <div key={idx} className="bg-surface-container-low px-4 py-2.5 rounded border border-outline-variant/40 flex items-center gap-2 text-base">
                     <span className="w-1.5 h-1.5 rounded-full bg-on-surface shrink-0"></span>
                     <span>{item}</span>
                   </div>
@@ -289,7 +289,7 @@ export default function PrivacyPolicy() {
 
             {/* 8. Client Data */}
             <section aria-labelledby="section-7" className="space-y-4">
-              <h2 id="section-7" className="font-headline-md text-2xl font-semibold text-on-surface border-l-4 border-on-surface pl-4">
+              <h2 id="section-7" className="font-headline-md text-2xl font-bold text-on-surface border-l-4 border-on-surface pl-4">
                 7. Client Data
               </h2>
               <p>
@@ -307,7 +307,7 @@ export default function PrivacyPolicy() {
 
             {/* 9. Data Security */}
             <section aria-labelledby="section-8" className="space-y-4">
-              <h2 id="section-8" className="font-headline-md text-2xl font-semibold text-on-surface border-l-4 border-on-surface pl-4">
+              <h2 id="section-8" className="font-headline-md text-2xl font-bold text-on-surface border-l-4 border-on-surface pl-4">
                 8. Data Security
               </h2>
               <p>
@@ -327,7 +327,7 @@ export default function PrivacyPolicy() {
                 <li>Regular maintenance</li>
                 <li>Least-privilege access</li>
               </ul>
-              <p className="italic text-sm pt-1">
+              <p className="italic text-base pt-1">
                 However, no internet-based system can be guaranteed to be completely secure.
               </p>
             </section>
@@ -336,7 +336,7 @@ export default function PrivacyPolicy() {
 
             {/* 10. Data Retention */}
             <section aria-labelledby="section-9" className="space-y-4">
-              <h2 id="section-9" className="font-headline-md text-2xl font-semibold text-on-surface border-l-4 border-on-surface pl-4">
+              <h2 id="section-9" className="font-headline-md text-2xl font-bold text-on-surface border-l-4 border-on-surface pl-4">
                 9. Data Retention
               </h2>
               <p>
@@ -360,7 +360,7 @@ export default function PrivacyPolicy() {
 
             {/* 11. Data Deletion */}
             <section aria-labelledby="section-10" className="space-y-4">
-              <h2 id="section-10" className="font-headline-md text-2xl font-semibold text-on-surface border-l-4 border-on-surface pl-4">
+              <h2 id="section-10" className="font-headline-md text-2xl font-bold text-on-surface border-l-4 border-on-surface pl-4">
                 10. Data Deletion
               </h2>
               <p>
@@ -375,7 +375,7 @@ export default function PrivacyPolicy() {
 
             {/* 12. Your Rights */}
             <section aria-labelledby="section-11" className="space-y-4">
-              <h2 id="section-11" className="font-headline-md text-2xl font-semibold text-on-surface border-l-4 border-on-surface pl-4">
+              <h2 id="section-11" className="font-headline-md text-2xl font-bold text-on-surface border-l-4 border-on-surface pl-4">
                 11. Your Rights
               </h2>
               <p>
@@ -402,7 +402,7 @@ export default function PrivacyPolicy() {
 
             {/* 13. Children's Privacy */}
             <section aria-labelledby="section-12" className="space-y-4">
-              <h2 id="section-12" className="font-headline-md text-2xl font-semibold text-on-surface border-l-4 border-on-surface pl-4">
+              <h2 id="section-12" className="font-headline-md text-2xl font-bold text-on-surface border-l-4 border-on-surface pl-4">
                 12. Children&apos;s Privacy
               </h2>
               <p>
@@ -420,7 +420,7 @@ export default function PrivacyPolicy() {
 
             {/* 14. International Data Processing */}
             <section aria-labelledby="section-13" className="space-y-4">
-              <h2 id="section-13" className="font-headline-md text-2xl font-semibold text-on-surface border-l-4 border-on-surface pl-4">
+              <h2 id="section-13" className="font-headline-md text-2xl font-bold text-on-surface border-l-4 border-on-surface pl-4">
                 13. International Data Processing
               </h2>
               <p>
@@ -435,7 +435,7 @@ export default function PrivacyPolicy() {
 
             {/* 15. Data Breaches and Security Incidents */}
             <section aria-labelledby="section-14" className="space-y-4">
-              <h2 id="section-14" className="font-headline-md text-2xl font-semibold text-on-surface border-l-4 border-on-surface pl-4">
+              <h2 id="section-14" className="font-headline-md text-2xl font-bold text-on-surface border-l-4 border-on-surface pl-4">
                 14. Data Breaches and Security Incidents
               </h2>
               <p>
@@ -450,7 +450,7 @@ export default function PrivacyPolicy() {
 
             {/* 16. Fraud, Abuse, and Security Monitoring */}
             <section aria-labelledby="section-15" className="space-y-4">
-              <h2 id="section-15" className="font-headline-md text-2xl font-semibold text-on-surface border-l-4 border-on-surface pl-4">
+              <h2 id="section-15" className="font-headline-md text-2xl font-bold text-on-surface border-l-4 border-on-surface pl-4">
                 15. Fraud, Abuse, and Security Monitoring
               </h2>
               <p>
@@ -475,7 +475,7 @@ export default function PrivacyPolicy() {
 
             {/* 17. Marketing Communications */}
             <section aria-labelledby="section-16" className="space-y-4">
-              <h2 id="section-16" className="font-headline-md text-2xl font-semibold text-on-surface border-l-4 border-on-surface pl-4">
+              <h2 id="section-16" className="font-headline-md text-2xl font-bold text-on-surface border-l-4 border-on-surface pl-4">
                 16. Marketing Communications
               </h2>
               <p>
@@ -493,7 +493,7 @@ export default function PrivacyPolicy() {
 
             {/* 18. Third-Party Links */}
             <section aria-labelledby="section-17" className="space-y-4">
-              <h2 id="section-17" className="font-headline-md text-2xl font-semibold text-on-surface border-l-4 border-on-surface pl-4">
+              <h2 id="section-17" className="font-headline-md text-2xl font-bold text-on-surface border-l-4 border-on-surface pl-4">
                 17. Third-Party Links
               </h2>
               <p>
@@ -511,7 +511,7 @@ export default function PrivacyPolicy() {
 
             {/* 19. Changes to This Privacy Policy */}
             <section aria-labelledby="section-18" className="space-y-4">
-              <h2 id="section-18" className="font-headline-md text-2xl font-semibold text-on-surface border-l-4 border-on-surface pl-4">
+              <h2 id="section-18" className="font-headline-md text-2xl font-bold text-on-surface border-l-4 border-on-surface pl-4">
                 18. Changes to This Privacy Policy
               </h2>
               <p>
@@ -526,7 +526,7 @@ export default function PrivacyPolicy() {
 
             {/* 20. Applicable Law */}
             <section aria-labelledby="section-19" className="space-y-4">
-              <h2 id="section-19" className="font-headline-md text-2xl font-semibold text-on-surface border-l-4 border-on-surface pl-4">
+              <h2 id="section-19" className="font-headline-md text-2xl font-bold text-on-surface border-l-4 border-on-surface pl-4">
                 19. Applicable Law
               </h2>
               <p>
@@ -541,7 +541,7 @@ export default function PrivacyPolicy() {
 
             {/* 21. Contact and Privacy Requests */}
             <section aria-labelledby="section-20" className="space-y-4">
-              <h2 id="section-20" className="font-headline-md text-2xl font-semibold text-on-surface border-l-4 border-on-surface pl-4">
+              <h2 id="section-20" className="font-headline-md text-2xl font-bold text-on-surface border-l-4 border-on-surface pl-4">
                 20. Contact and Privacy Requests
               </h2>
               <p>
@@ -556,7 +556,7 @@ export default function PrivacyPolicy() {
 
             {/* 22. Important Disclaimer */}
             <section aria-labelledby="section-21" className="bg-surface-container-high/60 p-6 rounded-xl border border-outline-variant space-y-3">
-              <h2 id="section-21" className="font-headline-md text-2xl font-semibold text-on-surface">
+              <h2 id="section-21" className="font-headline-md text-2xl font-bold text-on-surface">
                 21. Important Disclaimer
               </h2>
               <p>

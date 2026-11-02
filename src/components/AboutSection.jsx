@@ -21,7 +21,7 @@ export default function AboutSection({ asH1 = false }) {
             >
               <span className="block text-xs sm:text-sm font-semibold tracking-widest uppercase text-text-light mb-3 sm:mb-5">Why InfronixWeb</span>
               
-              <Heading className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-heading font-bold text-on-surface leading-[1.15] sm:leading-[1.1] mb-6 sm:mb-8">
+              <Heading className={`${asH1 ? 'text-3xl sm:text-5xl md:text-6xl lg:text-7xl' : 'text-2xl sm:text-4xl md:text-5xl lg:text-6xl'} font-heading font-bold text-on-surface leading-[1.15] sm:leading-[1.1] mb-6 sm:mb-8`}>
                 Built to solve the <br className="hidden md:block" />
                 fragmentation <br className="hidden md:block" />
                 problem.

@@ -88,7 +88,7 @@ export default async function BlogPage() {
               <span className="flex items-center justify-center gap-2 text-xs font-bold tracking-widest uppercase text-primary mb-3 sm:mb-4">
                 <span className="w-6 sm:w-8 h-[2px] bg-primary" /> Digital Insights <span className="w-6 sm:w-8 h-[2px] bg-primary" />
               </span>
-              <h1 className="text-3xl sm:text-4xl md:text-5xl font-heading font-bold text-on-surface mb-4 sm:mb-6 leading-tight">
+              <h1 className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-heading font-bold text-on-surface mb-4 sm:mb-6 leading-tight">
                 Strategies & Insights for Modern Digital Growth
               </h1>
               <p className="text-sm sm:text-base md:text-lg text-main-text leading-relaxed">

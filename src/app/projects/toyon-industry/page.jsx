@@ -49,7 +49,7 @@ export default function ToyonIndustryProjectPage() {
         <Breadcrumb />
         <header className="grid lg:grid-cols-[minmax(0,1.7fr)_minmax(240px,1fr)] gap-8 lg:gap-16 pt-5 sm:pt-8 pb-9 sm:pb-14">
           <div>
-            <h1 className="font-heading font-bold text-on-surface text-4xl sm:text-5xl lg:text-6xl leading-[1.12] tracking-[-0.025em] text-balance">
+            <h1 className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-heading font-bold text-on-surface leading-[1.12] tracking-[-0.025em] text-balance">
               Toyon Industry website <span className="block mt-2">by InfronixWeb.</span>
             </h1>
             <p className="text-main-text text-base sm:text-lg leading-relaxed max-w-[65ch] mt-6">

@@ -2,6 +2,7 @@ import { query } from './founder_os_db.js';
 import { services } from './services.js';
 import { SITE_URL } from './site-seo.js';
 import { publicProjects } from './projects.js';
+import { locations } from './locations.js';
 
 export const STATIC_PAGES = [
   '',
@@ -9,6 +10,8 @@ export const STATIC_PAGES = [
   ...services.map(service => '/' + service.slug),
   '/projects',
   ...publicProjects.map(project => `/projects/${project.slug}`),
+  '/digital-marketing-agency',
+  ...locations.map(location => '/digital-marketing-agency/' + location.slug),
   '/pricing',
   '/about',
   '/contact',

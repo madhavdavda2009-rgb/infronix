@@ -92,6 +92,7 @@ export default function RootLayout({ children }) {
                     }
                   ],
                   areaServed: [
+                    { '@type': 'City', name: 'Sanand' },
                     { '@type': 'City', name: 'Ahmedabad' },
                     { '@type': 'State', name: 'Gujarat' },
                     { '@type': 'Country', name: 'India' }

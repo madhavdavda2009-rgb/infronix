@@ -21,7 +21,7 @@ export default function ServicesPage() {
           <span className="inline-flex items-center gap-1.5 text-xs font-semibold uppercase tracking-widest text-primary mb-3">
             <Sparkle size={15} weight="bold" /> Our services
           </span>
-          <h1 className="text-3xl sm:text-5xl md:text-6xl font-heading font-bold text-on-surface max-w-3xl leading-tight mb-5">
+          <h1 className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-heading font-bold text-on-surface max-w-3xl leading-tight mb-5">
             Website Development. Digital Marketing. SEO.
           </h1>
           <p className="text-base sm:text-lg text-main-text max-w-2xl leading-relaxed">

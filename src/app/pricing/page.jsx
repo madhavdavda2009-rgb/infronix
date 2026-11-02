@@ -22,7 +22,7 @@ export default function PricingPage() {
       <section className="pt-8 sm:pt-12 pb-12 sm:pb-16">
         <div className="max-w-[1280px] mx-auto px-4 sm:px-6 md:px-12 text-center">
           <span className="block text-xs sm:text-sm font-semibold tracking-widest uppercase text-text-light mb-3 sm:mb-4">Pricing</span>
-          <h1 className="text-3xl sm:text-5xl md:text-6xl font-heading font-bold text-on-surface leading-tight tracking-tight">
+          <h1 className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-heading font-bold text-on-surface leading-tight tracking-tight">
             Websites starting at <span className="text-primary">₹10,000.</span>
           </h1>
           <p className="text-base sm:text-lg text-main-text max-w-2xl mx-auto mt-5 leading-relaxed">
