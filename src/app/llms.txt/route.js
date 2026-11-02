@@ -23,7 +23,7 @@ export async function GET() {
     link('Local SEO', '/seo/local-seo-services-ahmedabad', 'Google Business Profile, Google Maps visibility and local business information.'),
     link('E-commerce Websites', '/web-development/ecommerce-website-development-ahmedabad', 'Online stores, product catalogues, payments and mobile checkout.'),
     link('Sanand', '/digital-marketing-agency/sanand', 'Website, SEO and digital marketing services from the InfronixWeb office in Sanand.'),
-    link('Areas we serve', '/digital-marketing-agency', 'Ahmedabad areas and Gujarat cities served from the InfronixWeb office in Sanand.'),
+    link('Areas we serve', '/digital-marketing-agency', 'Gujarat cities served from the InfronixWeb office in Sanand.'),
     link('Manufacturers', '/digital-marketing-for-manufacturers', 'Websites, SEO and lead generation for manufacturers, exporters and B2B suppliers.'),
     '',
     '## Digital Marketing Details',

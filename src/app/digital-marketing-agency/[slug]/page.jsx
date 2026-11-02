@@ -1,5 +1,5 @@
 import { notFound } from 'next/navigation';
-import LocationLanding, { locationLabel } from '@/components/LocationLanding';
+import LocationLanding from '@/components/LocationLanding';
 import { getLocation, locations } from '@/lib/locations';
 import { pageMetadata } from '@/lib/site-seo';
 
@@ -14,7 +14,7 @@ export async function generateMetadata({ params }) {
   if (!location) return {};
   return pageMetadata(
     `Digital Marketing Agency in ${location.name}`,
-    `Digital marketing agency in ${locationLabel(location)}: websites, SEO, Google Ads and social media for local businesses. Get a clear plan and written quote from InfronixWeb.`,
+    `Digital marketing agency in ${location.name}, Gujarat: websites, SEO, Google Ads and social media for local businesses. Get a clear plan and written quote from InfronixWeb.`,
     `/digital-marketing-agency/${slug}`,
   );
 }

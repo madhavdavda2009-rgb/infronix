@@ -5,7 +5,7 @@ import { pageMetadata } from '@/lib/site-seo';
 
 export const metadata = pageMetadata(
   'Digital Marketing Agency in Ahmedabad & Gujarat',
-  'InfronixWeb provides website development, SEO and digital marketing across Ahmedabad and Gujarat from our office in Sanand. Find your area.',
+  'InfronixWeb provides website development, SEO and digital marketing across Gujarat from our office in Sanand. Find your city.',
   '/digital-marketing-agency',
 );
 
@@ -15,8 +15,8 @@ export default function LocationsPage() {
       <div className="max-w-[1280px] mx-auto px-4 sm:px-6 md:px-12">
         <Breadcrumb />
         <h1 className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-heading font-bold text-on-surface leading-tight tracking-tight max-w-4xl">Digital Marketing Agency in Ahmedabad and Gujarat</h1>
-        <p className="text-base sm:text-lg md:text-xl text-main-text font-medium max-w-2xl leading-relaxed mt-5">InfronixWeb is a digital marketing agency in Ahmedabad and Gujarat, working from our office in Sanand. Find your area below.</p>
-        <Link href="/digital-marketing-agency/sanand" className="inline-flex mt-6 min-h-11 items-center text-primary underline underline-offset-4">Our Sanand office area</Link>
+        <p className="text-base sm:text-lg md:text-xl text-main-text font-medium max-w-2xl leading-relaxed mt-5">InfronixWeb is a digital marketing agency in Ahmedabad and Gujarat, working from our office in Sanand. Find your city below.</p>
+        <Link href="/digital-marketing-agency/sanand" className="inline-flex mt-6 min-h-11 items-center text-primary underline underline-offset-4">Our main office in Sanand</Link>
       </div>
     </section>
     {locationGroups.map(({ zone, items }) => <section key={zone} className="py-10 sm:py-14 bg-surface border-b border-outline-variant/30">

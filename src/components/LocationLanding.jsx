@@ -1,19 +1,15 @@
 import Link from 'next/link';
 import Breadcrumb from '@/components/Breadcrumb';
 import { nearbyLocations } from '@/lib/locations';
-import { locationProfile } from '@/lib/location-content';
+import { cityChallenge, cityLinks } from '@/lib/location-content';
 import { locationDetails } from '@/lib/location-details';
 import { trades } from '@/lib/location-trades';
 import { SITE_URL, serializeJsonLd } from '@/lib/site-seo';
 
-export const locationLabel = (location) => (location.region === 'Ahmedabad' && !location.zone.endsWith('District') ? `${location.name}, Ahmedabad` : `${location.name}, Gujarat`);
-
 export default function LocationLanding({ location }) {
-  const profile = locationProfile(location);
   const [tradeKeys, localAngle] = locationDetails[location.slug];
   const focus = tradeKeys.map(key => trades[key]);
   const nearby = nearbyLocations(location);
-  const label = locationLabel(location);
   const pageUrl = `${SITE_URL}/digital-marketing-agency/${location.slug}`;
   const heading = `Digital Marketing Agency in ${location.name}`;
   const faqs = [
@@ -27,7 +23,7 @@ export default function LocationLanding({ location }) {
       { '@type': 'Service', '@id': `${pageUrl}#service`, name: heading,
         serviceType: 'Website development, SEO and digital marketing', url: pageUrl,
         provider: { '@id': `${SITE_URL}/#organization` },
-        areaServed: { '@type': 'Place', name: label } },
+        areaServed: { '@type': 'City', name: location.name } },
       { '@type': 'WebPage', '@id': `${pageUrl}#webpage`, url: pageUrl, name: heading, inLanguage: 'en-IN',
         isPartOf: { '@id': `${SITE_URL}/#website` }, mainEntity: { '@id': `${pageUrl}#service` } },
     ],
@@ -59,7 +55,7 @@ export default function LocationLanding({ location }) {
       <div className="max-w-[900px] mx-auto px-4 sm:px-6 md:px-8">
         <h2 className="text-3xl sm:text-4xl md:text-5xl font-heading font-bold text-on-surface mb-5 leading-tight">What matters for local businesses</h2>
         <p className="leading-relaxed mb-4">{localAngle}</p>
-        <p className="leading-relaxed">{profile.challenge}</p>
+        <p className="leading-relaxed">{cityChallenge}</p>
       </div>
     </section>
 
@@ -80,7 +76,7 @@ export default function LocationLanding({ location }) {
       <div className="max-w-[1280px] mx-auto px-4 sm:px-6 md:px-12">
         <h2 className="text-3xl sm:text-4xl md:text-5xl font-heading font-bold text-on-surface mb-6 leading-tight">What this could look like</h2>
         <div className="max-w-3xl space-y-4 leading-relaxed">{focus.slice(0, 2).map(item => <p key={item.label}>Illustrative scope: {item.example.charAt(0).toLowerCase() + item.example.slice(1)}</p>)}</div>
-        <ul className="mt-6 flex flex-wrap gap-x-8 gap-y-4">{profile.links.map(([href, text]) => <li key={href}><Link href={href} className="text-primary underline underline-offset-4">{text}</Link></li>)}</ul>
+        <ul className="mt-6 flex flex-wrap gap-x-8 gap-y-4">{cityLinks.map(([href, text]) => <li key={href}><Link href={href} className="text-primary underline underline-offset-4">{text}</Link></li>)}</ul>
       </div>
     </section>
 
@@ -93,11 +89,11 @@ export default function LocationLanding({ location }) {
 
     <section className="py-12 sm:py-16 bg-surface border-t border-outline-variant/40">
       <div className="max-w-[1280px] mx-auto px-4 sm:px-6 md:px-12">
-        <h2 className="text-3xl sm:text-4xl md:text-5xl font-heading font-bold text-on-surface mb-4 leading-tight">Nearby areas we serve</h2>
-        <nav aria-label="Nearby areas" className="flex flex-wrap gap-3 mt-6">
+        <h2 className="text-3xl sm:text-4xl md:text-5xl font-heading font-bold text-on-surface mb-4 leading-tight">Other cities we serve</h2>
+        <nav aria-label="Other cities" className="flex flex-wrap gap-3 mt-6">
           {nearby.map(item => <Link key={item.slug} href={`/digital-marketing-agency/${item.slug}`} className="inline-flex items-center min-h-11 px-4 py-2 border border-outline-variant rounded-xl text-primary hover:bg-soft-violet">{item.name}</Link>)}
           <Link href="/digital-marketing-agency/sanand" className="inline-flex items-center min-h-11 px-4 py-2 border border-outline-variant rounded-xl text-primary hover:bg-soft-violet">Sanand</Link>
-          <Link href="/digital-marketing-agency" className="inline-flex items-center min-h-11 px-4 py-2 border border-outline-variant rounded-xl text-primary hover:bg-soft-violet">All areas</Link>
+          <Link href="/digital-marketing-agency" className="inline-flex items-center min-h-11 px-4 py-2 border border-outline-variant rounded-xl text-primary hover:bg-soft-violet">All cities</Link>
         </nav>
       </div>
     </section>
