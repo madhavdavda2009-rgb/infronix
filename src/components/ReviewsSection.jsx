@@ -16,9 +16,21 @@ function formatMonth(value) {
   return Number.isNaN(d.getTime()) ? '' : d.toLocaleDateString('en-IN', { month: 'short', year: 'numeric', timeZone: 'UTC' });
 }
 
+function GoogleLogo({ size = 14 }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 48 48" aria-hidden="true" focusable="false">
+      <path fill="#FFC107" d="M43.6 20.1H42V20H24v8h11.3C33.7 32.7 29.2 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.8 1.2 7.9 3.1l5.7-5.7C34 6.1 29.3 4 24 4 13 4 4 13 4 24s9 20 20 20 20-9 20-20c0-1.3-.1-2.6-.4-3.9z" />
+      <path fill="#FF3D00" d="m6.3 14.7 6.6 4.8C14.7 15.1 19 12 24 12c3.1 0 5.8 1.2 7.9 3.1l5.7-5.7C34 6.1 29.3 4 24 4 16.3 4 9.7 8.3 6.3 14.7z" />
+      <path fill="#4CAF50" d="M24 44c5.2 0 9.9-2 13.4-5.2l-6.2-5.2C29.2 35.1 26.7 36 24 36c-5.2 0-9.6-3.3-11.3-7.9l-6.5 5C9.5 39.6 16.2 44 24 44z" />
+      <path fill="#1976D2" d="M43.6 20.1H42V20H24v8h11.3c-.8 2.2-2.2 4.2-4.1 5.6l6.2 5.2C37 39.2 44 34 44 24c0-1.3-.1-2.6-.4-3.9z" />
+    </svg>
+  );
+}
+
 function ReviewCard({ review, index }) {
   const [expanded, setExpanded] = useState(false);
   const long = review.review_text.length > 260;
+  const isGoogle = /google/i.test(review.source || '') || /google\./i.test(review.source_url || '');
   return (
     <motion.figure
       initial={{ opacity: 0, y: 24 }}
@@ -54,11 +66,16 @@ function ReviewCard({ review, index }) {
           </span>
         </span>
         {review.source_url ? (
-          <a href={review.source_url} target="_blank" rel="noopener noreferrer nofollow" className="inline-flex items-center gap-1 text-[11px] font-semibold text-text-light hover:text-primary shrink-0" aria-label={`View this review on ${review.source} (opens in a new tab)`}>
-            {review.source} <ArrowUpRight size={12} weight="bold" />
+          <a href={review.source_url} target="_blank" rel="noopener noreferrer nofollow" className="group/src inline-flex items-center gap-1.5 rounded-full border border-outline bg-surface-container-lowest pl-2 pr-2.5 py-1.5 text-xs font-semibold text-on-surface shadow-xs hover:border-primary/40 hover:shadow-sm transition-all shrink-0" aria-label={`View this review on ${review.source} (opens in a new tab)`}>
+            {isGoogle && <GoogleLogo size={15} />}
+            {review.source}
+            <ArrowUpRight size={12} weight="bold" className="text-text-light group-hover/src:text-primary transition-colors" />
           </a>
         ) : (
-          <span className="text-[11px] font-semibold text-text-light shrink-0">{review.source}</span>
+          <span className="inline-flex items-center gap-1.5 text-xs font-semibold text-text-light shrink-0">
+            {isGoogle && <GoogleLogo size={15} />}
+            {review.source}
+          </span>
         )}
       </figcaption>
     </motion.figure>

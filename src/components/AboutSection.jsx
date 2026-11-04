@@ -47,13 +47,13 @@ export default function AboutSection({ asH1 = false }) {
           </div>
 
           {/* Right: Editorial Images & Stats */}
-          <div className="w-full lg:w-1/2 relative mt-6 lg:mt-0">
+          <div className="w-full lg:w-1/2 relative mt-4 lg:mt-0 py-8 sm:py-10">
             <motion.div
               initial={{ opacity: 0, scale: 0.96 }}
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true, margin: "-100px" }}
               transition={{ duration: 0.7, delay: 0.15 }}
-              className="relative aspect-square md:aspect-[4/5] w-full max-w-sm sm:max-w-lg mx-auto"
+              className="relative aspect-[3/2] w-full max-w-xl lg:max-w-none mx-auto"
             >
               {/* Main Image */}
               <div className="absolute inset-0 bg-surface-container-lowest rounded-3xl overflow-hidden border border-outline shadow-lg">
@@ -61,7 +61,7 @@ export default function AboutSection({ asH1 = false }) {
                   src="/img-1.avif" 
                   alt="InfronixWeb Digital Agency Team" 
                   fill
-                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 500px"
+                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 576px, 640px"
                   className="object-cover"
                   loading="lazy"
                 />
@@ -73,9 +73,9 @@ export default function AboutSection({ asH1 = false }) {
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.6, delay: 0.5 }}
-                className="absolute left-2 sm:-left-6 md:-left-10 top-1/4 bg-white/95 backdrop-blur-md p-4 sm:p-5 md:p-6 shadow-xl border border-slate-200/80 rounded-2xl"
+                className="absolute -left-1 sm:-left-6 md:-left-10 -top-7 sm:-top-9 bg-white/95 backdrop-blur-md px-4 py-3 sm:p-5 shadow-xl border border-slate-200/80 rounded-2xl"
               >
-                <div className="text-xl sm:text-3xl md:text-4xl font-heading font-bold text-on-surface mb-0.5 sm:mb-1">
+                <div className="text-lg sm:text-2xl md:text-3xl font-heading font-bold text-on-surface mb-0.5 sm:mb-1">
                   All-in-One
                 </div>
                 <div className="text-[10px] sm:text-xs md:text-sm font-semibold tracking-wider uppercase text-primary">
@@ -89,9 +89,9 @@ export default function AboutSection({ asH1 = false }) {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.6, delay: 0.7 }}
-                className="absolute right-2 sm:-right-6 md:-right-10 bottom-1/4 bg-[#0E1118]/95 backdrop-blur-md text-white p-4 sm:p-5 md:p-6 shadow-xl rounded-2xl border border-white/10"
+                className="absolute -right-1 sm:-right-6 md:-right-10 -bottom-7 sm:-bottom-9 bg-[#0E1118]/95 backdrop-blur-md text-white px-4 py-3 sm:p-5 shadow-xl rounded-2xl border border-white/10"
               >
-                <div className="text-xl sm:text-3xl md:text-4xl font-heading font-bold mb-0.5 sm:mb-1">
+                <div className="text-lg sm:text-2xl md:text-3xl font-heading font-bold mb-0.5 sm:mb-1">
                   Direct
                 </div>
                 <div className="text-[10px] sm:text-xs md:text-sm font-semibold tracking-wider uppercase text-violet-400">

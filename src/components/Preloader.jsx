@@ -81,7 +81,7 @@ export default function Preloader() {
       />
       <div ref={logoRef} className="absolute left-1/2 top-1/2 w-[min(70vw,320px)] -translate-x-1/2 -translate-y-1/2">
         <motion.div
-          className="relative aspect-[132/31] origin-center"
+          className="relative aspect-[1775/272] origin-center"
           initial={{ opacity: 0, y: 8 }}
           animate={{
             opacity: transitioning && !target ? 0 : 1,
@@ -91,12 +91,7 @@ export default function Preloader() {
           }}
           transition={{ duration: transitioning ? 0.8 : 0.45, ease: [0.22, 1, 0.36, 1] }}
         >
-          <motion.div className="absolute inset-0" animate={{ opacity: transitioning ? 0 : 1 }} transition={{ duration: 0.45 }}>
-            <Image src="/brand-light.webp" alt="" fill sizes="(max-width: 460px) 70vw, 320px" className="object-contain" priority />
-          </motion.div>
-          <motion.div className="absolute inset-0" initial={{ opacity: 0 }} animate={{ opacity: transitioning ? 1 : 0 }} transition={{ duration: 0.55, delay: 0.1 }}>
-            <Image src="/brand-dark.webp" alt="" fill sizes="(max-width: 460px) 70vw, 320px" className="object-contain" priority />
-          </motion.div>
+          <Image src="/wordmark-light.webp" alt="" fill sizes="(max-width: 460px) 70vw, 320px" className="object-contain" priority />
         </motion.div>
       </div>
     </div>

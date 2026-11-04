@@ -12,6 +12,7 @@ import localFont from 'next/font/local';
 import { GoogleAnalytics } from '@next/third-parties/google';
 
 const WhatsAppWidget = dynamic(() => import('@/components/WhatsAppWidget'));
+const ChatbotWidget = dynamic(() => import('@/components/ChatbotWidget'));
 const CookieBanner = dynamic(() => import('@/components/CookieBanner'));
 
 const general = localFont({
@@ -128,6 +129,7 @@ export default function RootLayout({ children }) {
                   </div>
                   <Footer />
                   <WhatsAppWidget />
+                  <ChatbotWidget />
                   <CookieBanner />
                 </div>
               </ToastProvider>

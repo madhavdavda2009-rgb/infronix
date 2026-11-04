@@ -117,18 +117,18 @@ export default function Header() {
         isPreloading ? 'opacity-0 pointer-events-none' : 'opacity-100'
       }`}>
         {/* Top Info Bar */}
-        <div className={`hidden lg:flex text-[#A0AEC0] text-xs py-2 w-full transition-all duration-700 ${
+        <div className={`hidden lg:flex text-slate-600 text-xs py-2 border-b border-primary/10 w-full transition-all duration-700 ${
           isPreloading ? 'opacity-0 -translate-y-4' : 'opacity-100 translate-y-0'
-        } ${scrolled ? 'bg-[#0B0D12]/95 backdrop-blur-md' : 'bg-[#0B0D12]'}`}>
+        } ${scrolled ? 'bg-soft-violet/95 backdrop-blur-md' : 'bg-soft-violet'}`}>
           <div className="max-w-[1440px] mx-auto px-6 md:px-12 w-full flex justify-between items-center">
             <div className="flex items-center gap-6">
-              <a href="mailto:support@infronixweb.in" className="flex items-center gap-2 hover:text-white transition-colors">
+              <a href="mailto:support@infronixweb.in" className="flex items-center gap-2 hover:text-primary transition-colors">
                 <Envelope size={14} weight="bold" /> support@infronixweb.in
               </a>
-              <a href="tel:+916355792936" className="flex items-center gap-2 hover:text-white transition-colors">
+              <a href="tel:+916355792936" className="flex items-center gap-2 hover:text-primary transition-colors">
                 <Phone size={14} weight="bold" /> +91 6355 792 936
               </a>
-              <a href="tel:+919106291540" className="flex items-center gap-2 hover:text-white transition-colors">
+              <a href="tel:+919106291540" className="flex items-center gap-2 hover:text-primary transition-colors">
                 <Phone size={14} weight="bold" /> +91 91062 91540
               </a>
               <span className="flex items-center gap-2">
@@ -136,8 +136,8 @@ export default function Header() {
               </span>
             </div>
             <div className="flex items-center gap-4">
-              <span className="flex items-center gap-2 font-medium text-white/90">
-                <Clock size={14} weight="bold" className="text-violet-400" /> Mon - Sat: 9:00 AM - 8:00 PM
+              <span className="flex items-center gap-2 font-medium text-ink-black/80">
+                <Clock size={14} weight="bold" className="text-primary" /> Mon - Sat: 9:00 AM - 8:00 PM
               </span>
             </div>
           </div>
@@ -150,25 +150,24 @@ export default function Header() {
         />
 
         {/* Main Header */}
-        <header className={`w-full transition-colors duration-300 ${scrolled ? 'bg-ink-black/95 backdrop-blur-md shadow-sm border-b border-[#0B0D12]' : 'bg-ink-black'}`}>
+        <header className={`w-full transition-colors duration-300 ${scrolled ? 'bg-[#F6F3FF]/95 backdrop-blur-md shadow-sm border-b border-primary/10' : 'bg-[#F6F3FF]'}`}>
           <div className="h-16 sm:h-20 max-w-[1440px] mx-auto px-4 sm:px-6 md:px-12 flex items-center justify-between gap-4">
 
             {/* Logo + Brand Title */}
             <Link href="/" className="flex items-center gap-3 group shrink-0" aria-label="InfronixWeb Home">
               <Image
                 id="header-logo-image"
-                src="/brand-dark.webp"
+                src="/wordmark-light.webp"
                 alt="InfronixWeb Digital Marketing"
-                width={210}
-                height={50}
+                width={1775}
+                height={272}
                 priority
                 style={{
                   width: 'auto',
-                  height: 'auto',
-                  opacity: isLogoHidden ? 0 : 1,
+                  opacity: isLogoHidden || menuOpen ? 0 : 1,
                   transition: 'opacity 0.2s ease',
                 }}
-                className="h-9 sm:h-11 md:h-12 lg:h-[50px] xl:h-[52px] max-w-[64vw] sm:max-w-none w-auto object-contain select-none"
+                className="h-7 sm:h-8 lg:h-9 max-w-[56vw] sm:max-w-none w-auto object-contain select-none"
               />
             </Link>
 
@@ -179,8 +178,8 @@ export default function Header() {
                 href="/"
                 className={`px-3.5 py-2 rounded-lg text-sm font-medium transition-all ${
                   pathname === '/'
-                    ? 'text-white bg-white/[0.08] shadow-2xs font-semibold'
-                    : 'text-slate-300 hover:text-white hover:bg-white/[0.04]'
+                    ? 'text-primary bg-primary/10 shadow-2xs font-semibold'
+                    : 'text-slate-700 hover:text-primary hover:bg-primary/5'
                 }`}
               >
                 Home
@@ -199,14 +198,14 @@ export default function Header() {
                   aria-expanded={desktopServicesOpen}
                   className={`px-3.5 py-2 rounded-lg text-sm font-medium transition-all flex items-center gap-1.5 cursor-pointer ${
                     isServicesActive
-                      ? 'text-white bg-white/[0.08] font-semibold'
-                      : 'text-slate-300 hover:text-white hover:bg-white/[0.04]'
+                      ? 'text-primary bg-primary/10 font-semibold'
+                      : 'text-slate-700 hover:text-primary hover:bg-primary/5'
                   }`}
                 >
                   <span>Services</span>
                   <CaretDown
                     size={14}
-                    className={`transition-transform duration-200 ${desktopServicesOpen ? 'rotate-180 text-primary' : 'text-slate-400'}`}
+                    className={`transition-transform duration-200 ${desktopServicesOpen ? 'rotate-180 text-primary' : 'text-slate-500'}`}
                   />
                 </button>
 
@@ -218,7 +217,7 @@ export default function Header() {
                       animate={{ opacity: 1, y: 0, scale: 1 }}
                       exit={{ opacity: 0, y: 6, scale: 0.98 }}
                       transition={{ duration: 0.18, ease: 'easeOut' }}
-                      className="absolute top-full left-0 mt-1 w-[560px] bg-[#0E1118]/98 backdrop-blur-xl border border-white/10 rounded-2xl shadow-2xl p-4 z-50 grid grid-cols-2 gap-2"
+                      className="absolute top-full left-0 mt-1 w-[560px] bg-white/98 backdrop-blur-xl border border-primary/10 rounded-2xl shadow-2xl p-4 z-50 grid grid-cols-2 gap-2"
                     >
                       {servicesList.map((svc) => {
                         const Icon = svc.icon;
@@ -229,19 +228,19 @@ export default function Header() {
                             href={svc.href}
                             onClick={() => setDesktopServicesOpen(false)}
                             className={`p-2.5 rounded-xl transition-all group flex items-start gap-3 ${
-                              isCurrent ? 'bg-primary/15 border border-primary/30' : 'hover:bg-white/[0.06] border border-transparent'
+                              isCurrent ? 'bg-primary/15 border border-primary/30' : 'hover:bg-primary/5 border border-transparent'
                             }`}
                           >
                             <div className={`p-2 rounded-lg shrink-0 transition-colors ${
-                              isCurrent ? 'bg-primary text-white' : 'bg-white/5 text-primary group-hover:bg-primary group-hover:text-white'
+                              isCurrent ? 'bg-primary text-white' : 'bg-primary/10 text-primary group-hover:bg-primary group-hover:text-white'
                             }`}>
                               <Icon size={18} weight="bold" />
                             </div>
                             <div className="min-w-0">
-                              <span className={`block text-xs font-semibold ${isCurrent ? 'text-primary' : 'text-white group-hover:text-primary transition-colors'}`}>
+                              <span className={`block text-xs font-semibold ${isCurrent ? 'text-primary' : 'text-ink-black group-hover:text-primary transition-colors'}`}>
                                 {svc.title}
                               </span>
-                              <span className="text-[11px] text-slate-400 line-clamp-2 leading-relaxed">
+                              <span className="text-[11px] text-slate-500 line-clamp-2 leading-relaxed">
                                 {svc.desc}
                               </span>
                             </div>
@@ -250,14 +249,14 @@ export default function Header() {
                       })}
 
                       {/* View All Services Footer */}
-                      <div className="col-span-2 pt-2 mt-1 border-t border-white/10 flex items-center justify-between px-1">
-                        <span className="text-[11px] text-slate-400">
+                      <div className="col-span-2 pt-2 mt-1 border-t border-outline flex items-center justify-between px-1">
+                        <span className="text-[11px] text-slate-500">
                           Not sure which service you need?
                         </span>
                         <Link
                           href="/services"
                           onClick={() => setDesktopServicesOpen(false)}
-                          className="text-xs font-bold text-primary hover:text-white flex items-center gap-1 transition-colors"
+                          className="text-xs font-bold text-primary hover:text-primary-dark flex items-center gap-1 transition-colors"
                         >
                           <span>Explore All Services</span>
                           <ArrowUpRight size={13} weight="bold" />
@@ -273,8 +272,8 @@ export default function Header() {
                 href="/projects"
                 className={`px-3.5 py-2 rounded-lg text-sm font-medium transition-all ${
                   pathname === '/projects'
-                    ? 'text-white bg-white/[0.08] shadow-2xs font-semibold'
-                    : 'text-slate-300 hover:text-white hover:bg-white/[0.04]'
+                    ? 'text-primary bg-primary/10 shadow-2xs font-semibold'
+                    : 'text-slate-700 hover:text-primary hover:bg-primary/5'
                 }`}
               >
                 Our Work
@@ -285,8 +284,8 @@ export default function Header() {
                 href="/pricing"
                 className={`hidden xl:inline-flex px-3.5 py-2 rounded-lg text-sm font-medium transition-all ${
                   pathname === '/pricing'
-                    ? 'text-white bg-white/[0.08] shadow-2xs font-semibold'
-                    : 'text-slate-300 hover:text-white hover:bg-white/[0.04]'
+                    ? 'text-primary bg-primary/10 shadow-2xs font-semibold'
+                    : 'text-slate-700 hover:text-primary hover:bg-primary/5'
                 }`}
               >
                 Pricing
@@ -297,8 +296,8 @@ export default function Header() {
                 href="/about"
                 className={`px-3.5 py-2 rounded-lg text-sm font-medium transition-all ${
                   pathname === '/about'
-                    ? 'text-white bg-white/[0.08] shadow-2xs font-semibold'
-                    : 'text-slate-300 hover:text-white hover:bg-white/[0.04]'
+                    ? 'text-primary bg-primary/10 shadow-2xs font-semibold'
+                    : 'text-slate-700 hover:text-primary hover:bg-primary/5'
                 }`}
               >
                 About Us
@@ -309,8 +308,8 @@ export default function Header() {
                 href="/blog"
                 className={`px-3.5 py-2 rounded-lg text-sm font-medium transition-all ${
                   pathname.startsWith('/blog')
-                    ? 'text-white bg-white/[0.08] shadow-2xs font-semibold'
-                    : 'text-slate-300 hover:text-white hover:bg-white/[0.04]'
+                    ? 'text-primary bg-primary/10 shadow-2xs font-semibold'
+                    : 'text-slate-700 hover:text-primary hover:bg-primary/5'
                 }`}
               >
                 Blog
@@ -321,8 +320,8 @@ export default function Header() {
                 href="/contact"
                 className={`px-3.5 py-2 rounded-lg text-sm font-medium transition-all ${
                   pathname === '/contact'
-                    ? 'text-white bg-white/[0.08] shadow-2xs font-semibold'
-                    : 'text-slate-300 hover:text-white hover:bg-white/[0.04]'
+                    ? 'text-primary bg-primary/10 shadow-2xs font-semibold'
+                    : 'text-slate-700 hover:text-primary hover:bg-primary/5'
                 }`}
               >
                 Contact
@@ -333,8 +332,8 @@ export default function Header() {
                 href="/client/login"
                 className={`px-3.5 py-2 rounded-lg text-sm font-medium transition-all ${
                   pathname.startsWith('/client')
-                    ? 'text-white bg-white/[0.08] shadow-2xs font-semibold'
-                    : 'text-slate-300 hover:text-white hover:bg-white/[0.04]'
+                    ? 'text-primary bg-primary/10 shadow-2xs font-semibold'
+                    : 'text-slate-700 hover:text-primary hover:bg-primary/5'
                 }`}
               >
                 Client Portal
@@ -360,12 +359,12 @@ export default function Header() {
                 ref={menuButtonRef}
                 aria-controls="navigation-drawer"
                 aria-expanded={menuOpen}
-                className="lg:hidden group flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-white/[0.04] hover:bg-white/[0.08] border border-white/10 hover:border-primary/40 transition-colors cursor-pointer z-[60]"
+                className="lg:hidden group flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-white hover:bg-primary/5 border border-primary/15 hover:border-primary/40 transition-colors cursor-pointer z-[60]"
               >
                 <div className="w-5 h-4 flex flex-col justify-between items-end py-0.5">
-                  <span className={`h-[1.5px] bg-white transition-all duration-300 ${menuOpen ? 'w-5 translate-y-[6px] rotate-45' : 'w-5'}`} />
-                  <span className={`h-[1.5px] bg-white transition-all duration-200 ${menuOpen ? 'opacity-0 scale-x-0' : 'w-3.5 group-hover:w-5'}`} />
-                  <span className={`h-[1.5px] bg-white transition-all duration-300 ${menuOpen ? 'w-5 -translate-y-[6px] -rotate-45' : 'w-4 group-hover:w-5'}`} />
+                  <span className={`h-[1.5px] bg-ink-black transition-all duration-300 ${menuOpen ? 'w-5 translate-y-[6px] rotate-45' : 'w-5'}`} />
+                  <span className={`h-[1.5px] bg-ink-black transition-all duration-200 ${menuOpen ? 'opacity-0 scale-x-0' : 'w-3.5 group-hover:w-5'}`} />
+                  <span className={`h-[1.5px] bg-ink-black transition-all duration-300 ${menuOpen ? 'w-5 -translate-y-[6px] -rotate-45' : 'w-4 group-hover:w-5'}`} />
                 </div>
               </button>
             </div>
@@ -381,7 +380,7 @@ export default function Header() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.25 }}
-            className="lg:hidden fixed inset-0 z-40 bg-black/70 backdrop-blur-sm"
+            className="lg:hidden fixed inset-0 z-[70] bg-black/70 backdrop-blur-sm"
             onClick={() => setMenuOpen(false)}
           />
         )}
@@ -406,11 +405,11 @@ export default function Header() {
             <div className="flex shrink-0 items-center justify-between py-5 border-b border-outline">
               <Link href="/" onClick={() => setMenuOpen(false)}>
                 <img
-                  src="/brand-light.webp"
+                  src="/wordmark-light.webp"
                   alt="InfronixWeb"
-                  width={180}
-                  height={42}
-                  className="h-8 sm:h-9 w-auto object-contain"
+                  width={1775}
+                  height={272}
+                  className="h-7 sm:h-8 w-auto object-contain"
                 />
               </Link>
               <button

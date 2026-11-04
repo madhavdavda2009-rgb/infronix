@@ -44,7 +44,7 @@ export default function HeroSection({ rating = null }) {
   };
 
   return (
-    <section className="relative w-full flex items-center justify-center pt-6 sm:pt-8 md:pt-12 lg:pt-14 pb-14 sm:pb-18 md:pb-24 overflow-hidden bg-surface-container-lowest">
+    <section className="relative w-full flex items-center justify-center pt-5 sm:pt-6 md:pt-8 lg:pt-6 pb-10 sm:pb-14 md:pb-16 overflow-hidden bg-surface-container-lowest">
       {/* Background Subtle Ambient Lighting */}
       <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
         <div className="absolute top-1/4 right-1/4 w-[380px] sm:w-[540px] h-[380px] sm:h-[540px] bg-primary/[0.07] rounded-full blur-[100px] sm:blur-[130px]" />
@@ -68,7 +68,7 @@ export default function HeroSection({ rating = null }) {
             {/* Headline */}
             <motion.h1
               variants={itemVariants}
-              className="text-3xl sm:text-5xl md:text-6xl lg:text-6xl xl:text-7xl leading-[1.1] sm:leading-[1.05] font-heading font-bold text-on-surface tracking-tight mb-5 sm:mb-7"
+              className="text-3xl sm:text-5xl md:text-6xl lg:text-6xl xl:text-7xl leading-[1.1] sm:leading-[1.05] font-heading font-bold text-on-surface tracking-tight mb-4 sm:mb-5"
             >
               Build your website.<br />
               Grow your business.<br />
@@ -84,7 +84,7 @@ export default function HeroSection({ rating = null }) {
             {/* Subtitle */}
             <motion.p
               variants={itemVariants}
-              className="text-base sm:text-lg md:text-xl text-main-text max-w-2xl mb-7 sm:mb-9 font-normal leading-relaxed"
+              className="text-base sm:text-lg md:text-xl text-main-text max-w-2xl mb-5 sm:mb-6 font-normal leading-relaxed"
             >
               Websites, digital marketing and SEO that help customers discover your business. Based in Ahmedabad, working across India.
             </motion.p>
@@ -114,7 +114,7 @@ export default function HeroSection({ rating = null }) {
               <motion.a
                 variants={itemVariants}
                 href="#reviews"
-                className="group mt-5 sm:mt-6 inline-flex items-center gap-2.5 self-start text-sm text-main-text"
+                className="group mt-4 sm:mt-5 inline-flex items-center gap-2.5 self-start text-sm text-main-text"
                 aria-label={`Rated ${rating.average.toFixed(1)} out of 5 from ${rating.count} client reviews`}
               >
                 <span className="flex items-center gap-0.5" aria-hidden="true">
@@ -131,7 +131,7 @@ export default function HeroSection({ rating = null }) {
             )}
 
             {/* Key Service Highlights */}
-            <motion.div variants={itemVariants} className="mt-8 sm:mt-12 md:mt-14 pt-5 sm:pt-7 border-t border-outline flex flex-wrap items-center gap-4 sm:gap-6 md:gap-10">
+            <motion.div variants={itemVariants} className="mt-6 sm:mt-8 md:mt-8 pt-4 sm:pt-5 border-t border-outline flex flex-wrap items-center gap-4 sm:gap-6 md:gap-10">
               <div className="flex items-center gap-2 text-xs sm:text-sm font-semibold text-on-surface tracking-wider uppercase">
                 <Code size={18} weight="bold" className="text-primary shrink-0" /> Custom Websites
               </div>
