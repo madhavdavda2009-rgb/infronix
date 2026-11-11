@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import { Buildings, LockKey, Database } from '@phosphor-icons/react';
 import { useToast } from '@/context/ToastContext';
+import TwoFactorSettings from './TwoFactorSettings';
 
 export default function SettingsModule({ settings = {}, currentUser = {}, onRefreshDashboard }) {
   const [businessName, setBusinessName] = useState(settings.business_name || 'InfronixWeb');
@@ -205,6 +206,9 @@ export default function SettingsModule({ settings = {}, currentUser = {}, onRefr
           </div>
         </form>
       </div>
+
+      {/* 2b. Google Authenticator two-step login */}
+      <TwoFactorSettings />
 
       {/* 3. Database & Engine Status */}
       <div className="p-5 sm:p-6 rounded-2xl bg-white border border-slate-200/80 shadow-xs space-y-3 text-xs">

@@ -1,9 +1,7 @@
 import { NextResponse } from 'next/server';
 import bcrypt from 'bcryptjs';
-import jwt from 'jsonwebtoken';
 import { execute } from '@/lib/db';
-import { getServerSecret } from '@/lib/auth';
-import { cookies } from 'next/headers';
+import { setMfaCookie, issueAdminSession } from '@/lib/admin_2fa';
 import { checkAndRecord, resetKey, getIp, LOGIN_LOCK_MS } from '@/lib/rate_limiter';
 
 export async function POST(request) {
@@ -72,27 +70,22 @@ export async function POST(request) {
     resetKey(ipKey);
     resetKey(userKey);
 
-    const secret = getServerSecret();
-    if (!secret) {
-      return NextResponse.json(
-        { success: false, error: 'Login is not configured on the server. Contact the site owner.' },
-        { status: 503 }
-      );
-    }
-    const token = jwt.sign(
-      { id: admin.id, username: admin.username },
-      secret,
-      { expiresIn: '8h', algorithm: 'HS256' }
+    const notConfigured = () => NextResponse.json(
+      { success: false, error: 'Login is not configured on the server. Contact the site owner.' },
+      { status: 503 }
     );
 
-    // Set secure HTTP-Only cookie using cookies API
-    const cookieStore = await cookies();
-    cookieStore.set('admin_token', token, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: 'strict',
-      maxAge: 8 * 60 * 60 // 8 hours in seconds
-    });
+    // ─── Two-step login: password is right, now ask for the authenticator code ──
+    if (admin.totp_enabled) {
+      if (!(await setMfaCookie(admin.id))) return notConfigured();
+      return NextResponse.json({
+        success: true,
+        mfa_required: true,
+        message: 'Enter the 6-digit code from Google Authenticator.'
+      });
+    }
+
+    if (!(await issueAdminSession(admin))) return notConfigured();
 
     return NextResponse.json({
       success: true,

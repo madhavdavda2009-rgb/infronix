@@ -33,7 +33,10 @@ export function verifyJwtToken(token) {
   const secret = getServerSecret();
   if (!secret) return null;
   try {
-    return jwt.verify(token, secret, { algorithms: ['HS256'] });
+    const payload = jwt.verify(token, secret, { algorithms: ['HS256'] });
+    // Step tokens (e.g. "password OK, waiting for the 2FA code") are never a full login.
+    if (payload?.purpose) return null;
+    return payload;
   } catch (error) {
     return null;
   }
