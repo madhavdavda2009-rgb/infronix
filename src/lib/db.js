@@ -42,7 +42,9 @@ export async function initDb() {
       const adminCheck = await client.query('SELECT COUNT(*) as count FROM admins');
       if (parseInt(adminCheck.rows[0].count) === 0) {
         const username = process.env.ADMIN_USERNAME || 'admin';
-        const password = process.env.ADMIN_PASSWORD || 'password123';
+        const password = process.env.ADMIN_PASSWORD || '';
+        // Never create an admin with a guessable built-in password.
+        if (password.length < 12) throw new Error('Set ADMIN_PASSWORD (12+ characters) to create the first admin');
         const bcrypt = (await import('bcryptjs')).default;
         const salt = await bcrypt.genSalt(10);
         const hash = await bcrypt.hash(password, salt);

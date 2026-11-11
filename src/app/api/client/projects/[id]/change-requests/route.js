@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server';
+import { safeAttachmentUrl } from '@/lib/portal_files';
 import { 
   verifyClientAuth, 
   verifyClientProjectAccess, 
@@ -80,7 +81,7 @@ export async function POST(request, { params }) {
     const clientPriority = typeof body.priority === 'string' ? body.priority.trim() : 'Medium';
     const stageId = body.stage_id ? parseInt(body.stage_id, 10) : null;
     const pageRoute = typeof body.page_route === 'string' ? body.page_route.trim() : null;
-    const attachmentUrl = typeof body.attachment_url === 'string' ? body.attachment_url.trim() : null;
+    const attachmentUrl = safeAttachmentUrl(body.attachment_url);
     const attachmentName = typeof body.attachment_name === 'string' ? body.attachment_name.trim() : null;
 
     if (!title || !description) {

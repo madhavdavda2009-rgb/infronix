@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server';
+import { safeAttachmentUrl } from '@/lib/portal_files';
 import { verifyClientAuth, getPortalSecurityHeaders } from '@/lib/client_auth';
 import { query, initFounderOSDb } from '@/lib/founder_os_db';
 import { notifyAdminAboutClientAction } from '@/lib/portal_notifications';
@@ -35,7 +36,7 @@ export async function POST(request, { params }) {
 
     const body = await request.json();
     const message = typeof body.message === 'string' ? body.message.trim() : '';
-    const attachmentUrl = typeof body.attachment_url === 'string' ? body.attachment_url.trim() : null;
+    const attachmentUrl = safeAttachmentUrl(body.attachment_url);
     const attachmentName = typeof body.attachment_name === 'string' ? body.attachment_name.trim() : null;
 
     if (!message && !attachmentUrl) {

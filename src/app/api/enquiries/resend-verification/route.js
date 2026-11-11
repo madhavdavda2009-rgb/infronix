@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server';
+import { getIp } from '@/lib/rate_limiter';
 import { resendVerificationEmail } from '@/lib/enquiry_service';
 
 export async function POST(request) {
@@ -11,7 +12,7 @@ export async function POST(request) {
     }
 
     // Get client IP for rate limiting
-    const clientIp = request.headers.get('x-forwarded-for') || request.ip || '127.0.0.1';
+    const clientIp = getIp(request);
 
     // Pass the base URL from the request to generate absolute URLs in emails
     const protocol = request.headers.get('x-forwarded-proto') || 'http';

@@ -92,7 +92,7 @@ export default function UploadRequirementModal({
                 required
                 onChange={(e) => setFile(e.target.files?.[0] || null)}
                 className="hidden"
-                accept=".pdf,.png,.jpg,.jpeg,.webp,.svg,.doc,.docx,.zip,.txt,.csv"
+                accept=".pdf,.png,.jpg,.jpeg,.webp,.doc,.docx,.xls,.xlsx,.zip,.txt,.csv"
               />
               <label htmlFor="portal-req-file" className="cursor-pointer block">
                 <UploadSimple size={28} className="text-violet-600 mx-auto mb-2" weight="duotone" />
@@ -104,7 +104,7 @@ export default function UploadRequirementModal({
                 ) : (
                   <div>
                     <span className="font-semibold text-slate-800 block text-xs">Click to browse or drag file</span>
-                    <span className="text-[10px] text-slate-400 mt-0.5 block">PDF, PNG, JPG, SVG, DOCX, ZIP (Max 15MB)</span>
+                    <span className="text-[10px] text-slate-400 mt-0.5 block">PDF, PNG, JPG, WebP, DOCX, XLSX, ZIP (Max 15MB)</span>
                   </div>
                 )}
               </label>

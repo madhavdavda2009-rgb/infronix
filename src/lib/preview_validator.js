@@ -56,7 +56,11 @@ export function validatePreviewUrl(rawUrl) {
         hostname.startsWith('127.') ||
         hostname.startsWith('10.') ||
         hostname.startsWith('192.168.') ||
-        hostname.startsWith('172.16.') ||
+        /^172\.(1[6-9]|2\d|3[01])\./.test(hostname) ||
+        hostname.startsWith('169.254.') ||
+        hostname.startsWith('0.') ||
+        hostname.startsWith('[') ||
+        /^\d+$/.test(hostname) ||
         hostname.endsWith('.internal') ||
         hostname.endsWith('.local')
       ) {

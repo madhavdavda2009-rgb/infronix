@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server';
+import { getIp } from '@/lib/rate_limiter';
 import { 
   checkRateLimit, 
   recordFailedLogin, 
@@ -23,9 +24,7 @@ export async function POST(request) {
       );
     }
 
-    const ip = request.headers.get('x-forwarded-for')?.split(',')[0]?.trim() || 
-               request.headers.get('x-real-ip')?.trim() || 
-               '127.0.0.1';
+    const ip = getIp(request);
 
     // 1. Rate Limiting and Lockout check
     const rateCheck = await checkRateLimit(identifier, ip);

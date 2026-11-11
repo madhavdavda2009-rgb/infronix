@@ -91,7 +91,8 @@ function resolveBaseUrl(candidate) {
     }
   }
 
-  if (candidate) {
+  // On a live server, never trust the visitor's Origin/Host header for email links.
+  if (candidate && process.env.NODE_ENV !== 'production') {
     let urlString = cleanOptional(candidate, 2_000);
     if (urlString) {
       if (!urlString.startsWith('http://') && !urlString.startsWith('https://')) {

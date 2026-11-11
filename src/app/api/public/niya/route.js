@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { getLearnedPhrases, recordLearning } from '@/lib/niya_learning';
-import { checkAndRecord } from '@/lib/rate_limiter';
+import { checkAndRecord, getIp } from '@/lib/rate_limiter';
 
 export const dynamic = 'force-dynamic';
 
@@ -17,7 +17,7 @@ export async function GET() {
 }
 
 export async function POST(request) {
-  const ip = request.headers.get('x-forwarded-for')?.split(',')[0]?.trim() || request.headers.get('x-real-ip') || 'unknown';
+  const ip = getIp(request);
   // Generous enough for real chats, low enough that nobody can flood the votes.
   const limit = checkAndRecord(`niya-learn:${ip}`, { maxAttempts: 20, windowMs: 60 * 60 * 1000, lockMs: 60 * 60 * 1000 });
   if (!limit.allowed) return NextResponse.json({ success: false }, { status: 429 });

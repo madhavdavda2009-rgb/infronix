@@ -13,7 +13,7 @@ import {
 } from '@phosphor-icons/react/dist/ssr';
 import { query, initFounderOSDb } from '@/lib/founder_os_db';
 import { SafeMarkdownRenderer } from '@/lib/markdown_parser';
-import { verifyJwtToken } from '@/lib/auth';
+import { verifyJwtToken, getServerSecret } from '@/lib/auth';
 
 export const dynamic = 'force-dynamic';
 
@@ -32,10 +32,12 @@ function verifyPreviewToken(token, blogId) {
     if (String(decoded.blogId) !== String(blogId)) return false;
     if (Date.now() > decoded.expiresAt) return false;
 
-    const secret = process.env.ADMIN_JWT_SECRET || 'infronix_blog_preview_secret_salt_2026';
+    const secret = getServerSecret('ADMIN_JWT_SECRET');
+    if (!secret || typeof decoded.hmac !== 'string') return false;
     const payload = `${blogId}:${decoded.expiresAt}`;
-    const expectedHmac = crypto.createHmac('sha256', secret).update(payload).digest('hex');
-    return expectedHmac === decoded.hmac;
+    const expected = crypto.createHmac('sha256', secret).update(payload).digest();
+    const given = Buffer.from(decoded.hmac, 'hex');
+    return given.length === expected.length && crypto.timingSafeEqual(given, expected);
   } catch (err) {
     return false;
   }

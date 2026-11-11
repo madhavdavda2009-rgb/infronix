@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { verifyAdminAuth } from '@/lib/auth';
+import { verifyAdminAuth, getServerSecret } from '@/lib/auth';
 import crypto from 'node:crypto';
 
 export async function POST(request) {
@@ -14,7 +14,10 @@ export async function POST(request) {
       return NextResponse.json({ success: false, error: 'Blog ID is required' }, { status: 400 });
     }
 
-    const secret = process.env.ADMIN_JWT_SECRET || 'infronix_blog_preview_secret_salt_2026';
+    const secret = getServerSecret('ADMIN_JWT_SECRET');
+    if (!secret) {
+      return NextResponse.json({ success: false, error: 'Preview links are not configured on the server.' }, { status: 503 });
+    }
     const expiresAt = Date.now() + 1000 * 60 * 60 * 2; // 2 hours validity
 
     const payload = `${blogId}:${expiresAt}`;

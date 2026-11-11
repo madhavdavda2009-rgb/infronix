@@ -9,6 +9,7 @@ import { notifyAdminAboutClientAction } from '@/lib/portal_notifications';
 import path from 'path';
 import fs from 'fs/promises';
 import crypto from 'crypto';
+import { PORTAL_UPLOAD_DIR, PORTAL_FILE_TYPES, portalFileUrl } from '@/lib/portal_files';
 
 // Allowed MIME types and extensions
 const ALLOWED_MIME_TYPES = new Set([
@@ -16,7 +17,6 @@ const ALLOWED_MIME_TYPES = new Set([
   'image/jpeg',
   'image/jpg',
   'image/webp',
-  'image/svg+xml',
   'application/pdf',
   'application/msword',
   'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
@@ -31,6 +31,10 @@ const ALLOWED_MIME_TYPES = new Set([
 const FORBIDDEN_EXTENSIONS = new Set([
   '.exe', '.sh', '.bat', '.cmd', '.php', '.phtml', '.js', '.mjs', '.cjs',
   '.ts', '.py', '.pl', '.rb', '.cgi', '.jar', '.vbs', '.ps1', '.html', '.htm'
+]);
+
+const ALLOWED_EXTENSIONS = new Set([
+  '.png', '.jpg', '.jpeg', '.webp', '.pdf', '.doc', '.docx', '.xls', '.xlsx', '.zip', '.txt', '.csv'
 ]);
 
 const MAX_FILE_SIZE = 15 * 1024 * 1024; // 15MB
@@ -81,13 +85,15 @@ export async function POST(request, { params }) {
     // Check MIME type
     const mimeType = (file.type || '').toLowerCase();
     if (!ALLOWED_MIME_TYPES.has(mimeType)) {
-      return NextResponse.json({ success: false, error: 'Unsupported file format. Please upload PDF, images (PNG, JPG, SVG), DOCX, or ZIP files.' }, { status: 400, headers: getPortalSecurityHeaders() });
+      return NextResponse.json({ success: false, error: 'Unsupported file format. Please upload PDF, images (PNG, JPG, WebP), DOCX, or ZIP files.' }, { status: 400, headers: getPortalSecurityHeaders() });
     }
 
     // Check extension
     const originalName = file.name || 'document';
     const ext = path.extname(originalName).toLowerCase();
-    if (FORBIDDEN_EXTENSIONS.has(ext)) {
+    // Only known document/image extensions: anything else (.svg, .xhtml, .xml...) could run
+    // script when opened from our domain, because these files are served from /public.
+    if (FORBIDDEN_EXTENSIONS.has(ext) || !ALLOWED_EXTENSIONS.has(ext)) {
       return NextResponse.json({ success: false, error: 'Executable and script file uploads are strictly prohibited.' }, { status: 400, headers: getPortalSecurityHeaders() });
     }
 
@@ -96,14 +102,14 @@ export async function POST(request, { params }) {
     const uniqueSuffix = `${Date.now()}_${crypto.randomBytes(6).toString('hex')}`;
     const safeFileName = `${safeBaseName}_${uniqueSuffix}${ext}`;
 
-    const uploadDir = path.join(process.cwd(), 'public', 'uploads', 'portal');
-    await fs.mkdir(uploadDir, { recursive: true });
+    // Saved outside /public: only logged-in admins and this client can open it.
+    await fs.mkdir(PORTAL_UPLOAD_DIR, { recursive: true });
 
-    const filePath = path.join(uploadDir, safeFileName);
+    const filePath = path.join(PORTAL_UPLOAD_DIR, safeFileName);
     const buffer = Buffer.from(await file.arrayBuffer());
     await fs.writeFile(filePath, buffer);
 
-    const publicUrl = `/uploads/portal/${safeFileName}`;
+    const publicUrl = portalFileUrl(safeFileName);
     const fileSizeFormatted = `${(file.size / (1024 * 1024)).toFixed(2)} MB`;
 
     // Update requirement record
@@ -124,7 +130,7 @@ export async function POST(request, { params }) {
       publicUrl,
       originalName,
       fileSizeFormatted,
-      mimeType,
+      PORTAL_FILE_TYPES[ext] || mimeType,
       clientMessage,
       auth.user.id,
       requirementId,

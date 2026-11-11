@@ -113,9 +113,24 @@ export function getState(key, { maxAttempts = 3 } = {}) {
  * @returns {string}
  */
 export function getIp(request) {
-  return (
-    request?.headers?.get('x-forwarded-for')?.split(',')[0]?.trim() ||
-    request?.headers?.get('x-real-ip')?.trim() ||
-    '127.0.0.1'
-  );
+  const headers = request?.headers;
+  if (!headers?.get) return '127.0.0.1';
+  // Optional: a host that sets one trusted header (e.g. CLIENT_IP_HEADER=cf-connecting-ip
+  // behind Cloudflare) can name it here.
+  const trusted = (process.env.CLIENT_IP_HEADER || '').trim().toLowerCase();
+  if (trusted) {
+    const value = headers.get(trusted)?.split(',').pop()?.trim();
+    if (value) return value.slice(0, 64);
+  }
+  // The LAST X-Forwarded-For entry is the one our own proxy added. Earlier entries come
+  // from the visitor and can be faked to dodge rate limits, so they are ignored.
+  const forwarded = headers.get('x-forwarded-for');
+  if (forwarded) {
+    const last = forwarded.split(',').map(part => part.trim()).filter(Boolean).pop();
+    if (last) return last.slice(0, 64);
+  }
+  return headers.get('x-real-ip')?.trim().slice(0, 64) || '127.0.0.1';
 }
+
+/** Lockout used by every login and password-reset form: short, so nobody can lock a real user out for long. */
+export const LOGIN_LOCK_MS = 2 * 60 * 1000;

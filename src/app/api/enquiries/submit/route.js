@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server';
+import { getIp } from '@/lib/rate_limiter';
 import { processEnquirySubmission } from '@/lib/enquiry_service';
 import { enquiryDescription } from '@/lib/enquiry-input';
 
@@ -8,9 +9,7 @@ export async function POST(request) {
     try { body = await request.json(); } catch { return NextResponse.json({ success: false, error: 'Please send a valid form submission.' }, { status: 400 }); }
     if (!body || typeof body !== 'object' || Array.isArray(body)) return NextResponse.json({ success: false, error: 'Please send a valid form submission.' }, { status: 400 });
 
-    const clientIp = request.headers.get('x-forwarded-for')?.split(',')[0]?.trim() ||
-                     request.headers.get('x-real-ip') ||
-                     '127.0.0.1';
+    const clientIp = getIp(request);
 
     const origin = request.headers.get('origin');
     const host = request.headers.get('host') || 'localhost:3000';

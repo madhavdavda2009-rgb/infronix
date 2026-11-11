@@ -3,8 +3,13 @@ import crypto from 'crypto';
 const ALGORITHM = 'aes-256-gcm';
 
 function getEncryptionKey() {
-  const hexKey = process.env.ENCRYPTION_KEY || '0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef';
-  return Buffer.from(hexKey, 'hex');
+  const hexKey = (process.env.ENCRYPTION_KEY || '').trim();
+  if (/^[0-9a-f]{64}$/i.test(hexKey)) return Buffer.from(hexKey, 'hex');
+  // The old built-in key was public in the source code, so a live server must set its own.
+  if (process.env.NODE_ENV === 'production') {
+    throw new Error('ENCRYPTION_KEY must be set to 64 hex characters on the server');
+  }
+  return Buffer.from('0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef', 'hex');
 }
 
 /**

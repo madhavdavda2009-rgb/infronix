@@ -1,7 +1,9 @@
 import crypto from 'crypto';
 import bcrypt from 'bcryptjs';
 import { query, initFounderOSDb } from '@/lib/founder_os_db';
-import { verifyAdminAuth } from '@/lib/auth';
+import { verifyAdminAuth, getServerSecret } from '@/lib/auth';
+import { SITE_URL } from '@/lib/site-seo';
+import { getIp } from '@/lib/rate_limiter';
 
 /**
  * Generate a cryptographically secure, non-sequential Client ID.
@@ -23,7 +25,10 @@ export function generatePublicClientId() {
 export function getRequestBaseUrl(request) {
   if (process.env.APP_BASE_URL) return process.env.APP_BASE_URL.replace(/\/$/, '');
   if (process.env.NEXT_PUBLIC_SITE_URL) return process.env.NEXT_PUBLIC_SITE_URL.replace(/\/$/, '');
-  
+  // Never build password links from the request's Host header on a live server:
+  // an attacker could send a reset request with their own Host and receive the token.
+  if (process.env.NODE_ENV === 'production') return SITE_URL;
+
   if (request) {
     const host = request.headers?.get?.('x-forwarded-host') || request.headers?.get?.('host');
     if (host) {
@@ -90,7 +95,7 @@ export async function verifyPassword(plainPassword, passwordHash) {
  */
 export function hashIp(ip) {
   if (!ip) return 'unknown';
-  const secret = process.env.JWT_SECRET || 'infronix_ip_salt_2026';
+  const secret = getServerSecret('IP_HASH_SECRET') || 'ip-hash-unconfigured';
   return crypto.createHmac('sha256', secret).update(String(ip)).digest('hex').substring(0, 32);
 }
 
@@ -99,13 +104,7 @@ export function hashIp(ip) {
  */
 export function getClientIp(request) {
   if (!request) return 'unknown';
-  const forwarded = request.headers.get('x-forwarded-for');
-  if (forwarded) {
-    return forwarded.split(',')[0].trim();
-  }
-  const realIp = request.headers.get('x-real-ip');
-  if (realIp) return realIp.trim();
-  return '127.0.0.1';
+  return getIp(request);
 }
 
 /**
@@ -149,8 +148,8 @@ export async function checkRateLimit(identifier, ip) {
       if (frozen_until && new Date(frozen_until) > new Date()) {
         return { allowed: false, reason: 'Too many failed login attempts from this network. Please try again later.' };
       }
-      if (failed_count >= 10) {
-        return { allowed: false, reason: 'Too many requests. Please wait a few minutes before trying again.' };
+      if (failed_count >= 10 && frozen_until && new Date(frozen_until) > new Date()) {
+        return { allowed: false, reason: 'Too many requests. Please wait a couple of minutes before trying again.' };
       }
     }
 
@@ -181,7 +180,7 @@ export async function recordFailedLogin(identifier, ip) {
       const newCount = (user.failed_login_count || 0) + 1;
       let lockUntil = null;
       if (newCount >= 5) {
-        lockUntil = new Date(Date.now() + 15 * 60 * 1000); // 15-minute lockout
+        lockUntil = new Date(Date.now() + 2 * 60 * 1000); // 2-minute lockout
       }
 
       await query(`
@@ -196,9 +195,11 @@ export async function recordFailedLogin(identifier, ip) {
       INSERT INTO founder_os_ip_rate_limits (ip, context, failed_count, last_attempt_at, updated_at)
       VALUES ($1, 'client_portal_login', 1, NOW(), NOW())
       ON CONFLICT (ip, context) DO UPDATE
-      SET failed_count = founder_os_ip_rate_limits.failed_count + 1,
+      SET failed_count = CASE WHEN founder_os_ip_rate_limits.frozen_until IS NOT NULL AND founder_os_ip_rate_limits.frozen_until <= NOW()
+                              THEN 1 ELSE founder_os_ip_rate_limits.failed_count + 1 END,
           last_attempt_at = NOW(),
-          frozen_until = CASE WHEN founder_os_ip_rate_limits.failed_count >= 10 THEN NOW() + INTERVAL '15 minutes' ELSE founder_os_ip_rate_limits.frozen_until END,
+          frozen_until = CASE WHEN founder_os_ip_rate_limits.frozen_until IS NOT NULL AND founder_os_ip_rate_limits.frozen_until <= NOW() THEN NULL
+                              WHEN founder_os_ip_rate_limits.failed_count >= 9 THEN NOW() + INTERVAL '2 minutes' ELSE founder_os_ip_rate_limits.frozen_until END,
           updated_at = NOW()
     `, [ipHash]);
   } catch (err) {

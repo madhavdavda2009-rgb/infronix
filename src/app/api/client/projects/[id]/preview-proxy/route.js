@@ -37,8 +37,17 @@ export async function GET(request, { params }) {
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36 InfronixWeb-Portal-Preview',
         'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8'
       },
-      next: { revalidate: 0 }
+      next: { revalidate: 0 },
+      // A redirect could point at an internal address the validator never saw.
+      redirect: 'manual'
     });
+
+    if (upstreamRes.status >= 300 && upstreamRes.status < 400) {
+      return new Response('The preview site redirected. Please open the preview in a new tab.', {
+        status: 502,
+        headers: { 'Content-Type': 'text/plain' }
+      });
+    }
 
     if (!upstreamRes.ok) {
       return new Response(`Unable to fetch live staging build (HTTP ${upstreamRes.status}). Please open the preview in a new tab.`, {
@@ -63,7 +72,12 @@ export async function GET(request, { params }) {
       status: 200,
       headers: {
         'Content-Type': 'text/html; charset=utf-8',
-        'Cache-Control': 'no-store, max-age=0'
+        'Cache-Control': 'no-store, max-age=0',
+        // The staging page is outside code served from our domain. The sandbox gives it
+        // its own throwaway origin, so its scripts cannot read portal cookies or call our APIs.
+        'Content-Security-Policy': 'sandbox allow-scripts allow-forms allow-popups allow-popups-to-escape-sandbox',
+        'X-Content-Type-Options': 'nosniff',
+        'Referrer-Policy': 'no-referrer'
       }
     });
   } catch (err) {

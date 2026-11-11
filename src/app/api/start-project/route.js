@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server';
+import { getIp } from '@/lib/rate_limiter';
 import { processEnquirySubmission } from '@/lib/enquiry_service';
 
 export async function POST(request) {
@@ -33,9 +34,7 @@ export async function POST(request) {
       honeypot
     } = body;
 
-    const clientIp = request.headers.get('x-forwarded-for')?.split(',')[0]?.trim() ||
-                     request.headers.get('x-real-ip') ||
-                     '127.0.0.1';
+    const clientIp = getIp(request);
 
     const origin = request.headers.get('origin');
     const host = request.headers.get('host') || 'localhost:3000';

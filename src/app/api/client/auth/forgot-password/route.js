@@ -7,7 +7,7 @@ import {
 } from '@/lib/client_auth';
 import { query, initFounderOSDb } from '@/lib/founder_os_db';
 import { sendPortalNotificationEmail } from '@/lib/portal_notifications';
-import { checkAndRecord, getIp } from '@/lib/rate_limiter';
+import { checkAndRecord, getIp, LOGIN_LOCK_MS } from '@/lib/rate_limiter';
 
 export async function POST(request) {
   try {
@@ -16,8 +16,8 @@ export async function POST(request) {
     const ip = getIp(request);
     const ipKey = `forgot_password:ip:${ip}`;
 
-    // ─── Rate limit: 3 requests per hour per IP ──────────────────────────────
-    const ipCheck = checkAndRecord(ipKey, { maxAttempts: 3, lockMs: 60 * 60 * 1000 });
+    // ─── Rate limit: 3 requests, then a 2-minute lock per IP ──────────────────────────────
+    const ipCheck = checkAndRecord(ipKey, { maxAttempts: 3, lockMs: LOGIN_LOCK_MS, windowMs: LOGIN_LOCK_MS });
     if (!ipCheck.allowed) {
       // Still return a generic response to avoid enumeration — just silently block
       return NextResponse.json({
@@ -38,7 +38,7 @@ export async function POST(request) {
 
     // Per-identifier rate limit to stop targeted email spam
     const identifierKey = `forgot_password:id:${identifier.toLowerCase()}`;
-    const idCheck = checkAndRecord(identifierKey, { maxAttempts: 3, lockMs: 60 * 60 * 1000 });
+    const idCheck = checkAndRecord(identifierKey, { maxAttempts: 3, lockMs: LOGIN_LOCK_MS, windowMs: LOGIN_LOCK_MS });
     if (!idCheck.allowed) {
       // Same generic response — don't reveal account existence
       return NextResponse.json({

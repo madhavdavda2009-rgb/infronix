@@ -2,16 +2,17 @@ import { NextResponse } from 'next/server';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import { execute } from '@/lib/db';
+import { getServerSecret } from '@/lib/auth';
 import { cookies } from 'next/headers';
-import { checkAndRecord, resetKey, getIp } from '@/lib/rate_limiter';
+import { checkAndRecord, resetKey, getIp, LOGIN_LOCK_MS } from '@/lib/rate_limiter';
 
 export async function POST(request) {
   try {
     const ip = getIp(request);
     const ipKey = `admin_login:ip:${ip}`;
 
-    // ─── IP-based rate limit: 3 attempts per hour ───────────────────────────
-    const ipCheck = checkAndRecord(ipKey, { maxAttempts: 3, lockMs: 60 * 60 * 1000 });
+    // ─── IP-based rate limit: 3 attempts, then a 2-minute lock ───────────────────────────
+    const ipCheck = checkAndRecord(ipKey, { maxAttempts: 3, lockMs: LOGIN_LOCK_MS, windowMs: LOGIN_LOCK_MS });
     if (!ipCheck.allowed) {
       return NextResponse.json(
         { success: false, error: ipCheck.message },
@@ -38,7 +39,7 @@ export async function POST(request) {
 
     // Per-username rate limit (protects against distributed IP attacks)
     const userKey = `admin_login:user:${String(username).trim().toLowerCase()}`;
-    const userCheck = checkAndRecord(userKey, { maxAttempts: 3, lockMs: 60 * 60 * 1000 });
+    const userCheck = checkAndRecord(userKey, { maxAttempts: 3, lockMs: LOGIN_LOCK_MS, windowMs: LOGIN_LOCK_MS });
     if (!userCheck.allowed) {
       return NextResponse.json(
         { success: false, error: userCheck.message },
@@ -49,8 +50,7 @@ export async function POST(request) {
     const [rows] = await execute('SELECT * FROM admins WHERE username = ? LIMIT 1', [username.trim()]);
     
     if (rows.length === 0) {
-      // Record failed attempt — wrong username still counts
-      checkAndRecord(ipKey, { maxAttempts: 3, lockMs: 60 * 60 * 1000 });
+      // This attempt was already counted above for both the IP and the username.
       return NextResponse.json(
         { success: false, error: 'Invalid username or password.' },
         { status: 401 }
@@ -61,8 +61,7 @@ export async function POST(request) {
     const isPasswordValid = await bcrypt.compare(password, admin.password_hash);
 
     if (!isPasswordValid) {
-      // Additional failed attempt recorded for both IP and username
-      checkAndRecord(userKey, { maxAttempts: 3, lockMs: 60 * 60 * 1000 });
+      // This attempt was already counted above for both the IP and the username.
       return NextResponse.json(
         { success: false, error: 'Invalid username or password.' },
         { status: 401 }
@@ -73,11 +72,17 @@ export async function POST(request) {
     resetKey(ipKey);
     resetKey(userKey);
 
-    const secret = process.env.JWT_SECRET || 'infronix_sec_jwt_key_2026_v99a7b2c';
+    const secret = getServerSecret();
+    if (!secret) {
+      return NextResponse.json(
+        { success: false, error: 'Login is not configured on the server. Contact the site owner.' },
+        { status: 503 }
+      );
+    }
     const token = jwt.sign(
       { id: admin.id, username: admin.username },
       secret,
-      { expiresIn: '8h' }
+      { expiresIn: '8h', algorithm: 'HS256' }
     );
 
     // Set secure HTTP-Only cookie using cookies API
