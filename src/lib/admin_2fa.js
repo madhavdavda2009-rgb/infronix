@@ -146,9 +146,22 @@ export async function checkAdminCode(admin, rawCode, { secretOverride = null, al
   }
   const code = String(rawCode || '').trim();
   const secret = secretOverride || readSecret(admin.totp_secret);
-  if (!secret) return { ok: false, error: 'Two-step login is not set up correctly. Contact the site owner.' };
+  const isAppCode = /^\d{6}$/.test(code.replace(/\s/g, ''));
 
-  if (/^\d{6}$/.test(code.replace(/\s/g, ''))) {
+  // The saved key cannot be read, usually because it was saved by a server with a
+  // different ENCRYPTION_KEY. Backup codes do not need that key, so they still work.
+  if (!secret && (isAppCode || !allowBackup)) {
+    console.error('[2fa] Stored authenticator key could not be decrypted for admin', admin.id, '- ENCRYPTION_KEY differs from the one used at setup.');
+    return {
+      ok: false,
+      keyUnreadable: true,
+      error: allowBackup
+        ? 'This server cannot read your authenticator setup. Sign in with a backup code, then set up Google Authenticator again in Settings.'
+        : 'This server cannot read your authenticator setup. Turn two-step login off with a backup code and set it up again.'
+    };
+  }
+
+  if (isAppCode) {
     const step = verifyTotp(secret, code, admin.totp_last_step);
     if (step !== null) {
       // Saving the step only if it is newer stops the same code being used twice.
