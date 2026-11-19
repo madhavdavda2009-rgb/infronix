@@ -26,6 +26,7 @@ const nextConfig = {
   },
   poweredByHeader: false,
   experimental: {
+    agentUpgrade: 'security',
     optimizePackageImports: ['@phosphor-icons/react', 'framer-motion', '@next/third-parties'],
   },
   images: {
