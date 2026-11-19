@@ -69,7 +69,7 @@ export default function Footer() {
                 <span className="text-xs sm:text-sm font-medium">@infronixwebagency2026</span>
               </a>
               <a
-                href="https://www.linkedin.com/company/infronixweb/"
+                href="https://www.linkedin.com/company/infronixweb-agency/"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-2.5 px-3.5 py-2 rounded-xl bg-white/5 border border-white/10 hover:border-violet-400/50 text-slate-200 hover:text-white transition-all group"
