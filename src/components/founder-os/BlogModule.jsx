@@ -93,6 +93,11 @@ export default function BlogModule({ onRefreshDashboard }) {
   const [canonicalUrl, setCanonicalUrl] = useState('');
   const [ogImageUrl, setOgImageUrl] = useState('');
 
+  // The list endpoint omits content_markdown, so the body of an existing post is
+  // fetched separately when the editor opens. Saving is blocked until it arrives.
+  const [contentLoading, setContentLoading] = useState(false);
+  const contentRequestRef = useRef(0);
+
   // Image upload state
   const [uploadingImage, setUploadingImage] = useState(false);
   const fileInputRef = useRef(null);
@@ -146,7 +151,7 @@ export default function BlogModule({ onRefreshDashboard }) {
       setPostSlug(post.slug || '');
       setSlugManuallyEdited(true);
       setPostExcerpt(post.excerpt || '');
-      setPostContent(post.content_markdown || '');
+      setPostContent('');
       setCoverImageUrl(post.cover_image_url || '');
       setCoverImageAlt(post.cover_image_alt || '');
       setSelectedAuthorId(post.author_person_id ? String(post.author_person_id) : '');
@@ -161,7 +166,10 @@ export default function BlogModule({ onRefreshDashboard }) {
       setSeoDescription(post.seo_description || '');
       setCanonicalUrl(post.canonical_url || '');
       setOgImageUrl(post.og_image_url || '');
+      loadPostContent(post.id);
     } else {
+      contentRequestRef.current += 1;
+      setContentLoading(false);
       setEditingPost(null);
       setPostTitle('');
       setPostSlug('');
@@ -189,6 +197,33 @@ export default function BlogModule({ onRefreshDashboard }) {
     setShowEditor(true);
   }
 
+  async function loadPostContent(postId) {
+    const requestId = ++contentRequestRef.current;
+    setContentLoading(true);
+    try {
+      const res = await fetch(`/api/founder-os/blogs/${postId}`);
+      const data = await res.json().catch(() => ({}));
+      if (requestId !== contentRequestRef.current) return;
+      if (!res.ok || !data.success || !data.post) {
+        throw new Error(data.error || 'Failed to load article content');
+      }
+      setPostContent(data.post.content_markdown || '');
+      setContentLoading(false);
+    } catch (err) {
+      if (requestId !== contentRequestRef.current) return;
+      console.error('Blog content load error:', err);
+      showToast(err.message || 'Failed to load article content', 'error');
+      setContentLoading(false);
+      setShowEditor(false);
+    }
+  }
+
+  function handleCloseEditor() {
+    contentRequestRef.current += 1;
+    setContentLoading(false);
+    setShowEditor(false);
+  }
+
   // Title change triggers automatic slug update if not manually edited
   function handleTitleChange(val) {
     setPostTitle(val);
@@ -199,6 +234,7 @@ export default function BlogModule({ onRefreshDashboard }) {
 
   // Insert markdown snippet into editor
   function insertMarkdown(prefix, suffix = '', placeholder = '') {
+    if (contentLoading) return;
     const textarea = contentTextareaRef.current;
     if (!textarea) return;
 
@@ -247,6 +283,7 @@ In today's fast-evolving market, having a high-performing digital presence is th
 
 Building a scalable digital asset requires modern engineering and deliberate strategy. Partner with InfronixWeb to accelerate your growth.`;
 
+    if (contentLoading) return;
     if (postContent.trim() && !window.confirm('Replace current article content with template outline?')) {
       return;
     }
@@ -330,6 +367,11 @@ Building a scalable digital asset requires modern engineering and deliberate str
 
   // Save Post Handler (Draft / Publish / Schedule / Archive)
   async function handleSavePost(overrideStatus = null) {
+    if (contentLoading) {
+      showToast('Article content is still loading. Please wait a moment before saving.', 'error');
+      return;
+    }
+
     if (!postTitle.trim()) {
       showToast('Article title is required', 'error');
       setEditorTab('content');
@@ -997,7 +1039,7 @@ Building a scalable digital asset requires modern engineering and deliberate str
 
                 <button
                   type="button"
-                  onClick={() => setShowEditor(false)}
+                  onClick={handleCloseEditor}
                   className="p-2 text-slate-400 hover:text-slate-600 rounded-lg cursor-pointer"
                 >
                   <X size={20} />
@@ -1339,12 +1381,14 @@ Building a scalable digital asset requires modern engineering and deliberate str
                         rows={16}
                         value={postContent}
                         onChange={(e) => setPostContent(e.target.value)}
-                        placeholder="Write your article in structured Markdown... Use ## for headings, **bold**, - for lists, etc."
-                        className="w-full p-4 bg-slate-50 border border-slate-300 rounded-xl text-xs sm:text-sm font-mono text-slate-900 placeholder:text-slate-400 focus:bg-white focus:outline-none focus:border-violet-600 focus:ring-2 focus:ring-violet-500/20 leading-relaxed"
+                        disabled={contentLoading}
+                        aria-busy={contentLoading}
+                        placeholder={contentLoading ? 'Loading article content...' : "Write your article in structured Markdown... Use ## for headings, **bold**, - for lists, etc."}
+                        className="w-full p-4 bg-slate-50 disabled:opacity-60 disabled:cursor-wait border border-slate-300 rounded-xl text-xs sm:text-sm font-mono text-slate-900 placeholder:text-slate-400 focus:bg-white focus:outline-none focus:border-violet-600 focus:ring-2 focus:ring-violet-500/20 leading-relaxed"
                       />
                     ) : (
                       <div className="p-6 bg-slate-50 border border-slate-200 rounded-xl min-h-[300px] overflow-y-auto">
-                        <SafeMarkdownRenderer content={postContent || '*No content written yet.*'} />
+                        <SafeMarkdownRenderer content={contentLoading ? '*Loading article content...*' : (postContent || '*No content written yet.*')} />
                       </div>
                     )}
                   </div>
@@ -1624,7 +1668,7 @@ Building a scalable digital asset requires modern engineering and deliberate str
               <div className="flex items-center gap-2 w-full sm:w-auto">
                 <button
                   type="button"
-                  onClick={() => setShowEditor(false)}
+                  onClick={handleCloseEditor}
                   disabled={actionLoading}
                   className="w-full sm:w-auto px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-xs font-bold cursor-pointer transition-colors"
                 >
@@ -1648,7 +1692,7 @@ Building a scalable digital asset requires modern engineering and deliberate str
                   <button
                     type="button"
                     onClick={() => handleSavePost('Draft')}
-                    disabled={actionLoading}
+                    disabled={actionLoading || contentLoading}
                     className="flex-1 sm:flex-initial px-4 py-2 bg-amber-50 hover:bg-amber-100 border border-amber-300 text-amber-800 rounded-xl text-xs font-bold cursor-pointer transition-all disabled:opacity-50"
                   >
                     Save as Draft
@@ -1658,7 +1702,7 @@ Building a scalable digital asset requires modern engineering and deliberate str
                 <button
                   type="button"
                   onClick={() => handleSavePost(postStatus === 'Draft' ? 'Published' : postStatus)}
-                  disabled={actionLoading}
+                  disabled={actionLoading || contentLoading}
                   className={`flex-1 sm:flex-initial px-5 py-2 text-white rounded-xl text-xs font-bold shadow-sm flex items-center justify-center gap-2 cursor-pointer transition-all disabled:opacity-50 ${
                     postStatus === 'Scheduled'
                       ? 'bg-blue-600 hover:bg-blue-700 shadow-blue-600/20'
