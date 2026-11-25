@@ -4,6 +4,7 @@ import { getService } from '@/lib/services';
 import { pageMetadata } from '@/lib/site-seo';
 import Breadcrumb from '@/components/Breadcrumb';
 import Link from 'next/link';
+import ServicePricing from '@/components/ServicePricing';
 import { Gear, FileText, MagnifyingGlass, MapPin, Article, ChartLineUp } from '@phosphor-icons/react/dist/ssr';
 
 const service = getService('seo');
@@ -80,6 +81,7 @@ export default function SEOPage() {
             </div>
           </div>
         </section>
+        <ServicePricing slug="seo" />
 
         <ServiceBrief slug='seo' />
 

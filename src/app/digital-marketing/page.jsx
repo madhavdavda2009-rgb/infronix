@@ -4,6 +4,7 @@ import { getService } from '@/lib/services';
 import { pageMetadata } from '@/lib/site-seo';
 import Breadcrumb from '@/components/Breadcrumb';
 import Link from 'next/link';
+import ServicePricing from '@/components/ServicePricing';
 import { ArrowRight, CheckCircle, UsersThree, Target } from '@phosphor-icons/react/dist/ssr';
 
 const service = getService('digital-marketing');
@@ -77,6 +78,7 @@ export default function DigitalMarketingPage() {
             </div>
           </div>
         </section>
+        <ServicePricing slug="digital-marketing" />
 
         <ServiceBrief slug='digital-marketing' />
 

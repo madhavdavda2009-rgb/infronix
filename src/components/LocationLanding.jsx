@@ -4,6 +4,7 @@ import { nearbyLocations } from '@/lib/locations';
 import { cityChallenge, cityLinks } from '@/lib/location-content';
 import { locationDetails } from '@/lib/location-details';
 import { trades } from '@/lib/location-trades';
+import { localSearch, searchFaqs, serviceCards } from '@/lib/location-search-content';
 import { SITE_URL, serializeJsonLd } from '@/lib/site-seo';
 
 export default function LocationLanding({ location }) {
@@ -17,6 +18,8 @@ export default function LocationLanding({ location }) {
     ['How much does this cost?', 'Website packages start from ₹10,000. Advertising and search work are quoted after a call, based on what you need.'],
     ...focus.slice(0, 4).map(item => item.faq),
   ];
+  const [searchNote, localFaq] = localSearch[location.slug];
+  faqs.push(...searchFaqs(location.name), localFaq);
   const schema = {
     '@context': 'https://schema.org',
     '@graph': [
@@ -81,6 +84,19 @@ export default function LocationLanding({ location }) {
     </section>
 
     <section className="py-12 sm:py-16 bg-surface-container-lowest">
+      <div className="max-w-[1280px] mx-auto px-4 sm:px-6 md:px-12">
+        <h2 className="text-3xl sm:text-4xl md:text-5xl font-heading font-bold text-on-surface mb-5 leading-tight">How customers in {location.name} search</h2>
+        <p className="max-w-3xl leading-relaxed mb-8">{searchNote}</p>
+        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5 sm:gap-6">
+          {serviceCards(location.name).map(([href, title, text]) => <article key={href} className="bg-surface border border-outline-variant/60 rounded-2xl p-6">
+            <h3 className="text-lg font-heading font-bold text-on-surface mb-3"><Link href={href} className="hover:text-primary">{title}</Link></h3>
+            <p className="leading-relaxed">{text}</p>
+          </article>)}
+        </div>
+      </div>
+    </section>
+
+    <section className="py-12 sm:py-16 bg-surface">
       <div className="max-w-[900px] mx-auto px-4 sm:px-6 md:px-8">
         <h2 className="text-3xl sm:text-4xl md:text-5xl font-heading font-bold text-on-surface mb-6 leading-tight">Common questions</h2>
         {faqs.map(([question, answer]) => <details key={question} className="border-b border-outline-variant py-4"><summary className="cursor-pointer text-lg font-heading font-bold py-2 text-on-surface">{question}</summary><p className="leading-relaxed pt-3 pb-2">{answer}</p></details>)}

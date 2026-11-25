@@ -10,7 +10,7 @@
 //
 // To add an answer: add a topic { id, k: [keywords], a: 'answer' }. Longer, more specific
 // keyword phrases win over single words. Run the test questions after editing.
-import { WEBSITE_PACKAGES, PRICING_ADDONS, PAYMENT_TERMS, formatInr } from '@/lib/pricing';
+import { WEBSITE_PACKAGES, ADS_PACKAGES, SOCIAL_PACKAGES, SEO_PACKAGES, CHATGPT_PACKAGES, PRICING_ADDONS, PAYMENT_TERMS, formatInr } from '@/lib/pricing';
 
 const PHONE_1 = '+91 6355 792 936';
 const PHONE_2 = '+91 91062 91540';
@@ -20,6 +20,12 @@ const HOURS = 'Monday to Saturday, 9:00 AM to 8:00 PM';
 const ADDRESS = 'Shree Eklingji Residency 2, Sanand, Ahmedabad 382110, Gujarat';
 
 const [STARTER, BUSINESS, PREMIUM] = WEBSITE_PACKAGES;
+const [ADS_STARTER, ADS_GROWTH, ADS_PRO] = ADS_PACKAGES;
+const [SOCIAL_STARTER] = SOCIAL_PACKAGES;
+const [SEO_BASIC] = SEO_PACKAGES;
+const [CHATGPT_SETUP] = CHATGPT_PACKAGES;
+const planList = (list) => list.map((p) => `• ${p.name}: ${formatInr(p.price)}/month`).join('\n');
+const adsList =ADS_PACKAGES.map((p) => `• ${p.name}: ${formatInr(p.price)}/month (${p.features.find((f) => f.startsWith('Up to'))?.toLowerCase()})`).join('\n');
 const addon = (name) => PRICING_ADDONS.find((a) => a.name.startsWith(name))?.price || '';
 const payTerms = PAYMENT_TERMS.map((t) => `${t.label} ${t.text.toLowerCase()}`).join(', ');
 
@@ -101,7 +107,7 @@ const TOPICS = [
     a: 'We offer three main services:\n• Website Development: business websites, online stores, landing pages and redesigns.\n• Digital Marketing: social media, Google Ads, Meta Ads, ChatGPT Ads and performance marketing.\n• SEO: website health, useful content, local search and Google Business Profile.',
     links: [L.services, L.pricing], chips: ['Website pricing', 'SEO', 'Digital marketing'] },
   { id: 'dm', w: 0.9, k: ['digital marketing', 'online marketing', 'social media and ads', 'social media or ads', 'marketing services', 'marketing karo', 'marketing karvu'],
-    a: 'Our digital marketing covers social media (Instagram, Facebook, LinkedIn), Google Ads, Meta Ads, ChatGPT Ads and performance marketing. We plan the content or campaigns, the landing page and the tracking together, and report on real enquiries. It is quoted after a free call.',
+    a: 'Our digital marketing covers social media (Instagram, Facebook, LinkedIn), Google Ads, Meta Ads, ChatGPT Ads and performance marketing. We plan the content or campaigns, the landing page and the tracking together, and report on real enquiries. Social media management starts at ' + formatInr(SOCIAL_PACKAGES[0].price) + '/month and Google + Meta Ads management at ' + formatInr(ADS_PACKAGES[0].price) + '/month (plus ad spend).',
     links: [L.dm, L.smm, L.gads, L.meta], chips: ['Social media cost', 'Ad budget', 'Get a Quote'] },
   { id: 'stuck', w: 1.3, k: ['stuck', 'cant find', 'cannot find', 'can not find', 'not able to', 'unable to', 'page not loading', 'form not working', 'not submitting', 'form submit', 'submit nahi', 'nahi ho raha', 'not opening', 'khulta nahi', 'button not working', 'link not working', 'error on', 'confused', 'need help', 'samajh nahi aa raha', 'kuch samaj', 'something is not working', 'site not working'],
     a: "Sorry about that! Tell me what you were trying to do and I'll point you the right way. You can also reach the team directly and they'll sort it out.",
@@ -132,7 +138,7 @@ const TOPICS = [
     a: `Yes, you can discuss your requirements on a call. Call ${PHONE_1} or ${PHONE_2}, or ask on WhatsApp to arrange a call or video meeting at a convenient time (${HOURS}).`,
     links: [L.call, L.whatsapp] },
   { id: 'free-consult', k: ['free consultation', 'consultation', 'free call', 'free discussion', 'free advice', 'free initial', 'quotation free', 'quote free', 'free quote'],
-    a: 'You can start with a free call: digital marketing and SEO are quoted after a free call, and website quotes are shared in writing before any work begins.',
+    a: 'You can start with a free call. Website, ads, social media, SEO and ChatGPT Ads packages all have published prices on our pricing page, and all quotes are shared in writing before any work begins.',
     links: [L.quote, L.whatsapp] },
   { id: 'new-business', k: ['new business', 'starting a business', 'starting a new', 'new brand', 'newly launched', 'just started', 'startup', 'start up', 'no online presence', 'nothing online', 'naya business', 'navo business'],
     a: 'Welcome! For a new business, the website and Google Business Profile usually come first, because SEO and ads both send people there. Our Starter website begins at ' + formatInr(STARTER.price) + ' and includes a contact form, WhatsApp button, Google Map and basic SEO setup.',
@@ -253,7 +259,7 @@ const TOPICS = [
   // ───────────────────────── Pricing & timelines ─────────────────────────
   { id: 'pricing', w: 1.6,
     k: ['price', 'prices', 'pricing', 'cost', 'costs', 'charges', 'charge', 'fees', 'rate', 'kitna', 'kitne ki', 'kitne ka', 'kitni', 'kharcha', 'kharch', 'kharcho', 'ketlo', 'ketla rupiya', 'paisa', 'paise', 'package', 'packages', 'cheapest', 'minimum rate', 'starting price', 'expensive', 'mehenga', 'monghu'],
-    a: `Business websites start at ${formatInr(STARTER.price)}:\n• ${STARTER.name}: ${formatInr(STARTER.price)} one-time (up to 5 pages)\n• ${BUSINESS.name}: ${formatInr(BUSINESS.price)} one-time (up to 10 pages, blog, custom design)\n• ${PREMIUM.name}: from ${formatInr(PREMIUM.price)} (online store / fully custom)\nDigital marketing and SEO are quoted after a free call. Your final quote is shared in writing before any work begins.`,
+    a: `Business websites start at ${formatInr(STARTER.price)}:\n• ${STARTER.name}: ${formatInr(STARTER.price)} one-time (up to 5 pages)\n• ${BUSINESS.name}: ${formatInr(BUSINESS.price)} one-time (up to 10 pages, blog, custom design)\n• ${PREMIUM.name}: from ${formatInr(PREMIUM.price)} (online store / fully custom)\nMonthly marketing plans: SEO from ${formatInr(SEO_BASIC.price)}, social media from ${formatInr(SOCIAL_STARTER.price)}, Google + Meta Ads from ${formatInr(ADS_STARTER.price)} and ChatGPT Ads setup at ${formatInr(CHATGPT_SETUP.price)} (ad spend extra). Your final quote is shared in writing before any work begins.`,
     links: [L.pricing, L.quote], chips: ['What is not included?', 'Payment terms', 'How long does a website take?'] },
   { id: 'low-budget', w: 1.7, k: ['rs 2 000', 'rs 5 000', '2000', '5000', '2 000', '5 000', 'budget kam', 'low budget', 'less budget', 'small budget', 'within my budget', 'my budget', 'cheaper', 'budget ochu', 'saste'],
     a: `Our lowest website package is ${STARTER.name} at ${formatInr(STARTER.price)}. We don't offer websites below that, because a working business website needs design, setup, testing and SEO basics. Share your budget with the team and they'll tell you honestly what fits.`,
@@ -265,9 +271,9 @@ const TOPICS = [
     a: `Not included in website packages: domain and hosting charges (we set them up at actual cost + setup), content writing (unless your package includes it), logo design, and paid plugins, stock photos or subscriptions. Mobile-friendly design and basic SEO setup are included in every package. There are no hidden charges: everything is listed in your written quote. SSL (the padlock) normally comes with hosting; the team confirms it in your quote.`,
     links: [L.pricing] },
   { id: 'seo-included', w: 1.8, k: ['is seo included', 'seo included', 'seo free with'],
-    a: 'Basic SEO setup is included in every website package (titles, meta, sitemap, Search Console). Ongoing SEO to grow rankings is a separate service, quoted after a free call.', links: [L.seo] },
+    a: 'Basic SEO setup is included in every website package (titles, meta, sitemap, Search Console). Ongoing SEO to grow rankings is a separate monthly service, with plans from ' + formatInr(SEO_PACKAGES[0].price) + '/month.', links: [L.seo, L.pricing] },
   { id: 'recurring', w: 1.6, k: ['one time', 'one-time', 'every month', 'every year', 'monthly', 'yearly', 'renewal', 'annual', 'har mahine', 'dar mahine', 'mahine'],
-    a: `Website packages are a one-time payment. Recurring costs are only: domain + hosting renewal (yearly, at actual cost) and optional maintenance at ${addon('Website maintenance')}. Digital marketing and SEO are usually monthly work, quoted after a free call.`,
+    a: `Website packages are a one-time payment. Recurring costs are only: domain + hosting renewal (yearly, at actual cost) and optional maintenance at ${addon('Website maintenance')}. Marketing plans are monthly: SEO from ${formatInr(SEO_BASIC.price)}, social media from ${formatInr(SOCIAL_STARTER.price)} and Google + Meta Ads from ${formatInr(ADS_STARTER.price)} (plus ad spend).`,
     links: [L.pricing] },
   { id: 'payment-terms', w: 1.7, k: ['installment', 'installments', 'emi', 'advance payment', 'advance', 'pay after', 'payment terms', 'payment schedule', 'pay later', 'pay after the website', 'monthly payment plan', 'hapta', 'kisht', 'after i become successful'],
     a: `Website payments are split into stages: ${payTerms}. Work starts after the advance. Other schedules are specified in your quotation or agreement.`,
@@ -364,7 +370,8 @@ const TOPICS = [
   { id: 'speed-seo', w: 1.3, k: ['speed affect', 'speed seo', 'page speed', 'loading speed'],
     a: 'Yes. A slow website frustrates visitors and can hurt rankings. We check loading speed, image sizes and mobile performance as part of every website and SEO review.' },
   { id: 'seo-cost', w: 2, k: ['seo cost', 'cost of seo', 'seo price', 'seo charges', 'local seo cost', 'seo packages'],
-    a: 'SEO is quoted after we check your website, the access needed and the work agreed, so there\'s no fixed price list. Choose an audit, ongoing support or a focused project. Book a free call for a quote.',
+    a: `SEO plans start at ${formatInr(SEO_BASIC.price)}/month:\n${planList(SEO_PACKAGES)}\nRankings cannot be guaranteed, and most websites need several months of steady work. We report on clicks, calls and enquiries as well as positions.`,
+    chips: ['Which SEO plan should I pick?', 'How long does SEO take?', 'Local SEO'],
     links: [L.seo, L.quote] },
 
   // ───────────────────────── Local SEO ─────────────────────────
@@ -395,7 +402,7 @@ const TOPICS = [
     a: 'Yes. We create social media posts, carousels, promotional and festival creatives, educational content, reels and short videos (editing, captions and text overlays), captions and hashtags, bio and profile optimisation, and a monthly content calendar with scheduled posting.',
     links: [L.smm] },
   { id: 'smm-volume', w: 1.5, k: ['how many posts', 'how many reels', 'posts per month', 'reels per month', 'posts monthly', 'kitne post', 'ketli post'],
-    a: 'The number of posts and reels per month depends on your plan and budget, and is written in your proposal. Book a free call and we\'ll suggest a realistic posting plan.', links: [L.quote] },
+    a: 'It depends on your plan: Social Starter includes 12 static posts a month, Social Growth 20 posts and 4 reels, and Social Pro 30 posts and 8 reels. Reels are edited from footage you provide.', links: [L.pricing, L.quote] },
   { id: 'smm-assets', w: 1.4, k: ['shoot videos', 'photoshoot', 'provide photos', 'existing photos', 'my photos', 'video shoot', 'shoot', 'footage'],
     a: 'You can provide your own photos and video footage, and we design and edit with them. Creating new content without a shoot is possible with graphics; a photo or video shoot can be discussed based on your project.' },
   { id: 'smm-engage', w: 1.4, k: ['comments', 'dms', 'dm', 'reply to instagram', 'messages on instagram', 'inbox'],
@@ -413,7 +420,14 @@ const TOPICS = [
   { id: 'influencer', w: 1.4, k: ['influencer', 'influencers', 'collaboration with influencer'],
     a: `Influencer collaborations aren't listed as a standard service. ${ASK_TEAM}`, links: TEAM_LINKS },
   { id: 'smm-cost', w: 2, k: ['social media cost', 'social media management cost', 'smm cost', 'instagram cost', 'social media charges', 'social media price'],
-    a: 'Social media management is quoted after a free call, based on platforms, posts and reels per month and whether we create videos. You get a written proposal with deliverables and cost.', links: [L.quote] },
+    a: `Social media management starts at ${formatInr(SOCIAL_STARTER.price)}/month:\n${planList(SOCIAL_PACKAGES)}\nIn ${SOCIAL_STARTER.name} you get account handling and static creatives; video shooting and reel editing are charged separately. Paid promotion is not included.`,
+    links: [L.pricing, L.smm, L.quote], chips: ['Which social media plan should I pick?', 'Can you make reels?', 'Ads packages'] },
+  { id: 'smm-pick', w: 1.8, k: ['which social media plan', 'social media plan should i pick', 'social media package choose', 'social starter or growth', 'kaunsa social media plan'],
+    a: `A simple way to choose:\n• ${SOCIAL_STARTER.name} (${formatInr(SOCIAL_STARTER.price)}/month): you want your Instagram and Facebook handled with regular designed posts.\n• ${SOCIAL_PACKAGES[1].name} (${formatInr(SOCIAL_PACKAGES[1].price)}/month): you also want reels, LinkedIn and replies to comments and messages.\n• ${SOCIAL_PACKAGES[2].name} (${formatInr(SOCIAL_PACKAGES[2].price)}/month): you post often and want a monthly strategy call and competitor review.`,
+    links: [L.pricing, L.quote] },
+  { id: 'seo-pick', w: 1.8, k: ['which seo plan', 'seo plan should i pick', 'seo package choose', 'seo basic or growth', 'kaunsa seo plan'],
+    a: `A simple way to choose:\n• ${SEO_BASIC.name} (${formatInr(SEO_BASIC.price)}/month): you want monthly technical audits and a clear fix list for your website.\n• ${SEO_PACKAGES[1].name} (${formatInr(SEO_PACKAGES[1].price)}/month): you want hands-on work, Google Business Profile and blog articles to grow local visibility.\n• ${SEO_PACKAGES[2].name} (${formatInr(SEO_PACKAGES[2].price)}/month): you compete for many searches and want backlinks and more content.`,
+    links: [L.pricing, L.seo, L.quote] },
 
   // ───────────────────────── Google Ads ─────────────────────────
   { id: 'gads', k: ['google ads', 'adwords', 'advertise on google', 'ads on google', 'google advertising', 'ppc'],
@@ -427,9 +441,12 @@ const TOPICS = [
   { id: 'ads-budget', w: 1.6, k: ['daily budget', 'ad budget', 'budget do i need', 'how much should i spend', 'spend daily', 'minimum monthly ad', 'minimum budget', 'minimum advertising budget', 'advertising budget', 'rs 100', 'rs 200', 'rs 500', '100 per day', '200 per day', '500 per day', '100 mein', 'ads chalane', 'ads kharcha', 'ads ka kharcha', 'kitna kharcha aayega', 'without spending money', 'ads without spending', 'free ads'],
     a: 'There\'s no single right budget: it depends on your area, competition and what an enquiry is worth to you. We review click costs and propose a small test budget before scaling. Very small daily budgets can work for testing in a narrow area but give limited data. Ads always need some spend; free alternatives are SEO and organic social media. Ad spend is paid to Google or Meta and is separate from our management fee.',
     links: [L.gads, L.meta], chips: ['Ads management fee', 'Get a Quote'] },
-  { id: 'ads-fee', w: 1.8, k: ['ad spend included', 'spend included', 'pay google directly', 'pay meta directly', 'management fee', 'ads management fee', 'charge to manage', 'manage google ads cost', 'setup fee', 'meta ads management cost', 'meta ads cost', 'google ads cost', 'ads cost', 'performance marketing cost', 'ads kitne', 'ads ka charge', 'ads no charge'],
-    a: 'Ad spend is paid directly to the platform (Google, Meta or OpenAI) from your own account, and is kept separate from our management fee. Our fee is quoted after a free call based on the campaigns and scope.',
-    links: [L.quote] },
+  { id: 'ads-fee', w: 1.8, k: ['ad spend included', 'spend included', 'pay google directly', 'pay meta directly', 'management fee', 'ads management fee', 'charge to manage', 'manage google ads cost', 'setup fee', 'meta ads management cost', 'meta ads cost', 'google ads cost', 'ads cost', 'performance marketing cost', 'ads kitne', 'ads ka charge', 'ads no charge', 'ads package', 'ads packages', 'ads plan', 'ads plans', 'ads price', 'ads pricing', 'ads management price', 'ads management package', 'google ads package', 'meta ads package', 'facebook ads cost', 'instagram ads cost', 'ads starter', 'ads growth', 'ads pro', 'ads ka package', 'ads ka price', 'ads management charges'],
+    a: `Google Ads + Meta Ads management starts at ${formatInr(ADS_STARTER.price)}/month:\n${adsList}\nAd spend is extra and paid directly to Google or Meta from your own ad accounts, separate from our fee. Results depend on your offer, budget and competition, so no lead number is guaranteed.`,
+    links: [L.pricing, L.quote], chips: ['Which ads package should I pick?', 'Ad budget', 'Do you guarantee leads?'] },
+  { id: 'ads-pick', w: 1.8, k: ['which ads package', 'which ads plan', 'ads package should i pick', 'ads package choose', 'kaunsa ads package', 'ads starter or growth', 'growth or pro'],
+    a: `A simple way to choose:\n• ${ADS_STARTER.name} (${formatInr(ADS_STARTER.price)}/month): you are starting with ads and want 1–2 campaigns, such as one service or one offer.\n• ${ADS_GROWTH.name} (${formatInr(ADS_GROWTH.price)}/month): you want steady leads with conversion tracking, retargeting and ad creatives.\n• ${ADS_PRO.name} (${formatInr(ADS_PRO.price)}/month): you run several products, offers or locations and want weekly optimisation.\nNot sure? Share your business and budget and the team will suggest one.`,
+    links: [L.pricing, L.quote, L.whatsapp] },
   { id: 'ads-control', w: 1.5, k: ['stop ads', 'pause', 'pause my ads', 'stop paying', 'stop anytime', 'own my google ads', 'own my ad account', 'ad account owner', 'own the ad account', 'where my money', 'money is spent', 'see spend'],
     a: 'Campaigns run in your own business ad account with partner access for us, so ownership and billing stay with you. You can pause or stop ads any time; ads stop showing as soon as they are paused. You can see exactly where money is spent in the account and in our reports.' },
   { id: 'ads-speed', w: 1.5, k: ['how quickly', 'how soon', 'start running', 'when will ads', 'get leads', 'leads kab', 'results kab'],
@@ -491,7 +508,7 @@ const TOPICS = [
     a: 'According to OpenAI, ads are shown to adult users on selected ChatGPT plans, and paid plans like Plus and Pro remain ad-free. Availability, targeting options and restricted categories are changing as the platform grows, so we check current eligibility for your business before planning a campaign.',
     links: [L.chatgpt] },
   { id: 'chatgpt-cost', w: 1.8, k: ['chatgpt ads cost', 'cost of chatgpt ads', 'chatgpt budget', 'clicks or impressions'],
-    a: 'ChatGPT Ads pricing is auction-based and depends on your category and competition. We propose a small test budget after reviewing your offer; ad spend is paid to the platform and kept separate from our management fee.', links: [L.chatgpt, L.quote] },
+    a: `Our ${CHATGPT_SETUP.name} is ${formatInr(CHATGPT_SETUP.price)}/month and covers ad account setup, campaign and targeting setup, ad copy and conversion tracking. It is setup only: ongoing optimisation and reporting are not included. Ad spend is auction-based, depends on your category and competition, and is paid directly to the platform.`, links: [L.chatgpt, L.quote] },
   { id: 'chatgpt-start', w: 1.5, k: ['get started with chatgpt', 'create an advertising campaign', 'separate advertising account', 'track leads from chatgpt', 'promote my website through'],
     a: 'We review your offer, customers, landing page and eligibility, plan the conversations where you\'re genuinely helpful, write the ads, check tracking and launch an agreed test budget. Leads and conversions are tracked like other campaigns.',
     links: [L.chatgpt, L.quote] },
@@ -501,7 +518,7 @@ const TOPICS = [
     a: 'Yes. Tell us about your business and needs through the Get a Quote form, WhatsApp or a call. You receive a written quote or proposal with deliverables, timeline and cost before any work begins.',
     links: [L.quote, L.whatsapp] },
   { id: 'fixed-packages', w: 1.3, k: ['fixed price', 'fixed-price', 'customize a package', 'customise', 'custom package', 'upgrade', 'downgrade', 'upgrade my package', 'downgrade my package'],
-    a: 'Websites have fixed-price packages (Starter, Business, Premium) and you add only what you need from the fixed add-on list. Marketing and SEO are scoped to your goals. To upgrade or change a package mid-project, talk to the team; extra work outside scope is quoted separately.',
+    a: 'Websites have fixed-price packages (Starter, Business, Premium) and you add only what you need from the fixed add-on list. Ads, social media and SEO each have three monthly plans, and ChatGPT Ads has a setup plan. To upgrade or change a package mid-project, talk to the team; extra work outside scope is quoted separately.',
     links: [L.pricing] },
   { id: 'discount', w: 1.4, k: ['discount', 'discounts', 'startup discount', 'offer', 'match another', 'match price', 'cheaper than', 'kam karo', 'ochu karo'],
     a: `Our prices are published so you know them upfront. For any current offers, ${ASK_TEAM.toLowerCase()}`, links: TEAM_LINKS },
@@ -609,6 +626,10 @@ const CHIP_TOPIC = {
   'Maintenance': 'maintenance',
   'Ad budget': 'ads-budget',
   'Ads management fee': 'ads-fee',
+  'Ads packages': 'ads-fee',
+  'Which ads package should I pick?': 'ads-pick',
+  'Which social media plan should I pick?': 'smm-pick',
+  'Which SEO plan should I pick?': 'seo-pick',
   'Do you guarantee leads?': 'guarantee',
   'Social media cost': 'smm-cost',
   'Can you make reels?': 'smm-content',
@@ -749,14 +770,14 @@ const OPENING_CHIPS = ['I need a website', 'Get more customers', 'Improve my Goo
 
 const PAGE_CONTEXT = [
   { test: (p) => p.startsWith('/start-project'), greet: 'Filling in the quote form? I can explain any question or help you pick a package.', chips: ['Which package should I pick?', 'What is not included?', 'Payment terms', 'Talk to the team'] },
-  { test: (p) => p.startsWith('/pricing'), greet: 'Looking at our packages? I can help you pick the right one or explain what is included.', chips: ['Which package should I pick?', 'What is not included?', 'Payment terms', 'How long does a website take?'] },
+  { test: (p) => p.startsWith('/pricing'), greet: 'Looking at our packages? I can help you pick the right one or explain what is included.', chips: ['Which package should I pick?', 'Ads packages', 'What is not included?', 'Payment terms'] },
   { test: (p) => p.startsWith('/seo/local'), greet: 'Want more customers from Google Maps? Ask me about your Business Profile, reviews or local ranking.', chips: ['Local SEO', 'SEO cost', 'How long does SEO take?'], redirect: { pricing: 'seo-cost', timeline: 'seo-time', seo: 'local-seo' } },
   { test: (p) => p.startsWith('/seo'), greet: 'Want to show up higher on Google? Ask me how SEO works, how long it takes or what it costs.', chips: ['How long does SEO take?', 'SEO cost', 'Local SEO', 'Help me choose'], redirect: { pricing: 'seo-cost', timeline: 'seo-time' } },
   { test: (p) => p.includes('ecommerce'), greet: 'Planning an online store? Ask me about payments, products, shipping or cost.', chips: ['Online store', 'Website pricing', 'Help me choose'], redirect: { pricing: 'ecom-cost' } },
   { test: (p) => p.startsWith('/web-development'), greet: 'Planning a website? I can tell you the packages, timelines and what is included.', chips: ['Website pricing', 'How long does a website take?', 'Online store', 'See your work'] },
   { test: (p) => p.startsWith('/digital-marketing/social'), greet: 'Want your social media to bring real enquiries? Ask me about posts, reels or pricing.', chips: ['Can you make reels?', 'Social media cost', 'Help me choose'], redirect: { pricing: 'smm-cost' } },
   { test: (p) => p.startsWith('/chatgpt-ads'), greet: 'Curious about ChatGPT Ads? Ask me who sees them, how they work or what they cost.', chips: ['Who sees ChatGPT Ads?', 'ChatGPT Ads cost', 'Help me choose'], redirect: { pricing: 'chatgpt-cost', 'ads-fee': 'chatgpt-cost', 'ads-budget': 'chatgpt-cost' } },
-  { test: (p) => ['/google-ads', '/meta-ads', '/performance-marketing', '/digital-marketing/paid'].some((x) => p.startsWith(x)), greet: 'Thinking about ads? Ask me about budgets, leads or what our management includes.', chips: ['Ad budget', 'Ads management fee', 'Do you guarantee leads?', 'Help me choose'], redirect: { pricing: 'ads-fee' } },
+  { test: (p) => ['/google-ads', '/meta-ads', '/performance-marketing', '/digital-marketing/paid'].some((x) => p.startsWith(x)), greet: 'Thinking about ads? Ask me about budgets, leads or what our management includes.', chips: ['Ads packages', 'Ad budget', 'Do you guarantee leads?', 'Which ads package should I pick?'], redirect: { pricing: 'ads-fee' } },
   { test: (p) => p.startsWith('/digital-marketing-agency') || p.startsWith('/digital-marketing-for'), greet: 'Looking for a team near you? Ask me where we are, what we do or how we work.', chips: ['Where is your office?', 'What services do you offer?', 'Help me choose'] },
   { test: (p) => p.startsWith('/digital-marketing'), greet: 'Want more customers online? Ask me about social media, Google Ads or Meta Ads.', chips: ['Social media & ads', 'Ad budget', 'Social media cost', 'Help me choose'], redirect: { pricing: 'smm-cost' } },
   { test: (p) => p.startsWith('/projects'), greet: 'Like what you see? I can tell you what a similar project would cost.', chips: ['Website pricing', 'Help me choose', 'Get a Quote'] },

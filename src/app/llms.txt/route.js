@@ -37,7 +37,7 @@ export async function GET() {
     '## Company',
     link('About and team', '/about', 'Company approach and current public team profiles.'),
     link('Selected work', '/projects', 'Projects shown in the public portfolio.'),
-    link('Pricing', '/pricing', 'Website packages from ₹10,000 and add-on prices; digital marketing is quoted after a call.'),
+    link('Pricing', '/pricing', 'Website packages from ₹10,000 and add-on prices. Monthly plans: SEO from ₹2,000, social media management from ₹5,000, Google & Meta Ads management from ₹6,000 (ad spend extra) and ChatGPT Ads setup at ₹2,000.'),
     link('Contact', '/contact', 'Business enquiries and contact information.'),
     link('Discuss a project', '/start-project', 'Share website, digital marketing or SEO requirements.'),
     '',

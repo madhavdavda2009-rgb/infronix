@@ -3,6 +3,7 @@ import { getService } from '@/lib/services';
 import { pageMetadata } from '@/lib/site-seo';
 import Breadcrumb from '@/components/Breadcrumb';
 import Link from 'next/link';
+import ServicePricing from '@/components/ServicePricing';
 import { GoogleLogo, MetaLogo, YoutubeLogo, CheckCircle, ArrowRight, Sparkle, ShieldCheck, Lightning, Buildings, Storefront, RocketLaunch, Briefcase, ShoppingBag, Globe, MagnifyingGlass, Robot, Megaphone } from '@phosphor-icons/react/dist/ssr';
 
 const service = getService('digital-marketing/paid-advertising');
@@ -332,6 +333,7 @@ export default function PaidAdvertisingPage() {
             </div>
           </div>
         </section>
+        <ServicePricing slug="digital-marketing/paid-advertising" />
 
         {/* ═══ 2. INTRODUCTION SECTION ═══ */}
         <section className="w-full py-12 sm:py-16 md:py-24 bg-surface border-b border-outline-variant/30">

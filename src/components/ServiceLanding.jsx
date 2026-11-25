@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import ServicePricing from '@/components/ServicePricing';
 import Breadcrumb from '@/components/Breadcrumb';
 import ServiceDetails from '@/components/ServiceDetails';
 import { enquiryHref, getService } from '@/lib/services';
@@ -25,6 +26,7 @@ export default function ServiceLanding({ slug }) {
         </div>
       </div>
     </section>
+    <ServicePricing slug={slug} />
     <section className="py-12 sm:py-16 bg-surface">
       <div className="max-w-[1280px] mx-auto px-4 sm:px-6 md:px-12">
         <h2 className="text-3xl sm:text-4xl md:text-5xl font-heading font-bold text-on-surface mb-6 leading-tight">{slug === 'google-ads' ? 'Search Ads, campaign setup and optimization' : 'What we can help with'}</h2>

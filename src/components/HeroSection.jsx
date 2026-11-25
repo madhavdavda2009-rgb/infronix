@@ -5,6 +5,7 @@ import Image from "next/image";
 import { ArrowRight, Code, ChartLineUp, Megaphone, Star } from "@phosphor-icons/react";
 import heroImg from "@/assets/hero-section.webp";
 import Breadcrumb from "@/components/Breadcrumb";
+import { WEBSITE_PACKAGES, formatInr } from "@/lib/pricing";
 import { useIntro } from "@/context/IntroContext";
 
 export default function HeroSection({ rating = null }) {
@@ -86,7 +87,7 @@ export default function HeroSection({ rating = null }) {
               variants={itemVariants}
               className="text-base sm:text-lg md:text-xl text-main-text max-w-2xl mb-5 sm:mb-6 font-normal leading-relaxed"
             >
-              Websites, digital marketing and SEO that help customers discover your business. Based in Ahmedabad, working across India.
+              Websites from <Link href="/pricing" className="font-semibold text-on-surface underline decoration-primary decoration-2 underline-offset-4 hover:text-primary transition-colors">{formatInr(WEBSITE_PACKAGES[0].price)}</Link>, digital marketing and SEO that help customers discover your business. Based in Ahmedabad, working across India.
             </motion.p>
 
             {/* CTAs */}

@@ -3,6 +3,7 @@ import { getService } from '@/lib/services';
 import { pageMetadata } from '@/lib/site-seo';
 import Breadcrumb from '@/components/Breadcrumb';
 import Link from 'next/link';
+import ServicePricing from '@/components/ServicePricing';
 import { InstagramLogo, FacebookLogo, LinkedinLogo, CheckCircle, ArrowRight, Sparkle, ShieldCheck, Lightning, Buildings, Storefront, RocketLaunch, Briefcase, User, ShoppingBag } from '@phosphor-icons/react/dist/ssr';
 
 const service = getService('digital-marketing/social-media-marketing');
@@ -253,6 +254,7 @@ export default function SocialMediaMarketingPage() {
             </div>
           </div>
         </section>
+        <ServicePricing slug="digital-marketing/social-media-marketing" />
 
         {/* ═══ 2. INTRODUCTION SECTION ═══ */}
         <section className="w-full py-12 sm:py-16 md:py-24 bg-surface border-b border-outline-variant/30">
